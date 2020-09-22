@@ -1,7 +1,8 @@
 from django.shortcuts import render, HttpResponse
-from rootApp.models import Contact
+from rootApp.models import Contact, FreeboardConstructionCost
 from datetime import datetime
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -30,3 +31,12 @@ def helpcenter(request):
 
     return render(request, 'contact.html')    
 
+def search(request):
+
+    location = request.GET.get('location', 'sdjflkaksjflk')
+    locationList=location.split(',')
+    locationList = list(map(str.strip, locationList))
+    addressvalue = FreeboardConstructionCost.objects.filter(
+         Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1])).all()
+    data_dict = {"my_data" : addressvalue , "vegetable" : ['alu', 'potol']}
+    return render(request, 'search_results.html', data_dict)
