@@ -10,6 +10,7 @@ urlpatterns = [
     path("decisionmakingmap", views.decisionmakingmap, name='Decision Making Map'),
     path("survey", views.survey, name='Survey'),
     path("helpcenter", views.helpcenter, name='Help Center'),
-    path("search", views.search, name='Search')
+    path("search", views.search, name='Search'),
+    path("dosurvey", views.dosurvey, name='dosurvey')
     
     ]
