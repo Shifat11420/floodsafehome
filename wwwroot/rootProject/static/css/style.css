@@ -4723,6 +4723,7 @@ hr {
     margin-top: -100px;
     text-align: center;
     text-align: center;
+    background-color: rgba(214,211,210,0.5);
 }
 
 @media (max-width: 575px) {
@@ -4738,6 +4739,7 @@ hr {
     .slider-area .hero__caption,
     .slider-area2 .hero__caption {
         margin-top: 0px;
+        
     }
 }
 
@@ -4749,27 +4751,6 @@ hr {
     }
 }
 
-
-/* line 76, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
-
-.slider-area .hero__caption span,
-.slider-area2 .hero__caption span {
-    color: #31ff7a;
-    font-size: 60px;
-    line-height: 1.2;
-    font-weight: 400;
-    margin-bottom: 30px;
-    display: block;
-}
-
-@media (max-width: 575px) {
-    /* line 76, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
-    .slider-area .hero__caption span,
-    .slider-area2 .hero__caption span {
-        margin-bottom: 30px;
-        font-size: 56px;
-    }
-}
 
 
 /* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
@@ -5351,6 +5332,7 @@ hr {
     display: inline-block;
     font-size: 16px;
     font-weight: 400;
+    background-color: rgba(214,211,210,0.5);
 }
 
 
@@ -7545,14 +7527,6 @@ hr {
     height: 24px;
     width: 24px;
     border: 1px solid #ddd;
-}
-
-
-/* line 110, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_category-page.scss */
-
-.category-listing .single-listing .select-Categories .container input:checked~.checkmark {
-    background-color: #367FFF;
-    border: 2px solid transparent;
 }
 
 
