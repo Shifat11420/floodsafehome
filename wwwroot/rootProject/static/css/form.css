@@ -2424,7 +2424,7 @@ screen and (max-height: 640px) {
   text-decoration: none;
 }
 
-.formFooter-button:hover { background-color: #52bf41 }
+.formFooter-button:hover { background-color: #182EBD }
 
 @media screen and (max-width: 480px) {
   .formFooter-heightMask { 
