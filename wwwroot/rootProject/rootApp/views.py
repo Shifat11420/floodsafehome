@@ -20,6 +20,9 @@ def decisionmakingmap(request):
 def survey(request):
     return render(request, 'survey.html')  
 
+def dosurvey(request):
+    return render(request, 'dosurvey.html')      
+
 def helpcenter(request):
     if request.method == "POST":
         name = request.POST.get('name')
