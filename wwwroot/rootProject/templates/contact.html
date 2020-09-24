@@ -97,7 +97,7 @@
                         <div class="col-xl-8 col-lg-9">
                             <!-- Hero Caption -->
                             <div class="hero__caption hero__caption2">
-                                <h1>Help Center</h1>
+                                <h1 >Help Center</h1>
                             </div>
                         </div>
                     </div>
@@ -132,17 +132,17 @@
                             {% csrf_token %} 
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="desc">How can we help?</label>
-                                    <textarea class="form-control" id="desc" rows="3" name="desc"></textarea>     
+                                    <textarea class="form-control" id="desc" rows="3" name="desc" required></textarea>     
                                     
                                     {% comment %} <div class= "row justify-content-center">
                                         <select class="form-control" id="exampleFormControlSelect1" placeholder="Select">
