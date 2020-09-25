@@ -4723,7 +4723,6 @@ hr {
     margin-top: -100px;
     text-align: center;
     text-align: center;
-    background-color: rgba(214,211,210,0.5);
 }
 
 @media (max-width: 575px) {
@@ -5332,7 +5331,6 @@ hr {
     display: inline-block;
     font-size: 16px;
     font-weight: 400;
-    background-color: rgba(214,211,210,0.5);
 }
 
 
