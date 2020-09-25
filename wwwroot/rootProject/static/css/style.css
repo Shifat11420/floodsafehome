@@ -299,6 +299,9 @@ p {
     font-weight: normal;
 }
 
+p a{
+    color: #367FFF;
+}
 
 /* line 35, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
@@ -390,7 +393,7 @@ a {
 /* line 75, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 a:hover {
-    color: #fff;
+    color: #1649a3;
 }
 
 
@@ -456,7 +459,7 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-    color: inherit;
+    color: #367FFF;
 }
 
 
