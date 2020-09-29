@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+    <link rel="shortcut icon" type="static/img/logo" href="static/img/logo/logo_short.png">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
@@ -48,7 +48,7 @@
                             <!-- Logo -->
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                    <a href=" "><img src="static/img/logo/logo.png" alt=""></a>
+                                    <a href="/"><img src="static/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-10 col-lg-10">
@@ -68,7 +68,7 @@
                                                 </li>
                                                 <li><a href="/decisionmakingmap">Decision Making Map</a></li>
                                                 <li><a href="/survey">Survey</a></li>
-                                                <li><a href="/helpcenter">Help Center</a></li>
+                                                <li><a href="/helpcenter"><b>Help Center</b></a></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -97,7 +97,7 @@
                         <div class="col-xl-8 col-lg-9">
                             <!-- Hero Caption -->
                             <div class="hero__caption hero__caption2">
-                                <h1>Help Center</h1>
+                                <h1 >Help Center</h1>
                             </div>
                         </div>
                     </div>
@@ -132,17 +132,17 @@
                             {% csrf_token %} 
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="desc">How can we help?</label>
-                                    <textarea class="form-control" id="desc" rows="3" name="desc"></textarea>     
+                                    <textarea class="form-control" id="desc" rows="3" name="desc" required></textarea>     
                                     
                                     {% comment %} <div class= "row justify-content-center">
                                         <select class="form-control" id="exampleFormControlSelect1" placeholder="Select">

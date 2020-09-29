@@ -66,8 +66,8 @@
                                                         <li><a href="">Methodologies</a></li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="/decisionmakingmap">Decision Making Map</a></li>
-                                                <li><a href="/survey"><b>Survey</b></a></li>
+                                                <li><a href="/decisionmakingmap"><b>Decision Making Map</b></a></li>
+                                                <li><a href="/survey">Survey</a></li>
                                                 <li><a href="/helpcenter">Help Center</a></li>
                                             </ul>
                                         </nav>
@@ -88,41 +88,79 @@
 
     <main>
         <!-- Hero Area Start-->
-        <div class="slider-area2">
-            <div class="single-slider slider-height3 d-flex align-items-center">
+        <div class="slider-area">
+            <div class="single-slider slider-height d-flex align-items-center">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-xl-8 col-lg-9">
                             <!-- Hero Caption -->
-                            <div class="hero__caption hero__caption2">
-                                <h1>Survey</h1>
+                            <div class="hero__caption">
+                                <h1 style="text-shadow: 2px 2px 4px #367FFF;">Find your home.</h1>
+                                <p style="text-shadow: 2px 2px 4px #367FFF;">Let's identify, evaluate, and address the economic, physical, personal perception, and policy incentives/barriers to increased freeboard for new home construction in Louisiana.</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Hero Area End-->
-        <!-- History -->
-        <div class="about-history pb-top">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
-                        <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2>We value your feedback</h2><br>
-                            <p>Survey is important to all of us at Flood Safe Home and helps us improve your experience with our website. Even better, now your chance to have your voice heard! Please take a brief survey to help us understand more about your experiences of our website.<br><br>
-                              Thanks for your help,<br>
-                              <b>Flood Safe Home</b></p>
-                        </div>
-                        <form action="/dosurvey" method= "post" class="search-box" align="center">
-                            <button class="btn btn-primary" type="submit">Go to survey</button>      
+                        <div class="col-xl-11 col-lg-12">
+                          <!--Hero form -->
+                          <form action="/search" method= "get" class="search-box">
+                          {% csrf_token %} 
+                              <div class="input-form">
+                                  <input type="text" name="keywords" placeholder="Search by">
+                              </div>
+                              <div class="select-form">
+                                  <div class="select-itms">
+                                      <select name="select" id="select1">
+                                          <option value="">Select</option>
+                                          <option value="">Address</option>
+                                          <option value="">Subdivison</option>
+                                          <option value="">Parcel</option>
+                                          <option value="">Zip code</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="input-form2">
+                                  <input type="text"  name="location" placeholder="Where?">
+                                  <!-- icon -->
+                                  <div class="icon">
+                                      <i class="fas fa-map-marker-alt"></i>
+                                  </div>
+                              </div>
+                                  <!--   <div class="search-form">
+                               <a href=""><i class="fas fa-search"></i> Search</a> -->
+                              <button class="btn btn-primary" type="submit">Submit</button>      
+                                   <!--  </div> -->
                           </form>
+                          <div class="col-lg-12">
+                              <div class="popular-search text-center pt-30">
+                                  <ul>
+                                      <li><p style="text-shadow: 2px 2px 4px #367FFF;"> This project is funded by Louisiana Sea Grant’s Omnibus Program.<br>
+                                      <a href="http://www.laseagrant.org/research/projects/2020-2022/#Friedland"><u><font color="white">See details.</font></u></a></p></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
+          </div>
+      </div>
+        <!--Hero Area End-->
+        {% comment %} <footer>
+         <div class="footer-wrappper pl-100 pr-100 section-bg" data-background="static/img/gallery/footer-bg.png">
+        </div> {% endcomment %}
+     </main> 
 
-    </main>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
 
-       <!-- Scroll Up -->
+    <!-- Scroll Up -->
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
     </div>
