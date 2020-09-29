@@ -4,7 +4,6 @@ from rootApp import views
 
 urlpatterns = [
     path("", views.index, name='Home'),
-    path("index", views.index, name='Home'),
     path("about", views.about, name='About'),
     path("freeboardproject", views.freeboardproject, name='Freeboard Project'),
     path("decisionmakingmap", views.decisionmakingmap, name='Decision Making Map'),
