@@ -1,0 +1,125 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
+  <title>Flood Safe Home</title>
+  <style>
+     #viewDiv {
+      height: 100%;
+      width: 70%;
+      float: right;
+    }
+    #left{
+      height: 100%;
+      width: 30%;
+      float: left;
+    }
+    #left1{
+      height: 35%;
+      width: 100%;
+      margin: 5px 5px 5px 5px;
+    }
+        #left2{
+      height: 20%;
+      width: 100%;
+      margin: 5px 5px 5px 5px;
+    }
+        #left3{
+      height: 30%;
+      width: 100%;
+      margin: 5px 5px 5px 5px;
+    }
+
+  </style>
+    <link rel="stylesheet" href="../static/css/map.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.16/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.16/"></script>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView"
+    ], function(Map, MapView) {
+
+      var map = new Map({
+        basemap: "topo-vector"
+      });
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-90.1688066, 29.9722569], // longitude, latitude
+      zoom: 13
+      });
+
+      view.ui.add(locate, "top-left");
+
+    });
+  </script>
+</head>
+<body>
+  <header class="header" style="background-color:#367FFF; height:100px; text">
+		<a href="/"><img src="../static/img/logo/logo.png" alt=""></a>
+ 
+	</header><!-- .header-->
+  <div id="left">
+    <div id="left1">
+      <p> 
+        <h2><center> Select your building information</center> </h2>
+        <b> &nbsp; # stories </b> 
+        <br><br>
+        <b> &nbsp; Construction types </b><br>
+        <form method="get" action="">
+            <table align = "center" >
+              <tr align = "center"> <!--input-->
+                <td><label><input type="radio" name="fruit" value="basement"></label></td>
+                <td><label><input type="radio" name="fruit" value="crawlSpace"> </label></td>
+                <td><label><input type="radio" name="fruit" value="slab"></label></td>
+                <td><label><input type="radio" name="fruit" value="pierBeamPiling"> </label></td>
+                <td><label><input type="radio" name="fruit" value="pierBeamPilingFreeboard"></label></td>
+              </tr>
+              <tr align = "center"> <!--image-->
+                <td><br><img src="../static/img/construction/basement.png" style="width: 50px; height:50px;"></td>
+                <td><br><img src="../static/img/construction/crawlSpace.png" style="width: 50px; height:50px;"></td>
+                <td><br><img src="../static/img/construction/slab.png" style="width: 50px; height:50px;"></td>
+                <td><br><img src="../static/img/construction/pierBeamPiling.png" style="width: 50px; height:50px;"></td>
+                <td><br><img src="../static/img/construction/pierBeamPilingFreeboard.png" style="width: 50px; height:50px;"></td> 
+              <tr align = "center">
+                <td>Basement</td>
+                <td>Crawl space</td>
+                <td>Slab</td>
+                <td><br>Pier and beam piling</td>
+                <td><br><br>Pier and beam piling with <br>freeboard</td>
+              </tr>
+            </table>
+      <br>
+      <b> &nbsp; Square footage </b> &nbsp;&nbsp; <input type="text"  name="sqft" placeholder="Type your building's square footage">
+      &nbsp; &nbsp; &nbsp; &nbsp; 
+      <button class="btn btn-primary" type="submit" > Run</button>      
+
+      </form>
+      </p>
+    </div>
+
+    <div id="left2">
+    <p> <br>
+        <center><h2> Flood Hazard Calculator </h2>
+                <label for="slider-fill">Select Annual Change ____</label>
+                <input name="slider-fill" id="slider-fill" type="range" min="0" max="100" step="5" value="0" data-highlight="true"><br><br>
+                <label for="slider-fill">Select Diration  ____</label>
+                <input name="slider-fill" id="slider-fill" type="range" min="0" max="100" step="1" value="0" data-highlight="true"><br>
+                <h4><label for="slider-fill">Likelihood of flooding is ____</label></h4><br><br></center>
+
+
+    </div>
+
+    <div id="left3">
+    
+    </div>
+  </div>
+  <div id="viewDiv"></div>
+
+
+</body>
+</html>
