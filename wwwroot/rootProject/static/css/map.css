@@ -1,0 +1,45 @@
+html,
+body,
+.grid-container {
+  height: 100%;
+  margin: 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 10% 30% 30% 30%;
+  gap: 0px 0px;
+  grid-template-areas:
+    "head head head head"
+    "side1 viewDiv viewDiv viewDiv"
+    "side2 viewDiv viewDiv viewDiv"
+    "side3 viewDiv viewDiv viewDiv";
+}
+
+.head {
+  grid-area: head;
+  background-color:#367FFF;
+}
+
+.side1 {
+  grid-area: side1;
+}
+
+.side2 {
+  grid-area: side2;
+}
+
+.side3 {
+  grid-area: side3;
+}
+
+.viewDiv {
+  grid-area: viewDiv;
+}
+
+
+table {
+  width: 100%;
+  table-layout:fixed; 
+  word-break:break-all;}
