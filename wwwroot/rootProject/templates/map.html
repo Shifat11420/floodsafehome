@@ -16,17 +16,17 @@
       float: left;
     }
     #left1{
-      height: 35%;
+      height: 43%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
         #left2{
-      height: 20%;
+      height: 27%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
         #left3{
-      height: 30%;
+      height: 10%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
@@ -62,12 +62,24 @@
   <header class="header" style="background-color:#367FFF; height:100px; text">
 		<a href="/"><img src="../static/img/logo/logo.png" alt=""></a>
  
-	</header><!-- .header-->
-  <div id="left">
-    <div id="left1">
+	</header> <!-- .header end-->
+  
+  
+  <div id="left"> <!-- .left div tags-->
+    <div id="left1"><!-- .left1: User's input-->
       <p> 
         <h2><center> Select your building information</center> </h2>
         <b> &nbsp; # stories </b> 
+        
+        <br><br>
+        <b> &nbsp; Address or Parcel ID </b> &nbsp;&nbsp; <input type="text"  name="sqft" placeholder="Type your address/parce ID">
+        &nbsp; &nbsp; &nbsp; &nbsp; 
+        
+        <br><br>
+        <b> &nbsp; Square footage </b> &nbsp;&nbsp; <input type="text"  name="sqft" placeholder="Type your building's square footage">
+        &nbsp; &nbsp; &nbsp; &nbsp; 
+         
+
         <br><br>
         <b> &nbsp; Construction types </b><br>
         <form method="get" action="">
@@ -93,31 +105,79 @@
                 <td><br><br>Pier and beam piling with <br>freeboard</td>
               </tr>
             </table>
-      <br>
-      <b> &nbsp; Square footage </b> &nbsp;&nbsp; <input type="text"  name="sqft" placeholder="Type your building's square footage">
-      &nbsp; &nbsp; &nbsp; &nbsp; 
-      <button class="btn btn-primary" type="submit" > Run</button>      
-
+        
+        <button class="btn btn-primary" type="submit" > Run</button>     
       </form>
       </p>
     </div>
 
-    <div id="left2">
+    <div id="left2"> <!-- .left1: Chart-->
+      <div class="col-md-6">
+				<div >
+					<div class="progress-wrap">
+						<h3><span class="name-left">Freeboard Construction Cost​</span><span class="value-right">XX</span></h3> <!--XX part will be updated based on the calcuation-->
+						<div class="progress">
+						  <div class="progress-bar progress-bar-1 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:50%"> <!--width part will be updated based on the calcuation-->
+						  </div>
+						</div>
+					</div>
+					<div class="progress-wrap">
+						<h3><span class="name-left">Estimated Flood Insurance Premiums/yr</span><span class="value-right">XX</span></h3>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-2 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+						  </div>
+						</div>
+					</div>
+					<div class="progress-wrap">
+						<h3><span class="name-left">Annual Benefit​</span><span class="value-right">XX</span></h3>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-6 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width:85%">
+						  </div>
+						</div>
+					</div>
+					<div class="progress-wrap">
+						<h3><span class="name-left">Payback Periods of Freeboard Construction Cost</span><span class="value-right">XX</span></h3>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-3 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+						  </div>
+						</div>
+					</div>
+					<div class="progress-wrap">
+						<h3><span class="name-left">Net Benefit​ (NB)​</span><span class="value-right">XX</span></h3>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-4 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						  </div>
+						</div>
+					</div>
+					<div class="progress-wrap">
+						<h3><span class="name-left">Net Benefit Cost Ratio (NBCR)​</span><span class="value-right">XX</span></h3>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-5 progress-bar-striped active" role="progressbar"
+						  aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+						  </div>
+						</div>
+					</div>
+        </div>
+    </div>      
+    </div>
+
+    <div id="left3"> <!-- .left3: Hazard calculator-->
     <p> <br>
         <center><h2> Flood Hazard Calculator </h2>
                 <label for="slider-fill">Select Annual Change ____</label>
                 <input name="slider-fill" id="slider-fill" type="range" min="0" max="100" step="5" value="0" data-highlight="true"><br><br>
-                <label for="slider-fill">Select Diration  ____</label>
+                <label for="slider-fill">Select Duration  ____</label>
                 <input name="slider-fill" id="slider-fill" type="range" min="0" max="100" step="1" value="0" data-highlight="true"><br>
                 <h4><label for="slider-fill">Likelihood of flooding is ____</label></h4><br><br></center>
-
-
-    </div>
-
-    <div id="left3">
-    
+    </p>
     </div>
   </div>
+
   <div id="viewDiv"></div>
 
 
