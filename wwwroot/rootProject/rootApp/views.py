@@ -1,8 +1,11 @@
 from django.shortcuts import render, HttpResponse
-from rootApp.models import Contact, FreeboardConstructionCost
+from rootApp.models import Contact, FreeboardConstructionCost, Sampledata
 from datetime import datetime
 from django.contrib import messages
 from django.db.models import Q
+from functools import reduce
+import operator
+from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
@@ -23,6 +26,38 @@ def survey(request):
 def dosurvey(request):
     return render(request, 'dosurvey.html')      
 
+def autosuggest(request): 
+    print(request.GET)  
+    query_original = request.GET.get('term')
+
+    query_originalList=query_original.split(' ')
+
+    # if query_original:
+    #     query_originalList=query_original.split(' ')
+    #     query_originalList = list(map(str.strip, query_original))
+
+    #     fields = ["address__istartswith", "street__icontains"]
+
+    #     q_expression = [Q(f,w) for f in fields for w in query_originalList]
+    #     queryset = queryset.filter(reduce(operator.or_, q_expression)).distinct()
+
+    #queryset = Sampledata.objects.filter(reduce(operator.and_, (Q(street__icontains=x) for x in query_originalList) ))
+    #Q(address__istartswith = query_originalList[0]) | Q(street__icontains = query_originalList[1:]))
+    if (len(query_originalList)==1):
+        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  )
+    elif (len(query_originalList)==2):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1]))  )
+    elif (len(query_originalList)==3):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1])))
+    else:
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1])))    
+        
+
+    mylist = []
+    mylist += [x.address+" "+x.street for x in queryset]
+    return JsonResponse(mylist, safe=False)
+
+
 def helpcenter(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -35,7 +70,6 @@ def helpcenter(request):
     return render(request, 'contact.html')    
 
 def search(request):
-
     location = request.GET.get('location', 'default')
     locationList=location.split(' ')
     locationList = list(map(str.strip, locationList))
