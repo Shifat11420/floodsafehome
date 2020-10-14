@@ -19,8 +19,6 @@ def freeboardproject(request):
     return render(request, 'research.html')    
 
 def decisionmakingmap(request):
-
-
     return render(request, 'map.html')      
 
 def survey(request):
