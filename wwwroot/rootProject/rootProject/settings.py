@@ -26,7 +26,7 @@ SECRET_KEY = 'hwc(%fe)^f#am#(uj-r(xqzfoi!dyxsq44jq2)aaw54aaq$*f#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','floodsafehome.lsu.edu','96.125.115.31']
 #ALLOWED_HOSTS = ['192.168.1.50']
 
 # Application definition
