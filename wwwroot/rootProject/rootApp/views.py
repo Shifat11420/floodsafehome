@@ -7,6 +7,16 @@ from functools import reduce
 import operator
 from django.http import JsonResponse
 import json as simplejson
+from bokeh.io import output_file, show
+from bokeh.plotting import figure
+from bokeh.embed import components
+from bokeh.models import HoverTool, LassoSelectTool, WheelZoomTool, PointDrawTool, ColumnDataSource, FactorRange
+from bokeh.palettes import Category20c, Spectral6
+from bokeh.transform import cumsum, factor_cmap, dodge
+from bokeh.core.validation import silence
+from bokeh.core.validation.warnings import EMPTY_LAYOUT
+
+
 
 # Create your views here.
 def index(request):
@@ -18,8 +28,39 @@ def about(request):
 def freeboardproject(request):
     return render(request, 'research.html')    
 
-def decisionmakingmap(request):
-    return render(request, 'map.html')      
+def decisionmakingmap(request):    
+    benefits = ['Construction Cost', 'Insuracne ']
+    nofStories = ['Zero','+ 1 story', '+ 2 stories', '+ 3 stories', '+ 4 stories']
+
+    data = {'benefits' : benefits,
+            'Zero'   : [8,3,4,5,6,3,4],
+            '+ 1 story'   : [5, 3, 3, 2, 4, 6],
+            '+ 2 stories'   : [5, 3, 3, 2, 4, 6]}
+
+    x_values = [nofStories]
+    counts = sum(zip(data['Zero'], data['+ 1 story'],data['+ 2 stories']), ()) # like an hstack
+    
+    source = ColumnDataSource(data=data)
+
+    p = figure(x_range=benefits, y_range=(0, 10), plot_height=350, plot_width=500, 
+            toolbar_location="below", tools="save, pan, wheel_zoom, box_zoom, reset, hover, tap, crosshair")
+
+    p.vbar(x=dodge('benefits', -0.25, range=p.x_range), top='Zero', width=0.2, source=source,
+        color="#c9d9d3", legend_label="+Zero")
+
+    p.vbar(x=dodge('benefits',  0.0,  range=p.x_range), top='+ 1 story', width=0.2, source=source,
+        color="#718dbf", legend_label="+1 story")
+
+    p.vbar(x=dodge('benefits',  0.25, range=p.x_range), top='+ 2 stories', width=0.2, source=source,
+        color="#e84d60", legend_label="+2 stories")
+    
+    p.x_range.range_padding = 0.1
+    p.xgrid.grid_line_color = None
+    p.legend.location = "top_left"
+    p.legend.orientation = "horizontal"
+
+    script, div = components(p)
+    return render(request, 'map.html' , {'script': script, 'div':div})
 
 def survey(request):
     return render(request, 'survey.html')  
@@ -45,13 +86,13 @@ def autosuggest(request):
     #queryset = Sampledata.objects.filter(reduce(operator.and_, (Q(street__icontains=x) for x in query_originalList) ))
     #Q(address__istartswith = query_originalList[0]) | Q(street__icontains = query_originalList[1:]))
     if (len(query_originalList)==1):
-        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0])) ).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  )
     elif (len(query_originalList)==2):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])) ).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1]))  )
     elif (len(query_originalList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1])))
     else:
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]    
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1])))    
         
 
     mylist = []
@@ -153,3 +194,39 @@ def search(request):
    # data_dict = {"zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease" : AverageIncrease ,"construction_cost_BFE1": construction_cost_BFE1, "construction_cost_BFE2": construction_cost_BFE2, "construction_cost_BFE3": construction_cost_BFE3, "construction_cost_BFE4": construction_cost_BFE4, "vegetable" : ['alu', 'potol']}
     
     return render(request, 'map.html', data_dict)
+
+
+def starter(request):
+    benefits = ['Construction Cost', 'Insuracne ']
+    nofStories = ['Zero','+ 1 story', '+ 2 stories', '+ 3 stories', '+ 4 stories']
+
+    data = {'benefits' : benefits,
+            'Zero'   : [8,3,4,5,6,3,4],
+            '+ 1 story'   : [5, 3, 3, 2, 4, 6],
+            '+ 2 stories'   : [5, 3, 3, 2, 4, 6]}
+
+    x_values = [nofStories]
+    counts = sum(zip(data['Zero'], data['+ 1 story'],data['+ 2 stories']), ()) # like an hstack
+    
+    source = ColumnDataSource(data=data)
+
+    p = figure(x_range=benefits, y_range=(0, 10), plot_height=350, title="Freeboard and Benefit Graph",
+            toolbar_location="right", tools="save, pan, wheel_zoom, box_zoom, reset, hover, tap, crosshair")
+
+    p.vbar(x=dodge('benefits', -0.25, range=p.x_range), top='Zero', width=0.2, source=source,
+        color="#c9d9d3", legend_label="+Zero")
+
+    p.vbar(x=dodge('benefits',  0.0,  range=p.x_range), top='+ 1 story', width=0.2, source=source,
+        color="#718dbf", legend_label="+1 story")
+
+    p.vbar(x=dodge('benefits',  0.25, range=p.x_range), top='+ 2 stories', width=0.2, source=source,
+        color="#e84d60", legend_label="+2 stories")
+    
+    p.x_range.range_padding = 0.1
+    p.xgrid.grid_line_color = None
+    p.legend.location = "top_left"
+    p.legend.orientation = "horizontal"
+
+    script, div = components(p)
+    return render(request, 'map.html' , {'script': script, 'div':div})
+
