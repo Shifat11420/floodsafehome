@@ -11,5 +11,6 @@ urlpatterns = [
     path("helpcenter", views.helpcenter, name='Help Center'),
     path("search", views.search, name='Search'),
     path("dosurvey", views.dosurvey, name='dosurvey'),
-     path("autosuggest", views.autosuggest, name='autosuggest'),
+    path("autosuggest", views.autosuggest, name='autosuggest'),
+    path("starter", views.starter, name="starter"),
     ]
