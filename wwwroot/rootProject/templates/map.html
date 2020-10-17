@@ -8,7 +8,7 @@
   <style>
      #viewDiv {
       height: 100%;
-      width: 70%;
+      width: 69%;
       float: right;
     }
     #left{
@@ -40,9 +40,10 @@
   <script>
     require([
       "esri/Map",
-      "esri/views/MapView"
-    ], function(Map, MapView) {
-
+      "esri/views/MapView",
+      "esri/widgets/BasemapToggle",
+      "esri/layers/FeatureLayer"
+    ], function(Map, MapView, BasemapToggle, FeatureLayer) {
       var map = new Map({
         basemap: "topo-vector"
       });
@@ -54,8 +55,32 @@
       zoom: 13
       });
 
-      view.ui.add(locate, "top-left");
+      var popupFloodzone = {
+        "title": "{Flood Zone}",
+        "content" : "Flood zone is <b>{Zone}</b>.'"
+      }
 
+
+      var tileLayer = new FeatureLayer({
+          url:
+            "https://services2.arcgis.com/njxlOVQKvDzk10uN/arcgis/rest/services/FloodZone/FeatureServer",
+          outFields: ["Zone"],
+          popupTemplate: popupFloodzone
+        });
+
+        map.add(tileLayer);
+        
+  
+
+    // 1 - Create the widget
+    var toggle = new BasemapToggle({
+    // 2 - Set properties
+      view: view, // view that provides access to the map's 'topo-vector' basemap
+      nextBasemap: "hybrid" // allows for toggling to the 'hybrid' basemap
+    });
+
+    // Add widget to the top right corner of the view
+    view.ui.add(toggle, "bottom-right");
     });
   </script>
 </head>
@@ -85,11 +110,12 @@
     </script>
    autosuggestion End-->
 
-  
   <div id="left"> <!-- .left div tags-->
     <div id="left1"><!-- .left1: User's input-->
       <form method="get" action="/search">
+           <!--
             {% csrf_token %} 
+            -->
       <p> 
         <h2><center> Select your building information</center> </h2>
         <b> &nbsp; # stories </b> 
@@ -133,10 +159,16 @@
       </form>
       </p>
     </div>
+    
+    <!-- left2: Chart-->
+			<div id="left2">
+      <h2><center> Freeboard and Benefit Graph</center> </h2>
+				{{ div | safe }}
+			</div>
 
-
-  
-    <div id="left2"> <!-- .left1: Chart-->
+</div>
+  <!--
+    <div id="left2"> <- left2: Chart->
       <div class="col-md-6">
 				<div >
 					<div class="progress-wrap">
@@ -153,8 +185,10 @@
           
           
           	<div class="progress">
+
+
 						  <div class="progress-bar progress-bar-1 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:50%"> <!--width part will be updated based on the calcuation-->
+						  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:50%"> <-width part will be updated based on the calcuation->
 						  </div>
 						</div>
 					</div>
@@ -212,10 +246,10 @@
     </div>      
     </div>
 
+-->
 
-
-
-    <div id="left3"> <!-- .left3: Hazard calculator-->
+<!-- .left3: Hazard calculator
+    <div id="left3"> 
     <p> <br>
         <center><h2> Flood Hazard Calculator </h2>
                 <label for="slider-fill">Select Annual Change ____</label>
@@ -225,10 +259,17 @@
                 <h4><label for="slider-fill">Likelihood of flooding is ____</label></h4><br><br></center>
     </p>
     </div>
+ 
+  </div>
+   -->
+  <div id="viewDiv">
+  
   </div>
 
-  <div id="viewDiv"></div>
-
-
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
+    {{script | safe}}
 </body>
 </html>
