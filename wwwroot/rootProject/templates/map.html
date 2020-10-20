@@ -5,24 +5,40 @@
   <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <title>Flood Safe Home</title>
+      <!-- CSS here -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/css/slicknav.css">
+    <link rel="stylesheet" href="static/css/flaticon.css">
+    <link rel="stylesheet" href="static/css/progressbar_barfiller.css">
+    <link rel="stylesheet" href="static/css/gijgo.css">
+    <link rel="stylesheet" href="static/css/animate.min.css">
+    <link rel="stylesheet" href="static/css/animated-headline.css">
+    <link rel="stylesheet" href="static/css/magnific-popup.css">
+    <link rel="stylesheet" href="static/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/css/themify-icons.css">
+    <link rel="stylesheet" href="static/css/slick.css">
+    <link rel="stylesheet" href="static/css/nice-select.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <style>
      #viewDiv {
-      height: 100%;
+      height: 90%;
       width: 69%;
       float: right;
     }
     #left{
-      height: 100%;
+      height: 80%;
       width: 30%;
       float: left;
     }
     #left1{
-      height: 43%;
+      height: 62%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
         #left2{
-      height: 27%;
+      height: 28%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
@@ -117,9 +133,18 @@
             {% csrf_token %} 
             -->
       <p> 
-        <h2><center> Select your building information</center> </h2>
-        <b> &nbsp; # stories </b> 
-        
+        <h2><center><b> Select your building information</b></center> </h2>
+         <div class="select-form">
+          <div class="select-itms">
+           <b> &nbsp; # stories </b>                       
+                <select name="select" id="select2">
+                    <option value="">None</option>
+                    <option value="">1 story</option>
+                    <option value="">2 stories</option>
+                    <option value="">3 stories</option>
+                    <option value="">4 stories</option>
+                </select>
+
         <br><br>
         <b> &nbsp; Address or Parcel ID </b> &nbsp;&nbsp; <input type="text"  name="location"  id="tags" placeholder={{location|safe}} > <!--"Type your address/parce ID"-->
         &nbsp; &nbsp; &nbsp; &nbsp; 
@@ -150,8 +175,8 @@
                 <td>Basement</td>
                 <td>Crawl space</td>
                 <td>Slab</td>
-                <td><br>Pier and beam piling</td>
-                <td><br><br>Pier and beam piling with <br>freeboard</td>
+                <td><br>Pier and <br>beam piling</td>
+                <td><br><br>Pier and <br>beam piling with <br>freeboard</td>
               </tr>
             </table>
         
@@ -159,10 +184,11 @@
       </form>
       </p>
     </div>
-    
+ </div>
+</div>
     <!-- left2: Chart-->
 			<div id="left2">
-      <h2><center> Freeboard and Benefit Graph</center> </h2>
+      <h2><center> <b>Freeboard and Benefit Graph </b></center> </h2>
 				{{ div | safe }}
 			</div>
 

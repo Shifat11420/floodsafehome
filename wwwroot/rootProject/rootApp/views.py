@@ -164,42 +164,55 @@ def search(request):
 
 
     ##barchart
-    benefits = ['Construction Cost', 'Insuracne ']
-    nofStories = ['Zero_Ins','+ 1 story_Ins', '+ 2 story_Ins']
+    benefits = ['Construction Cost', 'Insurance ']
+    nofStories = ['None','+ 1 story', '+ 2 stories','+ 3 stories','+ 4 stories']
+
 
     data = {'benefits' : benefits,
-            'Zero_Ins'   : [premium[0]],
-            '+ 1 story_Ins'   : [premium[1]],
-            '+ 2 story_Ins'   : [premium[2]],
-            '+ 3 story_Ins'   : [premium[3]],
-            '+ 4 story_Ins'   : [premium[4]],
-            '+ 1 story_const'   :[construction_cost_BFE[1]],
-            '+ 2 story_const'   :[construction_cost_BFE[2]],
-            '+ 3 story_const'   :[construction_cost_BFE[3]],
-            '+ 4 story_const'   :[construction_cost_BFE[4]]}
+            'None'   : [0, premium[0]],
+            '+ 1 story'   : [construction_cost_BFE[1], premium[1]],
+            '+ 2 stories'   : [construction_cost_BFE[2], premium[2]],
+            '+ 3 stories'   : [construction_cost_BFE[3], premium[3]],
+            '+ 4 stories'   : [construction_cost_BFE[4], premium[4]]}
 
-    x_values = [nofStories]
-    counts = sum(zip(data['Zero_Ins'], data['+ 1 story_Ins'],data['+ 2 story_Ins']), ()) # like an hstack
+    x = [nofStories]
+    counts = sum(zip( data['None'],data['+ 1 story'],data['+ 2 stories'], data['+ 3 stories'],data['+ 4 stories']), ()) # like an hstack
     
     source = ColumnDataSource(data=data)
 
-    p = figure(x_range=benefits, y_range=(0, 10000), plot_height=350, plot_width=500, 
-            toolbar_location="below", tools="save, pan, wheel_zoom, box_zoom, reset, hover, tap, crosshair")
+    p = figure(x_range=benefits, plot_height=350, plot_width=500, 
+            toolbar_location="below", tools="save, pan, wheel_zoom, box_zoom, reset, tap, crosshair")
 
-    p.vbar(x=dodge('benefits', -0.25, range=p.x_range), top='Zero_Ins', width=0.2, source=source,
-        color="#c9d9d3", legend_label="+Zero_Ins")
+    p.vbar(x=dodge('benefits',  -0.30,  range=p.x_range), top='None', width=0.1, source=source,
+        color="#253494", legend_label="None")
 
-    p.vbar(x=dodge('benefits',  0.0,  range=p.x_range), top='+ 1 story_Ins', width=0.2, source=source,
-        color="#718dbf", legend_label="++ 1 story_Ins")
+    p.vbar(x=dodge('benefits',  -0.15,  range=p.x_range), top='+ 1 story', width=0.1, source=source,
+        color="#2c7fb8", legend_label="+ 1 story")
 
-    p.vbar(x=dodge('benefits',  0.25, range=p.x_range), top='+ 2 story_Ins', width=0.2, source=source,
-        color="#e84d60", legend_label="+ 2 story_Ins")
+    p.vbar(x=dodge('benefits',  0.00, range=p.x_range), top='+ 2 stories', width=0.1, source=source,
+        color="#41b6c4", legend_label="+ 2 stories")
     
-    p.x_range.range_padding = 0.1
+    p.vbar(x=dodge('benefits', 0.15, range=p.x_range), top='+ 3 stories', width=0.1, source=source,
+        color="#a1dab4", legend_label="+ 3 stories")
+
+    p.vbar(x=dodge('benefits', 0.30, range=p.x_range), top='+ 4 stories', width=0.1, source=source,
+        color="#ffffcc", legend_label="+ 4 stories")
+    
+    p.y_range.start = 0
     p.xgrid.grid_line_color = None
     p.legend.location = "top_left"
     p.legend.orientation = "horizontal"
+    
+    # Tooltip
+    p.add_tools(HoverTool(
+    tooltips=[
+        ("Type", "@benefits"),
+        ("Cost", "@count")
+    ],
 
+    # display a tooltip whenever the cursor is vertically in line with a glyph
+    mode='vline'
+    ))
     script, div = components(p)
 
     data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div}
@@ -211,36 +224,20 @@ def search(request):
 
 
 def starter(request):
-    benefits = ['Construction Cost', 'Insuracne ']
-    nofStories = ['Zero','+ 1 story', '+ 2 stories', '+ 3 stories', '+ 4 stories']
+  
+    source = ColumnDataSource(data=dict(
+    x=[1, 2, 3, 4, 5],
+    y1=[500,1500,3500,4000,7000],
+    y2=[300, 200,150, 100, ],
+    ))
+    p = figure(plot_width=400, plot_height=400)
 
-    data = {'benefits' : benefits,
-            'Zero'   : [8,3,4,5,6,3,4],
-            '+ 1 story'   : [5, 3, 3, 2, 4, 6],
-            '+ 2 stories'   : [5, 3, 3, 2, 4, 6]}
-
-    x_values = [nofStories]
-    counts = sum(zip(data['Zero'], data['+ 1 story'],data['+ 2 stories']), ()) # like an hstack
-    
-    source = ColumnDataSource(data=data)
-
-    p = figure(x_range=benefits, y_range=(0, 10), plot_height=350, title="Freeboard and Benefit Graph",
-            toolbar_location="right", tools="save, pan, wheel_zoom, box_zoom, reset, hover, tap, crosshair")
-
-    p.vbar(x=dodge('benefits', -0.25, range=p.x_range), top='Zero', width=0.2, source=source,
-        color="#c9d9d3", legend_label="+Zero")
-
-    p.vbar(x=dodge('benefits',  0.0,  range=p.x_range), top='+ 1 story', width=0.2, source=source,
-        color="#718dbf", legend_label="+1 story")
-
-    p.vbar(x=dodge('benefits',  0.25, range=p.x_range), top='+ 2 stories', width=0.2, source=source,
-        color="#e84d60", legend_label="+2 stories")
-    
+    p.vline_stack(['y1', 'y2'], x='x', source=source)
     p.x_range.range_padding = 0.1
     p.xgrid.grid_line_color = None
     p.legend.location = "top_left"
     p.legend.orientation = "horizontal"
 
     script, div = components(p)
-    return render(request, 'map.html' , {'script': script, 'div':div})
+    return render(request, 'starter.html' , {'script': script, 'div':div})
 
