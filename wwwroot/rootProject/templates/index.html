@@ -120,7 +120,7 @@
 
                         <div class="col-xl-11 col-lg-12" >
                           <!--Form -->
-                          <form action="/search" method= "get" class="search-box">
+                          <form action="/gotomap" method= "get" class="search-box">
                             {% csrf_token %} 
                             
                             <!--Select search type -->
@@ -146,13 +146,13 @@
                               </div>
 
                             <!--Input square footage -->
-                              <div class="input-form2">
-                                  <input type="text"  name="sqft" placeholder="Square footage?"> 
+                          <!--  <div class="input-form2">
+                                  <input type="text"  name="sqft" placeholder="Square footage?">  -->
                                    <!-- icon -->
-                                  <div class="icon">
+                          <!--      <div class="icon">
                                       <i class="fab fa-codepen"></i>
                                   </div>
-                              </div>
+                              </div> -->
 
                             <!--Search button -->
                              <div class="search-form">
@@ -166,6 +166,20 @@
                             
                                 </form>
                                 </div>  
+
+<!-- Error message-->                                
+{% if messages %}
+{% for message in messages %}
+<div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Error message ends-->   
                          </div>
 
                           <div class="col-lg-12">
@@ -190,7 +204,7 @@
          <div class="footer-wrappper pl-100 pr-100 section-bg" data-background="static/img/gallery/footer-bg.png">
         </div> {% endcomment %}
      </main> 
-
+<!--
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
@@ -201,7 +215,7 @@
 </div>
 {% endfor %}
 {% endif %}
-
+-->
     <!-- Scroll Up -->
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>

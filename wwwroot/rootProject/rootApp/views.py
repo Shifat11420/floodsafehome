@@ -28,8 +28,45 @@ def about(request):
 def freeboardproject(request):
     return render(request, 'research.html')    
 
-def decisionmakingmap(request):    
+def gotomap(request): 
+    location = request.GET.get('location', 'default')   
+    print("my location: ", location)
+    locationList=location.split(' ')
+    locationList = list(map(str.strip, locationList))
+    streetlist = locationList[1:]
+##Error message---------------------
+    if (len(locationList)==1):
+        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+    elif (len(locationList)==2):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
+    elif (len(locationList)==3):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+    else:
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+
+    mylist = []        
+    if len(queryset)<=0:
+        #mylist = ["Enter a valid address!"]
+        messages.error(request, 'Enter a valid address!')
+
+        return render(request, 'index.html')
+    else:
+        mylist = ["valid address"]  
+
+##Error message ends-------------------------------
+    
+    
+    location_json_list = simplejson.dumps(location)   
+    data_dict = {"location": location_json_list}
+    return render(request, 'map.html', data_dict)
+
+
+
+
+
+def decisionmakingmap(request): 
     return render(request, 'map.html')
+
 
 def survey(request):
     return render(request, 'survey.html')  
@@ -62,10 +99,13 @@ def autosuggest(request):
         queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
     else:
         queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
-        
 
-    mylist = []
-    mylist += [x.address+" "+x.street for x in queryset]
+    mylist = []        
+    if len(queryset)>0:
+
+        mylist += [x.address+" "+x.street for x in queryset]
+    else:
+        mylist = ["No results found"]    
     return JsonResponse(mylist, safe=False)
 
 
@@ -85,7 +125,26 @@ def search(request):
     locationList=location.split(' ')
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
+##---------------------
+    if (len(locationList)==1):
+        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+    elif (len(locationList)==2):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
+    elif (len(locationList)==3):
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+    else:
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
 
+    mylist = []        
+    if len(queryset)<=0:
+        #mylist = ["Enter a valid address!"]
+        messages.error(request, 'Enter a valid address!')
+
+        return render(request, 'index.html')
+    else:
+        mylist = ["valid address"]  
+
+##-------------------------------
     if (len(streetlist)==1):
         addressvalue = FreeboardConstructionCost.objects.filter(
          Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1])).all()
@@ -98,6 +157,9 @@ def search(request):
     else:  
         addressvalue = FreeboardConstructionCost.objects.filter(
              Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
+    
+    print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
+                
     #zonevalue = []
     zonevalue = ""
     for data in addressvalue:
@@ -160,10 +222,10 @@ def search(request):
     location_json_list = simplejson.dumps(location)    
 
     data_dict = {"location": location_json_list, "street": streetlist, "SquareFootage":Square_footage, "zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease_BFE1" : AverageIncrease[1],"AverageIncrease_BFE2" : AverageIncrease[2],"AverageIncrease_BFE3" : AverageIncrease[3],"AverageIncrease_BFE4" : AverageIncrease[4] ,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "vegetable" : ['alu', 'potol']}
-   # data_dict = {"zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease" : AverageIncrease ,"construction_cost_BFE1": construction_cost_BFE1, "construction_cost_BFE2": construction_cost_BFE2, "construction_cost_BFE3": construction_cost_BFE3, "construction_cost_BFE4": construction_cost_BFE4, "vegetable" : ['alu', 'potol']}
+# data_dict = {"zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease" : AverageIncrease ,"construction_cost_BFE1": construction_cost_BFE1, "construction_cost_BFE2": construction_cost_BFE2, "construction_cost_BFE3": construction_cost_BFE3, "construction_cost_BFE4": construction_cost_BFE4, "vegetable" : ['alu', 'potol']}
 
 
-    ##barchart
+    ##barchart-------------------------------
     benefits = ['Construction Cost', 'Insurance ']
     nofStories = ['None','+ 1 story', '+ 2 stories','+ 3 stories','+ 4 stories']
 
@@ -217,8 +279,7 @@ def search(request):
 
     data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div}
 
-    #barchart ends
-
+    #barchart ends---------------------------------------
 
     return render(request, 'map.html', data_dictionary)
 
