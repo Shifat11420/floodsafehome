@@ -123,6 +123,11 @@
                           <form action="/gotomap" method= "get" class="search-box">
                             {% csrf_token %} 
                             
+                            <!--Search by -->
+                            <div class="input-form">
+                                  <input type="text"  name="sqft" placeholder="Search by" readOnly> 
+                            </div> 
+
                             <!--Select search type -->
                               <div class="select-form" >
                                   <div class="select-itms">
@@ -145,22 +150,12 @@
                                   </div>
                               </div>
 
-                            <!--Input square footage -->
-                          <!--  <div class="input-form2">
-                                  <input type="text"  name="sqft" placeholder="Square footage?">  -->
-                                   <!-- icon -->
-                          <!--      <div class="icon">
-                                      <i class="fab fa-codepen"></i>
-                                  </div>
-                              </div> -->
-
                             <!--Search button -->
-                             <div class="search-form">
+                             <div class="search-box ">
                               <button class="btn btn-primary" style="border-bottom-left-radius:0px; border-top-left-radius:0px;" type="submit ">                                   
                               <!-- icon -->
                                   <div class="icon">
                                       <i class="fas fa-search"></i>
-                                  
                                   Search</div></button>      
                             </div> 
                             
