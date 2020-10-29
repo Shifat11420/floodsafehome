@@ -1,97 +1,41 @@
-/* Theme Description
--------------------------------------------------
-
-	  Theme Name:
-	  Author:
-	  Support:
-	  Description:
-	  Version:
-
--------------------------------------------------
-*/
-
-
-/* CSS Index
--------------------------------------------------
-
-	1. Theme default css
-	2. header
-	3. slider
-	4. about-area
-	5. features-box
-	6. department
-	7. team
-	8. video-area
-	9. counter
-	10. footer
-
--------------------------------------------------
-*/
-
-
-/*--------------- ---- Responsive --------------------------*/
-
-
 /*-------------   Color Variable  --------------*/
 
 @import url("https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800&family=Raleway:wght@400;500;600;700;800;900&display=swap");
 
-/* line 33, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .white-bg {
     background: #ffffff;
 }
 
-
-/* line 36, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .gray-bg {
     background: #f5f5f5;
 }
 
 
-/*-------------Color include--------------*/
 
 
 /*-- Background color---*/
-
-
-/* line 60, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .gray-bg {
     background: #f7f7fd;
 }
 
-
-/* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
-
 .white-bg {
     background: #ffffff;
 }
-
-
-/* line 66, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .black-bg {
     background: #16161a;
 }
 
-
-/* line 69, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
-
 .theme-bg {
     background: #367FFF;
 }
 
-
-/* line 72, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
-
 .brand-bg {
     background: #f1f4fa;
 }
-
-
-/* line 75, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .testimonial-bg {
     background: #f9fafc;
@@ -99,30 +43,17 @@
 
 
 /*--- color------*/
-
-
-/* line 81, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
-
 .white-color {
     color: #ffffff;
 }
-
-
-/* line 84, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
 
 .black-color {
     color: #16161a;
 }
 
-
-/* line 87, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_color.scss */
-
 .theme-color {
     color: #367FFF;
 }
-
-
-/* line 51, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_variables.scss */
 
 .boxed-btn {
     background: #fff;
@@ -141,36 +72,22 @@
     cursor: pointer;
 }
 
-
-/* line 68, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_variables.scss */
-
 .boxed-btn:hover {
     background: #367FFF;
     color: #fff !important;
     border: 1px solid #367FFF;
 }
 
-
-/* line 73, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_variables.scss */
-
 .boxed-btn:focus {
     outline: none;
 }
-
-
-/* line 76, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_variables.scss */
 
 .boxed-btn.large-width {
     width: 220px;
 }
 
 
-/*--
-    - Overlay
-------------------------------------------*/
-
-
-/* line 4, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
+/*--- Overlay------------------------------------------*/
 
 [data-overlay] {
     position: relative;
@@ -178,9 +95,6 @@
     background-repeat: no-repeat;
     background-position: center center;
 }
-
-
-/* line 9, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
 
 [data-overlay]::before {
     position: absolute;
@@ -194,64 +108,38 @@
 
 /*-- Overlay Opacity --*/
 
-
-/* line 22, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
-
 [data-opacity="1"]::before {
     opacity: 0.1;
 }
-
-
-/* line 27, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
 
 [data-opacity="2"]::before {
     opacity: 0.2;
 }
 
-
-/* line 32, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
-
 [data-opacity="3"]::before {
     opacity: 0.3;
 }
 
-
-/* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
-
 [data-opacity="4"]::before {
     opacity: 0.4;
 }
-
-
-/* line 42, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
 
 [data-opacity="5"]::before {
     opacity: 0.5;
 }
 
 
-/* line 47, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
-
 [data-opacity="6"]::before {
     opacity: 0.6;
 }
-
-
-/* line 52, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
 
 [data-opacity="7"]::before {
     opacity: 0.7;
 }
 
-
-/* line 57, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
-
 [data-opacity="8"]::before {
     opacity: 0.8;
 }
-
-
-/* line 62, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_overlay.scss */
 
 [data-opacity="9"]::before {
     opacity: 0.9;
@@ -259,10 +147,6 @@
 
 
 /* 1. Theme default css */
-
-
-/* line 4, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 body {
     font-family: "Muli", sans-serif;
     font-weight: normal;
@@ -270,15 +154,7 @@ body {
     font-size: 16px;
 }
 
-
-/* line 10, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5,h6 {
     font-family: "Raleway", sans-serif;
     color: #1D2547;
     margin-top: 0px;
@@ -286,9 +162,6 @@ h6 {
     font-weight: 400;
     text-transform: normal;
 }
-
-
-/* line 24, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 p {
     font-family: "Muli", sans-serif;
@@ -303,68 +176,6 @@ p a{
     color: #367FFF;
 }
 
-/* line 35, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.bg-img-1 {
-    background-image: url(../static/img/slider/slider-img-1.jpg);
-}
-
-
-/* line 38, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.bg-img-2 {
-    background-image: url(../static/img/background-img/bg-img-2.jpg);
-}
-
-
-/* line 41, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.cta-bg-1 {
-    background-image: url(../static/img/background-img/bg-img-3.jpg);
-}
-
-
-/* line 46, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.img {
-    max-width: 100%;
-    -webkit-transition: 0.3s;
-    -moz-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
-}
-
-
-/* line 50, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.f-left {
-    float: left;
-}
-
-
-/* line 53, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.f-right {
-    float: right;
-}
-
-
-/* line 56, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.fix {
-    overflow: hidden;
-}
-
-
-/* line 59, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-.clear {
-    clear: both;
-}
-
-
-/* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 a,
 .button {
     -webkit-transition: 0.3s;
@@ -373,31 +184,19 @@ a,
     transition: 0.3s;
 }
 
-
-/* line 67, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 a:focus,
 .button:focus {
     text-decoration: none;
     outline: none;
 }
 
-
-/* line 72, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 a {
     color: #635c5c;
 }
 
-
-/* line 75, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 a:hover {
     color: #1649a3;
 }
-
-
-/* line 78, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 a:focus,
 a:hover,
@@ -406,17 +205,11 @@ a:hover,
     text-decoration: none;
 }
 
-
-/* line 84, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 a,
 button {
     color: #fff;
     outline: medium none;
 }
-
-
-/* line 89, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 button:focus,
 input:focus,
@@ -426,15 +219,9 @@ textarea:focus {
     outline: 0;
 }
 
-
-/* line 90, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 .uppercase {
     text-transform: uppercase;
 }
-
-
-/* line 94, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 input:focus::-moz-placeholder {
     opacity: 0;
@@ -444,41 +231,22 @@ input:focus::-moz-placeholder {
 }
 
 
-/* line 101, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 .capitalize {
     text-transform: capitalize;
 }
 
-
-/* line 105, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     color: #367FFF;
 }
-
-
-/* line 114, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 ul {
     margin: 0px;
     padding: 0px;
 }
 
-
-/* line 118, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
-
 li {
     list-style: none;
 }
-
-
-/* line 122, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 hr {
     border-bottom: 1px solid #eceff8;
@@ -489,9 +257,6 @@ hr {
 
 
 /* Theme-overlay */
-
-
-/* line 130, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 .overlay1 {
     position: relative;
@@ -4332,50 +4097,44 @@ hr {
     font-weight: 400;
 }
 
-
-/* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .header-area .header-bottom {
     padding: 0px 130px;
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
-    /* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+    
     .header-area .header-bottom {
         padding: 0px 30px;
     }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+    
     .header-area .header-bottom {
         padding: 0px 15px;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+    
     .header-area .header-bottom {
         padding: 15px 50px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+
     .header-area .header-bottom {
         padding: 15px 20px;
     }
 }
 
 @media (max-width: 575px) {
-    /* line 125, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+   
     .header-area .header-bottom {
         padding: 15px 0px;
     }
 }
-
-
-/* line 148, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header {
     position: relative;
@@ -4383,14 +4142,12 @@ hr {
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
-    /* line 151, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+    
     .main-header .main-menu {
         margin-right: 30px;
     }
 }
 
-
-/* line 156, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header .main-menu ul li {
     display: inline-block;
@@ -4398,8 +4155,6 @@ hr {
     z-index: 1;
 }
 
-
-/* line 160, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header .main-menu ul li a {
     color: #fff;
@@ -4416,22 +4171,16 @@ hr {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 160, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+    
     .main-header .main-menu ul li a {
         padding: 39px 14px;
     }
 }
 
-
-/* line 174, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .main-header .main-menu ul li:hover>a {
     color: #fff;
     text-decoration: underline;
 }
-
-
-/* line 180, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header .main-menu ul ul.submenu {
     position: absolute;
@@ -4450,17 +4199,11 @@ hr {
     transition: 0.3s;
 }
 
-
-/* line 192, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .main-header .main-menu ul ul.submenu>li {
     margin-left: 7px;
     display: block;
     color : #367FFF;
 }
-
-
-/* line 195, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header .main-menu ul ul.submenu>li>a {
     padding: 6px 10px !important;
@@ -4468,17 +4211,11 @@ hr {
     color: #367FFF;
 }
 
-
-/* line 199, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .main-header .main-menu ul ul.submenu>li>a:hover {
     color: #367FFF;
     background: none;
     padding-left: 13px !important;
 }
-
-
-/* line 214, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .main-header ul>li:hover>ul.submenu {
     visibility: visible;
@@ -4486,9 +4223,6 @@ hr {
     top: 100%;
     color: #367FFF;
 }
-
-
-/* line 220, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .header-transparent {
     position: absolute;
@@ -4498,43 +4232,34 @@ hr {
     z-index: 9;
 }
 
-
-/* line 230, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .header-sticky.sticky-bar {
-    background: #367FFF;
+    background-image: url(../img/hero/flood1.jpg);
 }
-
-
-/* line 236, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .header-sticky.sticky-bar.sticky .main-menu ul li a {
     padding: 20px 20px !important;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 232, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+ 
     .header-sticky.sticky-bar.sticky {
         padding: 15px 0px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 232, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+
     .header-sticky.sticky-bar.sticky {
         padding: 15px 0px;
     }
 }
 
 @media (max-width: 575px) {
-    /* line 232, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
+
     .header-sticky.sticky-bar.sticky {
         padding: 15px 0px;
     }
 }
-
-
-/* line 257, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .mobile_menu {
     position: absolute;
@@ -4544,59 +4269,37 @@ hr {
 }
 
 
-/* line 262, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .mobile_menu .slicknav_menu {
     background: transparent;
     margin-top: 0px !important;
 }
-
-
-/* line 265, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .mobile_menu .slicknav_menu .slicknav_btn {
     top: -36px;
 }
 
 
-/* line 268, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .mobile_menu .slicknav_menu .slicknav_btn .slicknav_icon-bar {
     background-color: #fff !important;
 }
 
-
-/* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .mobile_menu .slicknav_menu .slicknav_nav {
     margin-top: 9px !important;
 }
-
-
-/* line 275, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
 
 .mobile_menu .slicknav_menu .slicknav_nav a:hover {
     background: transparent;
     color: #367FFF;
 }
 
-
-/* line 279, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .mobile_menu .slicknav_menu .slicknav_nav a {
     font-size: 15px;
     padding: 7px 10px;
 }
 
-
-/* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_headerMenu.scss */
-
 .mobile_menu .slicknav_menu .slicknav_nav .slicknav_item a {
     padding: 0 !important;
 }
-
-
-/* line 2, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-height {
     min-height: 1044px;
@@ -4606,35 +4309,33 @@ hr {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 2, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height {
         min-height: 850px;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 2, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height {
         min-height: 760px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 2, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height {
         min-height: 800px;
     }
 }
 
 @media (max-width: 575px) {
-    /* line 2, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+ 
     .slider-height {
         min-height: 1000px;
     }
 }
 
-
-/* line 21, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-height2 {
     min-height: 588px;
@@ -4644,28 +4345,25 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 21, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height2 {
         min-height: 588px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 21, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height2 {
         min-height: 588px;
     }
 }
 
 @media (max-width: 575px) {
-    /* line 21, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height2 {
         min-height: 588px;
     }
 }
-
-
-/* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-height3 {
     min-height: 588px;
@@ -4675,35 +4373,32 @@ hr {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height3 {
         min-height: 400px;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height3 {
         min-height: 500px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height3 {
         min-height: 308px;
     }
 }
 
 @media (max-width: 575px) {
-    /* line 37, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-height3 {
         min-height: 308px;
     }
 }
-
-
-/* line 56, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-area,
 .slider-area2 {
@@ -4713,15 +4408,10 @@ hr {
 }
 
 
-/* line 60, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
-
 .slider-area.slider-area2,
 .slider-area2.slider-area2 {
     background-image: url(../img/hero/flood1.jpg);
 }
-
-
-/* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-area .hero__caption,
 .slider-area2 .hero__caption {
@@ -4731,7 +4421,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
     .slider-area .hero__caption,
     .slider-area2 .hero__caption {
         margin-top: 0px;
@@ -4739,7 +4429,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
     .slider-area .hero__caption,
     .slider-area2 .hero__caption {
         margin-top: 0px;
@@ -4748,7 +4438,7 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 63, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
     .slider-area .hero__caption,
     .slider-area2 .hero__caption {
         margin-top: 0px;
@@ -4757,7 +4447,7 @@ hr {
 
 
 
-/* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area .hero__caption h1,
 .slider-area2 .hero__caption h1 {
@@ -4769,7 +4459,7 @@ hr {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption h1,
     .slider-area2 .hero__caption h1 {
         font-size: 60px;
@@ -4778,7 +4468,7 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption h1,
     .slider-area2 .hero__caption h1 {
         font-size: 50px;
@@ -4787,7 +4477,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption h1,
     .slider-area2 .hero__caption h1 {
         font-size: 51px;
@@ -4797,7 +4487,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 88, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption h1,
     .slider-area2 .hero__caption h1 {
         font-size: 28px;
@@ -4807,7 +4497,7 @@ hr {
 }
 
 
-/* line 114, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area .hero__caption p,
 .slider-area2 .hero__caption p {
@@ -4817,7 +4507,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 114, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption p,
     .slider-area2 .hero__caption p {
         font-size: 16px;
@@ -4825,7 +4515,7 @@ hr {
 }
 
 
-/* line 122, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area .hero__caption.hero__caption2,
 .slider-area2 .hero__caption.hero__caption2 {
@@ -4835,7 +4525,7 @@ hr {
 }
 
 
-/* line 126, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area .hero__caption.hero__caption2 h1,
 .slider-area2 .hero__caption.hero__caption2 h1 {
@@ -4845,7 +4535,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 126, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption.hero__caption2 h1,
     .slider-area2 .hero__caption.hero__caption2 h1 {
         font-size: 34px;
@@ -4853,7 +4543,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 126, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area .hero__caption.hero__caption2 h1,
     .slider-area2 .hero__caption.hero__caption2 h1 {
         font-size: 33px;
@@ -4861,11 +4551,11 @@ hr {
 }
 
 
-/* line 140, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box,
 .slider-area2 form.search-box {
-    border: 10px solid rgba(255, 255, 255, 0.16);
+    /*border: 10px solid rgba(255, 255, 255, 0.16); */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -4873,7 +4563,7 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 140, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box,
     .slider-area2 form.search-box {
         border-radius: 0px;
@@ -4881,7 +4571,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 140, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box,
     .slider-area2 form.search-box {
         border: none;
@@ -4889,15 +4579,13 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 140, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box,
     .slider-area2 form.search-box {
         border: none;
     }
 }
 
-
-/* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-area form.search-box .input-form,
 .slider-area2 form.search-box .input-form {
@@ -4909,7 +4597,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form,
     .slider-area2 form.search-box .input-form {
         width: 50%;
@@ -4920,7 +4608,7 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form,
     .slider-area2 form.search-box .input-form {
         width: 50%;
@@ -4931,7 +4619,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form,
     .slider-area2 form.search-box .input-form {
         width: 100%;
@@ -4942,7 +4630,7 @@ hr {
 }
 
 
-/* line 181, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form input,
 .slider-area2 form.search-box .input-form input {
@@ -4958,7 +4646,7 @@ hr {
 }
 
 
-/* line 195, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form input::placeholder,
 .slider-area2 form.search-box .input-form input::placeholder {
@@ -4968,7 +4656,7 @@ hr {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 195, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form input::placeholder,
     .slider-area2 form.search-box .input-form input::placeholder {
         font-size: 13px;
@@ -4976,7 +4664,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 195, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form input::placeholder,
     .slider-area2 form.search-box .input-form input::placeholder {
         font-size: 13px;
@@ -4984,7 +4672,7 @@ hr {
 }
 
 
-/* line 208, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form .icon,
 .slider-area2 form.search-box .input-form .icon {
@@ -4995,7 +4683,7 @@ hr {
 }
 
 
-/* line 213, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form .icon i,
 .slider-area2 form.search-box .input-form .icon i {
@@ -5004,7 +4692,7 @@ hr {
 }
 
 
-/* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form2,
 .slider-area2 form.search-box .input-form2 {
@@ -5013,8 +4701,8 @@ hr {
     overflow: hidden;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+@media only screen and (min-width: 600px) and (max-width: 10000px) {
+    
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
         width: 49%;
@@ -5023,7 +4711,7 @@ hr {
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
         width: 49%;
@@ -5032,7 +4720,7 @@ hr {
 }
 
 @media (max-width: 575px) {
-    /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
         width: 100%;
@@ -5041,7 +4729,7 @@ hr {
 }
 
 
-/* line 235, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+
 
 .slider-area form.search-box .input-form2 input,
 .slider-area2 form.search-box .input-form2 input {
@@ -5111,7 +4799,7 @@ hr {
     position: relative;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+@media only screen and (min-width: 500px) and (max-width: 1000px) {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form,
     .slider-area2 form.search-box .select-form {
@@ -11842,3 +11530,115 @@ del {
     margin-bottom: 10px;
 }
 
+/*Disclaimer style */
+.img-replace {
+    /* replace text with an image */
+    display: inline-block;
+    overflow: hidden;
+    text-indent: 100%; 
+    color: transparent;
+    white-space: nowrap;
+  }
+
+  .bts-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow:auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  }
+
+  .bts-popup.is-visible {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+  }
+  
+  .bts-popup-container {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    margin: 4em auto;
+    background: #7fc2e9e8;
+    border-radius: none; 
+    text-align: justify;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateY(-40px);
+    -moz-transform: translateY(-40px);
+    -ms-transform: translateY(-40px);
+    -o-transform: translateY(-40px);
+    transform: translateY(-40px);
+    /* Force Hardware Acceleration in WebKit */
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+
+  .bts-popup-container img {
+    padding: 20px 0 0 0;
+  }
+
+  .bts-popup-container p {
+    color: white;
+    padding: 10px 40px;
+    text-align: justify;
+  }
+
+  .bts-popup-container .bts-popup-button {
+    padding: 5px 25px;
+    border: 2px solid white;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  
+
+  
+  .bts-popup-container a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+  }  
+
+  .bts-popup-container-agree a:hover {
+    color: #02eb29 !important;
+    font-weight: bold;
+  }
+
+  .bts-popup-container-disagree a:hover {
+    color: #eb0202 !important;
+    font-weight: bold;
+  }
+
+  .is-visible .bts-popup-container {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  @media only screen and (min-width: 1170px) {
+    .bts-popup-container {
+      margin: 8em auto;
+    }
+  }
+
+  
+  .p-style {
+      text-align: justify;
+      text-indent: 50px;
+  }

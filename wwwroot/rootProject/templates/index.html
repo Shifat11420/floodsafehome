@@ -123,16 +123,16 @@
                           <form action="/gotomap" method= "get" class="search-box">
                             {% csrf_token %} 
                             
-                            <!--Search by -->
-                            <div class="input-form">
+                            <!--Search by 
+                          <div class="input-form">
                                   <input type="text"  name="sqft" placeholder="Search by" readOnly> 
-                            </div> 
+                            </div> -->
 
                             <!--Select search type -->
                               <div class="select-form" >
                                   <div class="select-itms">
                                       <select name="select" id="select1">
-                                          <option value="">Select</option>
+                                          <option value="">Search by</option>
                                           <option value="">Address</option>
                                           <option value="">Subdivison</option>
                                           <option value="">Parcel</option>
@@ -152,7 +152,7 @@
 
                             <!--Search button -->
                              <div class="search-box ">
-                              <button class="btn btn-primary" style="border-bottom-left-radius:0px; border-top-left-radius:0px;" type="submit ">                                   
+                              <button class="btn btn-primary"  type="submit ">                                   
                               <!-- icon -->
                                   <div class="icon">
                                       <i class="fas fa-search"></i>

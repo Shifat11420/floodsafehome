@@ -265,7 +265,7 @@ def search(request):
     p.legend.location = "top_left"
     p.legend.orientation = "horizontal"
     
-    # Tooltip
+    # tooltip
     p.add_tools(HoverTool(
     tooltips=[
         ("Type", "@benefits"),
