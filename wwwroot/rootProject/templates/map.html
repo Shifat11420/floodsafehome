@@ -238,12 +238,13 @@
          <div class="select-form">
           <div class="select-itms">
            <b> &nbsp; # stories </b>                       
-                <select name="select" id="select2">
-                    <option value="">None</option>
-                    <option value="">1 story</option>
-                    <option value="">2 stories</option>
-                    <option value="">3 stories</option>
-                    <option value="">4 stories</option>
+                <select name="stories" id="stories">
+                    <option disabled="true" selected> --select no of stories--</option>
+                    <option value="0">None</option>
+                    <option value="1">1 story</option>
+                    <option value="2">2 stories</option>
+                    <option value="3">3 stories</option>
+                    <option value="4">4 stories</option>
                 </select>
 
         <br><br>
@@ -285,6 +286,8 @@
       </form>
       </p>
     </div>
+  
+
 
 <!-- Error message-->                                
 {% if messages %}
@@ -404,6 +407,8 @@
  
   </div>
    -->
+
+
   <div id="viewDiv">
   
   </div>

@@ -125,7 +125,11 @@ def search(request):
     locationList=location.split(' ')
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
-##---------------------
+
+    No_Floors = request.GET['stories']
+    print("accepted floors:", No_Floors)
+
+## Error message---------------------
     if (len(locationList)==1):
         queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
@@ -144,7 +148,10 @@ def search(request):
     else:
         mylist = ["valid address"]  
 
-##-------------------------------
+##Error message ends-------------------------------
+
+
+##autocomplete-------------------------------------
     if (len(streetlist)==1):
         addressvalue = FreeboardConstructionCost.objects.filter(
          Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1])).all()
@@ -159,6 +166,7 @@ def search(request):
              Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
     
     print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
+##autocomplete ends--------------------------------------------------
                 
     #zonevalue = []
     zonevalue = ""
@@ -167,7 +175,7 @@ def search(request):
         zonevalue = data.floodzone
         parishvalue = data.parish
 
-    ##by the average % increase table
+    ##by the average % increase table, and premium table
     ## zone AE and zone X protected by levee are A zone
     ## for other zones, an average value for all zones are calculated  (to be changed later)
     AverageIncrease_zoneA = [0, 0.023,0.045,0.068,0.091]
@@ -175,12 +183,26 @@ def search(request):
     AverageIncrease_zoneV = [0, 0.018,0.036,0.054,0.072]
     Premium_zoneA = [1819, 920, 585, 476, 441]
     Premium_zoneV = [8158, 6549, 5208, 4107, 3533]
+    AAL_BFE_LC_story1 = [0.03, 0.02, 0.015, 0.01, 0]
+    AAL_BFE_LC_story2 = [0.035, 0.03, 0.02, 0.015, 0]
 
     AverageIncrease = []
     totalZones = ["A", "CoastalV", "V"]
     totalBFE = [0, 1, 2, 3, 4]
     primiumZones = ["A", "V"]
     premium = []
+    AAL_BFE_losspercent = []
+
+
+
+    if No_Floors=="1":
+        AAL_BFE_losspercent = AAL_BFE_LC_story1
+        print("No_Floors:",No_Floors)
+    elif No_Floors=="2":
+        AAL_BFE_losspercent = AAL_BFE_LC_story2
+        print("No_Floors:",No_Floors)
+    else:
+        pass
 
     ##for zone A
     if zonevalue == "AE" or zonevalue == "X PROTECTED BY LEVEE":
@@ -217,7 +239,13 @@ def search(request):
     construction_cost_BFE = []
     for i in range(len(AverageIncrease)):
         construction_cost_BFE.append(round(Building_cost * Square_footage * AverageIncrease[i],3)) 
-        
+
+
+    AAL_BFE=[]    
+    for i in range(len(AAL_BFE_losspercent)):
+        AAL_BFE.append(round(Building_cost * Square_footage * AAL_BFE_losspercent[i],3)) 
+        print(AAL_BFE[i])
+
 
     location_json_list = simplejson.dumps(location)    
 
@@ -226,39 +254,39 @@ def search(request):
 
 
     ##barchart-------------------------------
-    benefits = ['Construction Cost', 'Insurance ']
-    nofStories = ['None','+ 1 story', '+ 2 stories','+ 3 stories','+ 4 stories']
+    benefits = ['Construction Cost', 'Insurance ', 'AAL']
+    nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
 
 
     data = {'benefits' : benefits,
-            'None'   : [0, premium[0]],
-            '+ 1 story'   : [construction_cost_BFE[1], premium[1]],
-            '+ 2 stories'   : [construction_cost_BFE[2], premium[2]],
-            '+ 3 stories'   : [construction_cost_BFE[3], premium[3]],
-            '+ 4 stories'   : [construction_cost_BFE[4], premium[4]]}
+            'BFE + 0ft'   : [0, premium[0], AAL_BFE[0]],
+            'BFE + 1ft'   : [construction_cost_BFE[1], premium[1], AAL_BFE[1]],
+            'BFE + 2ft'   : [construction_cost_BFE[2], premium[2], AAL_BFE[2]],
+            'BFE + 3ft'   : [construction_cost_BFE[3], premium[3], AAL_BFE[3]],
+            'BFE + 4ft'   : [construction_cost_BFE[4], premium[4], AAL_BFE[4]]}
 
     x = [nofStories]
-    counts = sum(zip( data['None'],data['+ 1 story'],data['+ 2 stories'], data['+ 3 stories'],data['+ 4 stories']), ()) # like an hstack
+    counts = sum(zip( data['BFE + 0ft'],data['BFE + 1ft'],data['BFE + 2ft'], data['BFE + 3ft'],data['BFE + 4ft']), ()) # like an hstack
     
     source = ColumnDataSource(data=data)
 
     p = figure(x_range=benefits, plot_height=350, plot_width=500, 
             toolbar_location="below", tools="save, pan, wheel_zoom, box_zoom, reset, tap, crosshair")
 
-    p.vbar(x=dodge('benefits',  -0.30,  range=p.x_range), top='None', width=0.1, source=source,
-        color="#253494", legend_label="None")
+    p.vbar(x=dodge('benefits',  -0.30,  range=p.x_range), top='BFE + 0ft', width=0.1, source=source,
+        color="#253494", legend_label="BFE + 0ft")
 
-    p.vbar(x=dodge('benefits',  -0.15,  range=p.x_range), top='+ 1 story', width=0.1, source=source,
-        color="#2c7fb8", legend_label="+ 1 story")
+    p.vbar(x=dodge('benefits',  -0.15,  range=p.x_range), top='BFE + 1ft', width=0.1, source=source,
+        color="#2c7fb8", legend_label="BFE + 1ft")
 
-    p.vbar(x=dodge('benefits',  0.00, range=p.x_range), top='+ 2 stories', width=0.1, source=source,
-        color="#41b6c4", legend_label="+ 2 stories")
+    p.vbar(x=dodge('benefits',  0.00, range=p.x_range), top='BFE + 2ft', width=0.1, source=source,
+        color="#41b6c4", legend_label="BFE + 2ft")
     
-    p.vbar(x=dodge('benefits', 0.15, range=p.x_range), top='+ 3 stories', width=0.1, source=source,
-        color="#a1dab4", legend_label="+ 3 stories")
+    p.vbar(x=dodge('benefits', 0.15, range=p.x_range), top='BFE + 3ft', width=0.1, source=source,
+        color="#a1dab4", legend_label="BFE + 3ft")
 
-    p.vbar(x=dodge('benefits', 0.30, range=p.x_range), top='+ 4 stories', width=0.1, source=source,
-        color="#ffffcc", legend_label="+ 4 stories")
+    p.vbar(x=dodge('benefits', 0.30, range=p.x_range), top='BFE + 4ft', width=0.1, source=source,
+        color="#ffffcc", legend_label="BFE + 4ft")
     
     p.y_range.start = 0
     p.xgrid.grid_line_color = None
@@ -277,7 +305,9 @@ def search(request):
     ))
     script, div = components(p)
 
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div}
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div }
+    
+    #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
 
     #barchart ends---------------------------------------
 
