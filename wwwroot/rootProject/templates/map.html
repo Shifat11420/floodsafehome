@@ -107,7 +107,7 @@
         // Search widget start
         var searchWidget = new Search({
           view: view,
-          allPlaceholder:{{location|safe}}, //"type an address",//,
+          allPlaceholder:"Type your address or parcel ID", //"type an address",//,
           //value:{{location|safe}},
           sources: [
             {
@@ -171,8 +171,8 @@
         // Search widget end
 
 
-        // Add a legend instance to the panel of a
-        // ListItem in a LayerList instance
+        // Add a legend to the panel of a
+        // ListItem in a LayerList 
         const layerList = new LayerList({
           view: view,
           listItemCreatedFunction: function (event) {
@@ -204,6 +204,10 @@
 
 
 <body>
+
+ 
+
+
   <header class="header" style="background-color:#367FFF; height:100px; text">
 		<a href="/"><img src="../static/img/logo/logo.png" alt=""></a>
  
@@ -226,7 +230,7 @@
     </script>
    <!--autosuggestion End-->
 
-  <div id="left"> <!-- .left div tags-->
+  <div id="left" class="container"> <!-- .left div tags-->
     <div id="left1"><!-- .left1: User's input-->
       <form method="get" action="/search">
            <!--
@@ -278,7 +282,7 @@
                 <td>Crawl space</td>
                 <td>Slab</td>
                 <td><br>Pier and <br>beam piling</td>
-                <td><br><br>Pier and <br>beam piling with <br>freeboard</td>
+                <td><br><br>Pier and <br>beam piling <br> with freeboard</td>
               </tr>
             </table>
         
@@ -418,8 +422,45 @@
     <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
     <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
     {{script | safe}}
-
+    <script src="./static/js/disclaimer.js"></script>
 
     <!--<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script> -->
+
+
+     <!--Disclaimer start-->
+  <div class="bts-popup" role="alert">
+      <div class="bts-popup-container"  >
+        <center><img src="../static/img/logo/logo.png" alt="Flood Safe Home" width="50%" /></center>
+          <div style="overflow:auto;  height:60%;">
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;
+          Welcome to Web portal for the FloodSafeHome decision-making tool.  
+          We hope that you will find this free product to be a useful aid in your research to protect one of the most important investments you will ever make – your home.  
+          The investigators at Louisiana State University and the University of New Orleans, and their Louisiana Sea Grant sponsor, congratulate you for doing the important research of protecting your home from flood.  We update this site as needed, in our efforts to continue to provide the highest-quality product possible.  Nevertheless, we caution that the products available on this website are not immune to error.  Please read the Site Disclaimer page for additional information. </p>
+          
+          <u style="color: white;"><b style="color: white;"><center>Site Disclaimer</center> </b>  </u>
+          <p>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          The products available on this website are derived from products that originate far beyond the LSU and UNO offices that house the investigators, and the project sponsor – Louisiana Sea Grant (LSG) program.  Therefore, while every reasonable effort has been made to ensure the accuracy, precision, comprehensiveness, and currency of the maps and data presented, neither the investigators nor the LSG sponsor make any assurances regarding the reliability or accuracy of the base maps, their associated data tables, or the original data collection process.  Likewise, the investigators/sponsor assume no responsibility for any inaccuracies that could have occurred due to errors in the original data input or subsequent updates/analytic processing. Furthermore, the investigators and their sponsor assume no responsibility for the accuracy of any subsequent copies of the data or any undetectable errors due to electronic transfer of the data from system to system or system to disk.  In other words, the information available on this website is presented “as is” without any warranties of any kind, express or implied. The user assumes all responsibilities for verifying the accuracy of any information furnished which may be critical to the intended use of these data. These data are NOT to be used as a property survey of any type, legal or otherwise; boundaries shown throughout this web portal are approximate and cannot be used for exact measurement or legal documentation. In providing data (or access to them) the LSU and UNO investigators, and the project sponsor, assume no obligation to assist in the use of the data, or in the development, use, or maintenance of any applications applied to the data. Neither the investigators nor the project sponsor are responsible for any other use of this public information or any subsequent copies/updates of this information. Furthermore, the investigators and project sponsor assert their full legal rights under governmental immunity for any liability arising from any act of omission or commission regarding the information furnished herein. </p>
+          <p> 
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          By clicking the 'AGREE' button below, the user acknowledges having read the disclaimer information above and understands the limitations of the data herein.           
+         </div>   
+            <center>
+            <div class="bts-popup-button bts-popup-container-disagree"style="margin: 20px;" >
+              <a href="/">Disagree </a>
+            </div>   
+            
+            <div class="bts-popup-button bts-popup-container-agree" >
+              <a href="#0" class="bts-popup-close">Agree</a>
+            </div> 
+          
+          
+            </center>
+          </p>
+          
+
+      </div>
+  </div>
+  <!--Disclaimer end-->
 </body>
 </html>

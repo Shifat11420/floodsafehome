@@ -343,3 +343,4 @@ $('.top-job-slider').slick({
   $('#bar6').barfiller();
 
 })(jQuery);
+
