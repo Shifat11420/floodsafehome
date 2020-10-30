@@ -27,7 +27,7 @@
   <style>
      #viewDiv {
       height: 90%;
-      width: 69%;
+      width: 70%;
       float: right;
     }
     #left{
@@ -138,35 +138,25 @@
             }
           ]
 
-       // console.log(document.getElementById("submitButton"))
-        //document.getElementById("submitButton").onclick = (e)=> {
-       // e.preventDefault()
-      //  let el = document.getElementById("tags")
-       // console.log(el.value)
-     //   searchWidget.search(el.value).then((result)=> {
-      //  console.log("result", result)
-      //   })
-     //   }
-   // }); 
 
- //  var searchWidget = new Search{view: view1})
-//function mySubmitFunction () {
- // let element = document.getElementById("tags")
- // let address = {{location|safe}}//element.value
-
- // searchWidget.search(address).then((results) => {
-   //  console.log("Search widget results :", results)
-  //})
-//})
-
-   });
+    });
 
         // Add the search widget to the top left corner of the view
         view.ui.add(searchWidget, {
           position: "top-right"
         });
 
-          
+
+        // Get the value from the input box
+        console.log(document.getElementById("submitButton"))
+        document.getElementById("submitButton").onclick = (e)=> {
+          e.preventDefault()
+          let el = document.getElementById("tags")
+          console.log(el.value)
+          searchWidget.search(el.value).then((result)=> {
+            console.log("result", result)
+          })
+        }
 
         // Search widget end
 
@@ -201,19 +191,60 @@
   </script>
 </head>
 
-
-
 <body>
-
- 
-
-
-  <header class="header" style="background-color:#367FFF; height:100px; text">
-		<a href="/"><img src="../static/img/logo/logo.png" alt=""></a>
- 
-	</header>
-  <!-- .header end-->
-  
+     <header class="header" style="background-color:#367FFF; height:100px; text; padding: 5px 15px 15px 15px">
+        <!-- Header Start -->
+        <div class="header-area header-transparent">
+            <div class="main-header ">
+                <div class="header-bottom  header-sticky">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <!-- Logo -->
+                            <div class="col-xl-2 col-lg-2">
+                                <div class="logo">
+                                    <a href="/"><img src="static/img/logo/logo.png" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-xl-10 col-lg-10">
+                                <div class="menu-wrapper  d-flex align-items-center justify-content-end">
+                                    <!-- Main-menu -->
+                                    <div class="main-menu d-none d-lg-block">
+                                        <nav>
+                                            <ul id="navigation">
+                                                <li><a href="/">Home</a></li>
+                                                <li><a href="/about">About</a>
+                                                  <ul class="submenu">
+                                                       <li><a href="/about#about">About</a></li>
+                                                        <li><a href="/about#goals">Goals</a></li>
+                                                        <li><a href="/about#team">Our Team</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="/freeboardproject">Freeboard Project</a>
+                                                    <ul class="submenu">
+                                                       <li><a href="/freeboardproject#introduction">Introduction</a></li>
+                                                        <li><a href="/freeboardproject#objects">Objects</a></li>
+                                                        <li><a href="/freeboardproject">Methodologies</a></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="/map"><b>Decision Making Map</b></a></li>
+                                                <li><a href="/survey">Survey</a></li>
+                                                <li><a href="/helpcenter">Help Center</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Mobile Menu -->
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+    </header>
 
   <!-- autosuggestion-->
    
@@ -238,38 +269,54 @@
             -->
             {% csrf_token %} 
       <p> 
-        <h2><center><b> Select your building information</b></center> </h2>
+        <h2><center><b> Select your building information</b></center> </h2><br>
          <div class="select-form">
           <div class="select-itms">
-           <b> &nbsp; # stories </b>                       
-                <select name="stories" id="stories">
-                    <option disabled="true" selected> --select no of stories--</option>
+           <table style="width:300 px; height: 150px;">
+           <tr> 
+            <td><b>Address or Parcel ID </b> &nbsp; </td>
+              <!-- icon -->
+            <td>  <i class="fas fa-question-circle" title="Type your address or parcel ID"></i> &nbsp;</td>
+            <td><input type="text"  name="location"  id="tags" value={{location|safe}}> <!-- placeholder={{location|safe}}  "Type your address/parce ID"--> </td>
+            </tr>
+         
+            <tr> 
+            <td><b>Square footage </b> </td>
+              <!-- icon -->
+            <td>  <i class="fas fa-question-circle" title="Type your building's square footage"></i></td>
+            <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"--></td>
+            </tr>
+          
+          <tr>
+          <td><b> # stories </b></td>
+            <!-- icon -->
+          <td>  <i class="fas fa-question-circle" title="Select the number of stories in the building"></i></td>                         
+          <td> <select name="stories" id="stories">
+                    <option disabled="true" selected> --Select no of stories--</option>
                     <option value="0">None</option>
                     <option value="1">1 story</option>
                     <option value="2">2 stories</option>
                     <option value="3">3 stories</option>
                     <option value="4">4 stories</option>
                 </select>
-
-        <br><br>
-        <b> &nbsp; Address or Parcel ID </b> &nbsp;&nbsp; <input type="text"  name="location"  id="tags" value={{location|safe}}> <!-- placeholder={{location|safe}}  "Type your address/parce ID"-->
-        &nbsp; &nbsp; &nbsp; &nbsp; 
+          </td>
+          </tr>
           
-        <br><br>
-        <b> &nbsp; Square footage </b> &nbsp;&nbsp; <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"-->
-        &nbsp; &nbsp; &nbsp; &nbsp; 
-         
+          <tr>
+          <td><b> Construction types </b></td>
+          <!-- icon -->
+          <td> <i class="fas fa-question-circle" title="What is the construction type of the building?"></i> </td>   
+          
+          </tr>
+          </table>  
 
-        <br><br>
-        <b> &nbsp; Construction types </b><br>
-      
-            <table align = "center" >
+            <table align = "center" style=" display:table-cell; vertical-align: middle;" >
               <tr align = "center"> <!--input-->
-                <td><label><input type="radio" name="fruit" value="basement"></label></td>
-                <td><label><input type="radio" name="fruit" value="crawlSpace"> </label></td>
-                <td><label><input type="radio" name="fruit" value="slab"></label></td>
-                <td><label><input type="radio" name="fruit" value="pierBeamPiling"> </label></td>
-                <td><label><input type="radio" name="fruit" value="pierBeamPilingFreeboard"></label></td>
+                <td class="construction"><label><input type="radio" name="construction" value="basement"></label></td>
+                <td class="construction"><label><input type="radio" name="construction" value="crawlSpace"> </label></td>
+                <td class="construction"><label><input type="radio" name="construction" value="slab"></label></td>
+                <td class="construction"><label><input type="radio" name="construction" value="pierBeamPiling"> </label></td>
+                <td class="construction"><label><input type="radio" name="construction" value="pierBeamPilingFreeboard"></label></td>
               </tr>
               <tr align = "center"> <!--image-->
                 <td><br><img src="../static/img/construction/basement.png" style="width: 50px; height:50px;"></td>
@@ -278,11 +325,11 @@
                 <td><br><img src="../static/img/construction/pierBeamPiling.png" style="width: 50px; height:50px;"></td>
                 <td><br><img src="../static/img/construction/pierBeamPilingFreeboard.png" style="width: 50px; height:50px;"></td> 
               <tr align = "center">
-                <td>Basement</td>
-                <td>Crawl space</td>
-                <td>Slab</td>
-                <td><br>Pier and <br>beam piling</td>
-                <td><br><br>Pier and <br>beam piling <br> with freeboard</td>
+                <td valign="top"><br>Basement</td>
+                <td valign="top"><br>Crawl space</td>
+                <td valign="top"><br>Slab</td>
+                <td valign="top"><br>Pier and beam piling</td>
+                <td valign="top"><br>Pier and beam piling with freeboard</td>
               </tr>
             </table>
         
@@ -310,7 +357,7 @@
  </div>
 </div>
     <!-- left2: Chart-->
-			<div id="left2">
+			<div id="left2"> 
       <h2><center> <b>Freeboard and Benefit Graph </b></center> </h2>
 				{{ div | safe }}
 			</div>
