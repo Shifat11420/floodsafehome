@@ -305,7 +305,7 @@ def search(request):
     ))
     script, div = components(p)
 
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div }
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors, 'script': script, 'div':div }
     
     #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
 

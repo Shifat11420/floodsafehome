@@ -284,7 +284,7 @@
             <td><b>Square footage </b> </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your building's square footage"></i></td>
-            <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"--></td>
+            <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"> </td> <!--placeholder="Type your building's square footage"-->
             </tr>
           
           <tr>
@@ -295,9 +295,9 @@
                     <option disabled="true" selected> --Select no of stories--</option>
                     <option value="0">None</option>
                     <option value="1">1 story</option>
-                    <option value="2">2 stories</option>
-                    <option value="3">3 stories</option>
-                    <option value="4">4 stories</option>
+                    <option value="2">2+ stories</option>
+                 <!--   <option value="3">3 stories</option>
+                    <option value="4">4 stories</option>  -->
                 </select>
           </td>
           </tr>
@@ -337,7 +337,7 @@
          <button class="btn btn-primary" type="submit" > Get results</button>  
          </br>
          </br>
-         <button class="btn btn-primary" type="submit" id="submitButton"> Run in map</button>     
+         <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>     
       </form>
       </p>
     </div>
@@ -468,14 +468,14 @@
   
   </div>
 
-    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
-    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
-    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
-    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
     {{script | safe}}
     <script src="./static/js/disclaimer.js"></script>
 
-    <!--<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script> -->
+    <!--<script src="https://code.jquery.com/jquery-1.6.1.min.js"></script> -->
 
 
      <!--Disclaimer start-->
