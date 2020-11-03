@@ -4701,7 +4701,7 @@ hr {
     overflow: hidden;
 }
 
-@media only screen and (min-width: 300px) and (max-width: 2500px) {
+@media only screen and (min-width: 576px) and (max-width: 767px) {
     /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
@@ -4753,7 +4753,7 @@ hr {
     font-weight: 600;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+@media only screen and (min-width: 575px) and (max-width: 771px) {
     /* line 248, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form2 input::placeholder,
     .slider-area2 form.search-box .input-form2 input::placeholder {
@@ -4798,10 +4798,24 @@ hr {
     position: relative;
 }
 
+.slider-area form.search-box .select-form1,
+.slider-area2 form.search-box .select-form1 {
+    width: 26%;
+    position: relative;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form,
     .slider-area2 form.search-box .select-form {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1,
+    .slider-area2 form.search-box .select-form1 {
         width: 50%;
     }
 }
@@ -4814,6 +4828,16 @@ hr {
     }
 }
 
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1,
+    .slider-area2 form.search-box .select-form1 {
+        width: 50%;
+    }
+}
+
+
+
 @media (max-width: 575px) {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form,
@@ -4823,10 +4847,19 @@ hr {
 }
 
 
+@media (max-width: 575px) {
+    /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1,
+    .slider-area2 form.search-box .select-form1 {
+        width: 100%;
+    }
+}
+
+
 /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
-.slider-area form.search-box .select-form .nice-select,
-.slider-area2 form.search-box .select-form .nice-select {
+.slider-area form.search-box .select-form1 .nice-select,
+.slider-area2 form.search-box .select-form1 .nice-select {
     width: 100%;
     height: 60px;
     background: #fff;
@@ -4839,10 +4872,31 @@ hr {
     border: 0;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+.slider-area form.search-box .select-form .nice-select,
+.slider-area2 form.search-box .select-form .nice-select {
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    padding: 11px 19px 11px 23px;
+    color: #1D2547;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 42px;
+    border: 0;
+}
+
+@media only screen and (min-width: 500px) and (max-width: 767px) {
     /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form .nice-select,
     .slider-area2 form.search-box .select-form .nice-select {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 767px) {
+    /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1 .nice-select,
+    .slider-area2 form.search-box .select-form1 .nice-select {
         font-size: 13px;
     }
 }
@@ -4851,6 +4905,16 @@ hr {
     /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form .nice-select,
     .slider-area2 form.search-box .select-form .nice-select {
+        margin-bottom: 20px;
+        padding-left: 25px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 575px) {
+    /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1 .nice-select,
+    .slider-area2 form.search-box .select-form1 .nice-select {
         margin-bottom: 20px;
         padding-left: 25px;
         font-size: 13px;
@@ -4867,10 +4931,24 @@ hr {
 }
 
 
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    /* line 284, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
+    .slider-area form.search-box .select-form1 .nice-select,
+    .slider-area2 form.search-box .select-form1 .nice-select {
+        margin-bottom: 20px;
+        padding-left: 25px;
+    }
+}
+
 /* line 307, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-area form.search-box .select-form .nice-select .list,
 .slider-area2 form.search-box .select-form .nice-select .list {
+    width: 100%;
+}
+
+.slider-area form.search-box .select-form1 .nice-select .list,
+.slider-area2 form.search-box .select-form1 .nice-select .list {
     width: 100%;
 }
 
@@ -4879,6 +4957,13 @@ hr {
 
 .slider-area form.search-box .select-form .nice-select.open .list,
 .slider-area2 form.search-box .select-form .nice-select.open .list {
+    width: 100%;
+    border-radius: 0;
+    border: 0;
+}
+
+.slider-area form.search-box .select-form1 .nice-select.open .list,
+.slider-area2 form.search-box .select-form1 .nice-select.open .list {
     width: 100%;
     border-radius: 0;
     border: 0;
@@ -4897,6 +4982,15 @@ hr {
     right: 29px;
 }
 
+.slider-area form.search-box .select-form1 .nice-select::after,
+.slider-area2 form.search-box .select-form1 .nice-select::after {
+    border-bottom: 1px solid #a9b6cd;
+    border-right: 1px solid #a9b6cd;
+    height: 12px;
+    width: 12px;
+    margin-top: -7px;
+    right: 29px;
+}
 
 /* line 325, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
@@ -4909,10 +5003,24 @@ hr {
 }
 
 
+.slider-area form.search-box .select-form1 .icon,
+.slider-area2 form.search-box .select-form1 .icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 /* line 330, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
 
 .slider-area form.search-box .select-form .icon i,
 .slider-area2 form.search-box .select-form .icon i {
+    font-size: 16px;
+    color: #D9DEE2;
+}
+
+.slider-area form.search-box .select-form1 .icon i,
+.slider-area2 form.search-box .select-form1 .icon i {
     font-size: 16px;
     color: #D9DEE2;
 }
