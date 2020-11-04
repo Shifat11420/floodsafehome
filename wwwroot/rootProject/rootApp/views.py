@@ -61,12 +61,11 @@ def gotomap(request):
     return render(request, 'map.html', data_dict)
 
 
-
-
-
 def decisionmakingmap(request): 
     return render(request, 'map.html')
 
+def nodisc(request): 
+    return render(request, 'nodisc.html')
 
 def survey(request):
     return render(request, 'survey.html')  
@@ -311,7 +310,7 @@ def search(request):
 
     #barchart ends---------------------------------------
 
-    return render(request, 'map.html', data_dictionary)
+    return render(request, 'nodisc.html', data_dictionary)
 
 
 def starter(request):

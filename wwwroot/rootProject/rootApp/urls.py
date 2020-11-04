@@ -14,4 +14,5 @@ urlpatterns = [
     path("dosurvey", views.dosurvey, name='dosurvey'),
     path("autosuggest", views.autosuggest, name='autosuggest'),
     path("starter", views.starter, name="starter"),
+    path("nodisc", views.nodisc, name="nodisc"),
     ]
