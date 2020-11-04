@@ -15,6 +15,7 @@ from bokeh.palettes import Category20c, Spectral6
 from bokeh.transform import cumsum, factor_cmap, dodge
 from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import EMPTY_LAYOUT
+import math
 
 
 
@@ -243,8 +244,31 @@ def search(request):
     AAL_BFE=[]    
     for i in range(len(AAL_BFE_losspercent)):
         AAL_BFE.append(round(Building_cost * Square_footage * AAL_BFE_losspercent[i],3)) 
-        print(AAL_BFE[i])
+        #print(AAL_BFE[i])
 
+    totalcost = []
+    for i in range(len(AAL_BFE)):
+        totalcost.append(round((AAL_BFE[i]+premium[i])*12+construction_cost_BFE[i],3))    #discounted present value, estimated from:   1(1+R_D )^t = 12  for 7% real discount rate
+        #print(totalcost[i])
+
+  
+    #Net benefit (NB) is determined by subtracting the total cost of the freeboard scenario (step 10) 
+    #from the total cost of the no action scenario.
+    netbenefit = []
+    for i in range(len(totalcost)):
+       netbenefit.append(totalcost[0]-totalcost[i])
+       #print(netbenefit[i])
+
+
+    #Net benefit to cost ratio (NBCR) for each freeboard is the total net benefit of the freeboard scenario divided by its total cost.  
+
+    NBcostRatio = []
+    for i in range(len(totalcost)):
+        if i==0:
+            NBcostRatio.append(0)
+        else:    
+            NBcostRatio.append(math.trunc(netbenefit[i]/construction_cost_BFE[i]))
+        print(NBcostRatio[i])
 
     location_json_list = simplejson.dumps(location)    
 
@@ -253,16 +277,16 @@ def search(request):
 
 
     ##barchart-------------------------------
-    benefits = ['Construction Cost', 'Insurance ', 'AAL']
+    benefits = ['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
     nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
 
 
     data = {'benefits' : benefits,
-            'BFE + 0ft'   : [0, premium[0], AAL_BFE[0]],
-            'BFE + 1ft'   : [construction_cost_BFE[1], premium[1], AAL_BFE[1]],
-            'BFE + 2ft'   : [construction_cost_BFE[2], premium[2], AAL_BFE[2]],
-            'BFE + 3ft'   : [construction_cost_BFE[3], premium[3], AAL_BFE[3]],
-            'BFE + 4ft'   : [construction_cost_BFE[4], premium[4], AAL_BFE[4]]}
+            'BFE + 0ft'   : [0, premium[0], AAL_BFE[0], totalcost[0], netbenefit[0]],
+            'BFE + 1ft'   : [construction_cost_BFE[1], premium[1], AAL_BFE[1], totalcost[1], netbenefit[1]],
+            'BFE + 2ft'   : [construction_cost_BFE[2], premium[2], AAL_BFE[2], totalcost[2], netbenefit[2]],
+            'BFE + 3ft'   : [construction_cost_BFE[3], premium[3], AAL_BFE[3], totalcost[3], netbenefit[3]],
+            'BFE + 4ft'   : [construction_cost_BFE[4], premium[4], AAL_BFE[4], totalcost[4], netbenefit[4]]}
 
     x = [nofStories]
     counts = sum(zip( data['BFE + 0ft'],data['BFE + 1ft'],data['BFE + 2ft'], data['BFE + 3ft'],data['BFE + 4ft']), ()) # like an hstack
@@ -304,7 +328,7 @@ def search(request):
     ))
     script, div = components(p)
 
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors, 'script': script, 'div':div }
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
     
     #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
 
