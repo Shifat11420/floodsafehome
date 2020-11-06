@@ -11765,5 +11765,17 @@ del {
 .bs-example a{
     font-size: 22px;        
     text-decoration: none;
+    vertical-align:middle;
     margin: 0 10px;
+}
+
+.benefitTable {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+.benefitTable  td{  
+  height: 50px;
 }

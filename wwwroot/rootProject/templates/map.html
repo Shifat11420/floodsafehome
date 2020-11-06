@@ -293,7 +293,7 @@
           <td>  <i class="fas fa-question-circle" title="Select the number of stories in the building"></i></td>                         
           <td> <select name="stories" id="stories">
                     <option disabled="true" selected> --Select no of stories--</option>
-                    <option value="0">None</option>
+                <!--<option value="0">None</option>-->
                     <option value="1">1 story</option>
                     <option value="2">2+ stories</option>
                  <!--   <option value="3">3 stories</option>
@@ -337,7 +337,7 @@
          <button class="btn btn-primary" type="submit" > Get results</button>  
          </br>
          </br>
-         <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>     
+         <!-- <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>     -->
       </form>
       </p>
     </div>
@@ -363,7 +363,52 @@
     <!-- left2: Chart-->
 			<div id="left2"> 
       <h2><center> <b>Freeboard and Benefit Graph </b></center> </h2>
-    				{{ div | safe }}
+    	<!--bokeh chart			{{ div | safe }}   -->
+           <table align = "center" style=" display:table-cell; vertical-align: middle;" class="benefitTable" >
+              <tr> <!--input-->
+                <td></td>
+                <td></td>
+                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"></td>
+                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"></td>
+              </tr>
+               <tr> <!--input-->
+                <td></td>
+                <td></td>
+                <td><b>1 feet</b></td>
+                <td><b>2 feet +</b></td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/cost.png" style="width: 25px; height:25px;"></td>
+                <td align = "left"><b>Elevation cost</b></td>
+                <td>3</td>
+                <td>3</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"></td>
+                <td align = "left"><b>Insurance savings per year</b></td>
+                <td>4</td>
+                <td>4</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"></td>
+                <td align = "left"><b>Reduction in expected flood losses per year</b></td>
+                <td>5</td>
+                <td>5</td>
+              </tr>
+              <tr></tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"></td>
+                <td align = "left"><b>Time to recover the elevation cost</b></td>
+                <td>6</td>
+                <td>6</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"></td>
+                <td align = "left"><b>Lifetime Benefits of The Elevation</b></td>
+                <td>7</td>
+                <td>7</td>
+              </tr>
+          </table>
 			</div>
 
 </div>
