@@ -15,4 +15,5 @@ urlpatterns = [
     path("autosuggest", views.autosuggest, name='autosuggest'),
     path("starter", views.starter, name="starter"),
     path("nodisc", views.nodisc, name="nodisc"),
+    path("disclaimer", views.disclaimer, name="disclaimer"),
     ]

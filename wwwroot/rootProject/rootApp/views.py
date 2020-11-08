@@ -29,6 +29,9 @@ def about(request):
 def freeboardproject(request):
     return render(request, 'research.html')    
 
+def disclaimer(request):
+    return render(request, 'disclaimer.html') 
+
 def gotomap(request): 
     location = request.GET.get('location', 'default')   
     print("my location: ", location)
@@ -238,7 +241,7 @@ def search(request):
 
     construction_cost_BFE = []
     for i in range(len(AverageIncrease)):
-        construction_cost_BFE.append(round(Building_cost * Square_footage * AverageIncrease[i],3)) 
+        construction_cost_BFE.append(round(Building_cost * Square_footage * AverageIncrease[i],2)) 
 
 
     AAL_BFE=[]    
@@ -256,7 +259,7 @@ def search(request):
     #from the total cost of the no action scenario.
     netbenefit = []
     for i in range(len(totalcost)):
-       netbenefit.append(totalcost[0]-totalcost[i])
+       netbenefit.append(round(totalcost[0]-totalcost[i],2))
        #print(netbenefit[i])
 
 
@@ -274,12 +277,11 @@ def search(request):
 
     data_dict = {"location": location_json_list, "street": streetlist, "SquareFootage":Square_footage, "zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease_BFE1" : AverageIncrease[1],"AverageIncrease_BFE2" : AverageIncrease[2],"AverageIncrease_BFE3" : AverageIncrease[3],"AverageIncrease_BFE4" : AverageIncrease[4] ,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "vegetable" : ['alu', 'potol']}
 # data_dict = {"zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease" : AverageIncrease ,"construction_cost_BFE1": construction_cost_BFE1, "construction_cost_BFE2": construction_cost_BFE2, "construction_cost_BFE3": construction_cost_BFE3, "construction_cost_BFE4": construction_cost_BFE4, "vegetable" : ['alu', 'potol']}
-
-
+    
+   
     ##barchart-------------------------------
     benefits = ['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
     nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
-
 
     data = {'benefits' : benefits,
             'BFE + 0ft'   : [0, premium[0], AAL_BFE[0], totalcost[0], netbenefit[0]],
@@ -328,12 +330,21 @@ def search(request):
     ))
     script, div = components(p)
 
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
+    ##data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
+        
+        #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
+
+        #barchart ends---------------------------------------
+        
+    ##New-------------------------------
+    ##barchart for Net benefit to cost ratio-------------------------------
+    ##benefits = ['1 foot freeboard', '2 feet freeboard', '3 feet freeboard', '4 feet freeboard']
+    ##nofStories = ['Net benefit to cost ratio']
+   
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
     
-    #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
-
-    #barchart ends---------------------------------------
-
+    
+    #New barchart ends---------------------------------------
     return render(request, 'nodisc.html', data_dictionary)
 
 

@@ -11774,8 +11774,13 @@ del {
     border-spacing: 0;
     width: 100%;
     text-align: center;
+    border: 1px solid #868585;
   }
 
-.benefitTable  td{  
+.benefitTable td{  
+  border-collapse: collapse;
   height: 50px;
+  font-size: 80%;
+  border: 1px solid #868585;
+  padding: 3px  3px  3px  3px;
 }

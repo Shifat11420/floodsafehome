@@ -26,7 +26,7 @@
 
   <style>
      #viewDiv {
-      height: 90%;
+      height: 100%;
       width: 70%;
       float: right;
     }
@@ -269,31 +269,31 @@
             -->
             {% csrf_token %} 
       <p> 
-        <h2><center><b> Select your building information</b></center> </h2><br>
+        <h2><center><b> Select your building information</b></center> </h2>
          <div class="select-form">
           <div class="select-itms">
            <table style="width:300 px; height: 150px;">
            <tr> 
-            <td><b>Address or Parcel ID </b> &nbsp; </td>
+            <td><b>Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your address or parcel ID"></i> &nbsp;</td>
             <td><input type="text"  name="location"  id="tags" value={{location|safe}}> <!-- placeholder={{location|safe}}  "Type your address/parce ID"--> </td>
             </tr>
          
             <tr> 
-            <td><b>Square footage </b> </td>
+            <td><b>Square footage <sup style="color:red">*</sup></b> </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your building's square footage"></i></td>
             <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"> </td> <!--placeholder="Type your building's square footage"-->
             </tr>
           
           <tr>
-          <td><b> # stories </b></td>
+          <td><b> # stories <sup style="color:red">*</sup> </b></td>
             <!-- icon -->
           <td>  <i class="fas fa-question-circle" title="Select the number of stories in the building"></i></td>                         
           <td> <select name="stories" id="stories">
                     <option disabled="true" selected> --Select no of stories--</option>
-                <!--<option value="0">None</option>-->
+                   <!--<option value="0">None</option>--> 
                     <option value="1">1 story</option>
                     <option value="2">2+ stories</option>
                  <!--   <option value="3">3 stories</option>
@@ -335,14 +335,11 @@
         
         
          <button class="btn btn-primary" type="submit" > Get results</button>  
-         </br>
-         </br>
-         <!-- <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>     -->
+       <!--  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>    -->   
       </form>
       </p>
     </div>
-  
-
 
 <!-- Error message-->                                
 {% if messages %}
@@ -357,56 +354,69 @@
 {% endif %}
 
 <!-- Error message ends--> 
-
  </div>
 </div>
     <!-- left2: Chart-->
 			<div id="left2"> 
-      <h2><center> <b>Freeboard and Benefit Graph </b></center> </h2>
+      <h2><center> <b>Freeboard and Benefit Graph </b></center></h2>
     	<!--bokeh chart			{{ div | safe }}   -->
            <table align = "center" style=" display:table-cell; vertical-align: middle;" class="benefitTable" >
               <tr> <!--input-->
                 <td></td>
-                <td></td>
+                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"></td>
                 <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"></td>
                 <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"></td>
+                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"></td>
+                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"></td>
               </tr>
                <tr> <!--input-->
                 <td></td>
+                <td><b>BFE <br>+0 feet</b></td>
+                <td><b>BFE <br>+1 feet</b></td>
+                <td><b>BFE <br>+2 feet</b></td>
+                <td><b>BFE <br>+3 feet</b></td>
+                <td><b>BFE <br>+4 feet</b></td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b>Elevation cost</b></td>
                 <td></td>
-                <td><b>1 feet</b></td>
-                <td><b>2 feet +</b></td>
+                <td>{{construction_cost_BFE1}}</td>
+                <td>{{construction_cost_BFE2}}</td>
+                <td>{{construction_cost_BFE3}}</td>
+                <td>{{construction_cost_BFE4}}</td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/cost.png" style="width: 25px; height:25px;"></td>
-                <td align = "left"><b>Elevation cost</b></td>
-                <td>3</td>
-                <td>3</td>
+                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b>Insurance savings per year</b></td>
+                <td>{{Premium_BFE0}}</td>
+                <td>{{Premium_BFE1}}</td>
+                <td>{{Premium_BFE2}}</td>
+                <td>{{Premium_BFE3}}</td>
+                <td>{{Premium_BFE4}}</td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"></td>
-                <td align = "left"><b>Insurance savings per year</b></td>
-                <td>4</td>
-                <td>4</td>
-              </tr>
-              <tr> <!--input-->
-                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"></td>
-                <td align = "left"><b>Reduction in expected flood losses per year</b></td>
-                <td>5</td>
-                <td>5</td>
+                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b>Reduction in expected <br>flood losses per year</b></td>
+                <td>{{AAL_BFE0}}</td>
+                <td>{{AAL_BFE1}}</td>
+                <td>{{AAL_BFE2}}</td>
+                <td>{{AAL_BFE3}}</td>
+                <td>{{AAL_BFE4}}</td>
               </tr>
               <tr></tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"></td>
-                <td align = "left"><b>Time to recover the elevation cost</b></td>
-                <td>6</td>
-                <td>6</td>
+                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b>Time to recover <br>the elevation cost</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"></td>
-                <td align = "left"><b>Lifetime Benefits of The Elevation</b></td>
-                <td>7</td>
-                <td>7</td>
+                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b>Lifetime Benefits of <br>the Elevation</b></td>
+                <td>{{netbenefit0}}</td>
+                <td>{{netbenefit1}}</td>
+                <td>{{netbenefit2}}</td>
+                <td>{{netbenefit3}}</td>
+                <td>{{netbenefit4}}</td>
               </tr>
           </table>
 			</div>

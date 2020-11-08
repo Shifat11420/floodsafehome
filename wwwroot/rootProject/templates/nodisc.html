@@ -26,7 +26,7 @@
 
   <style>
      #viewDiv {
-      height: 90%;
+      height: 100%;
       width: 70%;
       float: right;
     }
@@ -269,31 +269,31 @@
             -->
             {% csrf_token %} 
       <p> 
-        <h2><center><b> Select your building information</b></center> </h2><br>
+        <h2><center><b> Select your building information</b></center> </h2>
          <div class="select-form">
           <div class="select-itms">
            <table style="width:300 px; height: 150px;">
            <tr> 
-            <td><b>Address or Parcel ID </b> &nbsp; </td>
+            <td><b>Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your address or parcel ID"></i> &nbsp;</td>
             <td><input type="text"  name="location"  id="tags" value={{location|safe}}> <!-- placeholder={{location|safe}}  "Type your address/parce ID"--> </td>
             </tr>
          
             <tr> 
-            <td><b>Square footage </b> </td>
+            <td><b>Square footage <sup style="color:red">*</sup></b> </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your building's square footage"></i></td>
             <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"> </td> <!--placeholder="Type your building's square footage"-->
             </tr>
           
           <tr>
-          <td><b> # stories </b></td>
+          <td><b> # stories <sup style="color:red">*</sup> </b></td>
             <!-- icon -->
           <td>  <i class="fas fa-question-circle" title="Select the number of stories in the building"></i></td>                         
           <td> <select name="stories" id="stories">
                     <option disabled="true" selected> --Select no of stories--</option>
-                    <option value="0">None</option>
+                   <!--<option value="0">None</option>--> 
                     <option value="1">1 story</option>
                     <option value="2">2+ stories</option>
                  <!--   <option value="3">3 stories</option>
@@ -335,13 +335,11 @@
         
         
          <button class="btn btn-primary" type="submit" > Get results</button>  
-         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-         <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>     
+       <!--  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>    -->   
       </form>
       </p>
     </div>
-  
-
 
 <!-- Error message-->                                
 {% if messages %}
@@ -356,96 +354,66 @@
 {% endif %}
 
 <!-- Error message ends--> 
-
  </div>
 </div>
-    <!-- left2: Chart-->
+    <!-- left2: table-->
 			<div id="left2"> 
-      <h2><center> <b>Freeboard and Benefit Graph </b></center> </h2>
-    				{{ div | safe }}
+      <h2><center> <b>Freeboard and Benefit Graph </b></center></h2>
+  	<!--bokeh chart			{{ div | safe }}   -->
+           <table align = "center" style=" display:table-cell; vertical-align: middle;" class="benefitTable" >
+              <tr> <!--input-->
+                <td></td>
+                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"><br><b>BFE <br>+0 feet</b></td>
+                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"><br><b>BFE <br>+1 feet</b></td>
+                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"><br><b>BFE <br>+2 feet</b></td>
+                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"><br><b>BFE <br>+3 feet</b></td>
+                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"><br><b>BFE <br>+4 feet</b></td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b>Elevation cost</b></td>
+                <td>0.0</td>
+                <td>${{construction_cost_BFE1}}</td>
+                <td>${{construction_cost_BFE2}}</td>
+                <td>${{construction_cost_BFE3}}</td>
+                <td>${{construction_cost_BFE4}}</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b>Insurance savings per year</b></td>
+                <td>${{Premium_BFE0}}</td>
+                <td>${{Premium_BFE1}}</td>
+                <td>${{Premium_BFE2}}</td>
+                <td>${{Premium_BFE3}}</td>
+                <td>${{Premium_BFE4}}</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b>Reduction in expected <br>flood losses per year</b></td>
+                <td>${{AAL_BFE0}}</td>
+                <td>${{AAL_BFE1}}</td>
+                <td>${{AAL_BFE2}}</td>
+                <td>${{AAL_BFE3}}</td>
+                <td>${{AAL_BFE4}}</td>
+              </tr>
+              <tr></tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b>Time to recover <br>the elevation cost</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b>Lifetime Benefits of <br>the Elevation</b></td>
+                <td>{{netbenefit0}}</td>
+                <td>{{netbenefit1}}</td>
+                <td>{{netbenefit2}}</td>
+                <td>{{netbenefit3}}</td>
+                <td>{{netbenefit4}}</td>
+              </tr>
+          </table>
 			</div>
 
 </div>
-  <!--
-    <div id="left2"> <- left2: Chart->
-      <div class="col-md-6">
-				<div >
-					<div class="progress-wrap">
-						<h3><span class="name-left">Freeboard Construction Cost​</span><span class="value-right">
-                     <ul class="submenu">
-                        <li>For BFE+1: &#36;{{construction_cost_BFE1}}</li>
-                        <li>For BFE+2: &#36;{{construction_cost_BFE2}}</li>
-                        <li>For BFE+3: &#36;{{construction_cost_BFE3}}</li>
-                        <li>For BFE+4: &#36;{{construction_cost_BFE4}}</li>
-                    </ul>
-                    </span></h3>
-          
-
-          
-          
-          	<div class="progress">
-
-
-						  <div class="progress-bar progress-bar-1 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:50%"> <-width part will be updated based on the calcuation->
-						  </div>
-						</div>
-					</div>
-					<div class="progress-wrap">
-						<h3><span class="name-left">Estimated Flood Insurance Premiums/yr</span><span class="value-right">
-          <ul class="submenu">
-                        <li>For BFE+0: &#36;{{Premium_BFE0}}</li>
-                        <li>For BFE+1: &#36;{{Premium_BFE1}}</li>
-                        <li>For BFE+2: &#36;{{Premium_BFE2}}</li>
-                        <li>For BFE+3: &#36;{{Premium_BFE3}}</li>
-                        <li>For BFE+4: &#36;{{Premium_BFE4}}</li>
-                    </ul>
-              </span></h3>
-
-
-						<div class="progress">
-						  <div class="progress-bar progress-bar-2 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-						  </div>
-						</div>
-					</div>
-					<div class="progress-wrap">
-						<h3><span class="name-left">Annual Benefit​</span><span class="value-right">XX</span></h3>
-						<div class="progress">
-						  <div class="progress-bar progress-bar-6 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width:85%">
-						  </div>
-						</div>
-					</div>
-					<div class="progress-wrap">
-						<h3><span class="name-left">Payback Periods of Freeboard Construction Cost</span><span class="value-right">XX</span></h3>
-						<div class="progress">
-						  <div class="progress-bar progress-bar-3 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
-						  </div>
-						</div>
-					</div>
-					<div class="progress-wrap">
-						<h3><span class="name-left">Net Benefit​ (NB)​</span><span class="value-right">XX</span></h3>
-						<div class="progress">
-						  <div class="progress-bar progress-bar-4 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-						  </div>
-						</div>
-					</div>
-					<div class="progress-wrap">
-						<h3><span class="name-left">Net Benefit Cost Ratio (NBCR)​</span><span class="value-right">XX</span></h3>
-						<div class="progress">
-						  <div class="progress-bar progress-bar-5 progress-bar-striped active" role="progressbar"
-						  aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-						  </div>
-						</div>
-					</div>
-        </div>
-    </div>      
-    </div>
-
--->
 
 <!-- .left3: Hazard calculator
     <div id="left3"> 
@@ -466,10 +434,13 @@
   <div id="viewDiv">
   
   </div>
-  <div id="left2">
+
+  <div id="left3">
     <p style="padding: 60em 0 0 0;">
             <h2><b>Net benefit to cost ratio:</b> </h2> 
+            <!--{{ div | safe }}--> 
             <br>     
+
                     For 1 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio1}}: 1 <br>
                     For 2 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio2}}: 1 <br>
                     For 3 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio3}}: 1 <br>
