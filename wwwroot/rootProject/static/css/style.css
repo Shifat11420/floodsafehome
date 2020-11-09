@@ -11784,3 +11784,7 @@ del {
   border: 1px solid #868585;
   padding: 3px  3px  3px  3px;
 }
+
+.mapHeader {
+    background: url(../img/hero/flood1_header.jpg) no-repeat;
+}

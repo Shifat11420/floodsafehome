@@ -192,9 +192,9 @@
 </head>
 
 <body>
-     <header class="header" style="background-color:#367FFF; height:100px; text; padding: 5px 15px 15px 15px">
+     <header class="header" style="height:100px; text; padding: 5px 15px 15px 15px">
         <!-- Header Start -->
-        <div class="header-area header-transparent">
+        <div class="header-area header-transparent mapHeader">
             <div class="main-header ">
                 <div class="header-bottom  header-sticky">
                     <div class="container-fluid">
@@ -264,9 +264,6 @@
   <div id="left" class="container"> <!-- .left div tags-->
     <div id="left1"><!-- .left1: User's input-->
       <form method="get" action="/search">
-           <!--
-            {% csrf_token %} 
-            -->
             {% csrf_token %} 
       <p> 
         <h2><center><b> Select your building information</b></center> </h2>
@@ -277,23 +274,22 @@
             <td><b>Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your address or parcel ID"></i> &nbsp;</td>
-            <td><input type="text"  name="location"  id="tags" value={{location|safe}}> <!-- placeholder={{location|safe}}  "Type your address/parce ID"--> </td>
+            <td><input type="text"  name="location"  id="tags" placeholder="Type your address or parceID" required  value={{location|safe}}></td>
             </tr>
          
             <tr> 
             <td><b>Square footage <sup style="color:red">*</sup></b> </td>
               <!-- icon -->
             <td>  <i class="fas fa-question-circle" title="Type your building's square footage"></i></td>
-            <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"> </td> <!--placeholder="Type your building's square footage"-->
+            <td><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage" required> </td> 
             </tr>
           
           <tr>
-          <td><b> # stories <sup style="color:red">*</sup> </b></td>
+          <td><b># stories <sup style="color:red">*</sup> </b></td>
             <!-- icon -->
           <td>  <i class="fas fa-question-circle" title="Select the number of stories in the building"></i></td>                         
-          <td> <select name="stories" id="stories">
-                    <option disabled="true" selected> --Select no of stories--</option>
-                   <!--<option value="0">None</option>--> 
+          <td> <select name="stories" id="stories" required>
+                    <option value=""> --Select no of stories--</option>
                     <option value="1">1 story</option>
                     <option value="2">2+ stories</option>
                  <!--   <option value="3">3 stories</option>
