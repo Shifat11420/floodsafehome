@@ -105,8 +105,7 @@ def autosuggest(request):
 
     mylist = []        
     if len(queryset)>0:
-
-        mylist += [x.address+" "+x.street for x in queryset]
+        mylist += [x.address+" "+x.street+","+" "+x.parish for x in queryset]
     else:
         mylist = ["No results found"]    
     return JsonResponse(mylist, safe=False)
@@ -125,7 +124,9 @@ def helpcenter(request):
 
 def search(request):
     location = request.GET.get('location', 'default')
-    locationList=location.split(' ')
+    commasplit =location.split(',')
+    beforecomma = commasplit[0]
+    locationList= beforecomma.split(' ')
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
 
@@ -173,6 +174,7 @@ def search(request):
                 
     #zonevalue = []
     zonevalue = ""
+    parishvalue = ""
     for data in addressvalue:
         #zonevalue.append(data.floodzone)
         zonevalue = data.floodzone
