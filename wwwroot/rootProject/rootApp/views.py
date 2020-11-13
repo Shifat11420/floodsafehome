@@ -105,7 +105,7 @@ def autosuggest(request):
 
     mylist = []        
     if len(queryset)>0:
-        mylist += [x.address+" "+x.street+","+" "+x.parish for x in queryset]
+        mylist += [x.address+" "+x.street+","+" "+x.parish+ " Parish" for x in queryset]
     else:
         mylist = ["No results found"]    
     return JsonResponse(mylist, safe=False)
@@ -178,6 +178,7 @@ def search(request):
     for data in addressvalue:
         #zonevalue.append(data.floodzone)
         zonevalue = data.floodzone
+        print("ZONE: ", zonevalue )
         parishvalue = data.parish
 
     ##by the average % increase table, and premium table
@@ -199,6 +200,210 @@ def search(request):
     AAL_BFE_losspercent = []
 
 
+    ## building cost, parishwise constant value 
+    if parishvalue == "Jefferson":
+        Building_cost = 92.47
+        CRS = 0.25                  # demo-must be changed
+    else:
+        pass
+
+    ## Square footage comes from user input
+    Square_footage = float(request.GET.get('sqft', 'default'))
+
+    Building_value = Building_cost * Square_footage
+
+    ###----------------Insurance-----------------------------------------
+
+    #-- coverage level--------------
+
+    coverage_lvl_bldg = Building_value
+    coverage_lvl_cont = Building_value * 0.4
+
+    #--table--Zones AE, A, A1-A30------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
+    if zonevalue == "AE" or zonevalue == "A" :
+        #--one story
+        BasicRate_1s_Bldg_BFE = [2.21,0.94,0.50,0.34,0.31]
+        AddiRate_1s_Bldg_BFE = [0.26,0.17,0.11,0.09,0.08]
+        BasicRate_1s_Cont_BFE = [1.02,0.53,0.38,0.38,0.38]
+        AddiRate_1s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+        #--twostory
+        BasicRate_2s_Bldg_BFE = [1.75,0.78,0.43,0.31,0.27]
+        AddiRate_2s_Bldg_BFE = [0.08,0.08,0.08,0.08,0.08]
+        BasicRate_2s_Cont_BFE = [0.75,0.40,0.38,0.38,0.38]
+        AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+
+    #--table--Zones V, V1-V30, VE------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
+    elif  zonevalue == "VE":
+        #--one story
+        BasicRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        AddiRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        BasicRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        AddiRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        #--twostory
+        BasicRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        AddiRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        BasicRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        AddiRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+
+    #--table--Zones X------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
+    elif zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD": 
+        #--one story
+        BasicRate_1s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
+        AddiRate_1s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
+        BasicRate_1s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
+        AddiRate_1s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
+        #--twostory
+        BasicRate_2s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
+        AddiRate_2s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
+        BasicRate_2s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
+        AddiRate_2s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
+    else:
+        print("Flood zone does not match")
+
+    ##---Premium fees----------------
+    ICC_premium = 6
+    Reserve_fund = 0.18
+    HFIAA_surcharge = 25
+    Federal_policy_fee = 50
+    
+    print("coverage_lvl_bldg", coverage_lvl_bldg)
+    print("coverage_lvl_cont", coverage_lvl_cont)
+
+    ##----insurance limits----------
+    basic_bldg_insurance_limit = 0
+    addi_bldg_insurance_amnt = 0
+    basic_cont_insurance_limit = 0
+    addi_cont_insurance_amnt = 0
+
+    if coverage_lvl_bldg <= 60000:
+        basic_bldg_insurance_limit  = coverage_lvl_bldg                 # demo-must be changed
+        addi_bldg_insurance_amnt = 0                  # demo-must be changed
+    elif coverage_lvl_bldg > 60000 and coverage_lvl_bldg<= 190000:
+        basic_bldg_insurance_limit  = 60000                  # demo-must be changed
+        addi_bldg_insurance_amnt = coverage_lvl_bldg-60000                  # demo-must be changed
+    else:
+        pass
+
+    if coverage_lvl_cont <= 25000:
+        basic_cont_insurance_limit = coverage_lvl_cont                  # demo-must be changed
+        addi_cont_insurance_amnt = 0                  # demo-must be changed
+    elif coverage_lvl_cont > 25000 and coverage_lvl_cont <= 75000:
+        basic_cont_insurance_limit = 25000                 # demo-must be changed
+        addi_cont_insurance_amnt = coverage_lvl_cont-25000                  # demo-must be changed
+    else:
+        pass
+
+    ##----Premium deductible table------
+
+    deductible_bldg = 1250   # demo-must be changed
+    deductible_cont = 1250   # demo-must be changed
+     
+    if deductible_bldg==1000 and deductible_cont==1000:
+        fullrisk = 1.000
+
+    elif deductible_bldg==1250 and deductible_cont==1000:
+        fullrisk = 0.995
+    elif deductible_bldg==1250 and deductible_cont==1250:
+        fullrisk = 0.980
+
+    elif deductible_bldg==1500 and deductible_cont==1000:
+        fullrisk = 0.990
+    elif deductible_bldg==1500 and deductible_cont==1250:
+        fullrisk = 0.975
+    elif deductible_bldg==1500 and deductible_cont==1500:
+        fullrisk = 0.965
+
+    elif deductible_bldg==2000 and deductible_cont==1000:
+        fullrisk = 0.975
+    elif deductible_bldg==2000 and deductible_cont==1250:
+        fullrisk = 0.965
+    elif deductible_bldg==2000 and deductible_cont==1500:
+        fullrisk = 0.950
+    elif deductible_bldg==2000 and deductible_cont==2000:
+        fullrisk = 0.925
+
+    elif deductible_bldg==3000 and deductible_cont==1000:
+        fullrisk = 0.950
+    elif deductible_bldg==3000 and deductible_cont==1250:
+        fullrisk = 0.940
+    elif deductible_bldg==3000 and deductible_cont==1500:
+        fullrisk = 0.925
+    elif deductible_bldg==3000 and deductible_cont==2000:
+        fullrisk = 0.900
+    elif deductible_bldg==3000 and deductible_cont==3000:
+        fullrisk = 0.850
+
+    elif deductible_bldg==4000 and deductible_cont==1000:
+        fullrisk = 0.925
+    elif deductible_bldg==4000 and deductible_cont==1250:
+        fullrisk = 0.915
+    elif deductible_bldg==4000 and deductible_cont==1500:
+        fullrisk = 0.900
+    elif deductible_bldg==4000 and deductible_cont==2000:
+        fullrisk = 0.875
+    elif deductible_bldg==4000 and deductible_cont==3000:
+        fullrisk = 0.825
+    elif deductible_bldg==4000 and deductible_cont==4000:
+        fullrisk = 0.775
+
+    elif deductible_bldg==5000 and deductible_cont==1000:
+        fullrisk = 0.900
+    elif deductible_bldg==5000 and deductible_cont==1250:
+        fullrisk = 0.890
+    elif deductible_bldg==5000 and deductible_cont==1500:
+        fullrisk = 0.875
+    elif deductible_bldg==5000 and deductible_cont==2000:
+        fullrisk = 0.850
+    elif deductible_bldg==5000 and deductible_cont==3000:
+        fullrisk = 0.800
+    elif deductible_bldg==5000 and deductible_cont==4000:
+        fullrisk = 0.760
+    elif deductible_bldg==5000 and deductible_cont==5000:
+        fullrisk = 0.750
+
+    elif deductible_bldg==10000 and deductible_cont==10000:
+        fullrisk = 0.600    
+    else:
+        pass    
+
+    total_bldg_BasicCoverage = []
+    total_bldg_AddiCoverage = []
+    total_cont_BasicCoverage = []
+    total_cont_AddiCoverage = []    
+    principle_premium = []
+    deducted_premium = []
+    total_annual_premium = []
+
+
+    for i in range(len(totalBFE)):
+
+        if No_Floors == "1" :    
+            total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_1s_Bldg_BFE[i])
+            total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_1s_Bldg_BFE[i])
+
+            total_cont_BasicCoverage.append( (( basic_cont_insurance_limit )/100) * BasicRate_1s_Cont_BFE[i])
+            total_cont_AddiCoverage.append( (( addi_cont_insurance_amnt )/100) * AddiRate_1s_Cont_BFE[i])
+        elif No_Floors == "2" : 
+            total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_2s_Bldg_BFE[i])
+            total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_2s_Bldg_BFE[i])
+
+            total_cont_BasicCoverage.append( (( basic_cont_insurance_limit )/100) * BasicRate_2s_Cont_BFE[i])
+            total_cont_AddiCoverage.append( (( addi_cont_insurance_amnt )/100) * AddiRate_2s_Cont_BFE[i])
+        else:
+            pass
+
+        principle_premium.append( (total_bldg_BasicCoverage[i] + total_bldg_AddiCoverage[i]) + (total_cont_BasicCoverage[i] + total_cont_AddiCoverage[i]))
+
+        #deductible factor d is fullrisk
+        deducted_premium.append(principle_premium[i] * fullrisk)
+
+        total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS)) + HFIAA_surcharge + Federal_policy_fee))
+
+
+
+    #------------------------------
+
+    ###---------------Insurance ends---------------------------------------
 
     if No_Floors=="1":
         AAL_BFE_losspercent = AAL_BFE_LC_story1
@@ -227,14 +432,7 @@ def search(request):
             AverageIncrease.append(round((AverageIncrease_zoneA[i]+AverageIncrease_zoneCoastal[i]+ AverageIncrease_zoneV[i])/len(totalZones),3))
             premium.append((Premium_zoneA[i]+Premium_zoneV[i])/len(primiumZones))
 
-    ## building cost, parishwise constant value 
-    if parishvalue == "Jefferson":
-        Building_cost = 92.47
-    else:
-        pass
 
-    ## Square footage comes from user input
-    Square_footage = float(request.GET.get('sqft', 'default'))
 
     # construction_cost_BFE1= Building_cost * Square_footage * AverageIncrease[1] 
     # construction_cost_BFE2= Building_cost * Square_footage * AverageIncrease[2] 
@@ -282,15 +480,15 @@ def search(request):
     
    
     ##barchart-------------------------------
-    benefits = ['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
+    benefits = ['Insurance per year'] #['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
     nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
 
     data = {'benefits' : benefits,
-            'BFE + 0ft'   : [0, premium[0], AAL_BFE[0], totalcost[0], netbenefit[0]],
-            'BFE + 1ft'   : [construction_cost_BFE[1], premium[1], AAL_BFE[1], totalcost[1], netbenefit[1]],
-            'BFE + 2ft'   : [construction_cost_BFE[2], premium[2], AAL_BFE[2], totalcost[2], netbenefit[2]],
-            'BFE + 3ft'   : [construction_cost_BFE[3], premium[3], AAL_BFE[3], totalcost[3], netbenefit[3]],
-            'BFE + 4ft'   : [construction_cost_BFE[4], premium[4], AAL_BFE[4], totalcost[4], netbenefit[4]]}
+            'BFE + 0ft'   : [total_annual_premium[0]],  #[0, total_annual_premium[0], AAL_BFE[0], totalcost[0], netbenefit[0]],
+            'BFE + 1ft'   : [total_annual_premium[1]],  #[construction_cost_BFE[1], total_annual_premium[1], AAL_BFE[1], totalcost[1], netbenefit[1]],
+            'BFE + 2ft'   : [total_annual_premium[2]],  #[construction_cost_BFE[2], total_annual_premium[2], AAL_BFE[2], totalcost[2], netbenefit[2]],
+            'BFE + 3ft'   : [total_annual_premium[3]],  #[construction_cost_BFE[3], total_annual_premium[3], AAL_BFE[3], totalcost[3], netbenefit[3]],
+            'BFE + 4ft'   : [total_annual_premium[4]]}  #[construction_cost_BFE[4], total_annual_premium[4], AAL_BFE[4], totalcost[4], netbenefit[4]]}
 
     x = [nofStories]
     counts = sum(zip( data['BFE + 0ft'],data['BFE + 1ft'],data['BFE + 2ft'], data['BFE + 3ft'],data['BFE + 4ft']), ()) # like an hstack
@@ -330,7 +528,7 @@ def search(request):
     # display a tooltip whenever the cursor is vertically in line with a glyph
     mode='vline'
     ))
-    script, div = components(p)
+    script_insurance, div_insurance = components(p)
 
     ##data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
         
@@ -343,7 +541,7 @@ def search(request):
     ##benefits = ['1 foot freeboard', '2 feet freeboard', '3 feet freeboard', '4 feet freeboard']
     ##nofStories = ['Net benefit to cost ratio']
    
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance }
     
     
     #New barchart ends---------------------------------------

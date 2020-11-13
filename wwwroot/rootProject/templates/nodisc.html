@@ -375,11 +375,11 @@
               </tr>
               <tr> <!--input-->
                 <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b>Insurance savings per year</b></td>
-                <td>${{Premium_BFE0}}</td>
-                <td>${{Premium_BFE1}}</td>
-                <td>${{Premium_BFE2}}</td>
-                <td>${{Premium_BFE3}}</td>
-                <td>${{Premium_BFE4}}</td>
+                <td>${{total_annual_premium_BFE}}</td>
+                <td>${{total_annual_premium_BFE1}}</td>
+                <td>${{total_annual_premium_BFE2}}</td>
+                <td>${{total_annual_premium_BFE3}}</td>
+                <td>${{total_annual_premium_BFE4}}</td>
               </tr>
               <tr> <!--input-->
                 <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b>Reduction in expected <br>flood losses per year</b></td>
@@ -431,11 +431,111 @@
   
   </div>
 
+<!--Result details-->
+
+<div class="container" <p style="padding: 80em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 >How much it will cost you for the elevation?</h2>
+                            <br>
+                            <p class="p-style">
+                          Here elevation cost will be calculated and visualized.
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+
+<div class="container" <p style="padding: 30em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 >How much you can save on insurance per year?</h2>
+                            <br>
+                            <p class="p-style">
+                          We can give you an estimate of how much you need to pay for insurance in a year. Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  For example, for the location {{location}} and your choice of square footage value {{SquareFootage}} and for {{No_Floors}} stories building, the total annual premium is ${{total_annual_premium_BFE}} for BFE with 0 ft elevation. For BFE + 1 ft elevation freeboard, the total annual premium is ${{total_annual_premium_BFE1}}. For BFE + 2 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE2}}. The total annual premium is ${{total_annual_premium_BFE3}} for BFE + 3 ft freeboard elevation and for BFE + 4 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE4}} <br>
+
+                          The following bar chart shows the annual insurance you need to pay for differnt base flood elevation in feet. <br>
+                          {{ div_insurance | safe }}
+
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+
+
+<div class="container" <p style="padding: 30em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 >How much reduction in expected flood losses in one year?</h2>
+                            <br>
+                            <p class="p-style">
+                          Here Reduction in expected flood losses per year will be calculated and visualized.
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+
+<div class="container" <p style="padding: 30em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 >How long it will take to recover the elevation cost?</h2>
+                            <br>
+                            <p class="p-style">
+                          Here Time to recover the elevation cost will be calculated and visualized.
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+
+
+<div class="container" <p style="padding: 30em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 >How long it will take to recover the elevation cost?</h2>
+                            <br>
+                            <p class="p-style">
+                          Here Time to recover the elevation cost will be calculated and visualized.
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+
+<div class="container" <p style="padding: 30em 0 0 0;">>
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2 > What is your lifetime benefit of this evaluation?</h2>
+                            <br>
+                            <p class="p-style">
+                          Here Lifetime benefits of the evaluation will be calculated and visualized.
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+</p></div>
+<!--Result details End-->
+
+<!--
   <div id="left3">
     <p style="padding: 60em 0 0 0;">
-            <h2><b>Net benefit to cost ratio:</b> </h2> 
+            <h2><b>Net benefit to cost ratio:</b> </h2> -->
             <!--{{ div | safe }}--> 
-            <br>     
+ <!--           <br>     
 
                     For 1 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio1}}: 1 <br>
                     For 2 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio2}}: 1 <br>
@@ -447,13 +547,13 @@
     </p>
     </div>
 
-
+-->
 
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
-    {{script | safe}}
+    {{script_insurance | safe}}
     <script src="./static/js/disclaimer.js"></script>
 
     <!--<script src="https://code.jquery.com/jquery-1.6.1.min.js"></script> -->
