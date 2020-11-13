@@ -36,17 +36,17 @@
       float: left;
     }
     #left1{
-      height: 62%;
+      height: 40%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
-        #left2{
-      height: 28%;
+    #left2{
+      height: 30%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
-        #left3{
-      height: 10%;
+    #left3{
+      height: 30%;
       width: 100%;
       margin: 5px 5px 5px 5px;
     }
@@ -260,7 +260,7 @@
      
     </script>
    <!--autosuggestion End-->
-
+  
   <div id="left" class="container"> <!-- .left div tags-->
     <div id="left1"><!-- .left1: User's input-->
       <form method="get" action="/search">
@@ -297,24 +297,24 @@
                 </select>
           </td>
           </tr>
-          
+          <!--
           <tr>
+          
           <td><b> Construction types </b></td>
-          <!-- icon -->
           <td> <i class="fas fa-question-circle" title="What is the construction type of the building?"></i> </td>   
           
           </tr>
           </table>  
 
             <table align = "center" style=" display:table-cell; vertical-align: middle;" >
-              <tr align = "center"> <!--input-->
+              <tr align = "center"> 
                 <td class="construction"><label><input type="radio" name="construction" value="basement"></label></td>
                 <td class="construction"><label><input type="radio" name="construction" value="crawlSpace"> </label></td>
                 <td class="construction"><label><input type="radio" name="construction" value="slab"></label></td>
                 <td class="construction"><label><input type="radio" name="construction" value="pierBeamPiling"> </label></td>
                 <td class="construction"><label><input type="radio" name="construction" value="pierBeamPilingFreeboard"></label></td>
               </tr>
-              <tr align = "center"> <!--image-->
+              <tr align = "center"> 
                 <td><br><img src="../static/img/construction/basement.png" style="width: 50px; height:50px;"></td>
                 <td><br><img src="../static/img/construction/crawlSpace.png" style="width: 50px; height:50px;"></td>
                 <td><br><img src="../static/img/construction/slab.png" style="width: 50px; height:50px;"></td>
@@ -326,7 +326,7 @@
                 <td valign="top"><br>Slab</td>
                 <td valign="top"><br>Pier and beam piling</td>
                 <td valign="top"><br>Pier and beam piling with freeboard</td>
-              </tr>
+              </tr>-->
             </table>
         
         <br>
@@ -354,7 +354,7 @@
 </div>
     <!-- left2: table-->
 			<div id="left2"> 
-      <h2><center> <b>Freeboard and Benefit Graph </b></center></h2>
+      <h2><center> <b>Freeboard and Benefit Graph </b></center></h2><br>
   	<!--bokeh chart			{{ div | safe }}   -->
            <table align = "center" style=" display:table-cell; vertical-align: middle;" class="benefitTable" >
               <tr> <!--input-->
@@ -367,7 +367,7 @@
               </tr>
               <tr> <!--input-->
                 <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b>Elevation cost</b></td>
-                <td>0.0</td>
+                <td>-</td>
                 <td>${{construction_cost_BFE1}}</td>
                 <td>${{construction_cost_BFE2}}</td>
                 <td>${{construction_cost_BFE3}}</td>

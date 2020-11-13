@@ -11655,7 +11655,7 @@ del {
     height: 100%;
     width: 100%;
     overflow:auto;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.7);
     opacity: 0;
     visibility: hidden;
     -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
@@ -11673,7 +11673,7 @@ del {
   
   .bts-popup-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     max-width: 1000px;
     margin: 4em auto;
     background: #7fc2e9e8;
@@ -11788,3 +11788,18 @@ del {
 .mapHeader {
     background: url(../img/hero/flood1_header.jpg) no-repeat;
 }
+
+/*modal popup*/
+.modal-content {
+    display: none;
+  }
+  
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+.modal-content input {
+    width: 95%;
+  }
+
