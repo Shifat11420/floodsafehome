@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
       
       //close popup
       $('.bts-popup').on('click', function(event){
-          if( $(event.target).is('.bts-popup-close') || $(event.target).is('.bts-popup') ) {
+          if( $(event.target).is('.bts-popup-close') ) {
               event.preventDefault();
               $(this).removeClass('is-visible');
           }
@@ -24,4 +24,7 @@ jQuery(document).ready(function($){
               $('.bts-popup').removeClass('is-visible');
           }
       });
+
   });
+
+
