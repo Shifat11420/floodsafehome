@@ -16,6 +16,9 @@ from bokeh.transform import cumsum, factor_cmap, dodge
 from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import EMPTY_LAYOUT
 import math
+from scipy.integrate import quad
+
+
 
 
 
@@ -83,17 +86,6 @@ def autosuggest(request):
 
     query_originalList=query_original.split(' ')
 
-    # if query_original:
-    #     query_originalList=query_original.split(' ')
-    #     query_originalList = list(map(str.strip, query_original))
-
-    #     fields = ["address__istartswith", "street__icontains"]
-
-    #     q_expression = [Q(f,w) for f in fields for w in query_originalList]
-    #     queryset = queryset.filter(reduce(operator.or_, q_expression)).distinct()
-
-    #queryset = Sampledata.objects.filter(reduce(operator.and_, (Q(street__icontains=x) for x in query_originalList) ))
-    #Q(address__istartswith = query_originalList[0]) | Q(street__icontains = query_originalList[1:]))
     if (len(query_originalList)==1):
         queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  ).all()[:10]
     elif (len(query_originalList)==2):
@@ -123,6 +115,9 @@ def helpcenter(request):
     return render(request, 'contact.html')    
 
 def search(request):
+
+##---------user input---------------------------------    
+    ##------location-----------------------
     location = request.GET.get('location', 'default')
     commasplit =location.split(',')
     beforecomma = commasplit[0]
@@ -130,10 +125,17 @@ def search(request):
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
 
+    ##-------number of stories------------------------
     No_Floors = request.GET['stories']
     print("accepted floors:", No_Floors)
 
-## Error message---------------------
+    ##--------------square footage-----------------------
+    Square_footage = float(request.GET.get('sqft', 'default'))
+##----------user input ends---------------------------------------
+
+
+
+##----------------------- Error message---------------------
     if (len(locationList)==1):
         queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
@@ -152,10 +154,10 @@ def search(request):
     else:
         mylist = ["valid address"]  
 
-##Error message ends-------------------------------
+##------------------Error message ends-------------------------------
 
 
-##autocomplete-------------------------------------
+##--------------------autocomplete-------------------------------------
     if (len(streetlist)==1):
         addressvalue = FreeboardConstructionCost.objects.filter(
          Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1])).all()
@@ -170,54 +172,113 @@ def search(request):
              Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
     
     print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
-##autocomplete ends--------------------------------------------------
+##------------------autocomplete ends--------------------------------------------------
                 
-    #zonevalue = []
+##-----------queries------------------------------
     zonevalue = ""
     parishvalue = ""
     for data in addressvalue:
-        #zonevalue.append(data.floodzone)
         zonevalue = data.floodzone
         print("ZONE: ", zonevalue )
         parishvalue = data.parish
-
-    ##by the average % increase table, and premium table
-    ## zone AE and zone X protected by levee are A zone
-    ## for other zones, an average value for all zones are calculated  (to be changed later)
-    AverageIncrease_zoneA = [0, 0.023,0.045,0.068,0.091]
-    AverageIncrease_zoneCoastal = [0, 0.039,0.048,0.061,0.081]
-    AverageIncrease_zoneV = [0, 0.018,0.036,0.054,0.072]
-    Premium_zoneA = [1819, 920, 585, 476, 441]
-    Premium_zoneV = [8158, 6549, 5208, 4107, 3533]
-    AAL_BFE_LC_story1 = [0.03, 0.02, 0.015, 0.01, 0]
-    AAL_BFE_LC_story2 = [0.035, 0.03, 0.02, 0.015, 0]
-
-    AverageIncrease = []
-    totalZones = ["A", "CoastalV", "V"]
-    totalBFE = [0, 1, 2, 3, 4]
-    primiumZones = ["A", "V"]
-    premium = []
-    AAL_BFE_losspercent = []
+##--------queries end----------------------------
 
 
-    ## building cost, parishwise constant value 
+ ##--------------DEMO values-----------------TO BE CHANGED------
+    BFE = 0
+    u = 2
+    a = 1
+    r = 0.05    # say, interest rate5%
+    n = 4       # no of payments per year
+    t = 5       # loan term or number of years in the loan
+    deductible_bldg = 1250   # demo-must be changed
+    deductible_cont = 1250   # demo-must be changed
+     
+##---------demo valus end--------------------
+
+
+##------building cost, parishwise constant value and CRS------------- 
     if parishvalue == "Jefferson":
         Building_cost = 92.47
         CRS = 0.25                  # demo-must be changed
     else:
         pass
 
-    ## Square footage comes from user input
-    Square_footage = float(request.GET.get('sqft', 'default'))
+##----Building value----------------------------------
 
     Building_value = Building_cost * Square_footage
 
-    ###----------------Insurance-----------------------------------------
+##-------BFE increments i---------------------------
 
-    #-- coverage level--------------
+    totalBFE = [0, 1, 2, 3, 4]
+
+##----------FFE-----------------------------
+    FFE = []
+    for i in range(len(totalBFE)):
+        FFE.append(totalBFE[i]+BFE)   
+
+##-----------freeboard construction cost-----------------
+
+    freeboardCost = []
+    for i in range(len(totalBFE)):
+        freeboardCost.append(int(totalBFE[i] * 0.023 * Building_value))
+
+    
+##---------------AAL------------------------
+
+    def integrand_Bldg(E):
+        y = (E-u)/a
+        term = -y - math.exp(-y)
+
+
+        if No_Floors == "1" : 
+            loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )        
+        elif No_Floors == "2" :
+            loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
+        else:
+            pass  
+
+        loss=(((1/a)* math.exp(term))*loss_bldg_inftoneg1)
+
+        return loss
+
+    def integrand_Cont(E):
+        y = (E-u)/a
+        term = -y - math.exp(-y)
+
+        if No_Floors == "1" :         
+            loss_cont_infto0 = ( 0.0049 *((E-F)**3)- 0.2996 * ((E-F)**2) + 5.5358 *(E-F) + 8.0402 )
+        elif No_Floors == "2" :        
+            loss_cont_infto0 = ( -0.0001 *((E-F)**3)- 0.1116 * ((E-F)**2) + 3.8257 *(E-F) + 4.9975 )
+        else:
+            pass  
+
+        loss=(((1/a)* math.exp(term))*loss_cont_infto0)
+
+        return loss
+
+
+    AAL_absCurrency = []
+    for i in range(len(totalBFE)): 
+        F= FFE[i]
+        AAL_B, errB = quad(integrand_Bldg, (F-1), math.inf)
+        AAL_C, errC = quad(integrand_Cont, 0, math.inf)
+
+        AAL_percentValue = (AAL_B + AAL_C)
+        AAL_absCurrency.append(int(AAL_percentValue * Building_value))
+
+    print("AAL_absCurrency : ", AAL_absCurrency)
+
+##----------------------AAL ends---------------------------------------
+
+###----------------Insurance-----------------------------------------
+
+    #------ coverage level--------------
 
     coverage_lvl_bldg = Building_value
     coverage_lvl_cont = Building_value * 0.4
+    print("coverage_lvl_bldg", coverage_lvl_bldg)
+    print("coverage_lvl_cont", coverage_lvl_cont)
 
     #--table--Zones AE, A, A1-A30------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     if zonevalue == "AE" or zonevalue == "A" :
@@ -266,8 +327,6 @@ def search(request):
     HFIAA_surcharge = 25
     Federal_policy_fee = 50
     
-    print("coverage_lvl_bldg", coverage_lvl_bldg)
-    print("coverage_lvl_cont", coverage_lvl_cont)
 
     ##----insurance limits----------
     basic_bldg_insurance_limit = 0
@@ -293,11 +352,10 @@ def search(request):
     else:
         pass
 
+
     ##----Premium deductible table------
 
-    deductible_bldg = 1250   # demo-must be changed
-    deductible_cont = 1250   # demo-must be changed
-     
+
     if deductible_bldg==1000 and deductible_cont==1000:
         fullrisk = 1.000
 
@@ -399,69 +457,94 @@ def search(request):
 
         total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS)) + HFIAA_surcharge + Federal_policy_fee))
 
-
-
-    #------------------------------
-
     ###---------------Insurance ends---------------------------------------
 
-    if No_Floors=="1":
-        AAL_BFE_losspercent = AAL_BFE_LC_story1
-        print("No_Floors:",No_Floors)
-    elif No_Floors=="2":
-        AAL_BFE_losspercent = AAL_BFE_LC_story2
-        print("No_Floors:",No_Floors)
-    else:
-        pass
-
-    ##for zone A
-    if zonevalue == "AE" or zonevalue == "X PROTECTED BY LEVEE":
-        # AverageIncrease_BFE1 = 1.3
-        # AverageIncrease_BFE2 = 2.4
-        # AverageIncrease_BFE3 = 3.8
-        # AverageIncrease_BFE4 = 5.0
-        AverageIncrease = AverageIncrease_zoneA
-        premium = Premium_zoneA
-    ##for other zones
-    else:
-        # AverageIncrease_BFE1 = (1.1+2.2+1.3)/3
-        # AverageIncrease_BFE2 = (2.2+2.8+2.4)/3
-        # AverageIncrease_BFE3 = (3.4+3.6+3.8)/3
-        # AverageIncrease_BFE4 = (4.5+4.8+5.0)/3
-        for i in range(len(totalBFE)):
-            AverageIncrease.append(round((AverageIncrease_zoneA[i]+AverageIncrease_zoneCoastal[i]+ AverageIncrease_zoneV[i])/len(totalZones),3))
-            premium.append((Premium_zoneA[i]+Premium_zoneV[i])/len(primiumZones))
+    
 
 
-
-    # construction_cost_BFE1= Building_cost * Square_footage * AverageIncrease[1] 
-    # construction_cost_BFE2= Building_cost * Square_footage * AverageIncrease[2] 
-    # construction_cost_BFE3= Building_cost * Square_footage * AverageIncrease[3] 
-    # construction_cost_BFE4= Building_cost * Square_footage * AverageIncrease[4] 
-
-    construction_cost_BFE = []
-    for i in range(len(AverageIncrease)):
-        construction_cost_BFE.append(round(Building_cost * Square_footage * AverageIncrease[i],2)) 
+    ##---------------Amortized freeboard cost--------------------------
+    Amortized_FC = []
+    for i in range(len(totalBFE)): 
+        principle_monthly_payment = (freeboardCost[i] * (r/n))/(1-((1+(r/n))**(-n*t)))
+        loan_fees = principle_monthly_payment * 0.07
+        Amortized_FC.append(principle_monthly_payment + loan_fees)
 
 
-    AAL_BFE=[]    
-    for i in range(len(AAL_BFE_losspercent)):
-        AAL_BFE.append(round(Building_cost * Square_footage * AAL_BFE_losspercent[i],3)) 
-        #print(AAL_BFE[i])
+    ##--------------Avoided annual loss---------------------------------
+    annual_avoided_loss = []
+    for i in range(len(totalBFE)): 
+        annual_avoided_loss.append(AAL_absCurrency[0]-AAL_absCurrency[i])
 
+
+    ##-----------------Annual premium saving------------------------------
+    annual_premium_saving = []
+    for i in range(len(totalBFE)): 
+        annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])
+
+
+    ##-----------Total monthly saving---------------------------------------------
+    total_monthly_saving = []
+    for i in range(len(totalBFE)): 
+        total_monthly_saving.append((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i])
+
+
+    ##-----------Total yearly saving---------------------------------------------
+    total_yearly_saving = []
+    for i in range(len(totalBFE)): 
+        total_yearly_saving.append(total_monthly_saving[i] * 12)
+
+
+    ##-----------Total loanbased freeboard cost---------------------------------------------
+    total_loanbased_FC = []
+    for i in range(len(totalBFE)): 
+        total_loanbased_FC.append(Amortized_FC[i] * 12 * t)
+
+
+    ##---------Time to recover freeboard cost through premium savings alone------------
+    time_to_recover_FC_PS = []
+    for i in range(len(totalBFE)):
+        if annual_premium_saving[i] == 0:
+            time_to_recover_FC_PS.append("-")
+        else:    
+            time_to_recover_FC_PS.append(total_loanbased_FC[i]/annual_premium_saving[i])
+
+
+    ##---------Time to recover freeboard cost through avoided annual loss alone------------
+    time_to_recover_FC_AvAL = []
+    for i in range(len(totalBFE)):
+        if annual_avoided_loss[i] == 0:
+            time_to_recover_FC_AvAL.append("-")
+        else:    
+            time_to_recover_FC_AvAL.append(total_loanbased_FC[i]/annual_avoided_loss[i])
+
+
+    ##---------Time to recover freeboard cost through total benefit------------
+    time_to_recover_FC_TB = []
+    for i in range(len(totalBFE)):
+        if (annual_premium_saving[i] + annual_avoided_loss[i]) == 0:
+            time_to_recover_FC_TB.append("-")
+        else:    
+            time_to_recover_FC_TB.append(round(total_loanbased_FC[i]/(annual_premium_saving[i] + annual_avoided_loss[i]),3))    
+
+
+    ##----------------------------------------------------------------------------
+ 
+
+    ##---------------------total cost------------------------------
     totalcost = []
-    for i in range(len(AAL_BFE)):
-        totalcost.append(round((AAL_BFE[i]+premium[i])*12+construction_cost_BFE[i],3))    #discounted present value, estimated from:   1(1+R_D )^t = 12  for 7% real discount rate
-        #print(totalcost[i])
+    for i in range(len(AAL_absCurrency)):
+        totalcost.append(round((AAL_absCurrency[i]+total_annual_premium[i])*12+freeboardCost[i],3))    #discounted present value, estimated from:   1(1+R_D )^t = 12  for 7% real discount rate
+    
 
-  
+    ##--------------------Net benefit-------------------------------
+
     #Net benefit (NB) is determined by subtracting the total cost of the freeboard scenario (step 10) 
     #from the total cost of the no action scenario.
     netbenefit = []
     for i in range(len(totalcost)):
-       netbenefit.append(round(totalcost[0]-totalcost[i],2))
-       #print(netbenefit[i])
+       netbenefit.append(int(totalcost[0]-totalcost[i]))
 
+    ##------------------Net benefit cost ratio-----------------------------------------------
 
     #Net benefit to cost ratio (NBCR) for each freeboard is the total net benefit of the freeboard scenario divided by its total cost.  
 
@@ -470,25 +553,23 @@ def search(request):
         if i==0:
             NBcostRatio.append(0)
         else:    
-            NBcostRatio.append(math.trunc(netbenefit[i]/construction_cost_BFE[i]))
+            NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
         print(NBcostRatio[i])
 
     location_json_list = simplejson.dumps(location)    
 
-    data_dict = {"location": location_json_list, "street": streetlist, "SquareFootage":Square_footage, "zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease_BFE1" : AverageIncrease[1],"AverageIncrease_BFE2" : AverageIncrease[2],"AverageIncrease_BFE3" : AverageIncrease[3],"AverageIncrease_BFE4" : AverageIncrease[4] ,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "vegetable" : ['alu', 'potol']}
-# data_dict = {"zone_value" : zonevalue , "Parish_value" : parishvalue, "AverageIncrease" : AverageIncrease ,"construction_cost_BFE1": construction_cost_BFE1, "construction_cost_BFE2": construction_cost_BFE2, "construction_cost_BFE3": construction_cost_BFE3, "construction_cost_BFE4": construction_cost_BFE4, "vegetable" : ['alu', 'potol']}
     
    
-    ##barchart-------------------------------
+    ##------------------barchart for insurance-------------------------------
     benefits = ['Insurance per year'] #['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
     nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
 
     data = {'benefits' : benefits,
-            'BFE + 0ft'   : [total_annual_premium[0]],  #[0, total_annual_premium[0], AAL_BFE[0], totalcost[0], netbenefit[0]],
-            'BFE + 1ft'   : [total_annual_premium[1]],  #[construction_cost_BFE[1], total_annual_premium[1], AAL_BFE[1], totalcost[1], netbenefit[1]],
-            'BFE + 2ft'   : [total_annual_premium[2]],  #[construction_cost_BFE[2], total_annual_premium[2], AAL_BFE[2], totalcost[2], netbenefit[2]],
-            'BFE + 3ft'   : [total_annual_premium[3]],  #[construction_cost_BFE[3], total_annual_premium[3], AAL_BFE[3], totalcost[3], netbenefit[3]],
-            'BFE + 4ft'   : [total_annual_premium[4]]}  #[construction_cost_BFE[4], total_annual_premium[4], AAL_BFE[4], totalcost[4], netbenefit[4]]}
+            'BFE + 0ft'   : [total_annual_premium[0]],  
+            'BFE + 1ft'   : [total_annual_premium[1]], 
+            'BFE + 2ft'   : [total_annual_premium[2]],  
+            'BFE + 3ft'   : [total_annual_premium[3]],  
+            'BFE + 4ft'   : [total_annual_premium[4]]}  
 
     x = [nofStories]
     counts = sum(zip( data['BFE + 0ft'],data['BFE + 1ft'],data['BFE + 2ft'], data['BFE + 3ft'],data['BFE + 4ft']), ()) # like an hstack
@@ -530,21 +611,19 @@ def search(request):
     ))
     script_insurance, div_insurance = components(p)
 
-    ##data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "Premium_BFE0": premium[0], "Premium_BFE1": premium[1], "Premium_BFE2": premium[2], "Premium_BFE3": premium[3], "Premium_BFE4": premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  "No_Floors": No_Floors, 'script': script, 'div':div }
-        
-        #data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, 'script': script, 'div':div, 'AAL_BFE0' : AAL_BFE[0],'AAL_BFE1' : AAL_BFE[1],'AAL_BFE2' : AAL_BFE[2],'AAL_BFE3' : AAL_BFE[3],'AAL_BFE4' : AAL_BFE[4] }
-
-        #barchart ends---------------------------------------
+    
+    ##----------------barchart ends---------------------------------------
         
     ##New-------------------------------
     ##barchart for Net benefit to cost ratio-------------------------------
     ##benefits = ['1 foot freeboard', '2 feet freeboard', '3 feet freeboard', '4 feet freeboard']
     ##nofStories = ['Net benefit to cost ratio']
-   
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors,"construction_cost_BFE1": construction_cost_BFE[1], "construction_cost_BFE2": construction_cost_BFE[2], "construction_cost_BFE3": construction_cost_BFE[3], "construction_cost_BFE4": construction_cost_BFE[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "AAL_BFE0":AAL_BFE[0], "AAL_BFE1":AAL_BFE[1], "AAL_BFE2":AAL_BFE[2], "AAL_BFE3":AAL_BFE[3], "AAL_BFE4":AAL_BFE[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance }
-    
-    
+       
     #New barchart ends---------------------------------------
+
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors,"FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "time_to_recover_FC_TB0" : time_to_recover_FC_TB[0], "time_to_recover_FC_TB1" : time_to_recover_FC_TB[1],"time_to_recover_FC_TB2" : time_to_recover_FC_TB[2],"time_to_recover_FC_TB3" : time_to_recover_FC_TB[3],"time_to_recover_FC_TB4" : time_to_recover_FC_TB[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance }
+    
+
     return render(request, 'nodisc.html', data_dictionary)
 
 
