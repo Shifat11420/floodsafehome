@@ -1,7 +1,10 @@
-<html>
+<html class="no-js" lang="zxx">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">    
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
   
   <title>Flood Safe Home</title>
@@ -26,7 +29,7 @@
 
   <style>
      #viewDiv {
-      height: 100%;
+      height: 73%;
       width: 70%;
       float: right;
     }
@@ -34,6 +37,7 @@
       height: 80%;
       width: 30%;
       float: left;
+      position: fixed;
     }
     #left1{
       height: 40%;
@@ -49,6 +53,12 @@
       height: 30%;
       width: 100%;
       margin: 5px 5px 5px 5px;
+    }
+    #container_detail{
+      width: 70%;
+      height:90%
+      float: middle;
+      margin: 0px 0px 0px 35%;
     }
 
   </style>
@@ -192,7 +202,7 @@
 </head>
 
 <body>
-     <header class="header" style="height:100px; text; padding: 5px 15px 15px 15px">
+     <header class="header " style="height:100px; text; padding: 5px 15px 15px 15px;">
         <!-- Header Start -->
         <div class="header-area header-transparent mapHeader">
             <div class="main-header ">
@@ -426,24 +436,27 @@
   </div>
    -->
 
-
-  <div id="viewDiv">
-  
+  <!--map-->
+    <div class="container_detail">
+      <div class="section-tittle mb-40">
+        <h2 style="padding: 0 0 0 50%">Your target location</h2>
+          <div id="viewDiv">
+          </div>
+    </div>   
   </div>
-
 <!--Result details-->
 
-<div class="container" <p style="padding: 80em 0 0 0;">
+<div > <p style="padding: 42em 0 0 0;">
                 <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
+                    <div>
                         <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2 >How much it will cost you for the elevation?</h2>
+                        <div class="section-tittle mb-40">
+                            <center><h2 style="padding: 0 0 0 35%">How much it will cost you for the elevation?</h2></center>
                             <br>
-                            <p class="p-style">
+                            <p class="p-style" style="padding: 0 5% 0 35%">
                           The expense of incorporating freeboard into new structures is surprisingly low. The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost.
                           </p>
-                          <p class="p-style">
+                          <p class="p-style" style="padding: 0 5% 0 35%">
                           The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.
 
                             </p>
@@ -452,22 +465,22 @@
                 </div>    
 </p></div>
 
-<div class="container" <p style="padding: 30em 0 0 0;">
+<div > <p style="padding: 30em 0 0 0;">
                 <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
+                    <div >
                         <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2 >How much you can save on insurance per year?</h2>
+                        <div class="section-tittle  mb-40">
+                            <center><h2 style="padding: 0 0 0 35%">How much you can save on insurance per year?</h2><center>
                             <br>
-                            <p class="p-style">
+                            <p class="p-style" style="padding: 0 5% 0 35%">
                           We can give you an estimate of how much you need to pay for insurance in a year. Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  For example, for the location {{location}} and your choice of square footage value {{SquareFootage}} and for {{No_Floors}} stories building, the total annual premium is ${{total_annual_premium_BFE}} for BFE with 0 ft elevation. For BFE + 1 ft elevation freeboard, the total annual premium is ${{total_annual_premium_BFE1}}. For BFE + 2 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE2}}. The total annual premium is ${{total_annual_premium_BFE3}} for BFE + 3 ft freeboard elevation and for BFE + 4 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE4}} <br>
-
+                          </p>
                         <!--  The following bar chart shows the annual insurance you need to pay for differnt base flood elevation in feet. <br>
-                          -->
+                          --><p class="p-style" style="padding: 0 5% 0 35%">
                           Constructing your home with additional freeboard lowers annual flood premiums by …% for the first additional foot, ..% for the second, ..% for the third, and ..% for the fourth foot. The estimated cost associated with elevating the home by one foot is offset in … years of insurance premium savings alone. The cost of elevating by two feet is recovered in .. years, and the cost of  elevating by three and four feet are recovered in … and … years, respectively.
 The following bar chart shows the annual insurance you need to pay for different base flood elevation in feet.
                         <br><br><br>
-                          <center>
+                          <center style="padding: 0 0 0 35%">
                           {{ div_insurance | safe }}
                           </center>
                             </p>
@@ -477,34 +490,34 @@ The following bar chart shows the annual insurance you need to pay for different
 </p></div>
 
 
-<div class="container" <p style="padding: 5em 0 0 0;">
+<div> <p style="padding: 5em 0 0 0;">
                 <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
+                    <div >
                         <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2 >How much reduction in expected flood losses in one year?</h2>
+                        <div class="section-tittle  mb-40">
+                            <center><h2 style="padding: 0 5% 0 35%">How much reduction in expected flood losses in one year?</h2></center>
                             <br>
-                            <p class="p-style">
+                            <p class="p-style" style="padding: 0 5% 0 35%">
                           Adding a freeboard also reduces flood losses in flooding events considerably. Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. Similarly, increasing the elevation by one-foot results in … % of decreased annual losses and the cost of the freeboard is offset in … years. More notably, adding … feet or more eliminates flood annual losses and the associated cost is recovered in … years.
                             </p>
-                            <p class="p-style">The following bar chart shows the reduction in annual flood loss with each additional half-foot of freeboard increase.
+                            <p class="p-style" style="padding: 0 5% 0 35%">The following bar chart shows the reduction in annual flood loss with each additional half-foot of freeboard increase.
                             </p>
                         </div>
                     </div>
                 </div>    
 </p></div>
 
-<div class="container" <p style="padding: 30em 0 0 0;">
+<div> <p style="padding: 30em 0 0 0;">
                 <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
+                    <div >
                         <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2 >How long it will take to recover the elevation cost?</h2>
+                        <div class="section-tittle mb-40">
+                            <center><h2 style="padding: 0 5% 0 35%">How long it will take to recover the elevation cost?</h2></center>
                             <br>
-                            <p class="p-style">
+                            <p class="p-style" style="padding: 0 5% 0 35%">
                           The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
                          </p>
-                            <p class="p-style">                        
+                            <p class="p-style" style="padding: 0 0 0 35%">                        
                          The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.
                           </p>
                         </div>
@@ -514,14 +527,14 @@ The following bar chart shows the annual insurance you need to pay for different
 
 
 
-<div class="container" <p style="padding: 30em 0 0 0;">
+<div> <p style="padding: 30em 0 0 0;">
                 <div class="row justify-content-center">
-                    <div class="col-xl-7 col-lg-8">
+                    <div >
                         <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-40">
-                            <h2 > What Is Your Best Choice?</h2>
+                        <div class="section-tittle  mb-40">
+                            <center><h2 style="padding: 0 0% 0 35%"> What Is Your Best Choice?</h2></center>
                             <br>
-                            <p class="p-style">
+                            <p class="p-style" style="padding: 0 5% 0 35%">
                        
                             Adding …-feet of freeboard represents the economically optimal option with most life-cycle benefits. These benefits will be realized through the life of the property. Keep in mind, these are immediate benefits to be gained by increasing elevation. Other benefits include less suffering, faster recovery, and increase in property values.
 
@@ -529,7 +542,7 @@ The following bar chart shows the annual insurance you need to pay for different
                         </div>
                     </div>
                 </div>    
-</p></div>
+</p></div>  </div>
 <!--Result details End-->
 
 <!--
@@ -551,6 +564,11 @@ The following bar chart shows the annual insurance you need to pay for different
 
 -->
 
+    <!-- Scroll Up -->
+    <div id="back-top" >
+        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
+    
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
