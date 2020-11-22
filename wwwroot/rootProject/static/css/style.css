@@ -11805,76 +11805,6 @@ del {
   }
 
 /*tour guide style */
-
-  /* -------------------------------- 
-  
-  xnugget info 
-  
-  -------------------------------- */
-  .cd-nugget-info {
-    position: absolute;
-    width: 100%;
-    left: 50%;
-    top: 50%;
-    bottom: auto;
-    right: auto;
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -o-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
-    z-index: 1;
-    text-align: center;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .cd-nugget-info h1 {
-    color: #fefffb;
-    font-size: 2.4rem;
-    margin: .6em 0;
-  }
-  .cd-nugget-info .cd-btn {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    border: none;
-    border-radius: 50em;
-    background: #367FFF;
-    padding: 1em 2em;
-    color: #fefffb;
-    font-weight: bold;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-  .cd-nugget-info .cd-btn:active {
-    -webkit-transform: scale(0.9);
-    -moz-transform: scale(0.9);
-    -ms-transform: scale(0.9);
-    -o-transform: scale(0.9);
-    transform: scale(0.9);
-  }
-  .no-touch .cd-nugget-info .cd-btn:hover, .cd-nugget-info .cd-btn:focus {
-    outline: none;
-    background: #1649a3;
-  }
-  @media only screen and (min-width: 1100px) {
-    .cd-nugget-info h1 {
-      font-size: 4.2rem;
-      font-weight: 300;
-    }
-    .cd-nugget-info .cd-btn {
-      font-size: 1.6rem;
-    }
-  }
-  
-  /* -------------------------------- 
-  
-  Main Components 
-  
-  -------------------------------- */
   .cd-tour-wrapper {
     position: fixed;
     z-index: 2;
@@ -11974,7 +11904,7 @@ del {
     width: 10px;
     height: 10px;
     border-radius: inherit;
-    background: #ff962c;
+    background: #FFBE36;
     -webkit-transform: scale(0);
     -moz-transform: scale(0);
     -ms-transform: scale(0);
@@ -12063,32 +11993,24 @@ del {
     }
     .cd-single-step:nth-of-type(1) {
       /* set tour points positions */
-      top: 17%;
-      left: 20%;
+      top: 18%;
+      left: 25%;
     }
     .cd-single-step:nth-of-type(2) {
-        top: 23%;
-        left: 20%;
+        top: 60%;
+        left: 10%;
     }
     .cd-single-step:nth-of-type(3) {
-      top: 28%;
-      left: 20%;
+        top: 80%;
+        left: 25%;
     }
     .cd-single-step:nth-of-type(4) {
-        top: 35%;
-        left: 10%;
+        top: 33.5%;
+        right: 17%;
       }
     .cd-single-step:nth-of-type(5) {
         top: 70%;
-        left: 20%;
-      }  
-    .cd-single-step:nth-of-type(6) {
-        top: 40%;
-        right: 17%;
-      }  
-    .cd-single-step:nth-of-type(7) {
-        bottom: 0%;
-        right: 30%;
+        right:40%;
       }  
     .cd-single-step > span, .cd-single-step::after {
       display: block;
@@ -12181,7 +12103,6 @@ del {
     font-size: 1.3rem;
     line-height: 1.6;
     margin-bottom: 1.4em;
-    font-family: Georgia, serif;
     color: #7f7f7d;
   }
   .cd-single-step .cd-more-info img {
@@ -12208,7 +12129,7 @@ del {
     height: 2px;
     width: 16px;
     border-radius: 4em;
-    background-color: #cbccc8;
+    background-color: #f1a100;
     /* Force Hardware Acceleration */
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
@@ -12237,7 +12158,6 @@ del {
     float: left;
     padding-top: .1em;
     font-size: 1.3rem;
-    font-family: Georgia, serif;
   }
   @media only screen and (min-width: 1100px) {
     .cd-single-step .cd-more-info {
@@ -12246,11 +12166,11 @@ del {
       border-radius: 4px;
       box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
       opacity: 0;
-      background-color: #fefffb;
+      background-color: #f7ecd6;
       -webkit-transition: opacity 0.4s;
       -moz-transition: opacity 0.4s;
       transition: opacity 0.4s;
-      border-color: #fefffb;
+      border-color: #f7ecd6;
     }
     .cd-single-step .cd-more-info p {
       margin-bottom: 2.5em;
@@ -12454,6 +12374,7 @@ del {
     background: #fefffb;
     border-radius: 4px 4px 0 0;
   }
+
   .cd-app-screen::after {
     top: 14px;
     left: 20px;
@@ -12462,4 +12383,43 @@ del {
     background: #e4e5e1;
     border-radius: 3px;
   }
+
+ /* Tour guide end */ 
   
+  /*map page style*/
+  .left {
+    height: 100%;
+    width: 30%;
+    float: left;
+    position: fixed;
+  }
+
+  /*map size*/
+  #viewDiv {
+    height:50%;
+    width: 70%;
+    float: right;
+  }
+
+  input.bar { 
+    margin: 0px 20px 0px 35px; 
+  }
+
+  input.text {
+    width: 80%;
+    margin: 0px 0px 0px 35px; 
+  }
+
+  /*line style for the map page */
+  hr.style-two {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 59, 252, 0), rgba(29, 100, 233, 0.884), rgba(0, 0, 0, 0));
+}
+
+.sidemenu td a{
+    font-size:20px;
+    font-weight: 500;
+    color: #4b4b4b;
+    font-family: "Raleway", sans-serif;
+}

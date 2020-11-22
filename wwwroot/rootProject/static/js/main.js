@@ -344,4 +344,3 @@ $('.top-job-slider').slick({
 
 })(jQuery);
 
-
