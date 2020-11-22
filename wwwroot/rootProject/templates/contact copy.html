@@ -23,8 +23,7 @@
     <link rel="stylesheet" href="static/css/themify-icons.css">
     <link rel="stylesheet" href="static/css/slick.css">
     <link rel="stylesheet" href="static/css/nice-select.css">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <!-- ? Preloader Start -->
@@ -58,7 +57,7 @@
                                     <div class="main-menu d-none d-lg-block">
                                         <nav>
                                             <ul id="navigation">
-                                                <li><a href="/"><b>Home</b></a></li>
+                                                <li><a href="/">Home</a></li>
                                                 <li><a href="/about">About</a>
                                                   <ul class="submenu">
                                                        <li><a href="/about#about">About</a></li>
@@ -75,8 +74,8 @@
                                                 </li>
                                                 <li><a href="/map">Decision Making Map</a></li>
                                                 <li><a href="/survey">Survey</a></li>
-                                                <li><a href="/helpcenter">Help Center</a></li>
-                                             </ul>
+                                                <li><a href="/helpcenter"><b>Help Center</b></a></li>
+                                            </ul>
                                         </nav>
                                     </div>
                                 </div>
@@ -93,132 +92,29 @@
         <!-- Header End -->
     </header>
 
+
+
     <main>
-
-    <!-- autosuggestion-->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script> 
-    jQuery.noConflict();
-    jQuery(function ($) {    
-    
-    $( "#tags" ).autocomplete({
-      source: "{% url 'autosuggest' %}"
-        });
-     } );
-    </script>
-    <!-- autosuggestion End-->
-
-
-    <!-- Section Start-->
-        <div class="slider-area">
-            <div class="single-slider slider-height d-flex align-items-center">
+        <!-- Hero Area Start-->
+        <div class="slider-area2">
+            <div class="single-slider slider-height3 d-flex align-items-center">
                 <div class="container">
-                    <div class="row justify-content-center">
+                    <div class="row">
                         <div class="col-xl-8 col-lg-9">
-                            <!-- Caption -->
-                            <div class="hero__caption">
-                                <h1 style="text-shadow: 3px 3px 2px #3E2A2A;">What is the optimal freeboard?</h1>
-                                <p style="text-shadow: 2px 2px 2px #3E2A2A;">Freeboard is the elevation of a building's lowest floor above the minimum base flood elevation. Let's identify, evaluate, and address the economic, physical, personal perception, and policy incentives/barriers to increased freeboard for new home construction in Louisiana.</p>
+                            <!-- Hero Caption -->
+                            <div class="hero__caption hero__caption2">
+                                <h1 >Help Center</h1>
                             </div>
                         </div>
-
-                        <div class="col-xl-11 col-lg-12" >
-                          <!--Form -->
-                          <form action="/gotomap" method= "get" class="search-box">
-                            {% csrf_token %} 
-                            
-                            <!--Search by 
-                          <div class="input-form">
-                                  <input type="text"  name="sqft" placeholder="Search by" readOnly> 
-                            </div> -->
-
-                            <!--Select search type -->
-                              <div class="select-form1" >
-                                  <div class="select-itms" style ="border-radius: 50px 0px 0px 50px;">
-                                      <select name="select" id="select1">
-                                          <option value="">Search by</option>
-                                          <option value="">Address</option>
-                                          <option value="">Subdivison</option>
-                                          <option value="">Parcel</option>
-                                          <option value="">Zip code</option>
-                                      </select>
-                                  </div>
-                              </div>
-
-                              <div class="select-form" >
-                                  <div class="select-itms">
-                                      <select name="select" id="select1">
-                                          <option value="">Select your parish</option>
-                                          <option value=""> Jefferson</option>
-                                          <option value=""> St. Tammany</option>
-                                          <option value=""> Terrebonne </option>
-                                      </select>
-                                  </div>
-                              </div>
-
-
-                            <!--Input text based on search type -->
-                              <div class="input-form2 select-form" >
-                                  <input type="text"  name="location" id="tags" placeholder="Where?">
-                                  <!-- icon -->
-                                  <div class="icon">
-                                      <i class="fas fa-map-marker-alt"></i>
-                                  </div>
-                              </div>
-
-                            <!--Search button -->
-                             <div class="search-box ">
-                              <button class="btn btn-primary"  type="submit ">                                   
-                              <!-- icon -->
-                                  <div class="icon">
-                                      <i class="fas fa-search"></i>
-                                  Search</div></button>      
-                            </div> 
-                            
-                                </form>
-                                </div>  
-
-<!-- Error message-->                                
-{% if messages %}
-{% for message in messages %}
-<div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
-  <strong>{{ message }}</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endfor %}
-{% endif %}
-
-<!-- Error message ends-->   
-                         </div>
-
-                          <div class="col-lg-12">
-                              <div class="popular-search text-center pt-30">
-                                  <ul>
-                                      <li><p style="text-shadow: 2px 2px 2px #3E2A2A;"> This project is funded by Louisiana Sea Grant’s Omnibus Program.<br>
-                                      <a href="http://www.laseagrant.org/research/projects/2020-2022/#Friedland"><u><font color="white">See details.</font></u></a></p></li>
-
-                                  </ul>
-                              </div>
-                          </div>
-                          
-                      </div>
-                  </div>
-              </div>
-
-          </div>
-      </div>
-
-    
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--Hero Area End-->
-        {% comment %} <footer>
-         <div class="footer-wrappper pl-100 pr-100 section-bg" data-background="static/img/gallery/footer-bg.png">
-        </div> {% endcomment %}
-     </main> 
-<!--
+
+
+    </main>
+
 {% if messages %}
 {% for message in messages %}
 <div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
@@ -229,7 +125,63 @@
 </div>
 {% endfor %}
 {% endif %}
--->
+
+     <!-- demo form -->
+       <div class="about-history pb-top">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2>Contact US</h2><br>
+                            <form method="post" action="/helpcenter">
+                            {% csrf_token %} 
+
+                                <div class="select-form" >
+                                  <div class="select-itms">
+                                      <p>How can we help?
+                                      <select name="help" id="help">
+                                          <option value="">-</option>
+                                          <option value="1">Unable to find a location</option>
+                                          <option value="2">Question about methodologies</option>
+                                          <option value="3">Something else</option>
+                                      </select>
+                                      </p>
+                                  </div>
+                                
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="desc">How can we help?</label>
+                                    <textarea class="form-control" id="desc" rows="3" name="desc" required></textarea>     
+                                    
+                                    {% comment %} <div class= "row justify-content-center">
+                                        <select class="form-control" id="exampleFormControlSelect1" placeholder="Select">
+                                        <option>Unable to find a location</option>
+                                        <option>Questions about methodology</option>
+                                        <option>Something else</option>
+                                        </select>
+                                    </div>  {% endcomment %}
+                                </div>
+                                 <button class="btn btn-primary" type="submit">Submit</button>                               
+                                </form>
+
+                        </div>
+ 
+        
+
+
+
+
+     <!-- demo form ends-->
     <!-- Scroll Up -->
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
@@ -263,8 +215,6 @@
   </div>
 </footer>
     <!-- JS here -->
-
-    
 
     <script src="./static/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->

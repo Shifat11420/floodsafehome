@@ -134,43 +134,55 @@
                         <!-- Section Tittle -->
                         <div class="section-tittle text-center mb-40">
                             <h2>Contact US</h2><br>
+                            <p class="help-center"> All fields are required.</p>
+                            <hr>
                             <form method="post" action="/helpcenter">
                             {% csrf_token %} 
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
-                                </div>
+                                        <p class="p-style"><b>Name</b> <br>
+                                            <input type="text" class="input-help" id="name" name="name" placeholder="Enter your name" required></p>
 
-                                <div class="form-group">
-                                    <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                                </div>
+                                        <p class="p-style"><b>Email</b> <br>
+                                            <input type="email" class="input-help" id="email" name="email" placeholder="Enter your email" required></p>
 
-                                <div class="form-group">
-                                    <label for="desc">How can we help?</label>
-                                    <textarea class="form-control" id="desc" rows="3" name="desc" required></textarea>     
+                                        <p class="p-style"><b>How can we help?</b> <br>
                                     
-                                    {% comment %} <div class= "row justify-content-center">
-                                        <select class="form-control" id="exampleFormControlSelect1" placeholder="Select">
-                                        <option>Unable to find a location</option>
-                                        <option>Questions about methodology</option>
-                                        <option>Something else</option>
-                                        </select>
-                                    </div>  {% endcomment %}
+                                            <select name="select-type" id="select-type" size="1" onchange="visibleDiv(this.value);" class="dropdown-help">
+                                                <option value="" selected>-</option>
+                                                <option value="location">Unable to find a location</option>
+                                                <option value="methodologies">Question about methodologies</option>
+                                                <option value="methodologies">Something else</option>
+                                            </select>
+                                        </p>
+                                        <br><br>
+
+                                <div id="location" class="hiddenDiv">
+                                        <p class="p-style"><b>Address or location searched</b> <br>
+                                            <input type="location" class="input-help" id="location" name="location" placeholder="Please tell us what you have searched" required></p>
+                                
+                                        <p class="p-style"><b>Details</b> <br>
+                                            <input type="detail"  class="details" id="detail" name="detail" placeholder="Please tell us specific information" required></p>
                                 </div>
-                                 <button class="btn btn-primary" type="submit">Submit</button>                               
-                                </form>
+
+                                <div id="methodologies" class="hiddenDiv">
+                                
+                                            <p class="p-style"><b>Subject</b><br>
+                                                <input type="subject" class="input-help" id="subject" name="subject" placeholder="Please type your subject" required></p>
+                                            
+                                            <p class="p-style"><b>Details</b> <br>
+                                                <input type="detail-method-or-se" class="details" id="detail-method-or-se" name="detail-method-or-se" placeholder="Please provide information to help us better understand your request" required></p>
+                                </div>
+                                <br>
+                                   <button class="btn btn-primary" type="submit">Submit</button>                      
+                            </form>
 
                         </div>
- 
-        
-
-
-
-
+                    </div>    
+                </div>
+            </div>
+        </div>
      <!-- demo form ends-->
-
-       <!-- Scroll Up -->
+     
+    <!-- Scroll Up -->
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
     </div>
@@ -182,7 +194,7 @@
                     <div class="col-xl-12 ">
                         <div class="footer-copy-right text-center">
                             <p>
-                              <a href=" ">Home</a>&nbsp;&nbsp;   |&nbsp;&nbsp;   <a href="/about">About</a>&nbsp;&nbsp;   |&nbsp;&nbsp;
+                              <a href="/">Home</a>&nbsp;&nbsp;   |&nbsp;&nbsp;   <a href="/about">About</a>&nbsp;&nbsp;   |&nbsp;&nbsp;
                               <a href="/freeboardproject">Freeboard Project</a> &nbsp;&nbsp;   |&nbsp;&nbsp;   <a href="/map">Decision Making Map</a> &nbsp;&nbsp;   |&nbsp;&nbsp;
                               <a href="/survey">Survey</a> &nbsp;&nbsp;   |&nbsp;&nbsp;   <a href="/helpcenter">Help Center</a><br> &nbsp;&nbsp;
                               <a href="https://lsu.edu" target="_blank"> <img src="./static/img/logo/lsu_logo.png" style="width:80px;height:30px;margin:20px" alt="LSU"></a>

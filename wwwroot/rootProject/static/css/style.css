@@ -12416,10 +12416,71 @@ del {
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 59, 252, 0), rgba(29, 100, 233, 0.884), rgba(0, 0, 0, 0));
 }
-
+/*map side menu*/
 .sidemenu td a{
     font-size:20px;
     font-weight: 500;
     color: #4b4b4b;
     font-family: "Raleway", sans-serif;
+}
+
+/* Help center */
+.hiddenDiv {
+    display:none;
+}
+
+.visibleDiv {
+    display:block;
+}
+
+.help-center {
+    color: #727070e8;
+    text-align: right;
+    font-style: italic;
+}
+
+.input-help {
+    width: 80%;
+    height: 10%;
+    border: 1px solid #e5e6e9;
+    border-radius: 0px;
+    padding-left: 18px;
+    font-size: 15px;
+    background: transparent;
+    margin: 0 0 0 50px;
+}
+
+.input-help:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.input-help::placeholder {
+    font-weight: 300;
+    color: #999999;
+}
+
+.dropdown-help {    
+    width: 300px;    
+    height: 40px;
+    background: #fff;
+    color: #1D2547;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #a9b6cd;
+    border-right: 1px solid #a9b6cd;
+    float: left;
+    margin: 0 0 0 50px;
+}
+
+.details{
+    width: 80%;
+    height: 300px;
+    border: 1px solid #e5e6e9;
+    border-radius: 0px;
+    padding-left: 18px;
+    font-size: 15px;
+    background: transparent;
+    margin: 0 0 0 50px;
+    vertical-align: top;
 }

@@ -342,5 +342,15 @@ $('.top-job-slider').slick({
   $('#bar5').barfiller();
   $('#bar6').barfiller();
 
+
+  $(document).ready(function(){
+    $('select').change(function() {
+        if($(this).data('oldVal'))
+            $("#"+$(this).data('oldVal')).removeClass('visibleDiv').addClass("hiddenDiv");
+                $("#"+$(this).find("option:selected").val()).addClass('visibleDiv');
+        $(this).data('oldVal', $(this).find("option:selected").val())
+    });
+});
+
 })(jQuery);
 
