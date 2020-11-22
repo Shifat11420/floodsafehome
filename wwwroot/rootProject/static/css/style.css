@@ -12441,7 +12441,7 @@ del {
 
 .input-help {
     width: 80%;
-    height: 10%;
+    height: 40px;
     border: 1px solid #e5e6e9;
     border-radius: 0px;
     padding-left: 18px;

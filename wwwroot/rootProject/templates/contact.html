@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="static/css/slick.css">
     <link rel="stylesheet" href="static/css/nice-select.css">
     <link rel="stylesheet" href="static/css/style.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+   
 </head>
 <body>
     <!-- ? Preloader Start -->
@@ -136,7 +138,8 @@
                             <h2>Contact US</h2><br>
                             <p class="help-center"> All fields are required.</p>
                             <hr>
-                            <form method="post" action="/helpcenter">
+                            <form method="post" action="/helpcenter" method="POST">
+                            
                             {% csrf_token %} 
                                         <p class="p-style"><b>Name</b> <br>
                                             <input type="text" class="input-help" id="name" name="name" placeholder="Enter your name" required></p>
@@ -172,7 +175,9 @@
                                                 <input type="detail-method-or-se" class="details" id="detail-method-or-se" name="detail-method-or-se" placeholder="Please provide information to help us better understand your request" required></p>
                                 </div>
                                 <br>
-                                   <button class="btn btn-primary" type="submit">Submit</button>                      
+                                <center><div class ="g-recaptcha" data-sitekey="6LczVOgZAAAAABekyhXydKkKHFAwzXWVjQFDO2xV"></div> <!--recaptcha-->
+                                <br>
+                                   <button class="btn btn-primary" type="submit">Submit</button></center>                      
                             </form>
 
                         </div>
