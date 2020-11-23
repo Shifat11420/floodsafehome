@@ -200,8 +200,10 @@ def search(request):
 ##------building cost, parishwise constant value and CRS------------- 
     if parishvalue == "Jefferson":
         Building_cost = 92.47
-        CRS = 0.25                  # demo-must be changed
+        CRS = 0.25                 # demo-must be changed
     else:
+        Building_cost = 100
+        CRS = 0
         pass
 
 ##----Building value----------------------------------
@@ -354,6 +356,7 @@ def search(request):
         basic_bldg_insurance_limit  = 60000                  # demo-must be changed
         addi_bldg_insurance_amnt = coverage_lvl_bldg-60000                  # demo-must be changed
     else:
+        print("Building coverage level exceeds the limit")
         pass
 
     if coverage_lvl_cont <= 25000:
@@ -363,6 +366,7 @@ def search(request):
         basic_cont_insurance_limit = 25000                 # demo-must be changed
         addi_cont_insurance_amnt = coverage_lvl_cont-25000                  # demo-must be changed
     else:
+        print("Content coverage level exceeds the limit")
         pass
 
 
