@@ -188,9 +188,9 @@ def search(request):
     BFE = 0
     u = 2
     a = 1
-    r = 0.05    # say, interest rate5%
-    n = 4       # no of payments per year
-    t = 5       # loan term or number of years in the loan
+    r = 0.03    # say, interest rate5%
+    n = 12       # no of payments per year
+    t = 30      # loan term or number of years in the loan
     deductible_bldg = 1250   # demo-must be changed
     deductible_cont = 1250   # demo-must be changed
      
@@ -292,6 +292,19 @@ def search(request):
         AddiRate_2s_Bldg_BFE = [0.08,0.08,0.08,0.08,0.08]
         BasicRate_2s_Cont_BFE = [0.75,0.40,0.38,0.38,0.38]
         AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+
+    #--table--Zones Unnumbered A------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
+    if zonevalue == "UA" :                                  ####to be changed, what should go for zone unnumbered A?
+        #--one story
+        BasicRate_1s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
+        AddiRate_1s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
+        BasicRate_1s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
+        AddiRate_1s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
+        #--twostory
+        BasicRate_2s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
+        AddiRate_2s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
+        BasicRate_2s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
+        AddiRate_2s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
 
     #--table--Zones V, V1-V30, VE------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     elif  zonevalue == "VE":
@@ -526,6 +539,13 @@ def search(request):
         else:    
             time_to_recover_FC_TB.append(round(total_loanbased_FC[i]/(annual_premium_saving[i] + annual_avoided_loss[i]),3))    
 
+##---------Time to recover freeboard cost through monthly savings------------
+    time_to_recover_FC_MS = []
+    for i in range(len(totalBFE)):
+        if (total_monthly_saving[i] == 0):
+            time_to_recover_FC_MS.append("-")
+        else:    
+            time_to_recover_FC_MS.append(round(total_loanbased_FC[i]/(total_monthly_saving[i]),3))    
 
     ##----------------------------------------------------------------------------
  
@@ -621,7 +641,7 @@ def search(request):
        
     #New barchart ends---------------------------------------
 
-    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors,"FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "time_to_recover_FC_TB0" : time_to_recover_FC_TB[0], "time_to_recover_FC_TB1" : time_to_recover_FC_TB[1],"time_to_recover_FC_TB2" : time_to_recover_FC_TB[2],"time_to_recover_FC_TB3" : time_to_recover_FC_TB[3],"time_to_recover_FC_TB4" : time_to_recover_FC_TB[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance }
+    data_dictionary = {"location": location_json_list, "SquareFootage":Square_footage, "No_Floors": No_Floors,"FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2": annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4], "time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance }
     
 
     return render(request, 'nodisc.html', data_dictionary)
