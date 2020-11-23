@@ -11774,14 +11774,14 @@ del {
     border-spacing: 0;
     width: 100%;
     text-align: center;
-    border: 1px solid #868585;
+    table-layout: fixed;
   }
 
 .benefitTable td{  
   border-collapse: collapse;
   height: 50px;
-  font-size: 80%;
-  border: 1px solid #868585;
+  font-size: 14px;
+  width: 25%;
   padding: 3px  3px  3px  3px;
 }
 
@@ -12394,9 +12394,22 @@ del {
     position: fixed;
   }
 
+  .left2 {
+    width: 70%;
+    float: right;    
+    margin: 1em 0 0 0; 
+  }
+
+  .left3 {
+    width: 70%;
+    float: right;
+    margin: 2.5em 0 0 0; 
+  }
+
+
   /*map size*/
   #viewDiv {
-    height:50%;
+    height:45%;
     width: 70%;
     float: right;
   }
@@ -12418,10 +12431,9 @@ del {
 }
 /*map side menu*/
 .sidemenu td a{
-    font-size:20px;
-    font-weight: 500;
+    font-size:15px;
+    font-weight: 400;
     color: #4b4b4b;
-    font-family: "Raleway", sans-serif;
 }
 
 /* Help center */
@@ -12483,4 +12495,23 @@ del {
     background: transparent;
     margin: 0 0 0 50px;
     vertical-align: top;
+}
+
+
+.section-tittle-detail h2 {
+    font-size: 42px;
+    display: block;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.title-detail{
+    color:  #1f2b7b;
+}
+
+  
+.p-style-detail {
+    text-align: justify;
+    text-indent: 50px;
+    margin: 0 80px 0 10px;
 }
