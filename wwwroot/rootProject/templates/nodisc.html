@@ -9,6 +9,7 @@
   
   <title>Flood Safe Home</title>
       <!-- CSS here -->
+      <!-- CSS here -->
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="static/css/slicknav.css">
@@ -27,10 +28,10 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
-<script src="https://js.arcgis.com/4.17/"></script>
-
+    <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://js.arcgis.com/4.17/"></script>
+    
 <script>
       require([
         "esri/WebMap",
@@ -326,168 +327,217 @@
 
 
  <!-- Side bar naviation menu-->
- <center>
-   <table style="width:90%; height: 25%;" class="sidemenu">
-    <tr>
-      <td> <a href="#">Summary</a></td>
-    </tr>
-    <tr>
-      <td> <a href="#">Freeboard cost</a></td>
-    </tr>
-    <tr>
-      <td><a href="#">Insurance saving per year</a></td>
-    </tr>
-    <tr>
-      <td><a href="#">Reduction in expected flood losses per year</a></td>
-    </tr>
-    <tr>
-      <td><a href="#">Time to recover the freeboard cost</a></td>
-    </tr> 
-    <tr>
-      <td><a href="#">Monthly savings</a></td>
-    </tr> 
-  </table>
- </center>
- 
- <!-- Side bar naviation menu end-->
-</div>
+  <center>
+    <table style="width:90%; height: 30%;" class="sidemenu">
+      <tr>
+        <td><a href="#summary">Summary</a></td>
+      </tr>
+      <tr>
+        <td> <a href="#freeboard">Freeboard cost</a></td>
+      </tr>
+      <tr>
+        <td><a href="#insurance">Insurance saving per year</a></td>
+      </tr>
+      <tr>
+        <td><a href="#floodloss">Reduction in expected flood losses per year</a></td>
+      </tr>
+      <tr>
+        <td><a href="#recover">Time to recover the freeboard cost</a></td>
+      </tr> 
+      <tr>
+        <td><a href="#saving">Monthly savings</a></td>
+      </tr> 
+      <tr>
+        <td><a id = "create_pdf">Save as a PDF</a></td>
+      </tr> 
+    </table>
+  </center>
+  
+  <!-- Side bar naviation menu end-->
+  </div>
+
 <!-- Error message-->                                
-{% if messages %}
-{% for message in messages %}
-<div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
-  <strong>{{ message }}</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endfor %}
-{% endif %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
+    <strong>{{ message }}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+  {% endif %}
 
 <!-- Error message ends--> 
-
-        <div id="viewDiv">
+<div id = "pdf_wrap">
+        <div id="viewDiv"><a id="summary"></a>
         </div>
- 
 
 <!--Result details-->
+<div class="left2 section-tittle mb-40"> 
+  <h2 class="title-detail">Summary</h2>
+  <div>
+      <p>
+        For your home, <b>-- feet of freeboard </b>is recommended to achieve the maximum benefits!			
+      </p>
+  </div>
+      <div style="overflow-x:auto;" >
+        <table class="benefitTable">
+          <tr>
+            <td><img src="static/img/construction/1.png" style="widht:100px; height:100px;"></td>
+            <td><img src="static/img/construction/2.png" style="widht:100px; height:100px;"></td>
+            <td><img src="static/img/construction/3.png" style="widht:100px; height:100px;"></td>
+            <td><img src="static/img/construction/4.png" style="widht:100px; height:100px;"></td>
+            <td><img src="static/img/construction/5.png" style="widht:100px; height:100px;"></td>
+          </tr>
+          <tr>
+            <td><b>Freeboard cost</b></td>
+            <td><b>Insurance Savings Per Year</b></td>
+            <td><b>Reduction In Expected <br>Flood Losses Per Yea</b>r</td>
+            <td><b>Time To Recover <br>The Freeboard Cost</b></td>
+            <td><b>Monthly savings</b></td>
+          </tr>
+          <tr><a id="freeboard">
+            <td>$11,368</td>
+            <td>$1,074</td>
+            <td>$2,423</td>
+            <td>44 Months</td>
+            <td>$256</td>
+          </a></tr>
+        </table>
+      </div>
+  </div>
 
-<div > <p style="padding: 42em 0 0 0;">
-                <div class="row justify-content-center">
-                    <div>
-                        <!-- Section Tittle -->
-                        <div class="section-tittle mb-40">
-                            <center><h2 style="padding: 0 0 0 35%">How much it will cost you for the elevation?</h2></center>
-                            <br>
-                            <p class="p-style" style="padding: 0 5% 0 35%">
-                          The expense of incorporating freeboard into new structures is surprisingly low. The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost.
-                          </p>
-                          <p class="p-style" style="padding: 0 5% 0 35%">
-                          The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.
+<hr>
 
-                            </p>
-                        </div>
-                    </div>
-                </div>    
-</p></div>
+  <div class="left3 section-tittle-detail mb-40"> 
+    <h2 class="title-detail">How much it will cost you for the elevation?</h2>
+      <p class="p-style-detail">
+        The expense of incorporating freeboard into new structures is surprisingly low. 
+       <a id="insurance"> The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. </a>
+        The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.<br><br>
+        </p>
+         <center>
+         <i> Graph will be added.</i> <!--need to update-->
+         </center>
+  </div>
 
-<div > <p style="padding: 30em 0 0 0;">
-                <div class="row justify-content-center">
-                    <div >
-                        <!-- Section Tittle -->
-                        <div class="section-tittle  mb-40">
-                            <center><h2 style="padding: 0 0 0 35%">How much you can save on insurance per year?</h2><center>
-                            <br>
-                            <p class="p-style" style="padding: 0 5% 0 35%">
-                          We can give you an estimate of how much you need to pay for insurance in a year. Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  For example, for the location {{location}} and your choice of square footage value {{SquareFootage}} and for {{No_Floors}} stories building, the total annual premium is ${{total_annual_premium_BFE}} for BFE with 0 ft elevation. For BFE + 1 ft elevation freeboard, the total annual premium is ${{total_annual_premium_BFE1}}. For BFE + 2 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE2}}. The total annual premium is ${{total_annual_premium_BFE3}} for BFE + 3 ft freeboard elevation and for BFE + 4 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE4}} <br>
-                          </p>
-                        <!--  The following bar chart shows the annual insurance you need to pay for differnt base flood elevation in feet. <br>
-                          --><p class="p-style" style="padding: 0 5% 0 35%">
-                          Constructing your home with additional freeboard lowers annual flood premiums by …% for the first additional foot, ..% for the second, ..% for the third, and ..% for the fourth foot. The estimated cost associated with elevating the home by one foot is offset in … years of insurance premium savings alone. The cost of elevating by two feet is recovered in .. years, and the cost of  elevating by three and four feet are recovered in … and … years, respectively.
-The following bar chart shows the annual insurance you need to pay for different base flood elevation in feet.
-                        <br><br><br>
-                          <center style="padding: 0 0 0 35%">
-                          {{ div_insurance | safe }}
-                          </center>
-                            </p>
-                        </div>
-                    </div>
-                </div>    
-</p></div>
+<hr>
 
-
-<div> <p style="padding: 5em 0 0 0;">
-                <div class="row justify-content-center">
-                    <div >
-                        <!-- Section Tittle -->
-                        <div class="section-tittle  mb-40">
-                            <center><h2 style="padding: 0 5% 0 35%">How much reduction in expected flood losses in one year?</h2></center>
-                            <br>
-                            <p class="p-style" style="padding: 0 5% 0 35%">
-                          Adding a freeboard also reduces flood losses in flooding events considerably. Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. Similarly, increasing the elevation by one-foot results in … % of decreased annual losses and the cost of the freeboard is offset in … years. More notably, adding … feet or more eliminates flood annual losses and the associated cost is recovered in … years.
-                            </p>
-                            <p class="p-style" style="padding: 0 5% 0 35%">The following bar chart shows the reduction in annual flood loss with each additional half-foot of freeboard increase.
-                            </p>
-                        </div>
-                    </div>
-                </div>    
-</p></div>
-
-<div> <p style="padding: 30em 0 0 0;">
-                <div class="row justify-content-center">
-                    <div >
-                        <!-- Section Tittle -->
-                        <div class="section-tittle mb-40">
-                            <center><h2 style="padding: 0 5% 0 35%">How long it will take to recover the elevation cost?</h2></center>
-                            <br>
-                            <p class="p-style" style="padding: 0 5% 0 35%">
-                          The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
-                         </p>
-                            <p class="p-style" style="padding: 0 0 0 35%">                        
-                         The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.
-                          </p>
-                        </div>
-                    </div>
-                </div>    
-</p></div>
+  <div class="left3 section-tittle-detail mb-40"> 
+    <h2 class="title-detail">How much you can save on insurance per year?</h2>
+      <p class="p-style-detail">
+        We can give you an estimate of how much you need to pay for insurance in a year. 
+        Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  
+        For example, for the location {{location}} and your choice of square footage value {{SquareFootage}} and for {{No_Floors}} stories building, 
+        the total annual premium is ${{total_annual_premium_BFE}} for BFE with 0 ft elevation. For BFE + 1 ft elevation freeboard, the total annual premium is
+        ${{total_annual_premium_BFE1}}. For BFE + 2 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE2}}. The total annual premium is 
+        ${{total_annual_premium_BFE3}} for BFE + 3 ft freeboard elevation and for BFE + 4 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE4}}. 
+      </p>
+      <p class="p-style-detail">
+        Constructing your home with additional freeboard lowers annual flood premiums by …% for the first additional foot, ..% for the second, ..% for the third, and ..% for the fourth foot. 
+        The estimated cost associated with elevating the home by one foot is offset in … years of insurance premium savings alone. The cost of elevating by two feet is recovered in .. years, 
+        and the cost of  elevating by three and four feet are recovered in … and … years, respectively.
+        The following bar chart shows the annual insurance you need to pay for different base flood elevation in feet.<br><br>
+      </p>
+      <center>
+       {{ div_insurance | safe }}
+      </center>
+  </div>
 
 
+<div class="left3 section-tittle-detail mb-40"> 
+     <a id="floodloss"><h2 class="title-detail">How much reduction in expected flood losses in one year?</h2></a>
+      <p class="p-style-detail">
+        Adding a freeboard also reduces flood losses in flooding events considerably. 
+        Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. 
+        Similarly, increasing the elevation by one-foot results in … % of decreased annual losses and the cost of the freeboard is offset in … years. 
+        More notably, adding … feet or more eliminates flood annual losses and the associated cost is recovered in … years.
+      </p>
+  </div>
 
-<div> <p style="padding: 30em 0 0 0;">
-                <div class="row justify-content-center">
-                    <div >
-                        <!-- Section Tittle -->
-                        <div class="section-tittle  mb-40">
-                            <center><h2 style="padding: 0 0% 0 35%"> What Is Your Best Choice?</h2></center>
-                            <br>
-                            <p class="p-style" style="padding: 0 5% 0 35%">
-                       
-                            Adding …-feet of freeboard represents the economically optimal option with most life-cycle benefits. These benefits will be realized through the life of the property. Keep in mind, these are immediate benefits to be gained by increasing elevation. Other benefits include less suffering, faster recovery, and increase in property values.
+  <div class="left3 section-tittle-detail mb-40"> 
+     <a id="recover"><h2 class="title-detail">How long it will take to recover the elevation cost?</h2></a>
+      <p class="p-style-detail">
+       The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).             
+       The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.
+      </p>
+         <center>
+         <i> Graph will be added.</i> <!--need to update-->
+         </center>
+  </div>
 
-                            </p>
-                        </div>
-                    </div>
-                </div>    
-</p></div>  </div>
+  <div class="left3 section-tittle-detail mb-40"> 
+     <a id="saving"><h2 class="title-detail">What is your nest choice?</h2></a>
+      <p class="p-style-detail">
+      Adding …-feet of freeboard represents the economically optimal option with most life-cycle benefits. These benefits will be realized through the life of the property. 
+      Keep in mind, these are immediate benefits to be gained by increasing elevation. Other benefits include less suffering, faster recovery, and increase in property values.
+      </p>
+  </div>
+
+
+<div class="left3 section-tittle-detail mb-40">
+       <h2 class="title-detail">Freeboard and Benefit Graph </h2><br>
+  	<!--bokeh chart			{{ div | safe }}   -->
+           <table align = "center" class="benefitTable">
+              <tr> <!--input-->
+                <td></td>
+                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"><br><b>BFE <br>+0 feet</b></td>
+                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"><br><b>BFE <br>+1 feet</b></td>
+                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"><br><b>BFE <br>+2 feet</b></td>
+                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"><br><b>BFE <br>+3 feet</b></td>
+                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"><br><b>BFE <br>+4 feet</b></td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b>Elevation cost</b></td>
+                <td>${{FreeboardCost0}}</td>
+                <td>${{FreeboardCost1}}</td>
+                <td>${{FreeboardCost2}}</td>
+                <td>${{FreeboardCost3}}</td>
+                <td>${{FreeboardCost4}}</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b>Insurance savings per year</b></td>
+                <td>${{total_annual_premium_BFE}}</td>
+                <td>${{total_annual_premium_BFE1}}</td>
+                <td>${{total_annual_premium_BFE2}}</td>
+                <td>${{total_annual_premium_BFE3}}</td>
+                <td>${{total_annual_premium_BFE4}}</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b>Reduction in expected <br>flood losses per year</b></td>
+                <td>${{AAL_absCurrency0}}</td>
+                <td>${{AAL_absCurrency1}}</td>
+                <td>${{AAL_absCurrency2}}</td>
+                <td>${{AAL_absCurrency3}}</td>
+                <td>${{AAL_absCurrency4}}</td>
+              </tr>
+              <tr></tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b>Time to recover <br>the elevation cost</b></td>
+                <td>{{time_to_recover_FC_TB0}}</td>
+                <td>{{time_to_recover_FC_TB1}}</td>
+                <td>{{time_to_recover_FC_TB2}}</td>
+                <td>{{time_to_recover_FC_TB3}}</td>
+                <td>{{time_to_recover_FC_TB4}}</td>
+              </tr>
+              <tr> <!--input-->
+                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b>Lifetime benefits of <br>the elevation</b></td>
+                <td>${{netbenefit0}}</td>
+                <td>${{netbenefit1}}</td>
+                <td>${{netbenefit2}}</td>
+                <td>${{netbenefit3}}</td>
+                <td>${{netbenefit4}}</td>
+              </tr>
+          </table>
+  </div>
+</div>
+ 
+
+
 <!--Result details End-->
 
-<!--
-  <div id="left3">
-    <p style="padding: 60em 0 0 0;">
-            <h2><b>Net benefit to cost ratio:</b> </h2> -->
-            <!--{{ div | safe }}--> 
- <!--           <br>     
 
-                    For 1 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio1}}: 1 <br>
-                    For 2 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio2}}: 1 <br>
-                    For 3 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio3}}: 1 <br>
-                    For 4 ft. freeboard &nbsp; &nbsp; &nbsp; {{NBcostRatio4}}: 1 <br>
-                    <br>
-                    The scenario with the highest NB represents the economically optimal option. 
-                    
-    </p>
-    </div>
-
--->
 
     <!-- Scroll Up -->
     <div id="back-top" >
@@ -503,9 +553,13 @@ The following bar chart shows the annual insurance you need to pay for different
     <!-- Jquery-->
     <script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
     <!-- Jquery Mobile Menu -->
+
+    <!--save as pdf js
     <script src="./static/js/jquery.slicknav.min.js"></script>
-
-
+    <script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type = "text/javascript" src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type = "text/javascript" src = "http://code.jquery.com/jquery-latest.min.js"></script>
+    -->
 
 </body>
 </html>

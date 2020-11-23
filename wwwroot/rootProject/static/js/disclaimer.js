@@ -27,4 +27,14 @@ jQuery(document).ready(function($){
 
   });
 
-
+  /*
+  $('#create_pdf').click(function() {
+	//convert pdf_wrap to canvas
+	html2canvas($('#pdf_wrap')[0]).then(function(canvas) {
+		var doc = new jsPDF('p', 'mm', 'a4'); //generate jspdf
+    var imgData = canvas.toDataURL('image/png'); //canvas to image
+    doc.addImage(imgData, 'PNG', 0, 0); //generate pdf based on image 
+    doc.save('sample-file.pdf'); //save as a pdf
+  });
+});
+*/
