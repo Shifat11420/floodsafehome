@@ -327,31 +327,17 @@
 
 
  <!-- Side bar naviation menu-->
-  <center>
-    <table style="width:90%; height: 30%;" class="sidemenu">
-      <tr>
-        <td><a href="#summary">Summary</a></td>
-      </tr>
-      <tr>
-        <td> <a href="#freeboard">Freeboard cost</a></td>
-      </tr>
-      <tr>
-        <td><a href="#insurance">Insurance saving per year</a></td>
-      </tr>
-      <tr>
-        <td><a href="#floodloss">Reduction in expected flood losses per year</a></td>
-      </tr>
-      <tr>
-        <td><a href="#recover">Time to recover the freeboard cost</a></td>
-      </tr> 
-      <tr>
-        <td><a href="#saving">Monthly savings</a></td>
-      </tr> 
-      <tr>
-        <td id = "create_pdf"><a >Save as a PDF</a></td>
-      </tr> 
-    </table>
-  </center>
+<nav class="sidemenu" id="sidemenu">
+  <ul>
+    <li><a class="sidemenu" href="#section-1">Summary</a></li>
+    <li><a class="sidemenu" href="#section-2">Freeboard cost</a></li>
+    <li><a class="sidemenu" href="#section-3">Insurance saving per year</a></li>
+    <li><a class="sidemenu" href="#section-4">Reduction in expected flood losses per year</a></li>
+    <li><a class="sidemenu" href="#section-5">Time to recover the freeboard cost</a></li>
+    <li><a class="sidemenu" href="#section-6">Monthly savings</a></li>
+    <li><a class="sidemenu" href="#">Save as a PDF</a></li>
+  </ul> 
+</nav>
   
   <!-- Side bar naviation menu end-->
   </div>
@@ -370,7 +356,7 @@
 
 <!-- Error message ends--> 
 <div id = "pdf_wrap">
-        <div id="viewDiv"><a id="summary"></a>
+        <div id="viewDiv"><section id="section-1"></section>
         </div>
 
 <!--Result details-->
@@ -426,13 +412,13 @@
               </div></center>-->
             </td>
           </tr>
-          <tr><a id="freeboard">
+          <tr><section id="section-2">
             <td>$...</td>
             <td>$...</td>
             <td>$...</td>
             <td>.... Months</td>
             <td>$...</td>
-          </a></tr>
+          </section></tr>
         </table>
       </div>
   </div>
@@ -443,7 +429,7 @@
     <h2 class="title-detail">How much it will cost you for the elevation?</h2>
       <p class="p-style-detail">
         The expense of incorporating freeboard into new structures is surprisingly low. 
-       <a id="insurance"> The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. </a>
+       <section id="section-3"> The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. </section>
         The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.<br><br>
         </p>
          <center>
@@ -470,21 +456,21 @@
         The cost of elevating by two feet is recovered in .. years, and the cost of  elevating by three and four feet are recovered in … and … years, respectively.
         The following bar chart shows the annual insurance you need to pay for different base flood elevation in feet.<br><br>
       </p>
-      <a id="floodloss"><center>
+      <section id="section-4"><center>
        {{ div_insurance | safe }}
-      </center></a>
+      </center></section>
   </div>
 
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="title-detail">How much reduction in expected flood losses in one year?</h2>
-      <a id="recover"><p class="p-style-detail"></a>
+      <section id="section-5"><p class="p-style-detail">
         Adding a freeboard also reduces flood losses in flooding events considerably. 
         Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. 
         Similarly, increasing the elevation by one-foot results in … % of decreased annual losses and the cost of the freeboard is offset in … years. 
         More notably, adding … feet or more eliminates flood annual losses and the associated cost is recovered in … years.
-      </p>
+      </p></section>
   </div>
 
 
@@ -494,7 +480,7 @@
       <p class="p-style-detail">
          The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
          Time to recover freeboard cost {{time_to_recover_FC_MS0}}, {{time_to_recover_FC_MS1}},{{time_to_recover_FC_MS2}},{{time_to_recover_FC_MS3}},{{time_to_recover_FC_MS4}} months. 
-         <a id="saving">The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.</a>
+         <section id="section-6">The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.</section>
       </p><br><br>
          <center>
          <i> Graph will be added.</i> <!--need to update-->

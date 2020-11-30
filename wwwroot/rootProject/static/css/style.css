@@ -12429,11 +12429,40 @@ del {
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 59, 252, 0), rgba(29, 100, 233, 0.884), rgba(0, 0, 0, 0));
 }
+
 /*map side menu*/
-.sidemenu td a{
-    font-size:15px;
-    font-weight: 400;
-    color: #4b4b4b;
+.sidemenu {
+    white-space: nowrap;
+  }
+
+  .sidemenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+  }
+
+/* Only stick if you can fit */
+@media (min-height: 300px) {
+.sidemenu ul {
+    position: sticky;
+    top: 0;
+}
+}
+
+.sidemenu ul li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: black;
+    text-decoration: none;
+}
+
+.sidemenu ul li a:hover {
+    background-color: #d6d4d4 ;
+}
+
+ul li a.current {
+    background: #b6a8a8;
 }
 
 /* Help center */
