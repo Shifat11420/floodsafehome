@@ -185,14 +185,18 @@ def search(request):
 
 
  ##--------------DEMO values-----------------TO BE CHANGED------
-    BFE = 0
+    BFE = 3
     u = 2
     a = 1
     r = 0.03    # say, interest rate5%
     n = 12       # no of payments per year
     t = 30      # loan term or number of years in the loan
-    deductible_bldg = 1250   # demo-must be changed
-    deductible_cont = 1250   # demo-must be changed
+    deductible_bldg = 5000   # demo-must be changed
+    deductible_cont = 4000   # demo-must be changed
+
+    
+    coverage_lvl_bldg = 170000 #Building_value
+    coverage_lvl_cont = 32000 #Building_value * 0.4
      
 ##---------demo valus end--------------------
 
@@ -200,7 +204,7 @@ def search(request):
 ##------building cost, parishwise constant value and CRS------------- 
     if parishvalue == "Jefferson":
         Building_cost = 92.47
-        CRS = 0.25                 # demo-must be changed
+        CRS = 0.25                # demo-must be changed
     else:
         Building_cost = 100
         CRS = 0
@@ -277,13 +281,13 @@ def search(request):
 
     #------ coverage level--------------
 
-    coverage_lvl_bldg = Building_value
-    coverage_lvl_cont = Building_value * 0.4
+    #coverage_lvl_bldg = Building_value
+    #coverage_lvl_cont = Building_value * 0.4
     print("coverage_lvl_bldg", coverage_lvl_bldg)
     print("coverage_lvl_cont", coverage_lvl_cont)
 
     #--table--Zones AE, A, A1-A30------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
-    if zonevalue == "AE" or zonevalue == "A" :
+    if zonevalue == "AE" :
         #--one story
         BasicRate_1s_Bldg_BFE = [2.21,0.94,0.50,0.34,0.31]
         AddiRate_1s_Bldg_BFE = [0.26,0.17,0.11,0.09,0.08]
@@ -296,7 +300,7 @@ def search(request):
         AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
 
     #--table--Zones Unnumbered A------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
-    if zonevalue == "UA" :                                  ####to be changed, what should go for zone unnumbered A?
+    if zonevalue == "A" :                                  ####to be changed, what should go for zone unnumbered A?
         #--one story
         BasicRate_1s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
         AddiRate_1s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
@@ -352,7 +356,7 @@ def search(request):
     if coverage_lvl_bldg <= 60000:
         basic_bldg_insurance_limit  = coverage_lvl_bldg                 # demo-must be changed
         addi_bldg_insurance_amnt = 0                  # demo-must be changed
-    elif coverage_lvl_bldg > 60000 and coverage_lvl_bldg<= 190000:
+    elif coverage_lvl_bldg > 60000 and coverage_lvl_bldg<= 250000:
         basic_bldg_insurance_limit  = 60000                  # demo-must be changed
         addi_bldg_insurance_amnt = coverage_lvl_bldg-60000                  # demo-must be changed
     else:
@@ -362,7 +366,7 @@ def search(request):
     if coverage_lvl_cont <= 25000:
         basic_cont_insurance_limit = coverage_lvl_cont                  # demo-must be changed
         addi_cont_insurance_amnt = 0                  # demo-must be changed
-    elif coverage_lvl_cont > 25000 and coverage_lvl_cont <= 75000:
+    elif coverage_lvl_cont > 25000 and coverage_lvl_cont <= 100000:
         basic_cont_insurance_limit = 25000                 # demo-must be changed
         addi_cont_insurance_amnt = coverage_lvl_cont-25000                  # demo-must be changed
     else:
