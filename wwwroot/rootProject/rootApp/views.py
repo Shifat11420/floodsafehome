@@ -186,17 +186,17 @@ def search(request):
 
  ##--------------DEMO values-----------------TO BE CHANGED------
     BFE = 3
-    u = 2
-    a = 1
-    r = 0.03    # say, interest rate5%
+    u = 1.5218
+    a = 0.335
+    r = 0.03    # say, interest rate 3%
     n = 12       # no of payments per year
     t = 30      # loan term or number of years in the loan
-    deductible_bldg = 5000   # demo-must be changed
-    deductible_cont = 4000   # demo-must be changed
+    deductible_bldg = 1250   # demo-must be changed
+    deductible_cont = 1250   # demo-must be changed
 
     
-    coverage_lvl_bldg = 170000 #Building_value
-    coverage_lvl_cont = 32000 #Building_value * 0.4
+    coverage_lvl_bldg = 200000 #Building_value
+    coverage_lvl_cont = 80000 #Building_value * 0.4
      
 ##---------demo valus end--------------------
 
@@ -264,16 +264,61 @@ def search(request):
         return loss
 
 
+    # AAL_absCurrency = []
+    # for i in range(len(totalBFE)): 
+    #     F= FFE[i]
+    #     AAL_B, errB = quad(integrand_Bldg, (F-1), math.inf)
+    #     AAL_C, errC = quad(integrand_Cont, 0, math.inf)
+
+    #     AAL_percentValue = (AAL_B + AAL_C)
+    #     AAL_absCurrency.append(int(AAL_percentValue * Building_value))
+
+    # print("AAL_percentValue : ", AAL_percentValue)
+    # print("AAL_absCurrency : ", AAL_absCurrency)
+
+        
     AAL_absCurrency = []
+    AAL_B_ansNerr = []
+    AAL_C_ansNerr = []
     for i in range(len(totalBFE)): 
         F= FFE[i]
-        AAL_B, errB = quad(integrand_Bldg, (F-1), math.inf)
-        AAL_C, errC = quad(integrand_Cont, 0, math.inf)
+        AAL_B_ansNerr.append(quad(integrand_Bldg, (F-1), math.inf))
+        AAL_C_ansNerr.append(quad(integrand_Cont, F, math.inf))
 
-        AAL_percentValue = (AAL_B + AAL_C)
-        AAL_absCurrency.append(int(AAL_percentValue * Building_value))
+    #print("AAL_Building_ansNerr : ", AAL_B_ansNerr)
+    #print("AAL_Content_ansNerr : ", AAL_C_ansNerr)
 
-    print("AAL_absCurrency : ", AAL_absCurrency)
+
+    AAL_bldg = []
+    AAL_cont = []
+    for tuple in AAL_B_ansNerr:
+        AAL_bldg.append(round(tuple[0],3))
+    for tuple in AAL_C_ansNerr:  
+        AAL_cont.append(round(tuple[0],3))
+
+    print("\n")
+    print("AAL_Building : ", AAL_bldg,"\n") 
+    print("AAL_Content : ", AAL_cont,"\n") 
+
+    AAL_percentValue=[]
+    AAL_absCurrency=[]
+    AAL_B_absCurrency=[]
+    AAL_C_absCurrency=[]
+
+    for i in range(len(totalBFE)): 
+        AAL_B_absCurrency.append(int(AAL_bldg[i] * Building_value/100))
+        AAL_C_absCurrency.append(int(AAL_cont[i] * Building_value/100))
+        AAL_percentValue.append( round(AAL_bldg[i] + AAL_cont[i],3))
+        AAL_absCurrency.append(int(AAL_percentValue[i] * Building_value/100))
+   
+    print("\n")
+    print("AAL_B_absCurrency : ", AAL_B_absCurrency,"\n")
+    print("AAL_C_absCurrency : ", AAL_C_absCurrency,"\n")
+    print("AAL_percentValue : ", AAL_percentValue,"\n")
+
+
+    print("AAL_absCurrency : ", AAL_absCurrency,"\n")
+
 
 ##----------------------AAL ends---------------------------------------
 
@@ -300,7 +345,7 @@ def search(request):
         AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
 
     #--table--Zones Unnumbered A------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
-    if zonevalue == "A" :                                  ####to be changed, what should go for zone unnumbered A?
+    elif zonevalue == "A" :                                  ####to be changed, what should go for zone unnumbered A?
         #--one story
         BasicRate_1s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
         AddiRate_1s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
@@ -488,38 +533,43 @@ def search(request):
     for i in range(len(totalBFE)): 
         principle_monthly_payment = (freeboardCost[i] * (r/n))/(1-((1+(r/n))**(-n*t)))
         loan_fees = principle_monthly_payment * 0.07
-        Amortized_FC.append(principle_monthly_payment + loan_fees)
+        Amortized_FC.append(int(principle_monthly_payment + loan_fees))
 
+    print("Amortised cost :  ", Amortized_FC)
 
     ##--------------Avoided annual loss---------------------------------
     annual_avoided_loss = []
     for i in range(len(totalBFE)): 
         annual_avoided_loss.append(AAL_absCurrency[0]-AAL_absCurrency[i])
+    print("Avoided annual loss :  ", annual_avoided_loss)
 
 
     ##-----------------Annual premium saving------------------------------
     annual_premium_saving = []
     for i in range(len(totalBFE)): 
         annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])
+    print("Annual premium saving :  ", annual_premium_saving)
 
 
     ##-----------Total monthly saving---------------------------------------------
     total_monthly_saving = []
     for i in range(len(totalBFE)): 
-        total_monthly_saving.append((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i])
+        total_monthly_saving.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i]))
+    print("Total monthly saving :  ", total_monthly_saving)
 
 
     ##-----------Total yearly saving---------------------------------------------
     total_yearly_saving = []
     for i in range(len(totalBFE)): 
-        total_yearly_saving.append(total_monthly_saving[i] * 12)
+        total_yearly_saving.append(int(total_monthly_saving[i] * 12))
+    print("Total yearly saving :  ", total_yearly_saving)
 
 
     ##-----------Total loanbased freeboard cost---------------------------------------------
     total_loanbased_FC = []
     for i in range(len(totalBFE)): 
-        total_loanbased_FC.append(Amortized_FC[i] * 12 * t)
-
+        total_loanbased_FC.append(round(Amortized_FC[i] * 12 * t,2))
+    print("Total loanbased freeboard cost :", total_loanbased_FC)
 
     ##---------Time to recover freeboard cost through premium savings alone------------
     time_to_recover_FC_PS = []
@@ -527,7 +577,9 @@ def search(request):
         if annual_premium_saving[i] == 0:
             time_to_recover_FC_PS.append("-")
         else:    
-            time_to_recover_FC_PS.append(total_loanbased_FC[i]/annual_premium_saving[i])
+            time_to_recover_FC_PS.append(round(total_loanbased_FC[i]/annual_premium_saving[i],1))
+    print("Time to recover FC PS :", time_to_recover_FC_PS)
+        
 
 
     ##---------Time to recover freeboard cost through avoided annual loss alone------------
@@ -536,7 +588,8 @@ def search(request):
         if annual_avoided_loss[i] == 0:
             time_to_recover_FC_AvAL.append("-")
         else:    
-            time_to_recover_FC_AvAL.append(total_loanbased_FC[i]/annual_avoided_loss[i])
+            time_to_recover_FC_AvAL.append(round(total_loanbased_FC[i]/annual_avoided_loss[i],1))
+    print("Time to recover FC AvAL :", time_to_recover_FC_AvAL)
 
 
     ##---------Time to recover freeboard cost through total benefit------------
@@ -545,7 +598,9 @@ def search(request):
         if (annual_premium_saving[i] + annual_avoided_loss[i]) == 0:
             time_to_recover_FC_TB.append("-")
         else:    
-            time_to_recover_FC_TB.append(round(total_loanbased_FC[i]/(annual_premium_saving[i] + annual_avoided_loss[i]),3))    
+            time_to_recover_FC_TB.append(round(total_loanbased_FC[i]/(annual_premium_saving[i] + annual_avoided_loss[i]),1))    
+    print("Time to recover freeboard cost through total benefit", time_to_recover_FC_TB)
+
 
 ##---------Time to recover freeboard cost through monthly savings------------
     time_to_recover_FC_MS = []
@@ -553,7 +608,10 @@ def search(request):
         if (total_monthly_saving[i] == 0):
             time_to_recover_FC_MS.append("-")
         else:    
-            time_to_recover_FC_MS.append(round(total_loanbased_FC[i]/(total_monthly_saving[i]),3))    
+            time_to_recover_FC_MS.append(round((total_loanbased_FC[i]/(total_monthly_saving[i] * n)),1) ) 
+    print("Time to recover freeboard cost through monthly savings", time_to_recover_FC_MS)
+
+         
 
     ##----------------------------------------------------------------------------
  
