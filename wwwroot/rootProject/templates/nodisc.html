@@ -236,16 +236,15 @@
    <!--autosuggestion End-->
 
   <!-- Select your building information-->
-  <div class="container left" style="z-index: 1;"> 
+ <div class="container left" style="z-index: 1;"> 
       <form method="get" action="/search">
             {% csrf_token %} 
       <p> 
-         <hr class="style-two">
-        <h2><center><b> Select your building information</b></center> </h2> <br>
+        <h2><center><b class="map-style"> Select your building information</b></center> </h2> <br>
            <center>
             <table style="width:90%; height: 33%;" >
                <tr> 
-                <td colspan="2"><b>User category <sup style="color:red">*</sup></b> &nbsp; </td>
+                <td colspan="2"><b class="map-style">User category <sup style="color:red">*</sup></b> &nbsp; </td>
               </tr>
 
               <tr>
@@ -262,7 +261,7 @@
               </tr>
 
               <tr class="layer"> 
-                <td colspan="2"><b>Is this assessment for <sup style="color:red">*</sup></b> &nbsp; </td>
+                <td colspan="2"><b class="map-style">Building Type <sup style="color:red">*</sup></b> &nbsp; </td>
               </tr>
 
               <tr>
@@ -279,7 +278,7 @@
               </tr>
 
               <tr> 
-                <td colspan="2"><b>Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
+                <td colspan="2"><b class="map-style">Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
               </tr>
 
               
@@ -289,7 +288,7 @@
 
           
               <tr> 
-                <td colspan="2"><b>Square footage <sup style="color:red">*</sup></b> </td>
+                <td colspan="2"><b class="map-style">Square footage <sup style="color:red">*</sup></b> </td>
               </tr>
             
               <tr>              
@@ -297,7 +296,7 @@
               </tr>
 
               <tr>
-                <td colspan="2"><b>Number of Stories <sup style="color:red">*</sup> </b></td>                    
+                <td colspan="2"><b class="map-style">Number of Stories <sup style="color:red">*</sup> </b></td>                    
               </tr>
               
               <tr>
@@ -315,6 +314,7 @@
 
             </table>   
           </center>
+      
       
         <br>
          <center><button class="btn btn-primary" type="submit" > Get results</button>  
@@ -363,10 +363,11 @@
 
 <!--Summary-->
 <div class="left2 section-tittle mb-40"> 
-  <h2 class="title-detail">Summary</h2>
+<hr class="style-two">
+  <h2 class="map-style">Summary</h2>
   <div>
       <p>
-        For your home, <b>-- feet of freeboard </b>is recommended to achieve the maximum benefits!			
+        For your home, <b class="map-style">-- feet of freeboard </b>is recommended to achieve the maximum benefits!			
       </p>
   </div>
       <div style="overflow-x:auto;" >
@@ -379,33 +380,33 @@
             <td><img src="static/img/construction/monthy_saving_color.jpg" style="widht:100px; height:100px;"></td>
           </tr>
           <tr>
-            <td><b>Freeboard cost</b>
+            <td><b class="map-style">Freeboard cost</b>
              <!-- <center><div class="help-tip">
                 <p><b style="color:white">Freeboard Cost</b> is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
                 Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is <b style="color:white">$7490</b>
                 </p>
               </div></center>-->
             </td>
-            <td><b>Insurance Savings Per Year </b>
+            <td><b class="map-style">Insurance Savings Per Year </b>
               <!--<center><div class="help-tip">
                 <p><b style="color:white">Insurance Savings Per Year</b> is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.
                 </p>
               </div></center>-->
             </td>
             </td>
-            <td><b>Reduction In Expected <br>Flood Losses Per Year</b>
+            <td><b class="map-style">Reduction In Expected <br>Flood Losses Per Year</b>
              <!-- <center><div class="help-tip">
                 <p><b style="color:white">Reduction In Flood Losses Per Year</b> is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual loss with no freeboard added.
                 </p>
               </div></center>-->
             </td>
-            <td><b>Time To Recover <br>The Freeboard Cost</b>
+            <td><b class="map-style">Time To Recover <br>The Freeboard Cost</b>
              <!-- <center><div class="help-tip">
                 <p><b style="color:white">Time To Recover The Cost</b> is the time required to offset the freeboard cost through the monthly savings.
                 </p>
               </div></center>-->
             </td>
-            <td><b>Monthly savings</b>
+            <td><b class="map-style">Monthly savings</b>
              <!-- <center><div class="help-tip">
                 <p><b style="color:white">Monthly Savinngs</b> is the freeboard's monthly loan payment subtracted from the monthly premium saving of the freeboard added to its monthly flood los reduction.
                 </p>
@@ -426,7 +427,8 @@
 
 <!--Freeboard cost-->
   <div class="left3 section-tittle-detail mb-40"> 
-    <h2 class="title-detail">How much it will cost you for the elevation?</h2>
+  <hr class="style-two">
+    <h2 class="map-style">How much it will cost you for the elevation?</h2>
       <p class="p-style-detail">
        <!-- The expense of incorporating freeboard into new structures is surprisingly low. 
        <section id="section-3"> The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. </section>
@@ -440,7 +442,8 @@
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
-    <h2 class="title-detail">How much you can save on insurance per year?</h2>
+  <hr class="style-two">
+    <h2 class="map-style">How much you can save on insurance per year?</h2>
       <p class="p-style-detail">
       <!--  We can give you an estimate of how much you need to pay for insurance in a year. 
         Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  
@@ -464,7 +467,8 @@
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="title-detail">How much reduction in expected flood losses in one year?</h2>
+<hr class="style-two">
+     <h2 class="map-style">How much reduction in expected flood losses in one year?</h2>
       <section id="section-5"><p class="p-style-detail">
         <!--Adding a freeboard also reduces flood losses in flooding events considerably. 
         Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. 
@@ -476,7 +480,8 @@
 
 <!--Recover-->
 <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="title-detail">How long it will take to recover the elevation cost?</h2>
+  <hr class="style-two">
+     <h2 class="map-style">How long it will take to recover the elevation cost?</h2>
       <p class="p-style-detail">
         <!-- The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
          Time to recover freeboard cost {{time_to_recover_FC_MS0}}, {{time_to_recover_FC_MS1}},{{time_to_recover_FC_MS2}},{{time_to_recover_FC_MS3}},{{time_to_recover_FC_MS4}} months. 
@@ -490,7 +495,8 @@
 
 <!--Monthly saving-->
   <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="title-detail">Your monthly savings for adding freeboard!</h2>
+    <hr class="style-two">
+     <h2 class="map-style">Your monthly savings for adding freeboard!</h2>
       <p class="p-style-detail">
      <!-- While the increase in your monthly mortgage payment for adding freeboard will be minor, the long term avoided losses and savings on insurance premiums are substantial. Your monthly savings for each additional freeboard is:
       </p><br><br> -->
@@ -507,23 +513,23 @@
       <div style="overflow-x:auto;" >
         <table class="benefitTable">
           <tr>
-            <td><b>Property size</b></td>
+            <td><b class="map-style">Property size</b></td>
             <td>... square footage<td>
           </tr>
           <tr>
-            <td><b>Number of stories</b></td>
+            <td><b class="map-style">Number of stories</b></td>
             <td></td>
           </tr>
           <tr>
-            <td><b>Flood zone</b></td>
+            <td><b class="map-style">Flood zone</b></td>
             <td></td>
           </tr>
           <tr>
-            <td><b>Expected occupancy timeline</b></td>
+            <td><b class="map-style">Expected occupancy timeline</b></td>
             <td>.. year<br> .. content</td>
           </tr>
           <tr>
-            <td><b>Flood insurance</b></td>
+            <td><b class="map-style">Flood insurance</b></td>
             <td>.. content<br> CRS ratie is .., with a .. % discount</td>
           </tr>
         </table>
@@ -541,7 +547,8 @@
 
 <!--Best choice-->
   <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="title-detail">What is your best choice?</h2>
+    <hr class="style-two">
+     <h2 class="map-style">What is your best choice?</h2>
       <p class="p-style-detail">
       Adding …-feet of freeboard represents the economically optimal option with most life-cycle benefits. These benefits will be realized through the life of the property. 
       Keep in mind, these are immediate benefits to be gained by increasing elevation. Other benefits include less suffering, faster recovery, and increase in property values.
@@ -552,19 +559,19 @@
 
 <!--Freeboard graph-->
 <div class="left3 section-tittle-detail mb-40">
-       <h2 class="title-detail">Freeboard and Benefit Graph </h2><br>
+       <h2 class="map-style">Freeboard and Benefit Graph </h2><br>
   	<!--bokeh chart			{{ div | safe }}   -->
            <table align = "center" class="benefitTable">
               <tr> <!--input-->
                 <td></td>
-                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"><br><b>BFE <br>+0 feet</b></td>
-                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"><br><b>BFE <br>+1 feet</b></td>
-                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"><br><b>BFE <br>+2 feet</b></td>
-                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"><br><b>BFE <br>+3 feet</b></td>
-                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"><br><b>BFE <br>+4 feet</b></td>
+                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+0 feet</b></td>
+                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"><br><b class="map-style"> BFE <br>+1 feet</b></td>
+                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+2 feet</b></td>
+                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+3 feet</b></td>
+                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+4 feet</b></td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b>Elevation cost</b></td>
+                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b class="map-style">Elevation cost</b></td>
                 <td>${{FreeboardCost0}}</td>
                 <td>${{FreeboardCost1}}</td>
                 <td>${{FreeboardCost2}}</td>
@@ -572,7 +579,7 @@
                 <td>${{FreeboardCost4}}</td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b>Insurance savings per year</b></td>
+                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b class="map-style">Insurance savings per year</b></td>
                 <td>${{total_annual_premium_BFE}}</td>
                 <td>${{total_annual_premium_BFE1}}</td>
                 <td>${{total_annual_premium_BFE2}}</td>
@@ -580,7 +587,7 @@
                 <td>${{total_annual_premium_BFE4}}</td>
               </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b>Reduction in expected <br>flood losses per year</b></td>
+                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b class="map-style">Reduction in expected <br>flood losses per year</b></td>
                  <td>${{annual_avoided_loss0}}</td>
                 <td>${{annual_avoided_loss1}}</td>
                 <td>${{annual_avoided_loss2}}</td>
@@ -589,7 +596,7 @@
               </tr>
               <tr></tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b>Time to recover <br>the elevation cost</b></td>
+                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b class="map-style">Time to recover <br>the elevation cost</b></td>
               <td>{{time_to_recover_FC_MS0}}</td>
                 <td>{{time_to_recover_FC_MS1}}</td>
                 <td>{{time_to_recover_FC_MS2}}</td>
@@ -597,7 +604,7 @@
                 <td>{{time_to_recover_FC_MS4}}</td>
                   </tr>
               <tr> <!--input-->
-                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b>Lifetime benefits of <br>the elevation</b></td>
+                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b class="map-style">Lifetime benefits of <br>the elevation</b></td>
                 <td>${{netbenefit0}}</td>
                 <td>${{netbenefit1}}</td>
                 <td>${{netbenefit2}}</td>

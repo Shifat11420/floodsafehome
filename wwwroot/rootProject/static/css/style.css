@@ -12425,14 +12425,14 @@ del {
 
   /*line style for the map page */
   hr.style-two {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 59, 252, 0), rgba(29, 100, 233, 0.884), rgba(0, 0, 0, 0));
+    border-top: 1px solid #a8a8a8;
+	border-bottom: 1px solid #fff;
 }
 
 /*map side menu*/
 .sidemenu {
     white-space: nowrap;
+    padding: 0 0 0 16px;
   }
 
   .sidemenu ul {
@@ -12534,10 +12534,6 @@ ul li a.current {
     line-height: 1.4;
 }
 
-.title-detail{
-    color:  #1f2b7b;
-}
-
   
 .p-style-detail {
     text-align: justify;
@@ -12545,3 +12541,6 @@ ul li a.current {
     margin: 0 80px 0 10px;
 }
 
+.map-style {
+    color: #363636 ;
+}
