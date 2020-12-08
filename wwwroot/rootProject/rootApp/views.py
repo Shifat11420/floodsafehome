@@ -38,6 +38,8 @@ def disclaimer(request):
 def gotomap(request): 
     location = request.GET.get('location', 'default')   
     print("my location: ", location)
+    stories = request.GET.get('stories', 'default')
+    print("my stories: ", stories)
     locationList=location.split(' ')
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
@@ -191,12 +193,12 @@ def search(request):
     r = 0.03    # say, interest rate 3%
     n = 12       # no of payments per year
     t = 30      # loan term or number of years in the loan
-    deductible_bldg = 1250   # demo-must be changed
-    deductible_cont = 1250   # demo-must be changed
+    deductible_bldg = 10000   # demo-must be changed
+    deductible_cont = 10000   # demo-must be changed
 
     
-    coverage_lvl_bldg = 200000 #Building_value
-    coverage_lvl_cont = 80000 #Building_value * 0.4
+    coverage_lvl_bldg = 225000 #Building_value
+    coverage_lvl_cont = 90000 #Building_value * 0.4
      
 ##---------demo valus end--------------------
 
@@ -204,7 +206,7 @@ def search(request):
 ##------building cost, parishwise constant value and CRS------------- 
     if parishvalue == "Jefferson":
         Building_cost = 92.47
-        CRS = 0.25                # demo-must be changed
+        CRS = 0.05                # demo-must be changed
     else:
         Building_cost = 100
         CRS = 0
@@ -338,12 +340,13 @@ def search(request):
         AddiRate_1s_Bldg_BFE = [0.26,0.17,0.11,0.09,0.08]
         BasicRate_1s_Cont_BFE = [1.02,0.53,0.38,0.38,0.38]
         AddiRate_1s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+        print("one story")
         #--twostory
         BasicRate_2s_Bldg_BFE = [1.75,0.78,0.43,0.31,0.27]
         AddiRate_2s_Bldg_BFE = [0.08,0.08,0.08,0.08,0.08]
         BasicRate_2s_Cont_BFE = [0.75,0.40,0.38,0.38,0.38]
         AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
-
+        print("two or more stories")
     #--table--Zones Unnumbered A------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     elif zonevalue == "A" :                                  ####to be changed, what should go for zone unnumbered A?
         #--one story
@@ -401,9 +404,14 @@ def search(request):
     if coverage_lvl_bldg <= 60000:
         basic_bldg_insurance_limit  = coverage_lvl_bldg                 # demo-must be changed
         addi_bldg_insurance_amnt = 0                  # demo-must be changed
+        print("building basic : ", basic_bldg_insurance_limit)
+        print("building additional : ", addi_bldg_insurance_amnt)
+
     elif coverage_lvl_bldg > 60000 and coverage_lvl_bldg<= 250000:
         basic_bldg_insurance_limit  = 60000                  # demo-must be changed
         addi_bldg_insurance_amnt = coverage_lvl_bldg-60000                  # demo-must be changed
+        print("building basic : ", basic_bldg_insurance_limit)
+        print("building additional : ", addi_bldg_insurance_amnt)
     else:
         print("Building coverage level exceeds the limit")
         pass
@@ -411,9 +419,13 @@ def search(request):
     if coverage_lvl_cont <= 25000:
         basic_cont_insurance_limit = coverage_lvl_cont                  # demo-must be changed
         addi_cont_insurance_amnt = 0                  # demo-must be changed
+        print("content basic : ", basic_cont_insurance_limit)
+        print("content additional : ", addi_cont_insurance_amnt)
     elif coverage_lvl_cont > 25000 and coverage_lvl_cont <= 100000:
         basic_cont_insurance_limit = 25000                 # demo-must be changed
         addi_cont_insurance_amnt = coverage_lvl_cont-25000                  # demo-must be changed
+        print("content basic : ", basic_cont_insurance_limit)
+        print("content additional : ", addi_cont_insurance_amnt)
     else:
         print("Content coverage level exceeds the limit")
         pass
@@ -502,12 +514,20 @@ def search(request):
     for i in range(len(totalBFE)):
 
         if No_Floors == "1" :    
+            print("one one one")
             total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_1s_Bldg_BFE[i])
             total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_1s_Bldg_BFE[i])
 
             total_cont_BasicCoverage.append( (( basic_cont_insurance_limit )/100) * BasicRate_1s_Cont_BFE[i])
             total_cont_AddiCoverage.append( (( addi_cont_insurance_amnt )/100) * AddiRate_1s_Cont_BFE[i])
+            print("basicrate_B : ", BasicRate_1s_Bldg_BFE[i])
+            print("additionalraterate_B : ", AddiRate_1s_Bldg_BFE[i])
+            print("basicrate_C : ", BasicRate_1s_Cont_BFE[i])
+            print("additionalraterate_C : ", AddiRate_1s_Cont_BFE[i])
+            print("total building basic cov : ",  total_bldg_BasicCoverage, "total building additional cov : ", total_bldg_AddiCoverage)
+            print("total content basic cov : ",  total_cont_BasicCoverage, "total content additional cov : ", total_cont_AddiCoverage)
         elif No_Floors == "2" : 
+            print("two two two")
             total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_2s_Bldg_BFE[i])
             total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_2s_Bldg_BFE[i])
 
@@ -516,13 +536,16 @@ def search(request):
         else:
             pass
 
-        principle_premium.append( (total_bldg_BasicCoverage[i] + total_bldg_AddiCoverage[i]) + (total_cont_BasicCoverage[i] + total_cont_AddiCoverage[i]))
+        principle_premium.append(round(((total_bldg_BasicCoverage[i] + total_bldg_AddiCoverage[i]) + (total_cont_BasicCoverage[i] + total_cont_AddiCoverage[i])),0))
 
         #deductible factor d is fullrisk
-        deducted_premium.append(principle_premium[i] * fullrisk)
+        deducted_premium.append(round((principle_premium[i] * fullrisk),0))
+        print("Deducted premium : ", deducted_premium)
 
-        total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS)) + HFIAA_surcharge + Federal_policy_fee))
+        #total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS)) + HFIAA_surcharge + Federal_policy_fee))
+        total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium)) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium))) + HFIAA_surcharge + Federal_policy_fee))
 
+        print("Total annual premium : ", total_annual_premium)
     ###---------------Insurance ends---------------------------------------
 
     
