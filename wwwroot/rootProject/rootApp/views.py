@@ -514,20 +514,20 @@ def search(request):
     for i in range(len(totalBFE)):
 
         if No_Floors == "1" :    
-            print("one one one")
+            #print("one one one")
             total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_1s_Bldg_BFE[i])
             total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_1s_Bldg_BFE[i])
 
             total_cont_BasicCoverage.append( (( basic_cont_insurance_limit )/100) * BasicRate_1s_Cont_BFE[i])
             total_cont_AddiCoverage.append( (( addi_cont_insurance_amnt )/100) * AddiRate_1s_Cont_BFE[i])
-            print("basicrate_B : ", BasicRate_1s_Bldg_BFE[i])
-            print("additionalraterate_B : ", AddiRate_1s_Bldg_BFE[i])
-            print("basicrate_C : ", BasicRate_1s_Cont_BFE[i])
-            print("additionalraterate_C : ", AddiRate_1s_Cont_BFE[i])
-            print("total building basic cov : ",  total_bldg_BasicCoverage, "total building additional cov : ", total_bldg_AddiCoverage)
-            print("total content basic cov : ",  total_cont_BasicCoverage, "total content additional cov : ", total_cont_AddiCoverage)
+            # print("basicrate_B : ", BasicRate_1s_Bldg_BFE[i])
+            # print("additionalraterate_B : ", AddiRate_1s_Bldg_BFE[i])
+            # print("basicrate_C : ", BasicRate_1s_Cont_BFE[i])
+            # print("additionalraterate_C : ", AddiRate_1s_Cont_BFE[i])
+            # print("total building basic cov : ",  total_bldg_BasicCoverage, "total building additional cov : ", total_bldg_AddiCoverage)
+            # print("total content basic cov : ",  total_cont_BasicCoverage, "total content additional cov : ", total_cont_AddiCoverage)
         elif No_Floors == "2" : 
-            print("two two two")
+            #print("two two two")
             total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_2s_Bldg_BFE[i])
             total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_2s_Bldg_BFE[i])
 
