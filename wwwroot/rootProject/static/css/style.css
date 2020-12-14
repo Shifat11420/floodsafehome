@@ -12544,3 +12544,29 @@ ul li a.current {
 .map-style {
     color: #363636 ;
 }
+
+
+.zc-body {
+  background-color:#FBFCFE;
+}
+
+.chart--container {
+  background-color:#FBFCFE;
+  width: 80%;
+  height: 50%;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.controls {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  text-align: center;
+}
+
+.zc-ref {
+  display: none;
+}

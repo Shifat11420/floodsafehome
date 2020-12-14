@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://js.arcgis.com/4.17/"></script>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     
 <script>
       require([
@@ -313,7 +314,7 @@
               </tr>
 
             </table>   
-          </center>
+          </center>   
       
       
         <br>
@@ -365,11 +366,15 @@
 <div class="left2 section-tittle mb-40"> 
 <hr class="style-two">
   <h2 class="map-style">Summary</h2>
-  <div>
-      <p>
-        For your home, <b class="map-style">-- feet of freeboard </b>is recommended to achieve the maximum benefits!			
-      </p>
-  </div>
+
+ 
+  <center>
+    <div id="myChart" class="chart--container">
+    </div>
+    <br>$ 256<br>
+    Your monthly saving
+  </center>
+  <!--
       <div style="overflow-x:auto;" >
         <table class="benefitTable">
           <tr>
@@ -381,36 +386,36 @@
           </tr>
           <tr>
             <td><b class="map-style">Freeboard cost</b>
-             <!-- <center><div class="help-tip">
+              <center><div class="help-tip">
                 <p><b style="color:white">Freeboard Cost</b> is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
                 Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is <b style="color:white">$7490</b>
                 </p>
-              </div></center>-->
+              </div></center>
             </td>
             <td><b class="map-style">Insurance Savings Per Year </b>
-              <!--<center><div class="help-tip">
+          <center><div class="help-tip">
                 <p><b style="color:white">Insurance Savings Per Year</b> is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.
                 </p>
-              </div></center>-->
+              </div></center>
             </td>
             </td>
             <td><b class="map-style">Reduction In Expected <br>Flood Losses Per Year</b>
-             <!-- <center><div class="help-tip">
+             <center><div class="help-tip">
                 <p><b style="color:white">Reduction In Flood Losses Per Year</b> is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual loss with no freeboard added.
                 </p>
-              </div></center>-->
+              </div></center>
             </td>
             <td><b class="map-style">Time To Recover <br>The Freeboard Cost</b>
-             <!-- <center><div class="help-tip">
+           <center><div class="help-tip">
                 <p><b style="color:white">Time To Recover The Cost</b> is the time required to offset the freeboard cost through the monthly savings.
                 </p>
-              </div></center>-->
+              </div></center>
             </td>
             <td><b class="map-style">Monthly savings</b>
-             <!-- <center><div class="help-tip">
+            <center><div class="help-tip">
                 <p><b style="color:white">Monthly Savinngs</b> is the freeboard's monthly loan payment subtracted from the monthly premium saving of the freeboard added to its monthly flood los reduction.
                 </p>
-              </div></center>-->
+              </div></center>
             </td>
           </tr>
           <tr><section id="section-2">
@@ -421,7 +426,7 @@
             <td>$...</td>
           </section></tr>
         </table>
-      </div>
+      </div>-->
   </div>
 
 

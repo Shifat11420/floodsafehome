@@ -73,3 +73,99 @@ $('header').removeClass('nav-up').addClass('nav-down');
 });
 */
 // Hide Header on on scroll down 
+
+
+/* Gague */
+let chartConfig = {
+  type: 'gauge',
+  backgroundColor: 'none',
+  plot: {
+    tooltip: {
+      visible: false
+    },
+    aperture: 180,
+    backgroundColor: 'none',
+    csize: '4px'
+  },
+  plotarea: {
+    margin: '100px 0px 0px 0px',
+    backgroundColor: 'none',
+    borderWidth: '0px'
+  },
+  scaleR: {
+    aperture: 180,
+    backgroundColor: 'none',
+    center: {
+      backgroundColor: 'none',
+      borderColor: 'none',
+      size: '0px'
+    },
+    item: {
+      padding: '5px',
+      fontColor: '#1E5D9E',
+      fontFamily: 'Montserrat',
+      offsetR: 0
+    },
+    maxValue: 500,
+    minValue: 0,
+    ring: {
+      rules: [
+        {
+          backgroundColor: '#d7191c',
+          rule: '%v < 100'
+        },
+        {
+          backgroundColor: '#fdae61',
+          rule: '%v >= 100 && %v < 200'
+        },
+        {
+          backgroundColor: '#f7f783',
+          rule: '%v >= 200 && %v < 300'
+        },
+        {
+          backgroundColor: '#a6d96a',
+          rule: '%v >= 300 && %v < 400'
+        },
+        {
+          backgroundColor: '#1a9641',
+          rule: '%v >= 400'
+        }
+      ],
+      size: '3px'
+    },
+    step: 50,
+    tick: {
+      lineColor: '#1E5D9E',
+      placement: 'out'
+    }
+  },
+  series: [
+    {
+      text: 'Internal',
+      values: [256],
+      backgroundColor: '#1E5D9E',
+      lineColor: '#00BAF2'
+    }
+  ]
+};
+
+zingchart.render({
+  id: 'myChart',
+  data: chartConfig,
+  height: '100%',
+  width: '100%',
+});
+
+/*
+ * assign event listener 
+ */
+document.getElementById('updateChart').addEventListener('input', (e) => {
+  let inputValue = e.currentTarget.value;
+  document.getElementById('output').textContent = inputValue;
+
+  // update the value of the chart using zingchart API 
+  zingchart.exec('myChart', 'setseriesvalues', {
+    plotindex: 0,
+    values: [parseInt(inputValue)]
+  });
+});
