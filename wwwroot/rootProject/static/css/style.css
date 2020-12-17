@@ -12546,14 +12546,12 @@ ul li a.current {
 }
 
 
-.zc-body {
-  background-color:#FBFCFE;
-}
+
 
 .chart--container {
-  background-color:#FBFCFE;
-  width: 80%;
+  width: 100%;
   height: 50%;
+  float: left;
 }
 
 .inline {
@@ -12565,6 +12563,14 @@ ul li a.current {
   margin-right: auto;
   position: relative;
   text-align: center;
+}
+
+.controls--left {
+    float: left;
+}
+
+.controls--right {
+    float: right;
 }
 
 .zc-ref {

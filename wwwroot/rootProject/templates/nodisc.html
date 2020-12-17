@@ -273,7 +273,7 @@
                   </td>
                   <td>
                   <label>
-                    <input type="radio" name ="selectBox" value = "existing_building" class="bar">Exisiting building</option>
+                    <input type="radio" name ="selectBox" value = "existing_building" class="bar">Existing building</option>
                   </label>
                 </td>
               </tr>
@@ -368,12 +368,16 @@
   <h2 class="map-style">Summary</h2>
 
  
-  <center>
-    <div id="myChart" class="chart--container">
+
+  <div id = "chart-container">
+    <div id="myChart" class="chart--container" id ="left">
     </div>
-    <br>$ 256<br>
-    Your monthly saving
-  </center>
+     <div class="controls" id ="left">
+      <input id='updateChart' type='range' min='0' max='5' value='5' class='inline' /><br>
+      <div id='output' class='inline'>When you add 5 feet freeboard, your monthly saving is <b>$ 256 <b></div>
+    </div>
+  </div>
+  </div>
   <!--
       <div style="overflow-x:auto;" >
         <table class="benefitTable">
@@ -427,7 +431,7 @@
           </section></tr>
         </table>
       </div>-->
-  </div>
+  
 
 
 <!--Freeboard cost-->
