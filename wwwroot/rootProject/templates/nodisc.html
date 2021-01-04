@@ -367,17 +367,49 @@
 <hr class="style-two">
   <h2 class="map-style">Summary</h2>
 
- 
+  <div class="grid-style1"><u style="color:black">-- feet freeboard is optimal for you!</u> </div><br>
+  <div style="overflow-x:auto;">
+  <table>
+    <tr>
+      <td rowspan="5" style="padding:25px"><center>
+        <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
+        <input onchange='setImage(this)' type="range" min="0" max="4" value="0" step="1" /><br><br>
+        <p class="grid-style3"> When you have <span id="demo">--</span> feet(foot) freeboard, <br> your monthly saving is <b>---</b> </p>
+        </center>
+      </td>
+    </tr>
+    <tr>
+      <td class="grid-style2" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
+      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"> | Freeboard cost: $ -- </td>
+    </tr>
+    <tr>
+      <td class="grid-style2"  title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added."> | Insurance saving per year: $ --</td>
+    </tr>
+    <tr>
+      <td class="grid-style2"  title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added."> | Reduction in expected flood losses per year: $ -- </td>
+    </tr>
+    <tr>
+      <td class="grid-style2" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings."> | Time to recover the freeboard cost: -- month(s)  </td>
+    </tr>
+  </table>
+  </div>
 
+
+</div>
+
+<!-- gague
   <div id = "chart-container">
     <div id="myChart" class="chart--container" id ="left">
     </div>
+    
+
      <div class="controls" id ="left">
       <input id='updateChart' type='range' min='0' max='5' value='5' class='inline' /><br>
-      <div id='output' class='inline'>When you add 5 feet freeboard, your monthly saving is <b>$ 256 <b></div>
+     <div id='output' class='inline'>When you add 5 feet freeboard, your monthly saving is <b>$ 256 <b></div>
     </div>
   </div>
-  </div>
+  </div> -->
+
   <!--
       <div style="overflow-x:auto;" >
         <table class="benefitTable">
