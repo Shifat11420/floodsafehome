@@ -249,7 +249,7 @@ def search(request):
                 if EminusF_bldg[i] == math.floor(E-F):
                     loss_bldg_inftoneg1 = np.interp(E-F, EminusF_bldg, damage_bldg)
                 elif (E-F) < -1:
-                    loss_bldg_inftoneg1 = 0.215                ### for now, check on the values
+                    loss_bldg_inftoneg1 = 0                ### for now, check on the values
                 elif (E-F) > 18 :
                     loss_bldg_inftoneg1 = 0.87                 ### for now, check on the values
                 else:
@@ -283,7 +283,7 @@ def search(request):
                 if EminusF_cont[i] == math.floor(E-F):
                     loss_cont_infto0 = np.interp(E-F, EminusF_cont, damage_cont)
                 elif (E-F) < 0:
-                    loss_cont_infto0 = 0.15                ### for now, check on the values
+                    loss_cont_infto0 = 0                ### for now, check on the values
                 elif (E-F) > 18 :
                     loss_cont_infto0 = 0.78                 ### for now, check on the values
                 else:
