@@ -17,6 +17,7 @@ from bokeh.core.validation import silence
 from bokeh.core.validation.warnings import EMPTY_LAYOUT
 import math
 from scipy.integrate import quad
+import numpy as np
 
 
 
@@ -238,13 +239,31 @@ def search(request):
         y = (E-u)/a
         term = -y - math.exp(-y)
 
+        #### V zones functions for AAL building
+        if zonevalue == "VE":
+            
+            EminusF_bldg = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+            damage_bldg = [0.215, 0.24, 0.29, 0.37, 0.54, 0.605, 0.645, 0.68, 0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.815, 0.83, 0.84, 0.85, 0.86, 0.87]
 
-        if No_Floors == "1" : 
-            loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )        
-        elif No_Floors == "2" :
-            loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
-        else:
-            pass  
+            for i in range(len(EminusF_bldg)):
+                if EminusF_bldg[i] == math.floor(E-F):
+                    loss_bldg_inftoneg1 = np.interp(E-F, EminusF_bldg, damage_bldg)
+                elif (E-F) < -1:
+                    loss_bldg_inftoneg1 = 0.215                ### for now, check on the values
+                elif (E-F) > 18 :
+                    loss_bldg_inftoneg1 = 0.87                 ### for now, check on the values
+                else:
+                    pass    
+
+
+        #### Not V zones functions for AAL building    
+        else:    
+            if No_Floors == "1" : 
+                loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )        
+            elif No_Floors == "2" :
+                loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
+            else:
+                pass  
 
         loss=(((1/a)* math.exp(term))*loss_bldg_inftoneg1)
 
@@ -254,12 +273,30 @@ def search(request):
         y = (E-u)/a
         term = -y - math.exp(-y)
 
-        if No_Floors == "1" :         
-            loss_cont_infto0 = ( 0.0049 *((E-F)**3)- 0.2996 * ((E-F)**2) + 5.5358 *(E-F) + 8.0402 )
-        elif No_Floors == "2" :        
-            loss_cont_infto0 = ( -0.0001 *((E-F)**3)- 0.1116 * ((E-F)**2) + 3.8257 *(E-F) + 4.9975 )
-        else:
-            pass  
+        #### V zones functions for AAL content
+        if zonevalue == "VE":
+            
+            EminusF_cont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+            damage_cont = [0.15, 0.23, 0.35, 0.5, 0.58, 0.63, 0.67, 0.7, 0.72, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78]
+
+            for i in range(len(EminusF_cont)):
+                if EminusF_cont[i] == math.floor(E-F):
+                    loss_cont_infto0 = np.interp(E-F, EminusF_cont, damage_cont)
+                elif (E-F) < 0:
+                    loss_cont_infto0 = 0.15                ### for now, check on the values
+                elif (E-F) > 18 :
+                    loss_cont_infto0 = 0.78                 ### for now, check on the values
+                else:
+                    pass   
+
+        #### Not V zones functions for AAL content    
+        else:    
+            if No_Floors == "1" :         
+                loss_cont_infto0 = ( 0.0049 *((E-F)**3)- 0.2996 * ((E-F)**2) + 5.5358 *(E-F) + 8.0402 )
+            elif No_Floors == "2" :        
+                loss_cont_infto0 = ( -0.0001 *((E-F)**3)- 0.1116 * ((E-F)**2) + 3.8257 *(E-F) + 4.9975 )
+            else:
+                pass  
 
         loss=(((1/a)* math.exp(term))*loss_cont_infto0)
 
