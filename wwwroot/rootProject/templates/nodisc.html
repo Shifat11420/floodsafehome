@@ -361,37 +361,138 @@
         </div>
 
 <!--Result details-->
-
 <!--Summary-->
 <div class="left2 section-tittle mb-40"> 
 <hr class="style-two">
   <h2 class="map-style">Summary</h2>
 
-  <div class="grid-style1"><u style="color:black">-- feet freeboard is optimal for you!</u> </div><br>
-  <div style="overflow-x:auto;">
-  <table>
+<div class="pricing">
+      <div class="pricing-slider">
+        <label class="form-slider">
+          <span>Your optimal freeboard is -- ft!</span><br><br>
+          <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
+          <datalist id="scale">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </datalist><br><br>
+          <input onchange='setImage(this)'
+            type="range"
+            class="slider" id="myRange" list="scale"
+            data-price-input='{
+                "0": "0",
+                "1": "1",
+                "2": "2",
+                "3": "3",
+                "4": "4"                
+              }'
+          />
+        </label>
+        <div class="pricing-slider-value"></div>
+      </div>
+
+      <!--Freeboard cost-->
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{FreeboardCost0}},""],
+          "1": ["$", {{FreeboardCost1}},""],
+          "2": ["$", {{FreeboardCost2}},""],
+          "3": ["$", {{FreeboardCost3}},""],
+          "4": ["$", {{FreeboardCost4}},""]
+        }'
+      >
+      <p class="pricing-slider-value grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard,</p><Br>
+      <p class="grid-style3"  title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
+      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490">| Freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+        <span class="pricing-item-price-currency">$</span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after"></span>
+      </div>
+      
+      <!--insurance-->
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{total_annual_premium_BFE}},""],
+          "1": ["$", {{total_annual_premium_BFE1}},""],
+          "2": ["$", {{total_annual_premium_BFE2}},""],
+          "3": ["$", {{total_annual_premium_BFE3}},""],
+          "4": ["$", {{total_annual_premium_BFE4}},""]
+        }'
+      >
+      <p class="grid-style3" title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.">| Insurance saving per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> :
+        <span class="pricing-item-price-currency">$</span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after"></span>
+      </div>
+
+       <!--Flood loss-->
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{annual_avoided_loss0}},""],
+          "1": ["$", {{annual_avoided_loss1}},""],
+          "2": ["$", {{annual_avoided_loss2}},""],
+          "3": ["$", {{annual_avoided_loss3}},""],
+          "4": ["$", {{annual_avoided_loss4}},""]
+        }'
+      >
+      <p class="grid-style3" title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added.">| Reduction in expected flood losses per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+        <span class="pricing-item-price-currency">$</span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after"></span>
+      </div>
+    
+      <!--Time to recover
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["", {{time_to_recover_FC_MS0}},"month(s)"],
+          "1": ["", {{time_to_recover_FC_MS1}},"month(s)"],
+          "2": ["", {{time_to_recover_FC_MS2}},"month(s)"],
+          "3": ["", {{time_to_recover_FC_MS3}},"month(s)"],
+          "4": ["", {{time_to_recover_FC_MS4}},"month(s)"]
+        }'
+      >
+      <p class="grid-style3" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings.">| Time to recover the freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+        <span class="pricing-item-price-currency"></span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after">month(s)</span>
+      </div>-->
+
+
+  <!--<table>
     <tr>
       <td rowspan="5" style="padding:25px"><center>
         <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
-        <input onchange='setImage(this)' type="range" min="0" max="4" value="0" step="1" /><br><br>
-        <p class="grid-style3"> When you have <span id="demo">--</span> feet(foot) freeboard, <br> your monthly saving is <b>---</b> </p>
+          <datalist id="scale">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </datalist><br><br>
+        <p class="grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard, <br> your monthly saving is <b></b> </p>
         </center>
       </td>
     </tr>
-    <tr>
+    <tr>2
       <td class="grid-style2" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
-      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"> | Freeboard cost: $ -- </td>
+      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"> | Freeboard cost: $ <span id="demo"></span> {{FreeboardCost0}}</td>
     </tr>
     <tr>
-      <td class="grid-style2"  title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added."> | Insurance saving per year: $ --</td>
+      <td class="grid-style2"  title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added."> | Insurance saving per year: $ {{total_annual_premium_BFE}}</td>
     </tr>
     <tr>
-      <td class="grid-style2"  title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added."> | Reduction in expected flood losses per year: $ -- </td>
+      <td class="grid-style2"  title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added."> | Reduction in expected flood losses per year: $ {{annual_avoided_loss0}} </td>
     </tr>
     <tr>
-      <td class="grid-style2" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings."> | Time to recover the freeboard cost: -- month(s)  </td>
+      <td class="grid-style2" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings."> | Time to recover the freeboard cost: {{time_to_recover_FC_MS0}} month(s)  </td>
     </tr>
-  </table>
+  </table>-->
   </div>
 
 
