@@ -369,7 +369,8 @@
 <div class="pricing">
       <div class="pricing-slider">
         <label class="form-slider">
-          <span>Your optimal freeboard is -- ft!</span><br><br>
+          <span>Your optimal freeboard is {{OptimalFreeboard}} ft!</span><br><br>
+          <span>Your optimal monthly saving is ${{OptimalSaving}} !</span><br><br>
           <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
           <datalist id="scale">
             <option>0</option>
@@ -404,7 +405,7 @@
           "4": ["$", {{FreeboardCost4}},""]
         }'
       >
-      <p class="pricing-slider-value grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard,</p><Br> your optimal freeboard is<br><br>
+      <p class="pricing-slider-value grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard,</p><Br> your estimations are:<br><br>
       <p class="grid-style3"  title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
       Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490">| Freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
         <span class="pricing-item-price-currency">$</span>
