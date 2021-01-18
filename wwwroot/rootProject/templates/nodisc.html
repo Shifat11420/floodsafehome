@@ -9,7 +9,7 @@
   
   <title>Flood Safe Home</title>
       <!-- CSS here -->
-      <!-- CSS here -->
+      
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="static/css/slicknav.css">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="static/css/slick.css">
     <link rel="stylesheet" href="static/css/nice-select.css">
     <link rel="stylesheet" href="../static/css/style.css">
-	  <script src="static/js/modernizr.js"></script> 
+    <script src="static/js/modernizr.js"></script> 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -33,6 +33,7 @@
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     
+
 <script>
       require([
         "esri/WebMap",
@@ -78,7 +79,6 @@
           }
         });
 
-
         // Search widget start
         var searchWidget = new Search({
           view: view,
@@ -113,14 +113,12 @@
             }
           ]
 
-
     });
 
         // Add the search widget to the top left corner of the view
         view.ui.add(searchWidget, {
           position: "top-right"
         });
-
 
         // Get the value from the input box
         console.log(document.getElementById("submitButton"))
@@ -326,7 +324,6 @@
  <hr class="style-two">
  <!-- Select your building information end-->
 
-
  <!-- Side bar naviation menu-->
 <nav class="sidemenu" id="sidemenu">
   <ul>
@@ -356,6 +353,8 @@
   {% endif %}
 
 <!-- Error message ends--> 
+
+<!--ESRI Map-->
 <div id = "pdf_wrap">
         <div id="viewDiv"><section id="section-1"></section>
         </div>
@@ -366,10 +365,10 @@
 <hr class="style-two">
   <h2 class="map-style">Summary</h2>
 
-<div class="pricing">
-      <div class="pricing-slider">
+<div class="pricing" > 
+      <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;">
         <label class="form-slider">
-          <span>Your optimal freeboard is {{OptimalFreeboard}} ft!</span><br><br>
+          <span>Your optimal freeboard is {{OptimalFreeboard}} ft!</span><br><br> 
           <span>Your optimal monthly saving is ${{OptimalSaving}} !</span><br><br>
           <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
           <datalist id="scale">
@@ -383,17 +382,34 @@
             type="range"
             class="slider" id="myRange" list="scale"
             data-price-input='{
-                "0": "0",
-                "1": "1",
-                "2": "2",
-                "3": "3",
-                "4": "4"                
+                "0": "0ft freeboard",
+                "1": "1ft freeboard",
+                "2": "2ft freeboard",
+                "3": "3ft freeboard",
+                "4": "4ft freeboard"                
               }'
           />
         </label>
-        <div class="pricing-slider-value"></div>
+        <div class="pricing-slider-value" ></div>
       </div>
-
+  <div style=" display:inline-block;">
+      <!--Monthly saving-->
+      <div
+        class="pricing-item-price" 
+        data-price-output='{
+          "0": ["$", {{total_monthly_saving0}},""],
+          "1": ["$", {{total_monthly_saving1}},""],
+          "2": ["$", {{total_monthly_saving2}},""],
+          "3": ["$", {{total_monthly_saving3}},""],
+          "4": ["$", {{total_monthly_saving4}},""]
+        }'
+      >
+      <p class="grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard,<br> your monthly saving is 
+        <span class="pricing-item-price-currency">$</span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after"></span>
+      </div>
+    
       <!--Freeboard cost-->
       <div
         class="pricing-item-price"
@@ -405,13 +421,15 @@
           "4": ["$", {{FreeboardCost4}},""]
         }'
       >
-      <p class="pricing-slider-value grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard,</p><Br> your estimations are:<br><br>
-      <p class="grid-style3"  title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
-      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490">| Freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+     
+      <p class="grid-style3"  
+      title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
+      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490">
+      | Freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span>
-      </div>
+        <span class="pricing-item-price-after"></span> </p>
+      </div> 
       
       <!--insurance-->
       <div
@@ -446,207 +464,109 @@
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"></span>
       </div>
-    
+
       <!--Time to recover
       <div
         class="pricing-item-price"
         data-price-output='{
-          "0": ["", {{time_to_recover_FC_MS0}},"month(s)"],
-          "1": ["", {{time_to_recover_FC_MS1}},"month(s)"],
-          "2": ["", {{time_to_recover_FC_MS2}},"month(s)"],
-          "3": ["", {{time_to_recover_FC_MS3}},"month(s)"],
-          "4": ["", {{time_to_recover_FC_MS4}},"month(s)"]
+          "0": ["$", {{time_to_recover_FC_MS0}},""],
+          "1": ["$", {{time_to_recover_FC_MS1}},""],
+          "2": ["$", {{time_to_recover_FC_MS2}},""],
+          "3": ["$", {{time_to_recover_FC_MS3}},""],
+          "4": ["$", {{time_to_recover_FC_MS4}},""]
         }'
-      >
-      <p class="grid-style3" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings.">| Time to recover the freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+      >-->
+      <p class="grid-style3" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings.">| Time to recover <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
         <span class="pricing-item-price-currency"></span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after">month(s)</span>
-      </div>-->
+      </div>
 
-
-  <!--<table>
-    <tr>
-      <td rowspan="5" style="padding:25px"><center>
-        <img id='img' src='static/img/construction/zero.png' style="widht:200; height:200px;"/><br><br>
-          <datalist id="scale">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-          </datalist><br><br>
-        <p class="grid-style3"> When you have <b><span id="demo"></span></b> ft freeboard, <br> your monthly saving is <b></b> </p>
-        </center>
-      </td>
-    </tr>
-    <tr>2
-      <td class="grid-style2" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
-      Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"> | Freeboard cost: $ <span id="demo"></span> {{FreeboardCost0}}</td>
-    </tr>
-    <tr>
-      <td class="grid-style2"  title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added."> | Insurance saving per year: $ {{total_annual_premium_BFE}}</td>
-    </tr>
-    <tr>
-      <td class="grid-style2"  title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added."> | Reduction in expected flood losses per year: $ {{annual_avoided_loss0}} </td>
-    </tr>
-    <tr>
-      <td class="grid-style2" title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings."> | Time to recover the freeboard cost: {{time_to_recover_FC_MS0}} month(s)  </td>
-    </tr>
-  </table>-->
+      <!-- Life time benefit
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{netbenefit0}},""],
+          "1": ["$", {{netbenefit1}},""],
+          "2": ["$", {{netbenefit2}},""],
+          "3": ["$", {{netbenefit3}},""],
+          "4": ["$", {{netbenefit4}},""]
+        }'
+      >
+      <p class="grid-style3" title="">| Lifetime benefits of the elevation <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/> : 
+        <span class="pricing-item-price-currency"></span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after">month(s)</span>
+      </div> -->
+    </div>
   </div>
-
-
 </div>
 
-<!-- gague
-  <div id = "chart-container">
-    <div id="myChart" class="chart--container" id ="left">
-    </div>
-    
-
-     <div class="controls" id ="left">
-      <input id='updateChart' type='range' min='0' max='5' value='5' class='inline' /><br>
-     <div id='output' class='inline'>When you add 5 feet freeboard, your monthly saving is <b>$ 256 <b></div>
-    </div>
-  </div>
-  </div> -->
-
-  <!--
-      <div style="overflow-x:auto;" >
-        <table class="benefitTable">
-          <tr>
-            <td ><img src="static/img/construction/cost_color.jpg" style="widht:100px; height:100px;" ></td>
-            <td><img src="static/img/construction/piggy_bank2.jpg" style="widht:100px; height:100px;"></td>
-            <td><img src="static/img/construction/drop_down_color.jpg" style="widht:100px; height:100px;"></td>
-            <td><img src="static/img/construction/recover_color.jpg" style="widht:100px; height:100px;"></td>
-            <td><img src="static/img/construction/monthy_saving_color.jpg" style="widht:100px; height:100px;"></td>
-          </tr>
-          <tr>
-            <td><b class="map-style">Freeboard cost</b>
-              <center><div class="help-tip">
-                <p><b style="color:white">Freeboard Cost</b> is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
-                Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is <b style="color:white">$7490</b>
-                </p>
-              </div></center>
-            </td>
-            <td><b class="map-style">Insurance Savings Per Year </b>
-          <center><div class="help-tip">
-                <p><b style="color:white">Insurance Savings Per Year</b> is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.
-                </p>
-              </div></center>
-            </td>
-            </td>
-            <td><b class="map-style">Reduction In Expected <br>Flood Losses Per Year</b>
-             <center><div class="help-tip">
-                <p><b style="color:white">Reduction In Flood Losses Per Year</b> is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual loss with no freeboard added.
-                </p>
-              </div></center>
-            </td>
-            <td><b class="map-style">Time To Recover <br>The Freeboard Cost</b>
-           <center><div class="help-tip">
-                <p><b style="color:white">Time To Recover The Cost</b> is the time required to offset the freeboard cost through the monthly savings.
-                </p>
-              </div></center>
-            </td>
-            <td><b class="map-style">Monthly savings</b>
-            <center><div class="help-tip">
-                <p><b style="color:white">Monthly Savinngs</b> is the freeboard's monthly loan payment subtracted from the monthly premium saving of the freeboard added to its monthly flood los reduction.
-                </p>
-              </div></center>
-            </td>
-          </tr>
-          <tr><section id="section-2">
-            <td>$...</td>
-            <td>$...</td>
-            <td>$...</td>
-            <td>.... Months</td>
-            <td>$...</td>
-          </section></tr>
-        </table>
-      </div>-->
-  
-
+ 
 
 <!--Freeboard cost-->
   <div class="left3 section-tittle-detail mb-40"> 
-  <hr class="style-two">
-    <h2 class="map-style">How much it will cost you for the elevation?</h2>
-      <p class="p-style-detail">
-       <!-- The expense of incorporating freeboard into new structures is surprisingly low. 
-       <section id="section-3"> The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. </section>
-        The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.<br><br>
-        </p>-->
-         <center>
-         <i> Graph will be added.</i> <!--need to update-->
-         </center>
+    <hr class="style-two">
+     <h2 class="map-style">How much it will cost you for the elevation?</h2>
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;" class="p-style-detail">
+      The expense of incorporating freeboard into new structures is surprisingly low. 
+      The initial costs of increasing elevation for your home range from 2 to 9 percent of the total construction cost. 
+      The following bar chart shows the estimated freeboard construction cost for each additional half-foot of freeboard increase.</div>  
+      <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
   </div>
-
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-two">
     <h2 class="map-style">How much you can save on insurance per year?</h2>
-      <p class="p-style-detail">
-      <!--  We can give you an estimate of how much you need to pay for insurance in a year. 
-        Insurance estimates varies according to the additional height of base flood elevation (BFE) in feet.  
-        For example, for the location {{location}} and your choice of square footage value {{SquareFootage}} and for {{No_Floors}} stories building, 
-        the total annual premium is ${{total_annual_premium_BFE}} for BFE with 0 ft elevation. For BFE + 1 ft elevation freeboard, 
-        the total annual premium is ${{total_annual_premium_BFE1}}. For BFE + 2 ft freeboard elevation, the total annual premium is ${{total_annual_premium_BFE2}}. 
-        The total annual premium is ${{total_annual_premium_BFE3}} for BFE + 3 ft freeboard elevation and for BFE + 4 ft freeboard elevation, 
-        the total annual premium is ${{total_annual_premium_BFE4}}.
-      </p>
-      <p class="p-style-detail">
-        Constructing your home with additional freeboard lowers annual flood premiums by ...% for the first additional foot, ..% for the second, ..% for the third, 
-        and ..% for the fourth foot. The estimated cost associated with elevating the home by one foot is offset in … years of insurance premium savings alone. 
-        The cost of elevating by two feet is recovered in .. years, and the cost of  elevating by three and four feet are recovered in … and … years, respectively.
-        The following bar chart shows the annual insurance you need to pay for different base flood elevation in feet.<br><br>
-      </p> -->
+     <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;" class="p-style-detail">
+        Constructing your home with additional freeboard lowers annual flood premiums by $ {{total_annual_premium_BFE1}} for the first additional foot, $ {{total_annual_premium_BFE2}} for the second, $ {{total_annual_premium_BFE3}} for the third, 
+        and $ {{total_annual_premium_BFE4}} for the fourth foot. The estimated cost associated with elevating the home by one foot is offset in {{time_to_recover_FC_MS0}} month(s) of insurance premium savings alone. 
+        The cost of elevating by two feet is recovered in {{time_to_recover_FC_MS2}} month(s), and the cost of  elevating by three and four feet are recovered in {{time_to_recover_FC_MS3}} month(s) and {{time_to_recover_FC_MS4}} month(s), respectively.
+        The right bar chart shows the annual insurance you need to pay for different base flood elevation in feet.<br><br>
+      </p> 
+     </div>
+     <div style="display:inline-block" class="zc-body"> 
       <section id="section-4"><center>
-       {{ div_insurance | safe }}
-      </center></section>
+       <div id="chart2" class="chart2"></div>
+      </center></section> </div>
   </div>
-
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
 <hr class="style-two">
      <h2 class="map-style">How much reduction in expected flood losses in one year?</h2>
-      <section id="section-5"><p class="p-style-detail">
-        <!--Adding a freeboard also reduces flood losses in flooding events considerably. 
-        Adding one-half-foot of freeboard decreases expected annual losses by …%. That offsets the cost of that increase in elevation in … years. 
-        Similarly, increasing the elevation by one-foot results in … % of decreased annual losses and the cost of the freeboard is offset in … years. 
+      <section id="section-5"> 
+        <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;" class="p-style-detail">
+        Adding a freeboard also reduces flood losses in flooding events considerably. 
+        Adding one-half-foot of freeboard decreases expected annual losses by .... That offsets the cost of that increase in elevation in … years. 
+        Similarly, increasing the elevation by one-foot results in $ {{annual_avoided_loss0}} of decreased annual losses and the cost of the freeboard is offset in … years. 
         More notably, adding … feet or more eliminates flood annual losses and the associated cost is recovered in … years.
-      </p>--></section>
+        </div>
+      <div style="display:inline-block" class="zc-body">Graph will be added</div><!--need to update-->
+      </section>
   </div>
-
 
 <!--Recover-->
 <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-two">
      <h2 class="map-style">How long it will take to recover the elevation cost?</h2>
-      <p class="p-style-detail">
-        <!-- The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
-         Time to recover freeboard cost {{time_to_recover_FC_MS0}}, {{time_to_recover_FC_MS1}},{{time_to_recover_FC_MS2}},{{time_to_recover_FC_MS3}},{{time_to_recover_FC_MS4}} months. 
-         <section id="section-6">The following bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.</section>
-      </p><br><br> -->
-         <center>
-         <i> Graph will be added.</i> <!--need to update-->
-         </center>
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;" class="p-style-detail">
+        The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard (The accumulation of the avoided annual flood losses and annual premium savings).
+         <section id="section-6">The right bar chart shows the estimated time required to recover the cost for each additional half-foot of freeboard increase.</section>
+      </div>
+      <div style="display:inline-block" class="zc-body">Graph will be added</div><!--need to update-->
   </div>
-
 
 <!--Monthly saving-->
   <div class="left3 section-tittle-detail mb-40"> 
     <hr class="style-two">
      <h2 class="map-style">Your monthly savings for adding freeboard!</h2>
-      <p class="p-style-detail">
-     <!-- While the increase in your monthly mortgage payment for adding freeboard will be minor, the long term avoided losses and savings on insurance premiums are substantial. Your monthly savings for each additional freeboard is:
-      </p><br><br> -->
-       <center>
-         <i> Graph will be added.</i> <!--need to update-->
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px;" class="p-style-detail">
+        While the increase in your monthly mortgage payment for adding freeboard will be minor, the long term avoided losses and savings on insurance premiums are substantial. Your monthly savings for each additional freeboard is:
+      </div>
+      <div style="display:inline-block" class="zc-body">Graph will be added</div><!--need to update-->
          </center><br><br>
-      <p class="p-style-detail">
       This savings include the added cost of the freeboard until the cost obligation is totally paid, after that you will enjoy an even higher savings!
       </p><br><br>
          <center>
@@ -687,11 +607,10 @@
       <br><br>
   </div>
 
-
-<!--Best choice-->
+<!--Overall-->
   <div class="left3 section-tittle-detail mb-40"> 
     <hr class="style-two">
-     <h2 class="map-style">What is your best choice?</h2>
+     <h2 class="map-style">Overall graph</h2>
       <p class="p-style-detail">
       Adding …-feet of freeboard represents the economically optimal option with most life-cycle benefits. These benefits will be realized through the life of the property. 
       Keep in mind, these are immediate benefits to be gained by increasing elevation. Other benefits include less suffering, faster recovery, and increase in property values.
@@ -699,11 +618,11 @@
   </div>
 
 
-
 <!--Freeboard graph-->
 <div class="left3 section-tittle-detail mb-40">
+  <hr class="style-two">  
        <h2 class="map-style">Freeboard and Benefit Graph </h2><br>
-  	<!--bokeh chart			{{ div | safe }}   -->
+      {{ div | safe }}   
            <table align = "center" class="benefitTable">
               <tr> <!--input-->
                 <td></td>
@@ -767,16 +686,14 @@
 </div>
  
 
-
 <!--Result details End-->
-
 
 
     <!-- Scroll Up -->
     <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
     </div>
-    
+      <script src = "https://code.highcharts.com/highcharts.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
@@ -785,6 +702,9 @@
     <script src="./static/js/disclaimer.js"></script>
     <!-- Jquery-->
     <script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
+
+
+    
     <!-- Jquery Mobile Menu -->
 
     <!--save as pdf js
@@ -795,3 +715,5 @@
 -->
 </body>
 </html>
+
+
