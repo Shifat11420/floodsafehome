@@ -315,9 +315,9 @@ var chart2Id = 'chart2';
 // CHART DATA
 // -----------------------------
 
-var views = [0, 1, 1, 1, 1, 1, 2, 3, 4, 5, 3, 6, 10, 9, 8, 7, 6, 5, 4, 2, 3, 4, 5, 6, 5, 4, 3, 4, 3, 2];
-var leads = [0, 1, 2, 2, 3, 4, 5, 2, 2, 3, 2, 2, 3, 4, 5, 6, 7, 6, 5, 2, 4, 6, 7, 6, 4, 3, 2, 2, 1, 0];
-var showings = [0, 3, 5, 0, 0, 0, 3, 0, 6, 4, 2, 0, 0, 0, 0, 1, 2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var views = ["{{ freeboardCost0|escape}}","{{ freeboardCost1|escape}}","{{ freeboardCost2|escape}}","{{ freeboardCost3|escape}}","{{ freeboardCost4|escape}}"];
+
+var showings = ["{{total_annual_premium_BFE|escape}}","{{total_annual_premium_BFE1|escape}}","{{total_annual_premium_BFE2|escape}}","{{total_annual_premium_BFE3|escape}}","{{total_annual_premium_BFE4|escape}}"];
 
 
 // CHART CONFIG
@@ -325,17 +325,18 @@ var showings = [0, 3, 5, 0, 0, 0, 3, 0, 6, 4, 2, 0, 0, 0, 0, 1, 2, 0, 5, 0, 0, 0
 
 // Chart 1
 var chart1Data = {
-  type: 'area',
+  type: 'line',
   title: {
-    text: 'Market Performance',
+    text: 'Freeboard cost graph',
     fontWeight: 'normal',
-    fontColor: 'var(--purple)',
+    fontColor: 'var(--black)',
     align: 'left',
     marginLeft: '2rem'
   },
   tootltip: {
     visible:false
   },
+  cursor: 'hand',
   globals: {
     fontColor: 'var(--fontColor)',
     fontFamily: 'Roboto'
@@ -347,133 +348,66 @@ var chart1Data = {
       type: 'pie'
     }
   },
-  labels: [
-    {
-      text: 'LEASED',
-      hook: 'node:plot=0;index=18',
-      backgroundColor: 'var(--lightBlue)',
-      fontColor: 'var(--white)',
-      borderRadius: '24px',
-      padding: '2px 8px',
-      offsetY: '-12px'
-    }
-    ],
-  scaleX: {
-    lineWidth: 0,
-    minValue: 1509537600000,
-    step: 'day',
-    label: {
-      text: 'Days',
-    },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
     tick: {
       visible: false
     },
-    transform: {
-      type: 'date',
-      all: '%d'
-    }
-  },
-  scaleY: {
-    values: '0:10:2',
-    lineWidth: 0,
-    tick: {
-      visible: false
-    },
-    guide: {
-      lineStyle: 'solid',
-      lineColor: 'var(--boxShadow)'
-    }
+  crosshairX: {},
   },
   plot: {
     aspect: 'spline'
   },
   series: [
     {
-      values: leads,
-      backgroundColor: 'var(--pink)',
-      alphaArea: 1.0,
-      lineColor: 'var(--pink)',
-      text: 'Leads',
-      marker: {
-        visible: false
-      }
-    },
-    {
       values: views,
-      backgroundColor: 'var(--purple)',
-      alphaArea: 1.0,
-      lineColor: 'var(--purple)',
-      text: 'Views',
-      marker: {
-        visible: false
-      }
+      text: 'Freeboard cost'
+      
     }
   ]
 };
 
 // Chart 2
 var chart2Data = {
-  type: 'bar',
+  type: 'line',
   title: {
-    text: 'SHOWINGS BOOKED',
+    text: 'Insurance savings per year',
     align: 'left',
-    fontColor: 'var(--purple)',
+    fontColor: 'var(--black)',
     fontWeight: 'normal',
-    fontSize: '16px',
     marginLeft: '2rem'
   },
   tooltip: {
     visible: false
   },
+  cursor: 'hand',
   globals: {
     fontColor: 'var(--fontColor)',
     fontFamily: 'Roboto'
   },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },  
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
   plot: {
-    borderRadius: '8px',
-    barWidth: 5
-  },
-  labels: [
-    {
-      text: 'LEASED',
-      hook: 'node:plot=0;index=18',
-      backgroundColor: 'var(--lightBlue)',
-      fontColor: 'var(--white)',
-      borderRadius: '24px',
-      padding: '2px 8px',
-      offsetY: '-12px'
-    }
-    ],
-  scaleX: {
-    lineWidth: 0,
-    minValue: 1509537600000,
-    step: 'day',
-    label: {
-      text: 'Days',
-    },
-    tick: {
-      visible: false
-    },
-    transform: {
-      type: 'date',
-      all: '%d'
-    }
-  },
-  scaleY: {
-    lineWidth: 0,
-    guide: {
-      lineStyle: 'solid',
-      lineColor: 'var(--boxShadow)'
-    },
-    tick: {
-      visible: false
-    }
+    aspect: 'spline'
   },
   series: [
     {
       values: showings,
-      backgroundColor: 'var(--pink)',
-      alpha: 1.0
+      text: 'Insurance saving'
     }
   ]
 };
