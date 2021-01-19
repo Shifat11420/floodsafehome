@@ -230,7 +230,6 @@
       source: "{% url 'autosuggest' %}"
         });
      } );
-     
     </script>
    <!--autosuggestion End-->
 
@@ -681,10 +680,438 @@
           </table>
   </div>
 </div>
+ <div id="myChart" class="chart--container">
+    <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
+  </div>
  
 
 <!--Result details End-->
 
+<!--zingchart script-->
+  <script>
+   /*zingchart*/
+  // DEFINE CHART LOCATIONS (IDS)
+  // -----------------------------
+  // Main chart render location
+  // var chartId = 'myChart';
+  var chart1Id = 'chart1';
+  var chart2Id = 'chart2';
+  var chart3Id = 'chart3';
+  var chart4Id = 'chart4';
+  var chart5Id = 'chart5';
+  var chart6Id = 'chart6';
+
+  // CHART CONFIG
+  // -----------------------------
+
+  // Chart 1
+  var chart1Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false,
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline',
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--red)',
+      size : 3,
+      backgroundColor : 'var(--red)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 5,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--red)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Freeboard cost',
+        lineColor: 'var(--red)',
+        values: {{ freeboardCost_json}}   
+      }
+    ]
+  };
+
+  // Chart 2
+  var chart2Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline',
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--blue)',
+      size : 3,
+      backgroundColor : 'var(--blue)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 5,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--blue)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        values: {{total_annual_premium}},
+        text: 'Insurance saving (per year)',
+        lineColor: 'var(--blue)'      
+      }
+    ]
+  };
+
+
+  // Chart 3
+  var chart3Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline',
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--orange)',
+      size : 3,
+      backgroundColor : 'var(--orange)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 5,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--orange)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        values: {{annual_avoided_loss_json}},
+        text: 'Reduction in expected flood losses (per year)',
+        lineColor: 'var(--orange)'      
+      }
+    ]
+  };
+
+
+  // Chart 4
+  var chart4Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline',
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--pink)',
+      size : 3,
+      backgroundColor : 'var(--pink)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 5,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--pink)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        values: [0,0,0,0,0],//{{time_to_recover_FC_PS_json}},
+        text: 'Time to recover the elevation cost',
+        lineColor: 'var(--pink)'      
+      }
+    ]
+  };
+
+  // Chart 5
+  var chart5Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline',
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--green)',
+      size : 3,
+      backgroundColor : 'var(--green)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 5,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--green)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        values: {{ total_monthly_saving_json}}, 
+        text: 'Monthly saving',
+        lineColor: 'var(--green)'      
+      }
+    ]
+  };
+
+
+  // Chart 6
+  var chart6Data = {
+    type: 'line',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tootltip: {
+      visible:false
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    plot: {
+      aspect: 'spline'
+    },
+    series: [
+      {
+        values: [0,0,0,0,0],//views,
+        text: 'Freeboard cost'
+        
+      }
+    ]
+  };
+
+  // RENDER CHARTS
+  // -----------------------------
+
+  // Chart 1
+  zingchart.render({ 
+    id: chart1Id, 
+    data : chart1Data, 
+    width: '100%'
+  });
+
+  // Chart 2
+  zingchart.render({ 
+    id: chart2Id, 
+    data : chart2Data, 
+    width: '100%'
+  });
+
+  // Chart 3
+  zingchart.render({ 
+    id: chart3Id, 
+    data : chart3Data, 
+    width: '100%'
+  });
+
+  // Chart 4
+  zingchart.render({ 
+    id: chart4Id, 
+    data : chart4Data, 
+    width: '100%'
+  });
+
+  // Chart 5
+  zingchart.render({ 
+    id: chart5Id, 
+    data : chart5Data, 
+    width: '100%'
+  });
+
+  // Chart 6
+  zingchart.render({ 
+    id: chart6Id, 
+    data : chart6Data, 
+    width: '100%'
+  });
+
+    </script>
 
     <!-- Scroll Up -->
     <div id="back-top" >
