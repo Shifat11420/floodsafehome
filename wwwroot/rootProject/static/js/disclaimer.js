@@ -189,3 +189,6 @@ function handleSliderValuePosition(input) {
     input.el.clientWidth * multiplier - thumbOffset + priceInputOffset + "px";
 }
 })();
+
+
+
