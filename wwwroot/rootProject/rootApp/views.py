@@ -644,7 +644,7 @@ def search(request):
     time_to_recover_FC_PS = []
     for i in range(len(totalBFE)):
         if annual_premium_saving[i] == 0:
-            time_to_recover_FC_PS.append("-")
+            time_to_recover_FC_PS.append(0)    ##
         else:    
             time_to_recover_FC_PS.append(round(total_loanbased_FC[i]/annual_premium_saving[i],1))
     print("Time to recover FC PS :", time_to_recover_FC_PS)
@@ -655,7 +655,7 @@ def search(request):
     time_to_recover_FC_AvAL = []
     for i in range(len(totalBFE)):
         if annual_avoided_loss[i] == 0:
-            time_to_recover_FC_AvAL.append("-")
+            time_to_recover_FC_AvAL.append(0) ##
         else:    
             time_to_recover_FC_AvAL.append(round(total_loanbased_FC[i]/annual_avoided_loss[i],1))
     print("Time to recover FC AvAL :", time_to_recover_FC_AvAL)
@@ -665,7 +665,7 @@ def search(request):
     time_to_recover_FC_TB = []
     for i in range(len(totalBFE)):
         if (annual_premium_saving[i] + annual_avoided_loss[i]) == 0:
-            time_to_recover_FC_TB.append("-")
+            time_to_recover_FC_TB.append(0) ##
         else:    
             time_to_recover_FC_TB.append(round(total_loanbased_FC[i]/(annual_premium_saving[i] + annual_avoided_loss[i]),1))    
     print("Time to recover freeboard cost through total benefit", time_to_recover_FC_TB)
@@ -675,7 +675,7 @@ def search(request):
     time_to_recover_FC_MS = []
     for i in range(len(totalBFE)):
         if (total_monthly_saving[i] == 0):
-            time_to_recover_FC_MS.append("-")
+            time_to_recover_FC_MS.append(0) ##
         else:    
             time_to_recover_FC_MS.append(round((total_loanbased_FC[i]/(total_monthly_saving[i] * n)),1) ) 
     print("Time to recover freeboard cost through monthly savings", time_to_recover_FC_MS)
