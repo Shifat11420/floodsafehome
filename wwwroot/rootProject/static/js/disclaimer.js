@@ -73,89 +73,6 @@ html2canvas($('#pdf_wrap')[0]).then(function(canvas) {
 */
 // Hide Header on on scroll down 
 
-
-/* Gague 
-let chartConfig = {
-type: 'gauge',
-backgroundColor: 'none',
-plot: {
-  tooltip: {
-    visible: false
-  },
-  aperture: 180,
-  backgroundColor: 'none',
-  csize: '4px'
-},
-plotarea: {
-  margin: '100px 0px 0px 0px',
-  backgroundColor: 'none',
-  borderWidth: '0px'
-},
-scaleR: {
-  aperture: 180,
-  backgroundColor: 'none',
-  center: {
-    backgroundColor: 'none',
-    borderColor: 'none',
-    size: '0px'
-  },
-  item: {
-    padding: '5px',
-    fontColor: '#1E5D9E',
-    fontFamily: 'Montserrat',
-    offsetR: 0
-  },
-  maxValue: 500,
-  minValue: 0,
-  ring: {
-    rules: [
-      {
-        backgroundColor: '#d7191c',
-        rule: '%v < 100'
-      },
-      {
-        backgroundColor: '#fdae61',
-        rule: '%v >= 100 && %v < 200'
-      },
-      {
-        backgroundColor: '#f7f783',
-        rule: '%v >= 200 && %v < 300'
-      },
-      {
-        backgroundColor: '#a6d96a',
-        rule: '%v >= 300 && %v < 400'
-      },
-      {
-        backgroundColor: '#1a9641',
-        rule: '%v >= 400'
-      }
-    ],
-    size: '3px'
-  },
-  step: 1,
-  tick: {
-    lineColor: '#1E5D9E',
-    placement: 'out'
-  }
-},
-series: [
-  {
-    text: 'Internal',
-    values: [256],
-    backgroundColor: '#1E5D9E',
-    lineColor: '#00BAF2'
-  }
-]
-};
-
-zingchart.render({
-id: 'myChart',
-data: chartConfig,
-height: '50%',
-width: '50%',
-});
-*/
-
 /*image slider*/
 var img = document.getElementById('img');
 var img_array = ['static/img/construction/zero.png','static/img/construction/onefoot.png','static/img/construction/twofeet.png', 'static/img/construction/threefeet.png', 'static/img/construction/fourfeet.png'];
@@ -310,7 +227,10 @@ let chartConfig = {
 // var chartId = 'myChart';
 var chart1Id = 'chart1';
 var chart2Id = 'chart2';
-
+var chart3Id = 'chart3';
+var chart4Id = 'chart4';
+var chart5Id = 'chart5';
+var chart6Id = 'chart6';
 
 // CHART DATA
 // -----------------------------
@@ -327,7 +247,69 @@ var showings = ["{{total_annual_premium_BFE|escape}}","{{total_annual_premium_BF
 var chart1Data = {
   type: 'line',
   title: {
-    text: 'Freeboard cost graph',
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  tootltip: {
+    visible:false,
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  plot: {
+    aspect: 'spline',
+  marker : {
+    type : 'circle',
+    borderWidth : 1,
+    borderColor : 'var(--red)',
+    size : 3,
+    backgroundColor : 'var(--red)'
+  },
+  hoverMarker : {
+    type : 'circle',
+    size : 5,
+    backgroundColor : '#FFF',
+    borderWidth : 1,
+    borderColor : 'var(--red)'
+  },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      values: views,
+      text: 'Freeboard cost',
+      lineColor: 'var(--red)'      
+    }
+  ]
+};
+
+// Chart 2
+var chart2Data = {
+  type: 'line',
+  title: {
     fontWeight: 'normal',
     fontColor: 'var(--black)',
     align: 'left',
@@ -339,7 +321,262 @@ var chart1Data = {
   cursor: 'hand',
   globals: {
     fontColor: 'var(--fontColor)',
-    fontFamily: 'Roboto'
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  plot: {
+    aspect: 'spline',
+  marker : {
+    type : 'circle',
+    borderWidth : 1,
+    borderColor : 'var(--blue)',
+    size : 3,
+    backgroundColor : 'var(--blue)'
+  },
+  hoverMarker : {
+    type : 'circle',
+    size : 5,
+    backgroundColor : '#FFF',
+    borderWidth : 1,
+    borderColor : 'var(--blue)'
+  },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      values: views,
+      text: 'Insurance saving (per year)',
+      lineColor: 'var(--blue)'      
+    }
+  ]
+};
+
+
+// Chart 3
+var chart3Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  tootltip: {
+    visible:false
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  plot: {
+    aspect: 'spline',
+  marker : {
+    type : 'circle',
+    borderWidth : 1,
+    borderColor : 'var(--orange)',
+    size : 3,
+    backgroundColor : 'var(--orange)'
+  },
+  hoverMarker : {
+    type : 'circle',
+    size : 5,
+    backgroundColor : '#FFF',
+    borderWidth : 1,
+    borderColor : 'var(--orange)'
+  },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      values: views,
+      text: 'Reduction in expected flood losses (per year)',
+      lineColor: 'var(--orange)'      
+    }
+  ]
+};
+
+
+// Chart 4
+var chart4Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  tootltip: {
+    visible:false
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  plot: {
+    aspect: 'spline',
+  marker : {
+    type : 'circle',
+    borderWidth : 1,
+    borderColor : 'var(--pink)',
+    size : 3,
+    backgroundColor : 'var(--pink)'
+  },
+  hoverMarker : {
+    type : 'circle',
+    size : 5,
+    backgroundColor : '#FFF',
+    borderWidth : 1,
+    borderColor : 'var(--pink)'
+  },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      values: views,
+      text: 'Time to recover the elevation cost',
+      lineColor: 'var(--pink)'      
+    }
+  ]
+};
+
+// Chart 5
+var chart5Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  tootltip: {
+    visible:false
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: { 
+    markers: [],
+    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  plot: {
+    aspect: 'spline',
+  marker : {
+    type : 'circle',
+    borderWidth : 1,
+    borderColor : 'var(--green)',
+    size : 3,
+    backgroundColor : 'var(--green)'
+  },
+  hoverMarker : {
+    type : 'circle',
+    size : 5,
+    backgroundColor : '#FFF',
+    borderWidth : 1,
+    borderColor : 'var(--green)'
+  },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      values: views,
+      text: 'Monthly saving',
+      lineColor: 'var(--green)'      
+    }
+  ]
+};
+
+
+// Chart 6
+var chart6Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  tootltip: {
+    visible:false
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
   },
   legend: {
     borderWidth: 0,
@@ -368,51 +605,6 @@ var chart1Data = {
   ]
 };
 
-// Chart 2
-var chart2Data = {
-  type: 'line',
-  title: {
-    text: 'Insurance savings per year',
-    align: 'left',
-    fontColor: 'var(--black)',
-    fontWeight: 'normal',
-    marginLeft: '2rem'
-  },
-  tooltip: {
-    visible: false
-  },
-  cursor: 'hand',
-  globals: {
-    fontColor: 'var(--fontColor)',
-    fontFamily: 'Roboto'
-  },
-  legend: {
-    borderWidth: 0,
-    layout: '1',
-    marker: {
-      type: 'pie'
-    }
-  },  
-  scaleX: { 
-    markers: [],
-    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    tick: {
-      visible: false
-    },
-  crosshairX: {},
-  },
-  plot: {
-    aspect: 'spline'
-  },
-  series: [
-    {
-      values: showings,
-      text: 'Insurance saving'
-    }
-  ]
-};
-
-
 // RENDER CHARTS
 // -----------------------------
 
@@ -427,5 +619,33 @@ zingchart.render({
 zingchart.render({ 
   id: chart2Id, 
   data : chart2Data, 
+  width: '100%'
+});
+
+// Chart 3
+zingchart.render({ 
+  id: chart3Id, 
+  data : chart3Data, 
+  width: '100%'
+});
+
+// Chart 4
+zingchart.render({ 
+  id: chart4Id, 
+  data : chart4Data, 
+  width: '100%'
+});
+
+// Chart 5
+zingchart.render({ 
+  id: chart5Id, 
+  data : chart5Data, 
+  width: '100%'
+});
+
+// Chart 6
+zingchart.render({ 
+  id: chart6Id, 
+  data : chart6Data, 
   width: '100%'
 });
