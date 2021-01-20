@@ -147,11 +147,15 @@
 
 
 /* 1. Theme default css */
+html {
+    scroll-behavior: smooth;
+}
 body {
     font-family: "Muli", sans-serif;
     font-weight: normal;
     font-style: normal;
     font-size: 16px;
+    background-color:rgb(248, 248, 248);
 }
 
 h1, h2, h3, h4, h5,h6 {
@@ -8252,7 +8256,7 @@ hr {
 /* line 567, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_blog_page.scss */
 
 .tags .tag_btn+.tag_btn {
-    margin-left: 2px;
+    margin-left: 0px;
 }
 
 
@@ -12419,20 +12423,37 @@ del {
   }
 
   input.text {
-    width: 80%;
-    margin: 0px 0px 0px 35px; 
+    width: 90%;
+    height: 30px;
+    margin: 5px 0px 5px 0px; 
   }
 
   /*line style for the map page */
-  hr.style-two {
-    border-top: 1px solid #a8a8a8;
-	border-bottom: 1px solid #fff;
-}
+    hr.style-two {
+        border-top: 1px solid #a8a8a8;
+        border-bottom: 1px solid #fff;
+    }
+
+    hr.style-three {
+        border-top: 1px solid #a8a8a8;
+        border-bottom: 1px solid #fff;
+        width:90%;
+        margin: 27px 0 18px 0;
+        
+    }
+
+    hr.style-four {
+        border-top: 1px solid #a8a8a8;
+        border-bottom: 1px solid #fff;
+        width:98%;
+        margin: 25px 0 25px 0;
+    }
 
 /*map side menu*/
 .sidemenu {
     white-space: nowrap;
-    padding: 0 0 0 16px;
+    padding: 0 0 0 0px;
+    color: #363636;
   }
 
   .sidemenu ul {
@@ -12442,18 +12463,35 @@ del {
     
   }
 
+  /* Only stick if you can fit */
+  @media (min-height: 300px) {
+    nav ul {
+      position: sticky;
+      top: 0;
+    }
+  }
+
+  .nav-side ul li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: black;
+    text-decoration: none;
+  }
+  .nav-side ul li a.current {
+    background: gray;
+  }
+
 /* Only stick if you can fit */
 @media (min-height: 300px) {
 .sidemenu ul {
     position: sticky;
-    top: 0;
 }
 }
 
 .sidemenu ul li a {
     display: block;
     padding: 0.5rem 1rem;
-    color: black;
+    color:  #363636;
     text-decoration: none;
 }
 
@@ -12587,3 +12625,45 @@ ul li a.current {
 .saving-ul {
     list-style-type: disc;
 }
+
+/*side bar style*/
+
+.map-style-sidebar-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: #363636 ;
+}
+
+.map-style-sidebar-b {
+    color: #363636 ;
+}
+
+.map-style-sidebar-menu {
+    font-size: 18px;
+    font-weight: 350;
+    color: #363636 ;
+    padding: 10px;
+}
+
+.box {
+    box-shadow:
+    0 2px 2.2px rgba(0, 0, 0, 0.034),
+    0 5px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 6px rgba(0, 0, 0, 0.06),
+    0 11.8px 13.4px rgba(0, 0, 0, 0.086)
+  ;
+    width: 90%;
+    padding: 10px 10px 10px 20px;
+    line-height: 31px;
+    background-color:rgb(252, 252, 252);
+    border-radius: 12px;
+    border: 1px solid gray;
+    margin: 0px;
+    font-size:16px;
+    color: #363636 ;
+  }
+  
+
+  .input-box{
+    display: table-cell; 
+  }
