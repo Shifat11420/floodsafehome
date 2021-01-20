@@ -12396,12 +12396,13 @@ del {
     width: 30%;
     float: left;
     position: fixed;
+    padding: 0 0 0 25px;
   }
 
   .left2 {
     width: 70%;
     float: right;    
-    margin: 1em 0 0 0; 
+    margin: 1em 15px 0 0; 
   }
 
   .left3 {
@@ -12657,10 +12658,25 @@ ul li a.current {
     line-height: 31px;
     background-color:rgb(252, 252, 252);
     border-radius: 12px;
-    border: 1px solid gray;
     margin: 0px;
     font-size:16px;
     color: #363636 ;
+  }
+
+  .box2 {
+    box-shadow:
+    0 2px 2.2px rgba(0, 0, 0, 0.034),
+    0 5px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 6px rgba(0, 0, 0, 0.06),
+    0 11.8px 13.4px rgba(0, 0, 0, 0.086)
+  ;
+    padding: 10px 10px 10px 20px;
+    line-height: 31px;
+    background-color:rgb(252, 252, 252);
+    border-radius: 12px;
+    margin: 0px;
+    color: #363636 ;
+    
   }
   
 
@@ -12679,7 +12695,7 @@ ul li a.current {
     top:-0.1em;
     border-width:2px;
     border-style:solid;
-    border-color:rgb(14, 67, 241);
+    border-color:#0075FF;
     position:absolute;
     border-right-color:transparent;
     width:120%;
@@ -12697,7 +12713,7 @@ ul li a.current {
     padding:0.1em 0.25em;
     border-width:2px;
     border-style:solid;
-    border-color:rgb(14, 67, 241);
+    border-color:#0075FF;
     border-left-color:transparent;
     border-top-color:transparent;
     position:absolute;
@@ -12732,4 +12748,11 @@ ul li a.current {
     font-size: 23px; 
     line-height:40px;
     font-weight: 450;
+  }
+
+  .vl {
+    border-left: 1.5px solid gray;
+    height: 220px;
+    padding: 0 20px 0 20px;
+    margin: 0 0 0 40px;
   }
