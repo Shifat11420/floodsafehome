@@ -12679,7 +12679,7 @@ ul li a.current {
     top:-0.1em;
     border-width:2px;
     border-style:solid;
-    border-color:red;
+    border-color:rgb(14, 67, 241);
     position:absolute;
     border-right-color:transparent;
     width:120%;
@@ -12697,7 +12697,7 @@ ul li a.current {
     padding:0.1em 0.25em;
     border-width:2px;
     border-style:solid;
-    border-color:red;
+    border-color:rgb(14, 67, 241);
     border-left-color:transparent;
     border-top-color:transparent;
     position:absolute;

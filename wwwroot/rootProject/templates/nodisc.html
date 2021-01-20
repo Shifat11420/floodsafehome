@@ -325,9 +325,9 @@
   <h2 >Freeboard Cost Analysis Report</h2><hr class="style-four">
         <div class="optimal map-style">For your home, <span class="circle-sketch-highlight"> <b class="map-style">{{OptimalFreeboard}} feet </b> </span> of freeboard is recommended to achieve the maximum benefits!<br>
           Your optimal monthly saving is <u style="text-decoration-style: wavy; text-decoration-color: red; font-size: 28px;"> <b class="map-style">$ {{OptimalSaving}} </b> </u>!  </div><br><br>
-<div class="pricing" > 
+    <div class="pricing" > 
 
-      <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 100px 0px 0px; font-size: 20px; line-height:30px;">
+      <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 100px 0px 0px; font-size: 20px; line-height:30px; ">
       
         <center><label class="form-slider ">
           <img id='img' src='static/img/construction/zero.png' style="widht:350; height:200px;"/><br><br>
@@ -340,6 +340,7 @@
           </datalist>
           <input onchange='setImage(this)'
             type="range"
+            value="{{OptimalFreeboard}}"
             class="slider" id="myRange" list="scale"
             data-price-input='{
                 "0": "0ft freeboard",
