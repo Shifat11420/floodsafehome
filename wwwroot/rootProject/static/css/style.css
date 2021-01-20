@@ -12609,13 +12609,16 @@ ul li a.current {
 .zc-body { background:#fff;
     width:60%; }
 
+.zc-body1 { background:#fff;
+        width:80%; }
+
 .chart--container {
   height: 30%;
   width: 100%;
 }
 
 .chart--container1 {
-    width: 100%;
+    width:1150px;
   }
 
 .zc-ref {

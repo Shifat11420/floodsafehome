@@ -367,8 +367,8 @@
           "4": ["$", {{total_monthly_saving4}},""]
         }'
       >
-      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"> <b style="color:#0075FF; font-size:30px"> <span id="demo"> </span>ft</b> of  freeboard, your monthly saving is 
-        <b style="color:#0075FF; font-size:30px"><span class="pricing-item-price-currency">$</span>
+      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"> <b style="font-size:30px" class="map-style"> <span id="demo"> </span> ft</b> of  freeboard, your monthly saving is 
+        <b style="font-size:30px" class="map-style"><span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"></span></b>
       </div>
@@ -389,7 +389,7 @@
       <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;"
       title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. 
       Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490">
-      <b style="color:#0075FF; font-size:30px"> 
+      <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"></span> </b>is freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/></p>
@@ -408,7 +408,7 @@
       >
       <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
       title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.">
-      <b style="color:#0075FF; font-size:30px"> 
+      <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"> </span></b> is insurance saving per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
@@ -427,7 +427,7 @@
       >
       <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
       title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added.">
-      <b style="color:#0075FF; font-size:30px"> 
+      <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"></span> </b> is reduction in expected flood losses per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
@@ -446,7 +446,7 @@
       >
       <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
       title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings.">
-      <b style="color:#0075FF; font-size:30px"> 
+      <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency"></span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after">month(s)</span> </b> is time  to recover the elevation cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
@@ -467,15 +467,15 @@
         <span class="pricing-item-price-currency"></span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after">month(s)</span>
-      </div> --><br><br> 
+      </div> -->
   </div>
     </div>
-  </div></section>
+  </div></section><br><br>
 </div>  
 
 <!--Monthly saving-->
   <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="map-style">Your monthly savings for adding freeboard!</h2><hr class="style-four">
+     <h2 class="map-style" style="padding: 20px 0 0 0;">Your monthly savings for adding freeboard!</h2><hr class="style-four">
       <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top;" class="p-style-detail">
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the long term avoided losses and savings on insurance premiums are substantial, 
         ranging from $ {{total_monthly_saving1}} to $ {{total_monthly_saving4}}. 
@@ -547,7 +547,7 @@
 <!--Overall-->
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Overall graph</h2><hr class="style-four">
-      <center><div style="display:inline-block" class="zc-body">     <div id="myChart" class="chart--container1"></div></div></center>
+      <div style="display:inline-block; margin: 0 0 0 5px;" class="zc-body">     <div id="myChart" class="chart--container1"></div></div>
   </div>
 
 
@@ -999,6 +999,7 @@
     },
     {
       text: 'Time to recover the elevation cost (month(s))',
+      fontSize: 20,
       values: {{time_to_recover_FC_MS}},
       backgroundColor: '#EC5B9D',
       legendMarker: {
@@ -1137,7 +1138,7 @@
     id: 'myChart',
     data: chartConfig,
     width: '100%',
-    height:'70%'
+    height:'80%'
   });
 
 
