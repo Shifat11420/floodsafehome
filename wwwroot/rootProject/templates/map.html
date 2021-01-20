@@ -329,109 +329,69 @@
 	</ul> <!-- .cd-tour-wrapper -->
 
   <!--Tour guide end-->
-
  <!-- Select your building information-->
  <div class="container left" style="z-index: 1;"> 
       <form method="get" action="/search">
             {% csrf_token %} 
       <p> 
-        <h2><center><b class="map-style"> Select your building information</b></center> </h2> <br>
-           <center>
-            <table style="width:90%; height: 33%;" >
-               <tr> 
-                <td colspan="2"><b class="map-style">User category <sup style="color:red">*</sup></b> &nbsp; </td>
-              </tr>
+        <h2 style="padding: 7px 0px 10px 0px; " class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
+          <div class="box">
+          <b class="map-style"> User category <sup style="color:red">*</sup></b> <br>
+            <label>
+            <input type="radio" name ="chk" value = "Homeowner" class="bar" required>Homeowner
+            </label>
+            <label>
+            <input type="radio" name ="chk" value = "Community official" class="bar">Community official</option>
+            </label><br>
 
-              <tr>
-                <td>         
-                  <label>
-                    <input type="radio" name ="chk" value = "Homeowner" class="bar" required>Homeowner 
-                  </label>
-                </td>
-                <td>
-                  <label>
-                    <input type="radio" name ="chk" value = "Community official" class="bar">Community official</option>
-                  </label>
-                </td>
-              </tr>
+          <b class="map-style">Building Type <sup style="color:red">*</sup></b><br>
+            <label>
+            <input type="radio" name ="selectBox" value = "new_building" class="bar" required>New building 
+            </label>
+            <label>
+            <input type="radio" name ="selectBox" value = "existing_building" class="bar">Existing building</option>
+            </label> <br>
 
-              <tr class="layer"> 
-                <td colspan="2"><b class="map-style">Building Type <sup style="color:red">*</sup></b> &nbsp; </td>
-              </tr>
-
-              <tr>
-                <td> 
-                  <label>
-                    <input type="radio" name ="selectBox" value = "new_building" class="bar" required>New building 
-                  </label>
-                  </td>
-                  <td>
-                  <label>
-                    <input type="radio" name ="selectBox" value = "existing_building" class="bar">Existing building</option>
-                  </label>
-                </td>
-              </tr>
-
-              <tr> 
-                <td colspan="2"><b class="map-style">Address or Parcel ID <sup style="color:red">*</sup></b> &nbsp; </td>
-              </tr>
-
-              
-              <tr>
-                <td colspan="2"><input type="text"  name="location"  id="tags" placeholder="Type your address or parceID" required class="text" value={{location|safe}} ></td>
-              </tr>
-
+          <b class="map-style">Address or Parcel ID <sup style="color:red">*</sup></b><br>
+          <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID" required class="text" value={{location|safe}}> <br>
           
-              <tr> 
-                <td colspan="2"><b class="map-style">Square footage <sup style="color:red">*</sup></b> </td>
-              </tr>
-            
-              <tr>              
-                <td colspan="2"><input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage" required class="text"> </td> 
-              </tr>
-
-              <tr>
-                <td colspan="2"><b class="map-style">Number of Stories <sup style="color:red">*</sup> </b></td>                    
-              </tr>
-              
-              <tr>
-                <td>         
-                  <label>
-                    <input type="radio" name ="stories" id="stories" value = "1" class="bar" required>One story
-                  </label>
-                  </td>
-                  <td>
-                  <label>
-                    <input type="radio" name ="stories" id="stories" value = "2" class="bar">Two or more stories
-                  </label>
-                </td>
-              </tr>
-
-            </table>   
-          </center>   
+          <b class="map-style">Square footage <sup style="color:red">*</sup></b> <br>
+            <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage" required class="text"> <br>
+          
+          <b class="map-style">Number of Stories <sup style="color:red">*</sup> </b><br>
+            <label>
+            <input type="radio" name ="stories" id="stories" value = "1" class="bar" required>One story
+            </label>
+            <label>
+            <input type="radio" name ="stories" id="stories" value = "2" class="bar">Two or more stories
+            </label>
+          </div>
       
       
         <br>
-         <center><button class="btn btn-primary" type="submit" > Get results</button>  
-        &nbsp; &nbsp; &nbsp; &nbsp; 
-       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button> </center>   
+        &nbsp; &nbsp;  <button class="btn btn-primary" type="submit" > Get results</button>  
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>   
       </form>
       </p>
- <hr class="style-two">
+ <hr class="style-three">
  <!-- Select your building information end-->
 
  <!-- Side bar naviation menu-->
-<nav class="sidemenu" id="sidemenu">
-  <ul>
-    <li><a class="sidemenu" href="#section-1">Summary</a></li>
-    <li><a class="sidemenu" href="#section-2">Freeboard cost</a></li>
-    <li><a class="sidemenu" href="#section-3">Insurance saving per year</a></li>
-    <li><a class="sidemenu" href="#section-4">Reduction in expected flood losses per year</a></li>
-    <li><a class="sidemenu" href="#section-5">Time to recover the freeboard cost</a></li>
-    <li><a class="sidemenu" href="#section-6">Monthly savings</a></li>
-    <li><a class="sidemenu" href="#">Save as a PDF</a></li>
-  </ul> 
-</nav>
+ <p>
+  <h2 style="padding: 0px 0px 14px 0px; " class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
+  <nav class="nav">
+    <ul class="box ul">
+      <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
+      <li class="li"><a class="sidemenu" href="#section-2">Freeboard cost</a>
+      <li class="li"><a class="sidemenu" href="#section-3">Insurance saving per year</a></li>
+      <li class="li"><a class="sidemenu" href="#section-4">Reduction in expected flood losses per year</a></li>
+      <li class="li"><a class="sidemenu" href="#section-5">Time to recover the freeboard cost</a></li>
+      <li class="li"><a class="sidemenu" href="#section-6">Monthly savings</a></li>
+      <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
+    </ul> 
+  </nav>
+ </p>
   
   <!-- Side bar naviation menu end-->
   </div>
