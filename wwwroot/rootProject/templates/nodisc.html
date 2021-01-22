@@ -240,7 +240,7 @@
       <p> 
         <h2 style="padding: 7px 0px 10px 0px; " class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
           <div class="box">
-          <b class="map-style"> User category <sup style="color:red">*</sup></b> <br>
+          <b class="map-style"> User Type <sup style="color:red">*</sup></b> <br>
             <label>
             <input type="radio" name ="chk" value = "Homeowner" class="bar" required>Homeowner
             </label>
@@ -289,8 +289,8 @@
       <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
       <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
       <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-      <li class="li"><a class="sidemenu" href="#section-3">Insurance Saving Per Year</a></li>
-      <li class="li"><a class="sidemenu" href="#section-4">Reduction in Expected Flood Losses Per Year</a></li>
+      <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Year</a></li>
+      <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
       <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
       <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
     </ul> 
@@ -323,8 +323,8 @@
 <!--Summary-->
 <div class="left2 section-tittle mb-40"> 
   <h2 >Freeboard Cost Analysis Report</h2><hr class="style-four">
-        <div class="optimal map-style">For your home, <span class="circle-sketch-highlight"> <b class="map-style">{{OptimalFreeboard}} feet </b> </span> of freeboard is recommended to achieve the maximum benefits!<br>
-          Your optimal monthly saving is <u style="text-decoration-style: wavy; text-decoration-color: #0075FF; font-size: 28px;"> <b class="map-style">$ {{OptimalSaving}} </b> </u>!  </div><br><br>
+        <div class="optimal map-style">For your home,  <b style="font-size:35px">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended!<br>
+          Your optimal monthly savings is <b style="font-size:35px">$ {{OptimalSaving}} </b> </u>!  </div><br><br>
      <section id="section-6"> <div class="pricing" > 
 
       <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 52px 0px 0px; font-size: 20px; line-height:30px; ">
@@ -356,7 +356,7 @@
 
       
   <div  style=" display:inline-block; vertical-align: top; "  >
-      <!--Monthly saving-->
+      <!--Monthly savings-->
       <div
         class="pricing-item-price" 
         data-price-output='{
@@ -367,13 +367,16 @@
           "4": ["$", {{total_monthly_saving4}},""]
         }'
       >
-      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"> <b style="font-size:30px" class="map-style"> <span id="demo"> </span> ft</b> of  freeboard, your monthly saving is 
+    <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"> When you add <b style="font-size:30px" class="map-style"> <span id="demo"> </span> ft</b> of  freeboard, </p>
+    
+    <div class="vl">  
+      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;"
+      title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood los reduction.">
         <b style="font-size:30px" class="map-style"><span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span></b>
-      </div>
-
-  <div class="vl">   
+        <span class="pricing-item-price-after"></span></b> estimated monthly savings <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/></p>
+      
+   
       <!--Freeboard cost-->
       <div
         class="pricing-item-price"
@@ -385,15 +388,30 @@
           "4": ["$", {{FreeboardCost4}},""]
         }'
       >
-     <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
-      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;"
-      
-      title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Actual building construction cost is {{Actual_construction_cost}} and monthly amortized cost is {{Amortized_FC_json}}">
+      <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
+      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;">
       <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span> </b>is freeboard cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/></p>
-      </div>
+        <span class="pricing-item-price-after"></span> </b>estimated new construction cost of freeboard  <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Actual building construction cost is {{Actual_construction_cost}} and monthly amortized cost is {{Amortized_FC_json}}"/></p>
+         
+        <!--test
+        <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{FreeboardCost0}},""],
+          "1": ["$", {{FreeboardCost1}},""],
+          "2": ["$", {{FreeboardCost2}},""],
+          "3": ["$", {{FreeboardCost3}},""],
+          "4": ["$", {{FreeboardCost4}},""]
+        }'
+      > 
+        <span class="pricing-item-price-currency">$</span>
+        <span class="pricing-item-price-amount">0</span>
+        <span class="pricing-item-price-after"></span>
+      
+      <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Actual building construction cost is {{Actual_construction_cost}} and monthly amortized cost is {{Amortized_FC_json}}"/></p>
+      </div>-->
       
       <!--insurance-->
       <div
@@ -406,12 +424,11 @@
           "4": ["$", {{total_annual_premium_BFE4}},""]
         }'
       >
-      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
-      title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added.">
+      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;">
       <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"> </span></b> is insurance saving per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
+        <span class="pricing-item-price-after"> </span></b> is insurance savings per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Insurance savings per year is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added."/>
       </div>
 
        <!--Flood loss-->
@@ -425,12 +442,11 @@
           "4": ["$", {{annual_avoided_loss4}},""]
         }'
       >
-      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
-      title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added.">
+      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;">
       <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span> </b> is reduction in expected flood losses per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
+        <span class="pricing-item-price-after"></span> </b> is reduction in expected flood losses per year <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Reduction In Flood Losses Per Year is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added."/>
       </div>
 
       <!--Time to recover-->
@@ -444,12 +460,11 @@
           "4": ["", {{time_to_recover_FC_MS4}},"month (s)"]
         }'
       >
-      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"
-      title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings.">
+      <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;">
       <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency"></span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after">month(s)</span> </b> is time  to recover the elevation cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/>
+        <span class="pricing-item-price-after">month(s)</span> </b> is time  to recover the elevation cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"  title="Time To Recover The Cost is the Time required to offset the freeboard cost through the monthly savings."/>
       </div>
 
       <!-- Life time benefit
@@ -468,34 +483,37 @@
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after">month(s)</span>
       </div> -->
-  </div>
+      </div>
+    </div>
     </div>
   </div></section><br><br>
 </div>  
 
 <!--Monthly saving-->
   <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="map-style" style="padding: 20px 0 0 0;">Monthly Saving</h2><hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top;" class="p-style-detail">
+     <h2 class="map-style" style="padding: 20px 0 0 0;">Monthly Savings</h2><hr class="style-four">
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align:top; text-align: justify;" >
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the long term avoided losses and savings on insurance premiums are substantial, 
         ranging from $ {{total_monthly_saving1}} to $ {{total_monthly_saving4}}. 
       </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart5" class="chart5"></div></div> <br><br><br>
       
-        <b class="map-style" style="padding: 0px 125px 0px 0px;">Property size:</b>{{SquareFootage}}<br><br>
-        <b class="map-style" style="padding: 0px 89px 0px 0px;">Number of storeis:</b> {{No_Floors}}<br><br>
+        <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
+        <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
+        <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
+        <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS community rating</p> 
+        <b class="map-style" style="padding: 0px 89px 0px 0px;">Number of stories:</b> {{No_Floors}}<br><br>
         <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
-        <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30-Year   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100"><br><br>
-        <p style="padding: 0px 0px 0px 230px;">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000"></p>
-        <b class="map-style" style="padding: 0px 100px 0px 0px;">Flood insurance:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000"><br><br>
-        <p style="padding: 0px 0px 0px 230px;" >CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45"></p>
+        <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
+        <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
+        
         <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
         
       <section id="section-2"><p class=" map-style">
-       ● The location entered is in a/an ... flood zone, and insurance not/is mandatory.<br>
+       ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
-       ● The CRS rate is …, with a ...% discount on flood insurance. 
+       <!--● The CRS rate is …, with a ...% discount on flood insurance. -->
       </p></section>
       <br><br>
 
@@ -504,16 +522,16 @@
 <!--Freeboard cost-->
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Freeboard Cost</h2> <hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top;" class="p-style-detail">
-        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The initial costs of increasing elevation for your home range from $ {{FreeboardCost1}} to $ {{FreeboardCost4}}. 
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from $ {{FreeboardCost1}} to $ {{FreeboardCost4}}. 
       </section></div>  
       <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
   </div>
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
-    <h2 class="map-style"><br>Insurance Saving Per Year</h2> <hr class="style-four">
-     <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top;" class="p-style-detail">
+    <h2 class="map-style"><br>Insurance Savings Per Year</h2> <hr class="style-four">
+     <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
        <section id="section-4"> Constructing your home with additional freeboard lowers annual flood premiums $ {{total_annual_premium_BFE1}}  to $ {{total_annual_premium_BFE4}}.</section> <br><br>
       </p> 
      </div>
@@ -525,9 +543,9 @@
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
-     <h2 class="map-style"><br>Reduction in Expected Flood Losses Per Year</h2><hr class="style-four">
+     <h2 class="map-style"><br>Expected Annual Flood Loss</h2><hr class="style-four">
       <section id="section-5"> 
-        <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; " class="p-style-detail">
+        <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
           <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from $ {{annual_avoided_loss1}} to $ {{annual_avoided_loss4}}. </section> 
         </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart3" class="chart3"></div></div>
@@ -537,9 +555,12 @@
 <!--Recover-->
 <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style"><br>Time to Recover the Freeboard Cost</h2><hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top;" class="p-style-detail">
-        The time required to recover the freeboard cost is much shorter when considering the combined annual benefit of freeboard. 
-        The estimated time required to recover the cost ranges between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 
+      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+
+        The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
+        Considering ONLY flood insurance premium savings, the time to recover the additional cost of construction ranges between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 
+        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 
+        
       </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart4" class="chart4"></div></div>
   </div>
@@ -660,14 +681,13 @@
     },
     scaleX: { 
       markers: [],
-      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      label: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
       tick: {
         visible: false
       },
     crosshairX: {},
     },
     plot: {
-    aspect: 'spline',
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
       type : 'circle',
@@ -731,7 +751,6 @@
     crosshairX: {},
     },
     plot: {
-    aspect: 'spline',
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
       type : 'circle',
@@ -756,7 +775,7 @@
     series: [
       {
         values: {{total_annual_premium}},
-        text: 'Insurance saving per year ($)',
+        text: 'Insurance savings per year ($)',
         lineColor: 'var(--blue)'      
       }
     ]
@@ -796,7 +815,6 @@
     crosshairX: {},
     },
     plot: {
-    aspect: 'spline',
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
       type : 'circle',
@@ -821,7 +839,7 @@
     series: [
       {
         values: {{annual_avoided_loss_json}},
-        text: 'Reduction in expected flood losses per year ($)',
+        text: 'Expected annual flood loss ($)',
         lineColor: 'var(--orange)'      
       }
     ]
@@ -861,7 +879,6 @@
     crosshairX: {},
     },
     plot: {
-    aspect: 'spline',
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
       type : 'circle',
@@ -925,7 +942,6 @@
     crosshairX: {},
     },
     plot: {
-    aspect: 'spline',
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
       type : 'circle',
@@ -950,7 +966,7 @@
     series: [
       {
         values: {{ total_monthly_saving_json}}, 
-        text: 'Monthly saving ($)',
+        text: 'Monthly savings ($)',
         lineColor: 'var(--green)'      
       }
     ]
@@ -962,7 +978,7 @@
   // -----------------------------
   let chartData = [
     {
-      text: 'Monthly saving ($)',
+      text: 'Monthly savings ($)',
       values: {{ total_monthly_saving_json}},
       backgroundColor: '#1EA33C',
       legendMarker: {
@@ -980,7 +996,7 @@
       lineColor: '#DB2D3D'
     },
     {
-      text: 'Insurance saving per year ($)',
+      text: 'Insurance savings per year ($)',
       values: {{total_annual_premium}},
       backgroundColor: '#0077FF',
       legendMarker: {
@@ -989,7 +1005,7 @@
       lineColor: '#0077FF'
     },
     {
-      text: 'Reduction in expected flood losses per year ($)',
+      text: 'Expected annual flood loss ($)',
       values: {{annual_avoided_loss_json}},
       backgroundColor: '#FD7E14',
       legendMarker: {
