@@ -12754,8 +12754,8 @@ ul li a.current {
   }
 
   .vl {
-    border-left: 1.5px solid gray;
-    height: 330px;
-    padding: 0 20px 0 20px;
-    margin: 0 0 0 40px;
+    border-left: 1.9px solid rgb(156, 156, 156);
+    height: 150px;
+    padding: 0 0 0 20px;
+    margin: 0 0 0 5px;
   }
