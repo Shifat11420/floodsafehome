@@ -33,7 +33,7 @@
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     
-
+{% load humanize %}
 <script>
       require([
         "esri/WebMap",
@@ -289,7 +289,7 @@
       <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
       <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
       <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-      <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Year</a></li>
+      <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Month</a></li>
       <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
       <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
       <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
@@ -377,14 +377,15 @@
       
    
       <!--Freeboard cost-->
+      {% load humanize %}
       <div
         class="pricing-item-price"
         data-price-output='{
-          "0": ["$", {{FreeboardCost0}},""],
-          "1": ["$", {{FreeboardCost1}},""],
-          "2": ["$", {{FreeboardCost2}},""],
-          "3": ["$", {{FreeboardCost3}},""],
-          "4": ["$", {{FreeboardCost4}},""]
+          "0": ["$", {{FreeboardCost0| floatformat:2 | intcomma}},""],
+          "1": ["$", {{FreeboardCost1| floatformat:2 | intcomma}},""],
+          "2": ["$", {{FreeboardCost2| floatformat:2 | intcomma}},""],
+          "3": ["$", {{FreeboardCost3| floatformat:2 | intcomma}},""],
+          "4": ["$", {{FreeboardCost4| floatformat:2 | intcomma}},""]
         }'
       >
       <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
@@ -524,7 +525,7 @@
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Freeboard Cost</h2> <hr class="style-four">
       <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
-        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from $ {{FreeboardCost1}} to $ {{FreeboardCost4}}. 
+        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from $ {{FreeboardCost1 | floatformat:2 | intcomma}} to $ {{FreeboardCost4| floatformat:2 | intcomma}}. The optimal freeboard cost is {{optimal_freeboardCost | floatformat:2|intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
       </section></div>  
       <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
   </div>
