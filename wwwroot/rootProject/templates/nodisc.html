@@ -411,7 +411,7 @@
       <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> amortised cost per month <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title=""/></p>
+     --><span class="pricing-item-price-after"></span> </b> amortized cost per month <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title=""/></p>
       </div>   
       
       <!--insurance-->
@@ -824,7 +824,7 @@
     },
     scaleY: {
     format: "$%v",
-    negation: "currency"
+    negation: "currency",
     },
     plot: {
     tooltip:{ fontColor: 'var(--white)'},
@@ -860,6 +860,12 @@
   // Chart 4
   var chart4Data = {
     type: 'line',
+    scaleY: {
+      label: {
+        fontWeight: 'normal',
+        fontSize: 50
+      },
+    },
     title: {
       fontWeight: 'normal',
       fontColor: 'var(--black)',
@@ -889,6 +895,11 @@
       },
     crosshairX: {},
     },
+    scaleY: {
+    label: {
+      text: "month(s)"
+    },
+    },
     plot: {
     tooltip:{ fontColor: 'var(--white)'},
     marker : {
@@ -914,7 +925,7 @@
     series: [
       {
         values: {{time_to_recover_FC_MS}},
-        text: 'Time to recover the elevation cost (month(s))',
+        text: 'Time to recover the elevation cost',
         lineColor: 'var(--pink)'      
       }
     ]
