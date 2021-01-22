@@ -518,7 +518,7 @@
 <!--Monthly saving-->
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style" style="padding: 20px 0 0 0;">Monthly Savings</h2><hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align:top; text-align: justify;" >
+      <div class="graph-description" >
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from ${{total_monthly_saving1}} to ${{OptimalSaving}}. <br>
         <br>BFE stands for <b>Base Flood Elevation</b>.
       </div>
@@ -548,7 +548,7 @@
 <!--Freeboard cost-->
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Freeboard Cost</h2> <hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+      <div class="graph-description">
         <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from $ {{FreeboardCost1 | intcomma}} to $ {{FreeboardCost4 | intcomma}}. The optimal freeboard cost is {{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
       </section></div>  
       <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
@@ -557,7 +557,7 @@
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
     <h2 class="map-style"><br>Insurance Savings Per Month</h2> <hr class="style-four">
-     <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+     <div class="graph-description" >
        <section id="section-4"> Constructing your home with additional freeboard increases flood premiums savings per month $ {{total_monthly_saving0}}  to $ {{total_monthly_saving4}}.</section> <br><br>
       </p> 
      </div>
@@ -571,7 +571,7 @@
 <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style"><br>Expected Annual Flood Loss</h2><hr class="style-four">
       <section id="section-5"> 
-        <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+        <div class="graph-description" >
           <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from $ {{monthly_avoided_loss1}} to $ {{monthly_avoided_loss4}}. </section> 
         </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart3" class="chart3"></div></div>
@@ -581,7 +581,7 @@
 <!--Recover-->
 <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style"><br>Time to Recover the Freeboard Cost</h2><hr class="style-four">
-      <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
+      <div class="graph-description" >
 
         The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
         Considering ONLY flood insurance premium savings, the time to recover the additional cost of construction ranges between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 

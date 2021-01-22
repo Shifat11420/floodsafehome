@@ -12759,3 +12759,13 @@ ul li a.current {
     padding: 0 0 0 20px;
     margin: 0 0 0 5px;
   }
+
+  .graph-description {
+    width:30%; 
+    height:20%; 
+    display:inline-block; 
+    margin:0px 50px 0px 0px; 
+    vertical-align:top; 
+    text-align: justify;
+    font-size: 18px; 
+  }
