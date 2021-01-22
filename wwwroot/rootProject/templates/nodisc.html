@@ -330,7 +330,7 @@
       <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 52px 0px 0px; font-size: 20px; line-height:30px; ">
       
         <center><label class="form-slider ">
-          <img id='img' src='static/img/construction/zero.png' style="widht:350; height:200px;"/><br><br>
+          <img id='img' src='static/img/construction/zero.png' style="widht:4000; height:250px; margin: 70px 0 0 0;"/><br><br>
           <datalist id="scale">
             <option>0</option>
             <option>1</option>
@@ -370,11 +370,10 @@
     <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;"> When you add <b style="font-size:30px" class="map-style"> <span id="demo"> </span> ft</b> of  freeboard, </p>
     
     <div class="vl">  
-      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;"
-      title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood los reduction.">
+      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;">
         <b style="font-size:30px" class="map-style"><span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span></b> estimated monthly savings <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"/></p>
+        <span class="pricing-item-price-after"></span></b> estimated monthly savings <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood los reduction."/></p>
       
    
       <!--Freeboard cost-->
@@ -394,24 +393,26 @@
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after"></span> </b>estimated new construction cost of freeboard  <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Actual building construction cost is {{Actual_construction_cost}} and monthly amortized cost is {{Amortized_FC_json}}"/></p>
-         
-        <!--test
+      </div>   
+        
+
+      <!--amortized cost-->
         <div
         class="pricing-item-price"
         data-price-output='{
-          "0": ["$", {{FreeboardCost0}},""],
-          "1": ["$", {{FreeboardCost1}},""],
-          "2": ["$", {{FreeboardCost2}},""],
-          "3": ["$", {{FreeboardCost3}},""],
-          "4": ["$", {{FreeboardCost4}},""]
+          "0": ["$",{{Amortized_FC0}},""],
+          "1": ["$",{{Amortized_FC1}},""],
+          "2": ["$",{{Amortized_FC2}},""],
+          "3": ["$",{{Amortized_FC3}},""],
+          "4": ["$",{{Amortized_FC4}},""]
         }'
       > 
+      <p class="grid-style3 map-style"  style="font-size: 20px; line-height:40px;">
+      <b style="font-size:30px" class="map-style"> 
         <span class="pricing-item-price-currency">$</span>
         <span class="pricing-item-price-amount">0</span>
-        <span class="pricing-item-price-after"></span>
-      
-      <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title="Freeboard cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Actual building construction cost is {{Actual_construction_cost}} and monthly amortized cost is {{Amortized_FC_json}}"/></p>
-      </div>-->
+        <span class="pricing-item-price-after"></span> </b>is monthly amortized cost <img id='img' src='static/img/logo/blue_question.png' style="widht:15; height:15px;" title=""/></p>
+      </div>   
       
       <!--insurance-->
       <div
@@ -486,7 +487,7 @@
       </div>
     </div>
     </div>
-  </div></section><br><br>
+  </div></section><br><br><br>
 </div>  
 
 <!--Monthly saving-->
