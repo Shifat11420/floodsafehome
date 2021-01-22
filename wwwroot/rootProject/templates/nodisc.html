@@ -417,11 +417,11 @@
       <div
         class="pricing-item-price"
         data-price-output='{
-          "0": ["$", {{total_annual_premium_BFE}},""],
-          "1": ["$", {{total_annual_premium_BFE1}},""],
-          "2": ["$", {{total_annual_premium_BFE2}},""],
-          "3": ["$", {{total_annual_premium_BFE3}},""],
-          "4": ["$", {{total_annual_premium_BFE4}},""]
+          "0": ["$", {{annual_premium_saving0}},""],
+          "1": ["$", {{annual_premium_saving1}},""],
+          "2": ["$", {{annual_premium_saving2}},""],
+          "3": ["$", {{annual_premium_saving3}},""],
+          "4": ["$", {{annual_premium_saving4}},""]
         }'
       >
       <p class="grid-style3 map-style" style="font-size: 20px; line-height:40px;">
@@ -774,7 +774,7 @@
   },
     series: [
       {
-        values: {{total_annual_premium}},
+        values: {{annual_premium_saving_json}},
         text: 'Insurance savings per year ($)',
         lineColor: 'var(--blue)'      
       }
