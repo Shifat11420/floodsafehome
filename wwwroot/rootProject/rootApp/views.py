@@ -706,7 +706,7 @@ def search(request):
         if (total_monthly_saving[i] == 0):
             time_to_recover_FC_MS.append(0) ##
         else:    
-            time_to_recover_FC_MS.append(round((total_loanbased_FC[i]/(total_monthly_saving[i] * n)),1) ) 
+            time_to_recover_FC_MS.append(round((total_loanbased_FC[i]/(total_monthly_saving[i])),1) ) 
     print("Time to recover freeboard cost through monthly savings", time_to_recover_FC_MS)
 
     time_to_recover_FC_MS_json = simplejson.dumps(time_to_recover_FC_MS)       
