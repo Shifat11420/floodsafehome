@@ -547,7 +547,7 @@
      <h2 class="map-style"><br>Expected Annual Flood Loss</h2><hr class="style-four">
       <section id="section-5"> 
         <div style="width:30%; height:20%; display:inline-block; margin:0px 50px 0px 0px; vertical-align: top; text-align: justify;">
-          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from $ {{monthly_avoided_loss1}} to $ {{monthly_avoided_loss4}}. </section> 
+          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from $ {{annual_avoided_loss1}} to $ {{annual_avoided_loss4}}. </section> 
         </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart3" class="chart3"></div></div>
       </section>
@@ -839,8 +839,8 @@
   },
     series: [
       {
-        values: {{monthly_avoided_loss_json}},
-        text: 'Expected flood loss per month ($)',
+        values: {{annual_avoided_loss_json}},
+        text: 'Expected flood loss per year ($)',
         lineColor: 'var(--orange)'      
       }
     ]
