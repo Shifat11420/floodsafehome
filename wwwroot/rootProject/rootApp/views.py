@@ -41,18 +41,26 @@ def gotomap(request):
     print("my location: ", location)
     stories = request.GET.get('stories', 'default')
     print("my stories: ", stories)
-    locationList=location.split(' ')
+
+    commasplit =location.split(',')
+    beforecomma = commasplit[0]
+    locationList= beforecomma.split(' ')
+    locationList = list(map(str.strip, locationList))
+
+    #locationList=location.split(' ')
+    print("locationlist space split : ", locationList)
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
 ##Error message---------------------
     if (len(locationList)==1):
         queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1]))  ).all()[:10]
     elif (len(locationList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
     else:
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+        print("lalalala")
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
 
     mylist = []        
     if len(queryset)<=0:
@@ -144,9 +152,9 @@ def search(request):
     elif (len(locationList)==2):
         queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
     elif (len(locationList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
     else:
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[1]))).all()[:10]
+        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
 
     mylist = []        
     if len(queryset)<=0:
@@ -163,17 +171,20 @@ def search(request):
 ##--------------------autocomplete-------------------------------------
     if (len(streetlist)==1):
         addressvalue = FreeboardConstructionCost.objects.filter(
-         Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1])).all()
+         Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1]))).all()
+        print("ha")
     elif (len(streetlist)==2):
         addressvalue = FreeboardConstructionCost.objects.filter(
-         Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2])).all()
+         Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2])).all()
+        print("ha ha")
     elif (len(streetlist)==3):
         addressvalue = FreeboardConstructionCost.objects.filter(
-            Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()
+            Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()
+        print("ha ha ha")    
     else:  
         addressvalue = FreeboardConstructionCost.objects.filter(
-             Q(address__icontains=locationList[0]) ,  Q(street__icontains=locationList[1]), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
-    
+             Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
+        print("ha ha ha ha")
     print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
 ##------------------autocomplete ends--------------------------------------------------
                 
