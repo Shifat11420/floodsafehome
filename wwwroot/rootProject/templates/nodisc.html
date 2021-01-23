@@ -519,7 +519,8 @@
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style" style="padding: 20px 0 0 0;">Monthly Savings</h2><hr class="style-four">
       <div class="graph-description" >
-        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from ${{total_monthly_saving1}} to ${{OptimalSaving}}. <br>
+        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from ${{total_monthly_saving1}} to ${{OptimalSaving}}.
+        The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.  <br>
         <br>BFE stands for <b>Base Flood Elevation</b>.
       </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart5" class="chart5"></div></div> <br><br><br>
@@ -549,7 +550,7 @@
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Freeboard Cost</h2> <hr class="style-four">
       <div class="graph-description">
-        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from ${{FreeboardCost1 | intcomma}} to ${{FreeboardCost4 | intcomma}}. The optimal freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
+        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from ${{FreeboardCost1 | intcomma}} to ${{FreeboardCost4 | intcomma}}. The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
       </section></div>  
       <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
   </div>
@@ -558,7 +559,7 @@
   <div class="left3 section-tittle-detail mb-40"> 
     <h2 class="map-style"><br>Annual Insurance Premiums</h2> <hr class="style-four">
      <div class="graph-description" >
-       <section id="section-4"> Constructing your home with additional freeboard decreases annual insurance premiums from ${{total_annual_premium0 | intcomma}} to ${{total_annual_premium4 | intcomma}}, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}}  to ${{monthly_premium_saving4 | intcomma}}.</section> <br><br>
+       <section id="section-4"> Constructing your home with additional freeboard decreases annual insurance premiums from ${{total_annual_premium0 | intcomma}} to ${{total_annual_premium4 | intcomma}}. <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.</section> <br><br>
       </p> 
      </div>
      <div style="display:inline-block" class="zc-body"> 
@@ -572,7 +573,7 @@
      <h2 class="map-style"><br>Expected Annual Flood Loss</h2><hr class="style-four">
       <section id="section-5"> 
         <div class="graph-description" >
-          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from $ {{AAL_absCurrency0}} to $ {{AAL_absCurrency4}}. </section> 
+          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from ${{AAL_absCurrency0}} to ${{AAL_absCurrency4}}. The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.</section> 
         </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart3" class="chart3"></div></div>
       </section>
