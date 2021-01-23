@@ -878,8 +878,8 @@
   },
     series: [
       {
-        values: {{monthly_avoided_loss_json}},
-        text: 'Expected flood loss per month',
+        values: {{monthly_avoided_loss_json}}, //need to update
+        text: 'Expected annual flood loss',
         lineColor: 'var(--orange)'      
       }
     ]
@@ -1041,8 +1041,8 @@
       lineColor: '#1EA33C'
     },
     {
-      text: 'Freeboard cost ($)',
-      values: {{freeboardCost_json}},
+      text: 'Amortized cost ($)',
+      values: {{Amortized_FC_json}},
       backgroundColor: '#DB2D3D',
       legendMarker: {
         borderColor: '#DB2D3D'
@@ -1066,16 +1066,6 @@
         borderColor: '#FD7E14'
       },
       lineColor: '#FD7E14'
-    },
-    {
-      text: 'Time to recover the elevation cost (month(s))',
-      fontSize: 20,
-      values: {{time_to_recover_FC_MS}},
-      backgroundColor: '#EC5B9D',
-      legendMarker: {
-        borderColor: '#EC5B9D'
-      },
-      lineColor: '#EC5B9D'
     }
   ];
 
