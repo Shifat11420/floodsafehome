@@ -549,16 +549,16 @@
   <div class="left3 section-tittle-detail mb-40"> 
      <h2 class="map-style">Freeboard Cost</h2> <hr class="style-four">
       <div class="graph-description">
-        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from ${{FreeboardCost1 | intcomma}} to $ {{FreeboardCost4 | intcomma}}. The optimal freeboard cost is {{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
+        <section id="section-3">The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from ${{FreeboardCost1 | intcomma}} to ${{FreeboardCost4 | intcomma}}. The optimal freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. 
       </section></div>  
       <div style="display:inline-block" class="zc-body">     <div id="chart1" class="chart1"></div></div>
   </div>
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
-    <h2 class="map-style"><br>Insurance Savings Per Month</h2> <hr class="style-four">
+    <h2 class="map-style"><br>Annual Insurance Premiums</h2> <hr class="style-four">
      <div class="graph-description" >
-       <section id="section-4"> Constructing your home with additional freeboard increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}}  to ${{monthly_premium_saving4 | intcomma}}.</section> <br><br>
+       <section id="section-4"> Constructing your home with additional freeboard decreases annual insurance premiums from ${{total_annual_premium0 | intcomma}} to ${{total_annual_premium4 | intcomma}}, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}}  to ${{monthly_premium_saving4 | intcomma}}.</section> <br><br>
       </p> 
      </div>
      <div style="display:inline-block" class="zc-body"> 
@@ -811,8 +811,10 @@
   },
     series: [
       {
-        values: {{monthly_premium_saving_json}},
-        text: 'Insurance savings per month',
+        //values: {{monthly_premium_saving_json}},
+        values: {{total_annual_premium_json}},
+        //text: 'Insurance savings per month',
+        text: 'Annual insurance premiums',
         lineColor: 'var(--blue)'      
       }
     ]
