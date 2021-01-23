@@ -330,7 +330,7 @@
       <div class="pricing-slider" style="width:30%; height:20%; display:inline-block; margin:0px 52px 0px 0px; font-size: 20px; line-height:30px; ">
       
         <center><label class="form-slider " >
-          <img id='img' src='static/img/construction/zero.png' style="widht:400px; height:350px; margin: 70px 0 0 0;"/><br><br>
+          <img id='img' src='static/img/construction/onefoot.png' style="widht:400px; height:350px; margin: 70px 0 0 0;"/><br><br>
           <center><div class="pricing-slider-value" ></div></center> <br>
           <datalist id="scale">
             <option>0</option>
@@ -716,13 +716,15 @@
     scaleY: {
     format: "$%v",
     negation: "currency",
-    thousandsSeparator: ", "
+    thousandsSeparator: ", ",
+    multiplier: true
     },
     plot: {
     tooltip:{ 
-      fontColor: 'var(--white)', 
+      fontColor: 'var(--white)',
+      text: '$%v',
       thousandsSeparator: ", "
-    },
+      },
     marker : {
       type : 'circle',
       borderWidth : 1,
@@ -786,10 +788,16 @@
     },
     scaleY: {
     format: "$%v",
-    negation: "currency"
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
     },
     plot: {
-    tooltip:{ fontColor: 'var(--white)'},
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", "
+      },
     marker : {
       type : 'circle',
       borderWidth : 1,
@@ -822,71 +830,271 @@
   };
 
   // Chart 3
-  var chart3Data = {
-    type: 'line',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
+var chart3Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  plot: {
+    tooltip: {
+      visible: false
     },
-    tootltip: {
-      visible:false
-    },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
+    cursor: 'hand'
+  },
+
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+     width: '70%',
+     x: '2%',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: {
+    markers: [],
+     labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+  },
+  crosshairX: {},
+  scaleY: {
     format: "$%v",
     negation: "currency",
-    },
-    plot: {
-    tooltip:{ fontColor: 'var(--white)'},
-    marker : {
+    thousandsSeparator: ", ",
+    multiplier: true
+  },
+  series: [
+    {
+      text: 'The reduction in insurance premiums ',
+      values: {{time_to_recover_FC_PS_json}},
+      lineColor: 'var(--orange)',
+      marker : {
       type : 'circle',
       borderWidth : 1,
       borderColor : 'var(--orange)',
       size : 5,
       backgroundColor : 'var(--orange)'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : 'var(--orange)'
+      },
     },
-    hoverMarker : {
+    {
+      text: 'The reduction in insurance premiums and the reduction of flood losses',
+      values: {{time_to_recover_FC_TB_json}},
+      lineColor: '#c4c722',
+      marker : {
       type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
       borderWidth : 1,
-      borderColor : 'var(--orange)'
-    },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
-    },
-  },
-    series: [
-      {
-        values: {{AAL_absCurrency_json}}, //need to update
-        text: 'Expected annual flood loss',
-        lineColor: 'var(--orange)'      
+      borderColor : '#c4c722',
+      size : 5,
+      backgroundColor : '#c4c722'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : '#c4c722'
+      },
+    }
+  ]
+};
+
+
+/*
+* define Marker class to construct
+* markers on the fly easier.
+*/
+function Marker(_index) {
+  return {
+    type: 'line',
+    flat: false,
+    lineColor: '#424242',
+    lineWidth: '1px',
+    range: [_index]
+  }
+}
+
+/*
+* define Label class to construct
+* labels on the fly easier.
+*/
+function Label(_text, _id, _offsetX, _offsetY) {
+  return {
+    id: _id,
+    text: _text,
+    angle: 0,
+    padding: '5px 10px 5px 10px',
+    backgroundColor: '#eeeeee',
+    cursor: 'pointer',
+    flat: false,
+    fontSize: '13px',
+    fontStyle: 'bold',
+    offsetX: _offsetX,
+    offsetY: _offsetY ? _offsetY : 0,
+    textAlign: 'left',
+    wrapText: true
+  }
+}
+
+// format the label text
+let formatLabelText = (_nodeindex, _scaleText) => {
+  let plotInfo = null;
+  let nodeInfo;
+  let seriesText = '';
+  let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
+  let color = '';
+  let plotLength = zingchart.exec('chart3Data', 'getplotlength', {
+    graphid: 0
+  });
+
+  for (let i = 0; i < plotLength; i++) {
+    plotInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+      object: 'plot',
+      plotindex: i
+    });
+    nodeInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+      object: 'node',
+      plotindex: i,
+      nodeindex: _nodeindex
+    });
+    color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
+    seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
+    labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
+      ' ' + nodeInfo.value + '<br>';
+  }
+
+  return labelString;
+};
+
+// global array for markers since you can only update the whole array
+let markersArray = [];
+let labelsArray = [];
+
+// hash table for markers
+let markerHashTable = {};
+
+/*
+* Register a graph click event and then render a chart with the markers
+*/
+zingchart.bind('chart3Data', 'click', (e) => {
+  let xyInformation;
+  let nodeIndex;
+  let scaleText;
+
+  // make sure not a node click and click happend in plotarea
+  if (e.target != 'node' && e.plotarea) {
+    xyInformation = zingchart.exec('chart3Data', 'getxyinfo', {
+      x: e.ev.clientX,
+      y: e.ev.clientY
+    });
+
+    // if anything is found, 0 corresponds to scale-x
+    if (xyInformation && xyInformation[0] && xyInformation[2]) {
+      nodeIndex = xyInformation[0].scalepos;
+      scaleText = xyInformation[0].scaletext;
+
+      // check hash table. Add marker
+      if (!markerHashTable['nodeindex' + nodeIndex]) {
+        let nodeInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+          object: 'node',
+          nodeindex: nodeIndex,
+          plotindex: 0
+        });
+
+        let labelText = formatLabelText(nodeIndex, scaleText);
+        let labelId = 'label_' + nodeIndex;
+        // create a marker
+        let newMarker = new Marker(nodeIndex);
+        let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
+
+        markerHashTable['nodeindex' + nodeIndex] = true;
+        markersArray.push(newMarker);
+
+        labelsArray.push(newLabel);
+
+        // render the marker
+        chart3Data.scaleX.markers = markersArray;
+        chart3Data.labels = labelsArray;
+        zingchart.exec('chart3Data', 'setdata', {
+          data: chart3Data
+        });
+      } else {
+        console.log('---marker already exists----');
       }
-    ]
-  };
+    }
+  }
+});
+
+/*
+* Register a node_click event and then render a chart with the markers
+*/
+zingchart.bind('chart3Data', 'node_click', (e) => {
+  // check hash table. Add marker
+  if (!markerHashTable['nodeindex' + e.nodeindex]) {
+    let labelText = formatLabelText(e.nodeindex, e.scaletext);
+    let labelId = 'label_' + e.nodeindex;
+    // create a marker
+    let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
+    let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
+
+    markerHashTable['nodeindex' + e.nodeindex] = true;
+    markersArray.push(newMarker);
+
+    labelsArray.push(newLabel);
+
+    // render the marker
+    chart3Data.scaleX.markers = markersArray;
+    chart3Data.labels = labelsArray;
+    zingchart.exec('chart3Data', 'setdata', {
+      data: chart3Data
+    });
+  } else {
+    console.log('---marker already exists----');
+  }
+});
+
+let labelMouseDown = false;
+let labelId = null;
+
+/*
+* bind mousedown event for dragging label
+*/
+zingchart.bind('chart3Data', 'label_mousedown', (e) => {
+  labelMouseDown = true;
+  labelId = e.labelid;
+  zingchart.exec('chart3Data', 'hideguide');
+});
+
+zingchart.bind('chart3Data', 'mousemove', (e) => {
+  if (labelMouseDown && labelId) {
+    zingchart.exec('chart3Data', 'updateobject', {
+      type: 'label',
+      data: {
+        id: labelId,
+        offsetY: e.ev.layerY
+      }
+    });
+  }
+});
+
+zingchart.bind('chart3Data', 'mouseup', () => {
+  labelMouseDown = false;
+  labelId = null;
+  zingchart.exec('chart3Data', 'showguide');
+});
+
+zingchart.bind('chart3Data', 'doubleclick', (e) => {
+  console.log(e);
+});
+
 
   // Chart 4
   var chart4Data = {
@@ -903,9 +1111,10 @@
       align: 'left',
       marginLeft: '2rem'
     },
-    tootltip: {
-      visible:false
-    },
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      thousandsSeparator: ", "
+      },
     cursor: 'hand',
     globals: {
       fontColor: 'var(--fontColor)',
@@ -933,7 +1142,10 @@
     },
     },
     plot: {
-    tooltip:{ fontColor: 'var(--white)'},
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '%v month(s)'
+    },
     marker : {
       type : 'circle',
       borderWidth : 1,
@@ -997,10 +1209,16 @@
     },    
     scaleY: {
     format: "$%v",
-    negation: "currency"
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
     },
     plot: {
-    tooltip:{ fontColor: 'var(--white)'},
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", "
+      },
     marker : {
       type : 'circle',
       borderWidth : 1,
@@ -1033,48 +1251,127 @@
   // Chart 6
   // DEFINE DATA
   // -----------------------------
-  let chartData = [
+ let chartData = [
     {
-      text: 'Monthly savings ($)',
+      type: 'line', 
+      text: 'Monthly savings',
       values: {{ total_monthly_saving_json}},
-      backgroundColor: '#1EA33C',
+      scales: 'scale-x,scale-y',
+      lineColor: '#1EA33C',
       legendMarker: {
-        borderColor: '#1EA33C'
+        type: 'circle'
       },
-      lineColor: '#1EA33C'
+      tooltip: {
+        text: '$%v',
+        wrapText: true
+      },
+      marker: {
+        backgroundColor: '#1EA33C'
+      }
     },
     {
-      text: 'Amortized cost ($)',
+      type: 'bar',
+      text: 'Amortized cost',
       values: {{Amortized_FC_json}},
-      backgroundColor: '#DB2D3D',
-      legendMarker: {
-        borderColor: '#DB2D3D'
-      },
-      lineColor: '#DB2D3D'
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#ff614f',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        wrapText: true
+      }
     },
     {
-      text: 'Insurance savings per month ($)',
+      type: 'bar',
+      text: 'Insurance savings per month',
       values: {{monthly_premium_saving_json}},
-      backgroundColor: '#0077FF',
-      legendMarker: {
-        borderColor: '#0077FF'
-      },
-      lineColor: '#0077FF'
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#07d9a4',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        wrapText: true
+      }
     },
     {
-      text: 'Reduction in expected flood loss per month ($)',
+      type: 'bar', 
+      text: 'Reduction in expected flood loss per month',
       values: {{monthly_avoided_loss_json}},
-      backgroundColor: '#FD7E14',
-      legendMarker: {
-        borderColor: '#FD7E14'
-      },
-      lineColor: '#FD7E14'
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#2480bf',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        wrapText: true
+      }
     }
+
   ];
 
+let chartConfig = {
+    type: 'mixed',
+    legend:{
+     layout: '1x4' ,
+     width: '99.5%',
+     borderColor: 'whtie'
+    },
+    scaleX: {
+      values: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      guide: {
+        lineColor: '#BDBDBD',
+        lineStyle: 'solid'
+      },
+      label: {
+        text: 'BFE + Freeboard (ft)'
+      },
+    },
+    scaleY: {
+      
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+{% comment %} labels: [
+      {
+        text: 'View External<br>Report',
+        url: 'https://www.zingchart.com/pricing',
+        target: '_blank',
+        padding: '5px',
+        backgroundColor: '#ccc',
+        borderRadius: '3px',
+        callout: true,
+        calloutHeight: '10px',
+        calloutWidth: '15px',
+        fontColor: '#000',
+        hook: 'node:plot=2,index=4',
+        offsetY: '-35px',
+        underline: true
+      }
+    ], {% endcomment %}
+    series: chartData
+  };
+
+
   // CHART CONFIG
-  // -----------------------------
-  let chartConfig = {
+  // ----------------------------- commented out
+  {% comment %} let chartConfig = {
     type: 'hbullet',
     backgroundColor: '#f4f4f4',
     legend: {
@@ -1156,7 +1453,7 @@
       }
     },
     series: chartData
-  };
+  }; {% endcomment %}
 
   // RENDER CHARTS
   // -----------------------------

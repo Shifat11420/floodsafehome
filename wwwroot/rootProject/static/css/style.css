@@ -11997,22 +11997,18 @@ del {
     }
     .cd-single-step:nth-of-type(1) {
       /* set tour points positions */
-      top: 18%;
+      top: 30%;
       left: 25%;
     }
     .cd-single-step:nth-of-type(2) {
-        top: 61%;
-        left: 10%;
-    }
-    .cd-single-step:nth-of-type(3) {
         top: 80%;
         left: 25%;
     }
-    .cd-single-step:nth-of-type(4) {
-        top: 33.5%;
+    .cd-single-step:nth-of-type(3) {
+        top: 20%;
         right: 17%;
       }
-    .cd-single-step:nth-of-type(5) {
+    .cd-single-step:nth-of-type(4) {
         top: 70%;
         right:40%;
       }  
@@ -12396,6 +12392,7 @@ del {
     width: 30%;
     float: left;
     position: fixed;
+    overflow-y:auto;
     padding: 0 0 0 25px;
   }
 
