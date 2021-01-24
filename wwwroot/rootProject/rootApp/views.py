@@ -281,9 +281,11 @@ def search(request):
         #### Not V zones functions for AAL building    
         else:    
             if No_Floors == "1" : 
-                loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )        
+                #loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )
+                loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5362 * ((E-F)**2) + 10.419 *(E-F) + 13.39 )        
             elif No_Floors == "2" :
-                loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
+                #loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
+                loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1466 * ((E-F)**2) + 6.1218 *(E-F) + 9.2626 )
             else:
                 pass  
 
