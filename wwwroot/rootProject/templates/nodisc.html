@@ -831,8 +831,90 @@
     ]
   };
 
+ 
+
   // Chart 3
-var chart3Data = {
+  var chart3Data = {
+    type: 'line',
+    scaleY: {
+      label: {
+        fontWeight: 'normal',
+        fontSize: 50
+      },
+    },
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--orange)'
+      },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        type: 'pie'
+      }
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    label: {
+      text: "Month(s)",
+      fontWeight: 'normal'
+    },
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '%v month(s)'
+    },
+    marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--orange',
+      size : 5,
+      backgroundColor : 'var(--orange)'
+    },
+    hoverMarker : {
+      type : 'circle',
+      size : 6,
+      backgroundColor : '#FFF',
+      borderWidth : 1,
+      borderColor : 'var(--orange)'
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        values: {{AAL_absCurrency_json}}, //need to update
+        text: 'Expected annual flood loss',
+        lineColor: 'var(--orange)'      
+      }
+    ]
+  };
+
+   // Chart 4
+var chart4Data = {
   type: 'line',
   title: {
     fontWeight: 'normal',
@@ -909,7 +991,6 @@ var chart3Data = {
   ]
 };
 
-
 /*
 * define Marker class to construct
 * markers on the fly easier.
@@ -953,16 +1034,16 @@ let formatLabelText = (_nodeindex, _scaleText) => {
   let seriesText = '';
   let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
   let color = '';
-  let plotLength = zingchart.exec('chart3Data', 'getplotlength', {
+  let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
     graphid: 0
   });
 
   for (let i = 0; i < plotLength; i++) {
-    plotInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+    plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
       object: 'plot',
       plotindex: i
     });
-    nodeInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+    nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
       object: 'node',
       plotindex: i,
       nodeindex: _nodeindex
@@ -986,14 +1067,14 @@ let markerHashTable = {};
 /*
 * Register a graph click event and then render a chart with the markers
 */
-zingchart.bind('chart3Data', 'click', (e) => {
+zingchart.bind('chart4Data', 'click', (e) => {
   let xyInformation;
   let nodeIndex;
   let scaleText;
 
   // make sure not a node click and click happend in plotarea
   if (e.target != 'node' && e.plotarea) {
-    xyInformation = zingchart.exec('chart3Data', 'getxyinfo', {
+    xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
       x: e.ev.clientX,
       y: e.ev.clientY
     });
@@ -1005,7 +1086,7 @@ zingchart.bind('chart3Data', 'click', (e) => {
 
       // check hash table. Add marker
       if (!markerHashTable['nodeindex' + nodeIndex]) {
-        let nodeInfo = zingchart.exec('chart3Data', 'getobjectinfo', {
+        let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
           object: 'node',
           nodeindex: nodeIndex,
           plotindex: 0
@@ -1023,10 +1104,10 @@ zingchart.bind('chart3Data', 'click', (e) => {
         labelsArray.push(newLabel);
 
         // render the marker
-        chart3Data.scaleX.markers = markersArray;
-        chart3Data.labels = labelsArray;
-        zingchart.exec('chart3Data', 'setdata', {
-          data: chart3Data
+        chart4Data.scaleX.markers = markersArray;
+        chart4Data.labels = labelsArray;
+        zingchart.exec('chart4Data', 'setdata', {
+          data: chart4Data
         });
       } else {
         console.log('---marker already exists----');
@@ -1038,7 +1119,7 @@ zingchart.bind('chart3Data', 'click', (e) => {
 /*
 * Register a node_click event and then render a chart with the markers
 */
-zingchart.bind('chart3Data', 'node_click', (e) => {
+zingchart.bind('chart4Data', 'node_click', (e) => {
   // check hash table. Add marker
   if (!markerHashTable['nodeindex' + e.nodeindex]) {
     let labelText = formatLabelText(e.nodeindex, e.scaletext);
@@ -1053,10 +1134,10 @@ zingchart.bind('chart3Data', 'node_click', (e) => {
     labelsArray.push(newLabel);
 
     // render the marker
-    chart3Data.scaleX.markers = markersArray;
-    chart3Data.labels = labelsArray;
-    zingchart.exec('chart3Data', 'setdata', {
-      data: chart3Data
+    chart4Data.scaleX.markers = markersArray;
+    chart4Data.labels = labelsArray;
+    zingchart.exec('chart4Data', 'setdata', {
+      data: chart4Data
     });
   } else {
     console.log('---marker already exists----');
@@ -1069,15 +1150,15 @@ let labelId = null;
 /*
 * bind mousedown event for dragging label
 */
-zingchart.bind('chart3Data', 'label_mousedown', (e) => {
+zingchart.bind('chart4Data', 'label_mousedown', (e) => {
   labelMouseDown = true;
   labelId = e.labelid;
-  zingchart.exec('chart3Data', 'hideguide');
+  zingchart.exec('chart4Data', 'hideguide');
 });
 
-zingchart.bind('chart3Data', 'mousemove', (e) => {
+zingchart.bind('chart4Data', 'mousemove', (e) => {
   if (labelMouseDown && labelId) {
-    zingchart.exec('chart3Data', 'updateobject', {
+    zingchart.exec('chart4Data', 'updateobject', {
       type: 'label',
       data: {
         id: labelId,
@@ -1087,96 +1168,18 @@ zingchart.bind('chart3Data', 'mousemove', (e) => {
   }
 });
 
-zingchart.bind('chart3Data', 'mouseup', () => {
+zingchart.bind('chart4Data', 'mouseup', () => {
   labelMouseDown = false;
   labelId = null;
-  zingchart.exec('chart3Data', 'showguide');
+  zingchart.exec('chart4Data', 'showguide');
 });
 
-zingchart.bind('chart3Data', 'doubleclick', (e) => {
+zingchart.bind('chart4Data', 'doubleclick', (e) => {
   console.log(e);
 });
 
 
-  // Chart 4
-  var chart4Data = {
-    type: 'line',
-    scaleY: {
-      label: {
-        fontWeight: 'normal',
-        fontSize: 50
-      },
-    },
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      thousandsSeparator: ", ",
-      backgroundColor:'var(--pink)'
-      },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
-    label: {
-      text: "Month(s)",
-      fontWeight: 'normal'
-    },
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '%v month(s)'
-    },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--pink)',
-      size : 5,
-      backgroundColor : 'var(--pink)'
-    },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--pink)'
-    },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
-    },
-  },
-    series: [
-      {
-        values: {{time_to_recover_FC_MS}},
-        text: 'Time to recover the elevation cost',
-        lineColor: 'var(--pink)'      
-      }
-    ]
-  };
+
 
   // Chart 5
   var chart5Data = {
