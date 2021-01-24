@@ -585,8 +585,8 @@
       <div class="graph-description" >
 
         The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
-        Considering ONLY flood insurance premium savings, the time to recover the additional cost of construction ranges between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 
-        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between {{time_to_recover_FC_MS1}} month(s) and {{time_to_recover_FC_MS4}} month(s). 
+        Considering ONLY flood insurance premium savings, the time to recover the additional cost of construction ranges between {{time_to_recover_FC_PS1}} month(s) and {{time_to_recover_FC_PS4}} month(s). 
+        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between {{time_to_recover_FC_TB1}} month(s) and {{time_to_recover_FC_TB4}} month(s). 
         
       </div>
       <div style="display:inline-block" class="zc-body">     <div id="chart4" class="chart4"></div></div>
@@ -874,15 +874,16 @@
     crosshairX: {},
     },
     scaleY: {
-    label: {
-      text: "Month(s)",
-      fontWeight: 'normal'
-    },
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true
     },
     plot: {
     tooltip:{ 
       fontColor: 'var(--white)',
-      text: '%v month(s)'
+      text: '$%v',
+      thousandsSeparator: ", "
     },
     marker : {
       type : 'circle',
@@ -944,10 +945,10 @@ var chart4Data = {
   },
   crosshairX: {},
   scaleY: {
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ", ",
-    multiplier: true
+    label: {
+      text: "Month(s)",
+      fontWeight: 'normal'
+    },
   },
   series: [
     {
