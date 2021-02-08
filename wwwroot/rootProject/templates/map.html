@@ -165,7 +165,7 @@
 
 <body>
 
-     <header class="header" style="height:100px; text; padding: 5px 15px 15px 15px">
+     <header class="header header-map">
         <!-- Header Start -->
         <div class="header-area header-transparent mapHeader">
             <div class="main-header ">
@@ -234,10 +234,10 @@
    <!--autosuggestion End-->
 
   <!--Disclaimer start-->
-  <div class="bts-popup" role="alert" style="z-index: 3;" >
-      <div class="bts-popup-container type-details"  >
+  <div class="bts-popup" role="alert">
+      <div class="bts-popup-container type-details">
         <center><img src="../static/img/logo/logo.png" alt="Flood Safe Home" width="50%" /></center>
-          <div style="overflow:auto;  height:40%;">
+          <div class="disclaimer">
             <p class="p-style">
               Welcome to the Web portal for the FloodSafeHome decision-making tool. 
               We hope that you will find this free product to be a useful aid in your research to protect one of the most important investments you will ever make – your home. 
@@ -283,9 +283,9 @@
 
         <center>
         <hr>
-          <p style="text-align:center"> 
+          <p class="disclaimer-button"> 
           I read the disclaimer information above and understands the limitations of the data herein.   
-            <div class="bts-popup-button bts-popup-container-disagree landing-inputfile" style="margin: 20px;" >
+            <div class="bts-popup-button bts-popup-container-disagree landing-inputfile" >
               <a href="/">Disagree </a>
             </div>   
             
@@ -305,7 +305,7 @@
 
 			<div class="cd-more-info right cd-single-step:nth-of-type(1)">
 				<h2>Step Number 1</h2>
-				<p style="text-align: justify">Please fill out the following form completely <i> (All fields are required.)</i> After your building information is filed, please hit the <b style="color:gray">"Get Results"</b>  button!</i></p>
+				<p class="tour-guide-align">Please fill out the following form completely <i> (All fields are required.)</i> After your building information is filed, please hit the <b class="tour-guide-b">"Get Results"</b>  button!</i></p>
 			</div>
 		</li> <!-- .cd-single-step -->
 
@@ -338,22 +338,24 @@
 	</ul> <!-- .cd-tour-wrapper -->
 
   <!--Tour guide end-->
+
+
  <!-- Select your building information-->
- <div class="container left" style="z-index: 1;"> 
+ <div class="container left"> 
       <form method="get" action="/search">
             {% csrf_token %} 
       <p> 
-        <h2 style="padding: 7px 0px 10px 0px; " class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
+        <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
           <div class="box">
-          <b class="map-style"> User Type <sup style="color:red">*</sup></b> <br>
+          <b class="map-style"> User Type <sup class="sup">*</sup></b> <br>
             <label>
-            <input type="radio" name ="chk" value = "Homeowner" class="bar" required checked>Homeowner
+            <input type="radio" name ="chk" value = "Homeowner" class="bar" required checked>Homeowner &nbsp;
             </label>
             <label>
             <input type="radio" name ="chk" value = "Community official" class="bar">Community official</option>
             </label><br>
 
-          <b class="map-style">Building Type <sup style="color:red">*</sup></b><br>
+          <b class="map-style">Building Type <sup class="sup">*</sup></b><br>
             <label>
             <input type="radio" name ="selectBox" value = "new_building" class="bar" required checked>New building 
             </label>
@@ -361,13 +363,21 @@
             <input type="radio" name ="selectBox" value = "existing_building" class="bar">Existing building</option>
             </label> <br>
 
-          <b class="map-style">Address or Parcel ID <sup style="color:red">*</sup></b><br>
+          <b class="map-style">Insurance <sup class="sup">*</sup></b><br>
+            <label>
+            <input type="radio" name ="insurance" value = "insurance_yes" class="bar" required checked>Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+            <label>
+            <input type="radio" name ="insurance" value = "insurance_no" class="bar" margin: 0 0 0 10px;>No</option>
+            </label> <br>
+
+          <b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b><br>
           <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID" required class="text" value={{location|safe}}> <br>
           
-          <b class="map-style">Square footage <sup style="color:red">*</sup></b> <br>
+          <b class="map-style">Square footage <sup class="sup">*</sup></b> <br>
             <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage" required class="text"> <br>
           
-          <b class="map-style">Number of Stories <sup style="color:red">*</sup> </b><br>
+          <b class="map-style">Number of Stories <sup class="sup">*</sup> </b><br>
             <label>
             <input type="radio" name ="stories" id="stories" value = "1" class="bar" required checked>One story
             </label>
@@ -387,23 +397,23 @@
  <!-- Select your building information end-->
 
  <!-- Side bar naviation menu-->
- <p>
-  <h2 style="padding: 0px 0px 14px 0px; " class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
-  <nav class="nav">
-    <ul class="box ul">
-      <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
-      <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
-      <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-      <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Year</a></li>
-      <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
-      <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
-      <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
-    </ul> 
-  </nav>
- </p>
+  <p>
+    <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
+    <nav class="nav">
+      <ul class="box ul">
+        <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
+        <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
+        <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
+        <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Year</a></li>
+        <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
+        <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
+        <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
+      </ul> 
+    </nav>
+  </p>
   
-  <!-- Side bar naviation menu end-->
-  </div>
+</div>
+<!-- Side bar naviation menu end-->
 
 <!-- Error message-->                                
   {% if messages %}
@@ -421,7 +431,7 @@
 
 <!--ESRI Map-->
 <div id = "pdf_wrap">
-        <div id="viewDiv" style="margin: 0 15px 0 0;  "><section id="section-1"></section>
+        <div id="viewDiv" ><section id="section-1"></section>
         </div>
 
  
