@@ -173,19 +173,15 @@ def search(request):
     if (len(streetlist)==1):
         addressvalue = datafile.objects.filter(
          Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1]))).all()
-        print("ha")
     elif (len(streetlist)==2):
         addressvalue = datafile.objects.filter(
-         Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2])).all()
-        print("ha ha")
+         Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2])).all()        
     elif (len(streetlist)==3):
         addressvalue = datafile.objects.filter(
-            Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()
-        print("ha ha ha")    
+            Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()    
     else:  
         addressvalue = datafile.objects.filter(
              Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
-        print("ha ha ha ha")
     print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
 ##------------------autocomplete ends--------------------------------------------------
                 
@@ -248,7 +244,8 @@ def search(request):
 
 ##-------BFE increments i---------------------------
 
-    totalBFE = [0, 1, 2, 3, 4]
+    #totalBFE = [0, 1, 2, 3, 4]
+    totalBFE = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
 
 ##----------FFE-----------------------------
     FFE = []
@@ -423,56 +420,104 @@ def search(request):
 
     #--table--Zones AE, A, A1-A30------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     if zonevalue == "AE" :
-        #--one story
-        BasicRate_1s_Bldg_BFE = [2.21,0.94,0.50,0.34,0.31]
-        AddiRate_1s_Bldg_BFE = [0.26,0.17,0.11,0.09,0.08]
-        BasicRate_1s_Cont_BFE = [1.02,0.53,0.38,0.38,0.38]
-        AddiRate_1s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
-        print("one story")
-        #--twostory
-        BasicRate_2s_Bldg_BFE = [1.75,0.78,0.43,0.31,0.27]
-        AddiRate_2s_Bldg_BFE = [0.08,0.08,0.08,0.08,0.08]
-        BasicRate_2s_Cont_BFE = [0.75,0.40,0.38,0.38,0.38]
-        AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
-        print("two or more stories")
+        # #--one story
+        # BasicRate_1s_Bldg_BFE = [2.21,0.94,0.50,0.34,0.31]
+        # AddiRate_1s_Bldg_BFE = [0.26,0.17,0.11,0.09,0.08]
+        # BasicRate_1s_Cont_BFE = [1.02,0.53,0.38,0.38,0.38]
+        # AddiRate_1s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+        # print("one story")
+        # #--twostory
+        # BasicRate_2s_Bldg_BFE = [1.75,0.78,0.43,0.31,0.27]
+        # AddiRate_2s_Bldg_BFE = [0.08,0.08,0.08,0.08,0.08]
+        # BasicRate_2s_Cont_BFE = [0.75,0.40,0.38,0.38,0.38]
+        # AddiRate_2s_Cont_BFE = [0.12,0.12,0.12,0.12,0.12]
+        # print("two or more stories")
+
+        #--one story below+
+        BasicRate_1s_Bldg_BFE = [11.90, 9.85, 7.93, 5.37, 2.21,0.94,0.50,0.34,0.31]
+        AddiRate_1s_Bldg_BFE = [1.79, 1.19, 0.70, 0.36, 0.26,0.17,0.11,0.09,0.08]
+        BasicRate_1s_Cont_BFE = [6.53, 5.02, 3.69, 2.33, 1.02,0.53,0.38,0.38,0.38]
+        AddiRate_1s_Cont_BFE = [0.24, 0.24, 0.14, 0.12, 0.12,0.12,0.12,0.12,0.12]
+        print("one story below+")
+        #--twostory below+
+        BasicRate_2s_Bldg_BFE = [10.08, 8.17, 6.40, 4.31, 1.75,0.78,0.43,0.31,0.27]
+        AddiRate_2s_Bldg_BFE = [0.37, 0.22, 0.13, 0.08, 0.08,0.08,0.08,0.08,0.08]
+        BasicRate_2s_Cont_BFE = [5.02, 3.80, 2.75, 1.77, 0.75,0.40,0.38,0.38,0.38]
+        AddiRate_2s_Cont_BFE = [0.12, 0.12, 0.12, 0.12, 0.12,0.12,0.12,0.12,0.12]
+        print("two or more stories below+")
     #--table--Zones Unnumbered A------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     elif zonevalue == "A" :                                  ####to be changed, what should go for zone unnumbered A?
-        #--one story
-        BasicRate_1s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
-        AddiRate_1s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
-        BasicRate_1s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
-        AddiRate_1s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
-        #--twostory
-        BasicRate_2s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
-        AddiRate_2s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
-        BasicRate_2s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
-        AddiRate_2s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
+        # #--one story
+        # BasicRate_1s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
+        # AddiRate_1s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
+        # BasicRate_1s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
+        # AddiRate_1s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
+        # #--twostory
+        # BasicRate_2s_Bldg_BFE = [2.67,2.67,0.57,0.57,0.57]
+        # AddiRate_2s_Bldg_BFE = [0.20,0.20,0.10,0.10,0.10]
+        # BasicRate_2s_Cont_BFE = [1.20,1.20,0.32,0.32,0.32]
+        # AddiRate_2s_Cont_BFE = [0.09,0.09,0.08,0.08,0.08]
+
+        #--one story below+
+        BasicRate_1s_Bldg_BFE = [6.31, 6.31, 6.31, 6.31, 2.67,2.67,0.57,0.57,0.57]
+        AddiRate_1s_Bldg_BFE = [0.35, 0.35, 0.35, 0.35, 0.20,0.20,0.10,0.10,0.10]
+        BasicRate_1s_Cont_BFE = [2.71, 2.71, 2.71, 2.71, 1.20,1.20,0.32,0.32,0.32]
+        AddiRate_1s_Cont_BFE = [0.16, 0.16, 0.16, 0.16, 0.09,0.09,0.08,0.08,0.08]
+        #--twostory below+
+        BasicRate_2s_Bldg_BFE = [6.31, 6.31, 6.31, 6.31, 2.67,2.67,0.57,0.57,0.57]
+        AddiRate_2s_Bldg_BFE = [0.35, 0.35, 0.35, 0.35, 0.20,0.20,0.10,0.10,0.10]
+        BasicRate_2s_Cont_BFE = [2.71, 2.71, 2.71, 2.71, 1.20,1.20,0.32,0.32,0.32]
+        AddiRate_2s_Cont_BFE = [0.16, 0.16, 0.16, 0.16, 0.09,0.09,0.08,0.08,0.08]
+
 
     #--table--Zones V, V1-V30, VE------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     elif  zonevalue == "VE":
-        #--one story
-        BasicRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
-        AddiRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
-        BasicRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
-        AddiRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
-        #--twostory
-        BasicRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
-        AddiRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
-        BasicRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
-        AddiRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        # #--one story
+        # BasicRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        # AddiRate_1s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        # BasicRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        # AddiRate_1s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        # #--twostory
+        # BasicRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        # AddiRate_2s_Bldg_BFE = [3.28,2.67,2.18,1.79,1.51]
+        # BasicRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+        # AddiRate_2s_Cont_BFE = [2.54,1.94,1.47,1.03,0.93]
+
+        #--one story below+
+        BasicRate_1s_Bldg_BFE = [5.85, 5.85, 4.88, 4.04, 3.28, 2.67,2.18,1.79,1.51]
+        AddiRate_1s_Bldg_BFE = [5.85, 5.85, 4.88, 4.04, 3.28, 2.67,2.18,1.79,1.51]
+        BasicRate_1s_Cont_BFE = [5.09, 5.09, 4.14, 3.28, 2.54, 1.94,1.47,1.03,0.93]
+        AddiRate_1s_Cont_BFE = [5.09, 5.09, 4.14, 3.28, 2.54, 1.94,1.47,1.03,0.93]
+        #--twostory below+
+        BasicRate_2s_Bldg_BFE = [5.85, 5.85, 4.88, 4.04, 3.28,2.67,2.18,1.79,1.51]
+        AddiRate_2s_Bldg_BFE = [5.85, 5.85, 4.88, 4.04, 3.28,2.67,2.18,1.79,1.51]
+        BasicRate_2s_Cont_BFE = [5.09, 5.09, 4.14, 3.28, 2.54,1.94,1.47,1.03,0.93]
+        AddiRate_2s_Cont_BFE = [5.09, 5.09, 4.14, 3.28, 2.54,1.94,1.47,1.03,0.93]
+
 
     #--table--Zones X------array values are BFE, BFE+1, BFE+2, BFE+3, BFE+5---- 
     elif zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD": 
-        #--one story
-        BasicRate_1s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
-        AddiRate_1s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
-        BasicRate_1s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
-        AddiRate_1s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
-        #--twostory
-        BasicRate_2s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
-        AddiRate_2s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
-        BasicRate_2s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
-        AddiRate_2s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
+        # #--one story
+        # BasicRate_1s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
+        # AddiRate_1s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
+        # BasicRate_1s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
+        # AddiRate_1s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
+        # #--twostory
+        # BasicRate_2s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11]
+        # AddiRate_2s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31]
+        # BasicRate_2s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71]
+        # AddiRate_2s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54]
+
+        #--one story below+
+        BasicRate_1s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11,1.11,1.11,1.11,1.11]
+        AddiRate_1s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31,0.31,0.31,0.31,0.31]
+        BasicRate_1s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71,1.71,1.71,1.71,1.71]
+        AddiRate_1s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54,0.54,0.54,0.54,0.54]
+        #--twostory below+
+        BasicRate_2s_Bldg_BFE = [1.11,1.11,1.11,1.11,1.11,1.11,1.11,1.11,1.11]
+        AddiRate_2s_Bldg_BFE = [0.31,0.31,0.31,0.31,0.31,0.31,0.31,0.31,0.31]
+        BasicRate_2s_Cont_BFE = [1.71,1.71,1.71,1.71,1.71,1.71,1.71,1.71,1.71]
+        AddiRate_2s_Cont_BFE = [0.54,0.54,0.54,0.54,0.54,0.54,0.54,0.54,0.54]
     else:
         print("Flood zone does not match")
 
@@ -781,16 +826,15 @@ def search(request):
 
     #Net benefit to cost ratio (NBCR) for each freeboard is the total net benefit of the freeboard scenario divided by its total cost.  
 
-    NBcostRatio = []
-    for i in range(len(totalcost)):
-        if i==0:
-            NBcostRatio.append(0)
-        else:    
-            NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
-        print(NBcostRatio[i])
+    # NBcostRatio = []
+    # for i in range(len(totalcost)):
+    #     if i==0:
+    #         NBcostRatio.append(0)
+    #     else:    
+    #         NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
+    #     print(NBcostRatio[i])
 
-    location_json_list = simplejson.dumps(location)    
-
+    
 
    ##########-----for summery analysis section ---------------##########
    ##----------------TOTAL----savings per month (flood insurance only)---------------------
@@ -866,8 +910,9 @@ def search(request):
     #New barchart ends---------------------------------------
 
     #Json---------------------------------------
+    location_json_list = simplejson.dumps(location)    
 
-    data_dictionary = {"location": location_json_list, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "optimal_total_annual_premium_freeboard":optimal_total_annual_premium_freeboard, "optimal_total_annual_premium":optimal_total_annual_premium, "total_annual_premium_json":total_annual_premium_json,"total_annual_premium0": total_annual_premium[0],"total_annual_premium1": total_annual_premium[1],"total_annual_premium2": total_annual_premium[2],"total_annual_premium3": total_annual_premium[3],"total_annual_premium4": total_annual_premium[4],"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":Square_footage, "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_saving4" : total_monthly_saving[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4],"NBcostRatio1": NBcostRatio[1], "NBcostRatio2": NBcostRatio[2], "NBcostRatio3": NBcostRatio[3], "NBcostRatio4": NBcostRatio[4],  'script_insurance': script_insurance, 'div_insurance':div_insurance,  "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4] }
+    data_dictionary = {"location": location_json_list, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "optimal_total_annual_premium_freeboard":optimal_total_annual_premium_freeboard, "optimal_total_annual_premium":optimal_total_annual_premium, "total_annual_premium_json":total_annual_premium_json,"total_annual_premium0": total_annual_premium[0],"total_annual_premium1": total_annual_premium[1],"total_annual_premium2": total_annual_premium[2],"total_annual_premium3": total_annual_premium[3],"total_annual_premium4": total_annual_premium[4],"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":Square_footage, "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_saving4" : total_monthly_saving[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 'script_insurance': script_insurance, 'div_insurance':div_insurance,  "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4] }
 
     
     return render(request, 'nodisc.html', data_dictionary)
