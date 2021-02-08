@@ -35,28 +35,47 @@
     
 {% load humanize %}
 <script>
-      require([
-        "esri/WebMap",
+      require(["esri/WebMap",
+        "esri/widgets/Sketch",         
         "esri/views/MapView",
         "esri/layers/FeatureLayer",
         "esri/widgets/Search",
         "esri/widgets/LayerList",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
-         "esri/widgets/BasemapToggle"
-      ], function (WebMap, MapView, FeatureLayer, Search, LayerList, Legend, Expand, BasemapToggle) {
-        const map = new WebMap({
+        "esri/widgets/BasemapToggle",
+        "esri/Map", 
+        "esri/layers/GraphicsLayer",        
+        "esri/views/MapView"], 
+        function(
+        WebMap,
+        Sketch, 
+        MapView,
+        FeatureLayer, 
+        Search, 
+        LayerList, 
+        Legend, 
+        Expand, 
+        BasemapToggle,
+        Map,
+        GraphicsLayer,
+        
+      ) {
+        var webmap = new WebMap({
           portalItem: {
+            // autocasts as new PortalItem()
             id: "d61a90015054449484e1bd332a3b75e2"
           }
         });
-
-        // Add the map to a MapView
-        const view = new MapView({
-          container: "viewDiv",
-          map: map
+        
+        /************************************************************
+         * Set the WebMap instance to the map property in a MapView.
+         ************************************************************/
+        var view = new MapView({
+          map: webmap,
+          container: "viewDiv"
         });
-
+      
         // Add the feature layer to search the location based on the address
         var featureLayerAddress = new FeatureLayer({
           url:
@@ -78,8 +97,8 @@
             overwriteActions: true
           }
         });
-
-        // Search widget start
+        
+            // Search widget start
         var searchWidget = new Search({
           view: view,
           allPlaceholder:"Type your address or parcel ID", //"type an address",//,
@@ -119,8 +138,7 @@
         view.ui.add(searchWidget, {
           position: "top-right"
         });
-
-        // Get the value from the input box
+           // Get the value from the input box
         console.log(document.getElementById("submitButton"))
         document.getElementById("submitButton").onclick = (e)=> {
           e.preventDefault()
@@ -132,6 +150,16 @@
         }
 
         // Search widget end
+
+      
+      // Add sketch tool
+        const sketch = new Sketch({
+          view: view,
+          // graphic will be selected as soon as it is created
+          creationMode: "update"
+        });
+
+        view.ui.add(sketch, "top-right");
 
         // Add a legend to the panel of a
         // ListItem in a LayerList 
@@ -158,7 +186,6 @@
 
         // Add widget to the bottom right corner of the view
         view.ui.add(toggle, "bottom-right");
-
       });
   </script>
 </head>
