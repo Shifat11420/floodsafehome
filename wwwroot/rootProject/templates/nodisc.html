@@ -36,7 +36,8 @@
 {% load humanize %}
 <script>
       require(["esri/WebMap",
-        "esri/widgets/Sketch",         
+        "esri/widgets/Sketch", 
+        "esri/layers/GraphicsLayer",          
         "esri/views/MapView",
         "esri/layers/FeatureLayer",
         "esri/widgets/Search",
@@ -50,6 +51,7 @@
         function(
         WebMap,
         Sketch, 
+        GraphicsLayer,
         MapView,
         FeatureLayer, 
         Search, 
@@ -153,7 +155,10 @@
 
       
       // Add sketch tool
+        const layer = new GraphicsLayer();
+
         const sketch = new Sketch({
+          layer: layer,
           view: view,
           // graphic will be selected as soon as it is created
           creationMode: "update"
