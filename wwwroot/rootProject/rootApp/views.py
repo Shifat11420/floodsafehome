@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse
-from rootApp.models import Contact, FreeboardConstructionCost, Sampledata
+from rootApp.models import Contact, FreeboardConstructionCost, Sampledata, Sample, dataAll
 from datetime import datetime
 from django.contrib import messages
 from django.db.models import Q
@@ -21,8 +21,9 @@ import numpy as np
 
 
 
-
-
+datafile = dataAll
+ 
+ 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -53,14 +54,14 @@ def gotomap(request):
     streetlist = locationList[1:]
 ##Error message---------------------
     if (len(locationList)==1):
-        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+        queryset = datafile.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1]))  ).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1]))  ).all()[:10]
     elif (len(locationList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
     else:
         print("lalalala")
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
 
     mylist = []        
     if len(queryset)<=0:
@@ -98,13 +99,13 @@ def autosuggest(request):
     query_originalList=query_original.split(' ')
 
     if (len(query_originalList)==1):
-        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  ).all()[:10]
+        queryset = datafile.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  ).all()[:10]
     elif (len(query_originalList)==2):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1]))  ).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1]))  ).all()[:10]
     elif (len(query_originalList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
     else:
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
 
     mylist = []        
     if len(queryset)>0:
@@ -148,13 +149,13 @@ def search(request):
 
 ##----------------------- Error message---------------------
     if (len(locationList)==1):
-        queryset = FreeboardConstructionCost.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+        queryset = datafile.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
     elif (len(locationList)==3):
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
     else:
-        queryset = FreeboardConstructionCost.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
 
     mylist = []        
     if len(queryset)<=0:
@@ -170,38 +171,54 @@ def search(request):
 
 ##--------------------autocomplete-------------------------------------
     if (len(streetlist)==1):
-        addressvalue = FreeboardConstructionCost.objects.filter(
+        addressvalue = datafile.objects.filter(
          Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1]))).all()
         print("ha")
     elif (len(streetlist)==2):
-        addressvalue = FreeboardConstructionCost.objects.filter(
+        addressvalue = datafile.objects.filter(
          Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2])).all()
         print("ha ha")
     elif (len(streetlist)==3):
-        addressvalue = FreeboardConstructionCost.objects.filter(
+        addressvalue = datafile.objects.filter(
             Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()
         print("ha ha ha")    
     else:  
-        addressvalue = FreeboardConstructionCost.objects.filter(
+        addressvalue = datafile.objects.filter(
              Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
         print("ha ha ha ha")
     print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
 ##------------------autocomplete ends--------------------------------------------------
                 
 ##-----------queries------------------------------
+    u = ""
+    a = ""
     zonevalue = ""
     parishvalue = ""
     for data in addressvalue:
         zonevalue = data.floodzone
+        #u = 1.5218
+        #a = 0.335
+        u = data.u_intercept
+        a = data.a_slope
+        if u == "Unknown":
+            u = 1.5218
+        else:
+            u=float(u)    
+        if a == "Unknown" or a == "Problematic":
+            a = 0.335   
+        else:
+            a=float(a)       
+
         print("ZONE: ", zonevalue )
+        print("u value: ", u )
+        print("a value: ", a )
         parishvalue = data.parish
 ##--------queries end----------------------------
 
 
  ##--------------DEMO values-----------------TO BE CHANGED------
     BFE = 3
-    u = 1.5218
-    a = 0.335
+
     r = 0.03    # say, interest rate 3%
     n = 12       # no of payments per year
     t = 30      # loan term or number of years in the loan
