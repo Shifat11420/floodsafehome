@@ -12802,6 +12802,7 @@ ul li a.current {
   .graph-description {
     text-align: justify;
     font-size: 22px; 
+    margin:0px 50px 0px 0px; 
   }
 
   .map-style-title {
