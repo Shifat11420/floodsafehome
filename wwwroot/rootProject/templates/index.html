@@ -116,6 +116,7 @@
             <div class="single-slider slider-height d-flex align-items-center">
                 <div class="container">
                     <div class="row justify-content-center">
+                        
                         <div class="col-xl-8 col-lg-9">
                             <!-- Caption -->
                             <div class="hero__caption">
@@ -125,16 +126,12 @@
                         </div>
 
                         <div class="col-xl-11 col-lg-12" >
+                          
                           <!--Form -->
                           <form action="/gotomap" method= "get" class="search-box">
                             {% csrf_token %} 
-                            
-                            <!--Search by 
-                          <div class="input-form">
-                                  <input type="text"  name="sqft" placeholder="Search by" readOnly> 
-                            </div> -->
 
-                            <!--Select search type -->
+                          <!--Select search type -->
                               <div class="select-form1" >
                                   <div class="select-itms" style ="border-radius: 50px 0px 0px 50px;">
                                       <select name="select" id="select1">
@@ -147,6 +144,7 @@
                                   </div>
                               </div>
 
+                          <!--Select location -->
                               <div class="select-form" >
                                   <div class="select-itms">
                                       <select name="select" id="select1">
@@ -158,8 +156,7 @@
                                   </div>
                               </div>
 
-
-                            <!--Input text based on search type -->
+                          <!--Input text based on search type -->
                               <div class="input-form2 select-form" >
                                   <input type="text"  name="location" id="tags" placeholder="Where?">
                                   <!-- icon -->
@@ -173,44 +170,39 @@
                               <button class="btn btn-primary"  type="submit ">                                   
                               <!-- icon -->
                                   <div class="icon">
-                                      <i class="fas fa-search"></i>
-                                  Search</div></button>      
-                            </div> 
-                            
-                                </form>
-                                </div>  
+                                      <i class="fas fa-search"></i>Search
+                                  </div>
+                              </button>      
+                            </div>
+                          </form>
+                        </div>  
 
-<!-- Error message-->                                
-{% if messages %}
-{% for message in messages %}
-<div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
-  <strong>{{ message }}</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endfor %}
-{% endif %}
+                    <!-- Error message-->                                
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
+                        <strong>{{ message }}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Error message ends-->   
 
-<!-- Error message ends-->   
-                         </div>
+                    <div class="col-lg-12">
+                        <div class="popular-search text-center pt-30">
+                            <ul>
+                                <li><p style="text-shadow: 2px 2px 2px #3E2A2A;"> This project is funded by Louisiana Sea Grant’s Omnibus Program.<br>
+                                <a href="http://www.laseagrant.org/research/projects/2020-2022/#Friedland"><u><font color="white">See details.</font></u></a></p></li>
+                            </ul>
+                        </div>
+                   </div>      
 
-                          <div class="col-lg-12">
-                              <div class="popular-search text-center pt-30">
-                                  <ul>
-                                      <li><p style="text-shadow: 2px 2px 2px #3E2A2A;"> This project is funded by Louisiana Sea Grant’s Omnibus Program.<br>
-                                      <a href="http://www.laseagrant.org/research/projects/2020-2022/#Friedland"><u><font color="white">See details.</font></u></a></p></li>
+            </div>
+        </div>
+    </div>
 
-                                  </ul>
-                              </div>
-                          </div>
-                          
-                      </div>
-                  </div>
-              </div>
-
-          </div>
-      </div>
 
     
         <!--Hero Area End-->
@@ -260,7 +252,6 @@
           </div>
       </div>
       <!-- Footer End-->
-  </div>
 </footer>
     <!-- JS here -->
 
@@ -306,6 +297,30 @@
     <!-- Jquery Plugins, main Jquery -->
     <script src="./static/js/plugins.js"></script>
     <script src="./static/js/main.js"></script>
-
-    </body>
+    
+    <!-- Accessibility Code for "floodsafehome.lsu.edu" -->
+    <script> 
+        window.interdeal = { 
+            "sitekey": "e8d3d174e189523ecbfdacfddd4c53b8", 
+            "Position": "Left", 
+            "Menulang": "EN", 
+            "domains": { "js": "https://cdn.equalweb.com/", 
+            "acc": "https://access.equalweb.com/" }, 
+            "btnStyle": { "vPosition": [ "80%", null ], 
+            "scale": [ "0.8", "0.8" ], 
+            "icon": { "type": 7, 
+            "shape": "semicircle", "outline": false }, 
+            "color": { "main": "#1876c9", "second": "" } 
+            } }; 
+            
+        (function(doc, head, body) { 
+            var coreCall = doc.createElement('script'); 
+            coreCall.src = 'https://cdn.equalweb.com/core/2.1.10/accessibility.js'; 
+            coreCall.defer = true; 
+            coreCall.integrity = 'sha512-PWvjZ/e9EGeHEPppEOqscViKxQIW1/5rJeFedXLJiv0IrltJPvuhrYOiUsOkQ49FaZ5HSDp51/O/6V9uL2nNIA=='; 
+            coreCall.crossOrigin = 'anonymous'; coreCall.setAttribute('data-cfasync', true ); 
+            body? body.appendChild(coreCall) : head.appendChild(coreCall); })
+        (document, document.head, document.body); 
+    </script>
+    <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->    </body>
     </html>

@@ -262,5 +262,30 @@
     <script src="./static/js/plugins.js"></script>
     <script src="./static/js/main.js"></script>
 
+    <!-- Accessibility Code for "floodsafehome.lsu.edu" -->
+    <script> 
+        window.interdeal = { 
+            "sitekey": "e8d3d174e189523ecbfdacfddd4c53b8", 
+            "Position": "Left", 
+            "Menulang": "EN", 
+            "domains": { "js": "https://cdn.equalweb.com/", 
+            "acc": "https://access.equalweb.com/" }, 
+            "btnStyle": { "vPosition": [ "80%", null ], 
+            "scale": [ "0.8", "0.8" ], 
+            "icon": { "type": 7, 
+            "shape": "semicircle", "outline": false }, 
+            "color": { "main": "#1876c9", "second": "" } 
+            } }; 
+            
+        (function(doc, head, body) { 
+            var coreCall = doc.createElement('script'); 
+            coreCall.src = 'https://cdn.equalweb.com/core/2.1.10/accessibility.js'; 
+            coreCall.defer = true; 
+            coreCall.integrity = 'sha512-PWvjZ/e9EGeHEPppEOqscViKxQIW1/5rJeFedXLJiv0IrltJPvuhrYOiUsOkQ49FaZ5HSDp51/O/6V9uL2nNIA=='; 
+            coreCall.crossOrigin = 'anonymous'; coreCall.setAttribute('data-cfasync', true ); 
+            body? body.appendChild(coreCall) : head.appendChild(coreCall); })
+        (document, document.head, document.body); 
+    </script>
+    <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
     </body>
     </html>
