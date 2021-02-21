@@ -315,7 +315,6 @@ hr {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    /* line 157, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
     .mb-90 {
         margin-bottom: 45px;
     }
@@ -323,9 +322,6 @@ hr {
 
 
 /* owl-carousel button style */
-
-
-/* line 169, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 .owl-carousel .owl-nav div {
     background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
@@ -3270,7 +3266,6 @@ hr {
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
-    /* line 708, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
     .section-padding2 {
         padding-top: 200px;
         padding-bottom: 200px;
@@ -3278,7 +3273,6 @@ hr {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    /* line 708, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
     .section-padding2 {
         padding-top: 200px;
         padding-bottom: 200px;
@@ -11607,14 +11601,9 @@ del {
 }
 
 
-/* line 1054, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_elements.scss */
-
 .mt-10 {
     margin-top: 10px;
 }
-
-
-/* line 1057, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_elements.scss */
 
 .section-top-border {
     padding: 50px 0;
@@ -11622,21 +11611,14 @@ del {
 }
 
 
-/* line 1061, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_elements.scss */
-
 .mb-30 {
     margin-bottom: 30px;
 }
-
-
-/* line 1064, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_elements.scss */
 
 .mt-30 {
     margin-top: 30px;
 }
 
-
-/* line 1067, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_elements.scss */
 
 .switch-wrap {
     margin-bottom: 10px;
@@ -11677,6 +11659,7 @@ del {
     z-index: 3;
   }
 
+
   .bts-popup.is-visible {
     opacity: 1;
     visibility: visible;
@@ -11687,7 +11670,7 @@ del {
   
   .bts-popup-container {
     position: relative;
-    width: 100%;
+    width: 80%;
     max-width: 1000px;
     margin: 4em auto;
     background: #7fc2e9e8;
@@ -11709,6 +11692,7 @@ del {
     transition-duration: 0.3s;
     z-index: 1;
   }
+
 
   .bts-popup-container img {
     padding: 20px 0 0 0;
@@ -11816,7 +11800,9 @@ del {
 .mapHeader {
     background: url(../img/hero/flood1_header.jpg) no-repeat;
     position:fixed;
+    z-index: 1;
 }
+
 
 /*modal popup*/
 .modal-content {
@@ -12418,7 +12404,7 @@ del {
 
  /* Tour guide end */ 
   
-  /*map page style*/
+  /*map page style*/  
   .left {
     height: 100%;
     width: 30%;
@@ -12428,6 +12414,11 @@ del {
     padding: 0 0 0 25px;
   }
 
+  @media only screen and (max-width: 768px) {
+    .left {
+        width: 100%;
+    }
+  }
   .left2 {
     width: 70%;
     float: right;    
@@ -12453,6 +12444,7 @@ del {
     margin: 0px 20px 0px 35px; 
   }
 
+  
   input.text {
     width: 90%;
     height: 30px;
@@ -12492,6 +12484,12 @@ del {
     margin: 0;
     padding: 0;
     
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .sidemenu {
+        width: 100%;
+    }
   }
 
   /* Only stick if you can fit */
