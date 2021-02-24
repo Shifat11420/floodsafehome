@@ -12444,6 +12444,13 @@ del {
     margin: 0px 20px 0px 35px; 
   }
 
+  .margin1{
+      margin: 0 20px 0 21px;
+  }
+
+  .margin2{
+    margin: 0 20px 0 40px;
+  }
   
   input.text {
     width: 90%;
@@ -12871,3 +12878,27 @@ ul li a.current {
       text-align: right;
       font-size: 11px; 
   }
+
+
+  /*map disclosure */
+  
+input:checked + .side-label::after {
+  display: block;
+}
+
+.how-other-disclosure {
+  display: none;
+  margin: 10px 0 0 35px;
+}
+
+#how-other:checked ~ .how-other-disclosure {
+  display: block;
+}
+
+.blocked {
+  margin-top: 40px;
+  color: rgba(255, 255, 255, .3);
+  text-align: center;
+}
+
+

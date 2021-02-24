@@ -191,4 +191,25 @@ function handleSliderValuePosition(input) {
 })();
 
 
+/*Toggling visibility*/
+function ShowHideDiv() {
+  var chkYes = document.getElementById("chkYes");
+  var dvPassport = document.getElementById("dvPassport");
+  dvPassport.style.display = chkYes.checked ? "block" : "none";
 
+  var chkNo = document.getElementById("chkNo");
+  var as = document.getElementById("as");
+  as.style.display = chkNo.checked ? "block" : "none";
+  
+}
+
+function ShowHideDiv2() {
+  var chkYes = document.getElementById("chkYes2");
+  var singleBuilding = document.getElementById("singleBuilding");
+  singleBuilding.style.display = chkYes.checked ? "block" : "none";
+
+  var chkNo = document.getElementById("chkNo2");
+  var SpatialScale = document.getElementById("SpatialScale");
+  SpatialScale.style.display = chkNo.checked ? "block" : "none";
+  
+}

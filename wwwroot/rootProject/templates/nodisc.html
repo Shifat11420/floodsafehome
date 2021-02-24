@@ -35,15 +35,22 @@
     
 {% load humanize %}
 <script>
-      require(["esri/WebMap",
+       require(["esri/WebMap",
         "esri/widgets/Sketch", 
+        "esri/widgets/Sketch/SketchViewModel",
+        "esri/geometry/Polyline",
+        "esri/geometry/Point",
+        "esri/Graphic",
         "esri/layers/GraphicsLayer",          
         "esri/views/MapView",
-        "esri/layers/FeatureLayer",
+        "esri/layers/FeatureLayer",        
+        "esri/geometry/geometryEngine",
         "esri/widgets/Search",
         "esri/widgets/LayerList",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
+        "dgrid/OnDemandGrid",        
+        "esri/core/watchUtils",
         "esri/widgets/BasemapToggle",
         "esri/Map", 
         "esri/layers/GraphicsLayer",        
@@ -51,23 +58,54 @@
         function(
         WebMap,
         Sketch, 
+        SketchViewModel,
+        Polyline,
+        Point,
+        Graphic,
         GraphicsLayer,
         MapView,
-        FeatureLayer, 
+        FeatureLayer,         
+        geometryEngine,
         Search, 
         LayerList, 
         Legend, 
-        Expand, 
+        Expand,
+        OnDemandGrid,         
+        watchUtils,
         BasemapToggle,
         Map,
-        GraphicsLayer,
+        GraphicsLayer
         
       ) {
-        var webmap = new WebMap({
+        // App 'globals'
+        let sketchViewModel, featureLayerView, pausableWatchHandle;
+
+        let centerGraphic,
+          edgeGraphic,
+          polylineGraphic,
+          bufferGraphic,
+          centerGeometryAtStart,
+          labelGraphic;
+
+        const unit = "miles";
+
+        // Create layers
+        const graphicsLayer = new GraphicsLayer();
+        const bufferLayer = new GraphicsLayer({
+          blendMode: "color-burn"
+        });
+
+        const featureLayer = new FeatureLayer({
           portalItem: {
-            // autocasts as new PortalItem()
-            id: "d61a90015054449484e1bd332a3b75e2"
+            id: "7c5c929792414853b79aed972ca3e65a"
+           // id: "d61a90015054449484e1bd332a3b75e2" for FloodSafeHome
           }
+        });
+
+        // Create map
+        const webmap = new WebMap({
+          basemap: "gray-vector",
+          layers: [featureLayer, bufferLayer, graphicsLayer]
         });
         
         /************************************************************
@@ -75,7 +113,9 @@
          ************************************************************/
         var view = new MapView({
           map: webmap,
-          container: "viewDiv"
+          container: "viewDiv",
+          zoom: 11,
+          center: [-90.1446649, 30.0017509]
         });
       
         // Add the feature layer to search the location based on the address
@@ -172,13 +212,13 @@
           view: view,
           listItemCreatedFunction: function (event) {
             const item = event.item;
-            if (item.layer.type != "group") {
+{% comment %}             if (item.layer.type != "group") {
               // don't show legend twice
               item.panel = {
                 content: "legend",
                 open: false
               };
-            }
+            } {% endcomment %}
           }
         });
         view.ui.add(layerList, "top-right");
@@ -191,6 +231,281 @@
 
         // Add widget to the bottom right corner of the view
         view.ui.add(toggle, "bottom-right");
+        
+
+        // Update UI
+        setUpAppUI();
+        setUpSketch();
+
+        function setUpAppUI() {
+          // When layer is loaded, create a watcher to trigger drawing of the buffer polygon
+          view.whenLayerView(featureLayer).then(function (layerView) {
+            featureLayerView = layerView;
+
+            pausableWatchHandle = watchUtils.pausable(
+              layerView,
+              "updating",
+              function (val) {
+                if (!val) {
+                  drawBufferPolygon();
+                }
+              }
+            );
+
+            // Display directions when the layerView is loading
+            watchUtils.whenFalseOnce(layerView, "updating", function () {
+              view.popup.open({
+                title: "Center point",
+                content:
+                  "Drag this point to move the buffer.<br/> " +
+                  "Or drag the <b>Edge</b> point to resize the buffer.",
+                location: centerGraphic.geometry
+              });
+              view.popup.alignment = "top-left";
+            });
+          });
+
+          // Close the 'help' popup when view is focused
+          view.watch("focused", function (newValue) {
+            if (newValue) {
+              view.popup.close();
+            }
+          });
+        }
+
+        /*****************************************************************
+         * Create SketchViewModel and wire up event listeners
+         *****************************************************************/
+        function setUpSketch() {
+          sketchViewModel = new SketchViewModel({
+            view: view,
+            layer: graphicsLayer
+          });
+
+
+          // is updated as the graphics are updated
+          sketchViewModel.on("update", onMove);
+        }
+
+        /*********************************************************************
+         * Edge or center graphics are being moved. Recalculate the buffer with
+         * updated geometry information and run the query stats again.
+         *********************************************************************/
+        function onMove(event) {
+          // If the edge graphic is moving, keep the center graphic
+          // at its initial location. Only move edge graphic
+          if (
+            event.toolEventInfo &&
+            event.toolEventInfo.mover.attributes.edge
+          ) {
+            const toolType = event.toolEventInfo.type;
+            if (toolType === "move-start") {
+              centerGeometryAtStart = centerGraphic.geometry;
+            }
+            // keep the center graphic at its initial location when edge point is moving
+            else if (toolType === "move" || toolType === "move-stop") {
+              centerGraphic.geometry = centerGeometryAtStart;
+            }
+          }
+
+          // the center or edge graphic is being moved, recalculate the buffer
+          const vertices = [
+            [centerGraphic.geometry.x, centerGraphic.geometry.y],
+            [edgeGraphic.geometry.x, edgeGraphic.geometry.y]
+          ];
+
+          // client-side stats query of features that intersect the buffer
+          calculateBuffer(vertices);
+
+          // user is clicking on the view... call update method with the center and edge graphics
+          if (event.state === "complete") {
+            sketchViewModel.update([edgeGraphic, centerGraphic], {
+              tool: "move"
+            });
+          }
+        }
+
+        /*********************************************************************
+         * Edge or center point is being updated. Recalculate the buffer with
+         * updated geometry information.
+         *********************************************************************/
+        function calculateBuffer(vertices) {
+          // Update the geometry of the polyline based on location of edge and center points
+          polylineGraphic.geometry = new Polyline({
+            paths: vertices,
+            spatialReference: view.spatialReference
+          });
+
+          // Recalculate the polyline length and buffer polygon
+          const length = geometryEngine.geodesicLength(
+            polylineGraphic.geometry,
+            unit
+          );
+          const buffer = geometryEngine.geodesicBuffer(
+            centerGraphic.geometry,
+            length,
+            unit
+          );
+
+          // Update the buffer polygon
+          bufferGraphic.geometry = buffer;
+
+          // Query female and male age groups of the census tracts that intersect
+          // the buffer polygon on the client
+         
+
+          // Update label graphic to show the length of the polyline
+          labelGraphic.geometry = edgeGraphic.geometry;
+          labelGraphic.symbol = {
+            type: "text",
+            color: "#3d53fc",
+            text: length.toFixed(2) + " miles",
+            xoffset: 50,
+            yoffset: 10,
+            font: {
+              // autocast as Font
+              size: 14,
+              family: "sans-serif"
+            }
+          };
+        }
+
+       
+        /***************************************************
+         * Draw the buffer polygon when application loads or
+         * when user searches for a new location
+         **************************************************/
+        function drawBufferPolygon() {
+          // When pause() is called on the watch handle, the callback represented by the
+          // watch is no longer invoked, but is still available for later use
+          // this watch handle will be resumed when user searches for a new location
+          pausableWatchHandle.pause();
+
+          // Initial location for the center, edge and polylines on the view
+          const viewCenter = view.center.clone();
+          const centerScreenPoint = view.toScreen(viewCenter);
+          const centerPoint = view.toMap({
+            x: centerScreenPoint.x + 20,
+            y: centerScreenPoint.y - 20
+          });
+          const edgePoint = view.toMap({
+            x: centerScreenPoint.x + 160,
+            y: centerScreenPoint.y - 20
+          });
+
+          // Store updated vertices
+          const vertices = [
+            [centerPoint.x, centerPoint.y],
+            [edgePoint.x, edgePoint.y]
+          ];
+
+          // Create center, edge, polyline and buffer graphics for the first time
+          if (!centerGraphic) {
+            const polyline = new Polyline({
+              paths: vertices,
+              spatialReference: view.spatialReference
+            });
+
+            // get the length of the initial polyline and create buffer
+            const length = geometryEngine.geodesicLength(polyline, unit);
+            const buffer = geometryEngine.geodesicBuffer(
+              centerPoint,
+              length,
+              unit
+            );
+
+            // Create the graphics representing the line and buffer
+            const pointSymbol = {
+              type: "simple-marker",
+              style: "circle",
+              size: 10,
+              color: [0, 255, 255, 0.5]
+            };
+            centerGraphic = new Graphic({
+              geometry: centerPoint,
+              symbol: pointSymbol,
+              attributes: {
+                center: "center"
+              }
+            });
+
+            edgeGraphic = new Graphic({
+              geometry: edgePoint,
+              symbol: pointSymbol,
+              attributes: {
+                edge: "edge"
+              }
+            });
+
+            polylineGraphic = new Graphic({
+              geometry: polyline,
+              symbol: {
+                type: "simple-line",
+                color: "[254, 254, 254, 1]",
+                width: 2.5
+              }
+            });
+
+            bufferGraphic = new Graphic({
+              geometry: buffer,
+              symbol: {
+                type: "simple-fill",
+                color: [150, 150, 150],
+                outline: {
+                  color: "#3d53fc",
+                  width: 2
+                }
+              }
+            });
+            labelGraphic = labelLength(edgePoint, length);
+
+            // Add graphics to layer
+            graphicsLayer.addMany([
+              centerGraphic,
+              edgeGraphic,
+              polylineGraphic,
+              labelGraphic
+            ]);
+            // once center and edge point graphics are added to the layer,
+            // call sketch's update method pass in the graphics so that users
+            // can just drag these graphics to adjust the buffer
+            setTimeout(function () {
+              sketchViewModel.update([edgeGraphic, centerGraphic], {
+                tool: "move"
+              });
+            }, 1000);
+
+            bufferLayer.addMany([bufferGraphic]);
+          }
+          // Move the center and edge graphics to the new location returned from search
+          else {
+            centerGraphic.geometry = centerPoint;
+            edgeGraphic.geometry = edgePoint;
+          }
+
+          // Query features that intersect the buffer
+          calculateBuffer(vertices);
+        }
+
+      
+        // Label polyline with its length
+        function labelLength(geom, length) {
+          return new Graphic({
+            geometry: geom,
+            symbol: {
+              type: "text",
+              color: "#FFEB00",
+              text: length.toFixed(2) + " Miles",
+              xoffset: 50,
+              yoffset: 10,
+              font: {
+                // autocast as Font
+                size: 14,
+                family: "sans-serif"
+              }
+            }
+          });
+        }
       });
   </script>
 </head>
@@ -272,35 +587,227 @@
       <p> 
         <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
           <div class="box">
-          <b class="map-style"> User Type <sup class="sup">*</sup></b> <br>
-            <label>
-            <input type="radio" name ="chk" value = "Homeowner" class="bar" required checked>Homeowner &nbsp;
-            </label>
-            <label>
-            <input type="radio" name ="chk" value = "Community official" class="bar">Community official</option>
-            </label><br>
+         
+              <!--User type-->
+              <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
+                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "homeowner" class="bar" required onclick="ShowHideDiv()"/> Homeowner</label>
+                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="margin2" onclick="ShowHideDiv()"/> Community official</label>
+              
+              <!--Building type-->
+              <div id="dvPassport" style="display: none">
+                <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
+                  <label><input type="radio" name ="selectBox" value = "new_building" class="bar" required> New building</label>
+                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar"> Existing building</label>
+                
+                <!--Address or Parcel ID-->
+                <label><b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b></label><br>
+                  <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text" required value={{location|safe}} > <br>
+                
+                <!--Square footage-->
+                <label><b class="map-style">Square footage <sup class="sup">*</sup></b> </label><br>
+                  <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"  class="text" required> <br>
+               
+               <!--Number of Stories -->        
+                <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+              </div>
 
-          <b class="map-style">Building Type <sup class="sup">*</sup></b><br>
-            <label>
-            <input type="radio" name ="selectBox" value = "new_building" class="bar" required checked>New building 
-            </label>
-            <label>
-            <input type="radio" name ="selectBox" value = "existing_building" class="bar">Existing building</option>
-            </label> <br>
+              <!--This option will be appear when user select community official-->
+              <div id="as" style="display: none">
+                <label> <b class="map-style"> Assessment Scale <sup class="sup">*</sup> </b></label><br>
+                  <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()">
+                  Single-building</label>
+                  <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
+                  Spatial Scale</label>
+             
 
-          <b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b><br>
-          <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID" required class="text" value={{location|safe}}> <br>
-          
-          <b class="map-style">Square footage <sup class="sup">*</sup></b> <br>
-            <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage" required class="text"> <br>
-          
-          <b class="map-style">Number of Stories <sup class="sup">*</sup> </b><br>
-            <label>
-            <input type="radio" name ="stories" id="stories" value = "1" class="bar" required checked>One story
-            </label>
-            <label>
-            <input type="radio" name ="stories" id="stories" value = "2" class="bar">Two or more stories
-            </label>
+                    <!--This option will be appear when user select single-building-->
+                    <div id="singleBuilding" style="display: none">
+                     
+                      <!--Select location for building location -->
+                      <div class="select-form" style="margin: 0 0 0 30px">
+                          <div class="select-itms">
+                              <select name="select" id="select1">
+                                  <option value="">Building Location</option>
+                                  <option value=""> Address</option>
+                                  <option value=""> Parcel</option>
+                                  <option value=""> Zipcode </option>
+                                  <option value=""> Subdivision</option>
+                              </select>
+                          </div>
+                      </div>
+                    
+                      <!--Average Building Size (Livable Square Footage) -->
+                      <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
+                        <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+
+
+                      <!--Number of Stories -->        
+                      <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+
+                      <!--Freeboard height above the BFE -->   
+                      <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
+                        <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+
+                       <!--Current CRS rating -->                    
+                      <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                        <div class="select-form" >
+                            <div class="select-itms">
+                                <select name="select" id="select1">
+                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                                </select>
+                            </div>
+                        </div>    
+
+                      <!--Targeted CRS rating -->  
+                      <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                        <div class="select-form" >
+                          <div class="select-itms">
+                              <select name="select" id="select1">
+                                  <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                  <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                              </select>
+                          </div>
+                      </div>
+                
+                      <!--Assessment Timeline--> 
+                      <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
+                        <div class="select-form" >
+                            <div class="select-itms">
+                                <select name="select" id="select1">
+                                    <OPTION VALUE=""> 5 years </option>
+                                    <OPTION VALUE=""> 10 years </option>
+                                    <OPTION VALUE=""> 15 years </option>
+                                    <OPTION VALUE=""> 20 years </option>
+                                    <OPTION VALUE=""> 30 years </option>
+                                    <OPTION VALUE=""> 40 years </option>
+                                    <OPTION VALUE=""> 70 years </option>
+                                    <OPTION VALUE=""> 100 </option>
+                                </select>
+                            </div>
+                        </div>     
+
+
+                        <!--Select the appropriate real discount rate for the assessment-->
+                        <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
+                          <div class="select-form" >
+                              <div class="select-itms">
+                                  <select name="select" id="select1">
+                                      <OPTION VALUE=""> Select 0% of real discount rate </option>
+                                      <OPTION VALUE=""> Select 3% of real discount rate</option>
+                                      <OPTION VALUE=""> Select 7% of real discount rate </option>
+                                      <OPTION VALUE=""> Select 10% of real discount rate </option>
+                                  </select>
+                              </div>
+                            </div>     
+                          </div>
+
+              <!-- This option will be appear when spatial scale is selected-->
+              <div id="SpatialScale" style="display: none">
+                <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
+                <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i>
+                <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
+                <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+
+                    <!-- Number of Stories -->        
+                    <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                    
+                    <!-- Freeboard height above the BFE -->   
+                      <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
+                      <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                    
+                    
+                     <!-- Current CRS rating -->  
+                      <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                        <div class="select-form" >
+                            <div class="select-itms">
+                                <select name="select" id="select1">
+                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                                </select>
+                            </div>
+                        </div>    
+                      
+                      <!-- Targeted CRS rating --> 
+                      <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                        <div class="select-form" >
+                            <div class="select-itms">
+                                <select name="select" id="select1">
+                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                                </select>
+                            </div>
+                        </div>
+                  
+                    <!-- Assessment Timeline -->
+                    <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
+                      <div class="select-form" >
+                          <div class="select-itms">
+                              <select name="select" id="select1">
+                                  <OPTION VALUE=""> 5 years </option>
+                                  <OPTION VALUE=""> 10 years </option>
+                                  <OPTION VALUE=""> 15 years </option>
+                                  <OPTION VALUE=""> 20 years </option>
+                                  <OPTION VALUE=""> 30 years </option>
+                                  <OPTION VALUE=""> 40 years </option>
+                                  <OPTION VALUE=""> 70 years </option>
+                                  <OPTION VALUE=""> 100 </option>
+                              </select>
+                          </div>
+                      </div>     
+
+                    <!-- Select the appropriate real discount rate for the assessment -->
+                    <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
+                      <div class="select-form" >
+                          <div class="select-itms">
+                              <select name="select" id="select1">
+                                  <OPTION VALUE=""> Select 0% of real discount rate </option>
+                                  <OPTION VALUE=""> Select 3% of real discount rate</option>
+                                  <OPTION VALUE=""> Select 7% of real discount rate </option>
+                                  <OPTION VALUE=""> Select 10% of real discount rate </option>
+                              </select>
+                          </div>
+                      </div>     
+                </div>
+            </div>
           </div>
       
       
@@ -321,7 +828,7 @@
         <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
         <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
         <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-        <li class="li"><a class="sidemenu" href="#section-3">Insurance Savings Per Year</a></li>
+        <li class="li"><a class="sidemenu" href="#section-3">Annual Insurance Premiums</a></li>
         <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
         <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
         <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
@@ -721,15 +1228,16 @@
   // -----------------------------
   // Main chart render location
   // var chartId = 'myChart';
-  var chart1Id = 'chart1';
-  var chart2Id = 'chart2';
-  var chart3Id = 'chart3';
-  var chart4Id = 'chart4';
-  var chart5Id = 'chart5';
-  var chart6Id = 'chart6';
+  var chart1Id = 'chart1'; //Freeboard Cost
+  var chart2Id = 'chart2'; //Annual Insurance Premiums
+  var chart3Id = 'chart3'; //Expected Annual Flood Loss
+  var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
+  var chart5Id = 'chart5'; //Monthly Savings
+  var chart6Id = 'chart6'; //Overall graph
 
   // CHART CONFIG
   // -----------------------------
+
 
   // Chart 1
   var chart1Data = {
