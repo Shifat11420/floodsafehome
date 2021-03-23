@@ -33,8 +33,34 @@
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     
-
-<script>
+    <!--Add field-->
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //Input fields increment limitation
+        var maxField = 10; 
+        var addButton = $('.add_button'); 
+        var wrapper = $('.field_wrapper'); 
+        var fieldHTML = '<div> <input type="text" name="field_name[]" value="" placeholder="Type your address" required/> <a href="javascript:void(0);" class="remove_button"> &nbsp; <img src="../static/img/logo/minus_icon.png"/></a></div>'; //New input field html 
+        var x = 1; //Initial field counter is 1
+        
+        //Once add button is clicked and maxField is smaller than x, increment field counter
+        $(addButton).click(function(){
+            if(x < maxField){ 
+                x++; 
+                $(wrapper).append(fieldHTML); 
+            }
+        });
+        
+        //Once remove button is clicked, remove the field html
+        $(wrapper).on('click', '.remove_button', function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--; 
+        });
+    });
+    </script>
+    
+    <script>
       require(["esri/WebMap",
         "esri/widgets/Sketch", 
         "esri/widgets/Sketch/SketchViewModel",
@@ -832,7 +858,18 @@
               <!-- This option will be appear when spatial scale is selected-->
               <div id="SpatialScale" style="display: none">
                 <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
-                <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i>
+                <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
+                
+                <!--Add fields-->
+                <label> <b class="map-style"> Type your address  <sup class="sup">*</sup> </b></label><br>
+                <div class="field_wrapper">
+                    <div>
+                        <input type="text" name="field_name[]" value="" placeholder="Type your address" required/>
+                        <a href="javascript:void(0);" class="add_button" title="Add field">  &nbsp; <img src="../static/img/logo/plus_icon.png"/></a>
+                    </div>
+                </div>
+
+
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
                 <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
 
