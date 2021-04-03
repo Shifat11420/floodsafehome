@@ -215,7 +215,7 @@ function ShowHideDiv2() {
 }
 
 
-/* Add/Delete fields */
+/* Add/Delete fields 
 function add(type) {
 
 	//Create an input type dynamically.
@@ -232,4 +232,4 @@ function add(type) {
 	//Append the element in page (in span).
 	foo.appendChild(element);
 
-}
+}*/

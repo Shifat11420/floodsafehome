@@ -757,14 +757,12 @@
                 <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
                 <i style="margin:0 0 0 30px">Please select area using a tool from the map or type address below.</i><br>
                 
-                <!--Add fields-->
-                <label> <b class="map-style"> Type your address  <sup class="sup">*</sup> </b></label><br>
-                <div class="field_wrapper">
-                    <div>
-                        <input type="text" name="field_name[]" value="" placeholder="Type your address" required/>
-                        <a href="javascript:void(0);" class="add_button" title="Add field">  &nbsp; <img src="../static/img/logo/plus_icon.png"/></a>
-                    </div>
-                </div>
+                 <!--Add fields-->
+                <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
+                <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
+                <textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>
+
+
 
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
                 <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>

@@ -715,7 +715,7 @@
 
  <!-- Select your building information-->
  <div class="container left" > 
-      <form method="get" action="/search">
+      <form method="get" action="/search" name="userInput">
             {% csrf_token %} 
       <p> 
         <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b></h2> 
@@ -861,13 +861,11 @@
                 <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                 
                 <!--Add fields-->
-                <label> <b class="map-style"> Type your address  <sup class="sup">*</sup> </b></label><br>
-                <div class="field_wrapper">
-                    <div>
-                        <input type="text" name="field_name[]" value="" placeholder="Type your address" required/>
-                        <a href="javascript:void(0);" class="add_button" title="Add field">  &nbsp; <img src="../static/img/logo/plus_icon.png"/></a>
-                    </div>
-                </div>
+                <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
+                <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
+                <textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>
+
+
 
 
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
