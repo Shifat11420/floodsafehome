@@ -33,6 +33,7 @@
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
     
     <!--Add field-->
     <script type="text/javascript">
@@ -861,7 +862,7 @@
  <!-- Side bar naviation menu-->
   <p>
     <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
-    <nav class="nav">
+    <div id="navigation">
       <ul class="box ul">
         <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
         <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
@@ -871,7 +872,7 @@
         <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
         <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
       </ul> 
-    </nav>
+    </div>
   </p>
   
 </div>
@@ -893,7 +894,7 @@
 
 <!--ESRI Map-->
 <div id = "pdf_wrap">
-        <div id="viewDiv"><section id="section-1"></section>
+        <div id="viewDiv">
         </div>
 
 <!--Result details-->
@@ -1143,32 +1144,32 @@
           </tr>
            <tr>
             <td rowspan="2"><b class="map-style">Expected occupancy timeline: </b></td>
-            <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" style="margin: 0 0 0 13px"/> Years</td>
+            <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" style="margin: 0 0 0 13px"/>  Years</td>
             <td>0 Year</td> 
-            <td><input id="rangeInput1" type="range" min="0" max="100" oninput="years.value=rangeInput1.value" /></td> 
+            <td><input id="rangeInput1" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" /></td> 
             <td>100 Years</td>
           </tr>
           <tr>
             <td>$ <input id="bldgCost" type="number" value="231000" min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" />  - Building</td>
-            <td>$ 0 </td>
-            <td><input id="rangeInput2" type="range" min="0" max="250000" oninput="bldgCost.value=rangeInput2.value" /></td>
-            <td>$ 250,000 </td>
+            <td>$0 </td>
+            <td><input id="rangeInput2" type="range" min="0" max="250000" value="231000" oninput="bldgCost.value=rangeInput2.value" /></td>
+            <td>$250,000 </td>
           </tr>
           <tr class="table-slide-bg">
             <td rowspan="2"><b class="map-style">Flood insurance coverage:</b></td>
             <td>$ <input id="contCost" type="number" value="92400" min="0" max="100000" oninput="rangeInput3.value=contCost.value" />  - Content</td>
-            <td>$ 0 </td>
-            <td><input id="rangeInput3" type="range" min="0" max="100000" oninput="contCost.value=rangeInput3.value" /> </td>
-            <td>$ 100,000 </td>
+            <td>$0 </td>
+            <td><input id="rangeInput3" type="range" min="0" max="100000" value="92400" oninput="contCost.value=rangeInput3.value" /> </td>
+            <td>$100,000 </td>
           </tr>
           <tr class="table-slide-bg">
             <td>CRS rate is 5, with a <input id="crsDisc" type="number" value="25" min="0" max="100" oninput="rangeInput4.value=crsDisc.value" /> % discount </td>
-            <td>0 % </td>
-            <td><input id="rangeInput4" type="range" min="0" max="100" oninput="crsDisc.value=rangeInput4.value" /></td>
-            <td> 100 %</td>
+            <td>0% </td>
+            <td><input id="rangeInput4" type="range" min="0" max="100" value="25" oninput="crsDisc.value=rangeInput4.value" /></td>
+            <td>100%</td>
           </tr>         
         </table>
-      </div>  <br><br>
+      </div> 
       
       <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
 
