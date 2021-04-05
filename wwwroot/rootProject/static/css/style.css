@@ -12912,3 +12912,15 @@ input:checked + .side-label::after {
     width:100%;
     margin:2px 0;
 }
+
+
+.table-slide {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 95%;
+  height: 300px;
+}
+
+.table-slide-bg{
+    background-color: #f2f2f2
+}

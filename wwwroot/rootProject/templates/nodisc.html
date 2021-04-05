@@ -1104,7 +1104,7 @@
       <div class="zc-body"><div id="chart5" class="chart5"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></div> 
     </div>
      
-     <!-- 
+    <!--
         <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
         <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
@@ -1113,16 +1113,59 @@
         <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
         <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
         <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
-        
+        -->
         <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
-        
+      
+    <!--Interactive slide-->  
+      <div style="overflow-x:auto;">
+        <table class="table-slide">
+          <tr class="table-slide-bg">
+            <td><b class="map-style">Home square footage:</b></td>
+            <td>{{SquareFootage}} sq</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td rowspan="3"><b class="map-style">Flood insurance coverage:</b></td>
+            <td>924,000 - Content</td>
+            <td><input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></td>
+          </tr>
+          <tr>
+            <td>CRS rate is 5, with a 25% discount </td>
+            <td><input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"></td>
+          </tr>
+          <tr>
+            <td>CRS community rating </td>
+            <td></td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td><b class="map-style">Number of stories: </b></td>
+            <td>{{No_Floors}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><b class="map-style">Flood zone: </b></td>
+            <td>{{floodzone}}</td>
+            <td></td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td rowspan="2"><b class="map-style">Expected occupancy timeline: </b></td>
+            <td>30 years</td>
+            <td><input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="30" min="0" max="100" style="height:25px"></td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td>231,000 - Building</td>
+            <td><input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></td>
+          </tr>
+        </table>
+      </div>  <br><br>
+
       <section id="section-2"><p class=" map-style">
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
        ● The CRS rate is …, with a ...% discount on flood insurance. 
       </p></section>
-      <br><br>-->
+      <br><br>
 
   </div> 
 
