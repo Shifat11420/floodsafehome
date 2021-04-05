@@ -33,7 +33,7 @@
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
     <!--Add field-->
     <script type="text/javascript">
@@ -560,7 +560,7 @@
                                 <div class="menu-wrapper  d-flex align-items-center justify-content-end">
                                     <!-- Main-menu -->
                                     <div class="main-menu d-none d-lg-block">
-                                        <nav>
+                                        
                                             <ul id="navigation">
                                                 <li><a href="/">Home</a></li>
                                                 <li><a href="/about">About</a>
@@ -581,7 +581,7 @@
                                                 <li><a href="/survey">Survey</a></li>
                                                 <li><a href="/helpcenter">Help Center</a></li>
                                             </ul>
-                                        </nav>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -862,16 +862,19 @@
  <!-- Side bar naviation menu-->
   <p>
     <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
-    <div id="navigation">
-      <ul class="box ul">
-        <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
-        <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
-        <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-        <li class="li"><a class="sidemenu" href="#section-3">Annual Insurance Premiums</a></li>
-        <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
-        <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
-        <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
-      </ul> 
+    <div class="section-nav box">
+    <nav>
+    <ul >
+        <li><a href="#section-1">Summary</a></li>
+        <li><a href="#section-6">Monthly Savings</a></li>
+        <li><a href="#section-2">Freeboard Cost</a></li>
+        <li><a href="#section-3">Annual Insurance Premiums</a></li>
+        <li><a href="#section-4">Expected Annual Flood Loss</a></li>
+        <li><a href="#section-5">Time to Recover the Freeboard Cost</a></li>
+        <li><a href="#section-7">Save as a PDF</a>
+        <!--<li><a class="sidemenu" href="#">Save as a PDF</a>-->
+     </ul>
+    </nav>
     </div>
   </p>
   
@@ -891,11 +894,11 @@
   {% endif %}
 
 <!-- Error message ends--> 
-
+<main>
 <!--ESRI Map-->
 <div id = "pdf_wrap">
         <div id="viewDiv">
-        </div>
+        </div><section id ="section-1">
 
 <!--Result details-->
 <!--Summary-->
@@ -1188,42 +1191,40 @@
    <hr class="style-four">
      <h2 class="map-style-title">Freeboard Cost</h2> 
       <div class="graph-description">
-        <section id="section-3">
+        
         The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home ranges from 
         <b class="map-style">${{FreeboardCost1 | intcomma}}</b> to <b class="map-style">${{FreeboardCost4 | intcomma}}</b>.
         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
-      </section></div>  
-      <div class="zc-body">     <div id="chart1" class="chart1"></div></div>
+      </div>  
+      <section id="section-3"><div class="zc-body">     <div id="chart1" class="chart1"></div></div></section>
   </div>
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
    <hr class="style-four">
-    <h2 class="map-style-title">Annual Insurance Premiums</h2> 
+    <h2 class="map-style-title">Annual Insurance Premiums</h2>
      <div class="graph-description" >
-       <section id="section-4"> 
        Constructing your home with additional freeboard decreases annual insurance premiums from <b class="map-style">${{total_annual_premium0 | intcomma}}</b> to <b class="map-style">${{total_annual_premium4 | intcomma}}</b>. 
        <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
-       </section>
+      
      </div>
-     <div class="zc-body"> 
+     <section id="section-4">  <div class="zc-body"> 
       <center>
        <div id="chart2" class="chart2"></div>
-      </center> </div>
+      </center> </div> </section>
   </div>
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-four">
      <h2 class="map-style-title">Expected Annual Flood Loss</h2>
-      <section id="sdection-5"> 
+       
         <div class="graph-description" >
-          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{AAL_absCurrency0 | intcomma}}</b> to <b class="map-style">${{AAL_absCurrency4 | intcomma}}</b>. 
+          Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{AAL_absCurrency0 | intcomma}}</b> to <b class="map-style">${{AAL_absCurrency4 | intcomma}}</b>. 
           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
-          </section> 
         </div>
-      <div class="zc-body">  <div id="chart3" class="chart3"></div></div>
+      <section id="section-5"><div class="zc-body">  <div id="chart3" class="chart3"></div></div> </section> 
       </section>
   </div>
 
@@ -1234,8 +1235,7 @@
       <div class="graph-description" >
         The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
         Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{time_to_recover_FC_PS1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_PS4}} month(s)</b>. 
-        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{time_to_recover_FC_TB1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_TB4}} month(s)</b>. 
-        
+        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{time_to_recover_FC_TB1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_TB4}} month(s)</b>.       
       </div>
       <div class="zc-body">     <div id="chart4" class="chart4"></div></div>
   </div>
@@ -1246,7 +1246,7 @@
      <h2 class="map-style-title">Overall Graph</h2>
       <div style="display:inline-block; margin: 0 0 0 5px;" class="zc-body">     <div id="myChart" class="chart--container1"></div></div>
   </div>
-
+</main>
 <!--Freeboard graph
 <div class="left3 section-tittle-detail mb-40">
   <hr class="style-two">  
@@ -2225,7 +2225,8 @@ let chartConfig = {
         (document, document.head, document.body); 
     </script>
     <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
-    
+
+
 </body>
 </html>
 

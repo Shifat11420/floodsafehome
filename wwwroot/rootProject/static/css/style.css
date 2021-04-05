@@ -12481,20 +12481,29 @@ del {
         margin: 25px 0 25px 0;
     }
 
-/*map side menu*/
-.sidemenu {
+.section-nav a {
+    color:#3a3a3b;
+}
+
+.section-nav a.current {
     white-space: nowrap;
     padding: 0 0 0 0px;
     color: #363636;
+    font-weight: bolder;
   }
-
-  .sidemenu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     
-  }
-  
+.section-nav a:hover{
+    font-weight: bolder;
+    background: rgb(164, 164, 165);;
+}
+
+/* Only stick if you can fit */
+@media (min-height: 300px) {
+.sidemenu ul {
+    position: sticky;
+}
+}
+
   @media only screen and (max-width: 768px) {
     .sidemenu {
         width: 100%;
@@ -12509,33 +12518,7 @@ del {
     }
   }
 
-  .nav-side ul li a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: black;
-    text-decoration: none;
-  }
-  .nav-side ul li a.current {
-    background: gray;
-  }
 
-/* Only stick if you can fit */
-@media (min-height: 300px) {
-.sidemenu ul {
-    position: sticky;
-}
-}
-
-.sidemenu ul li a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color:  #363636;
-    text-decoration: none;
-}
-
-.sidemenu ul li a:hover {
-    background-color: #d6d4d4 ;
-}
 
 ul li a.current {
     background: #b6a8a8;
@@ -12676,6 +12659,33 @@ ul li a.current {
 }
 
 /*side bar style*/
+nav {
+    white-space: nowrap;
+  }
+
+  nav ul {
+    list-style: none;
+  }
+  /* Only stick if you can fit */
+  @media (min-height: 300px) {
+    nav ul {
+      position: sticky;
+      top: 0;
+    }
+  }
+  nav ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+  }
+  nav ul li a.current {
+    background: rgb(164, 164, 165);
+    font-weight: bolder;
+  }
+
+  section {
+    margin: 2rem 0 2rem 0;
+  }
 
 .map-style-sidebar-title {
     font-size: 24px;
@@ -12924,3 +12934,5 @@ input:checked + .side-label::after {
 .table-slide-bg{
     background-color: #f2f2f2
 }
+
+
