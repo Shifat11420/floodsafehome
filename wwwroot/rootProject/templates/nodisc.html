@@ -639,8 +639,8 @@
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="story1" id="story1" value = "1" class="bar" required> One story</label>
+                  <label><input type="radio" name ="story2" id="story2" value = "2" class="bar"> Two or more stories</label>
               </div>
 
               <!--This option will be appear when user select community official-->
@@ -670,23 +670,23 @@
                     
                 <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                  <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+                  <input type="text"  name="sqft-avg-bldg-community"  id="sqft-avg-bldg-community" placeholder="Type average building's square footage"  class="text"> <br>
 
 
                 <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="story1-single-community" id="story1-single-community" value = "1" class="bar"> One story</label>
+                  <label><input type="radio" name ="story2-single-community" id="story2-single-community" value = "2" class="bar"> Two or more stories</label>
 
                 <!--Freeboard height above the BFE -->   
                 <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                  <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                  <input type="text"  name="freeboard-bfe-single"  id="freeboard-bfe-single" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
 
                   <!--Current CRS rating -->                    
                 <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                   <div class="select-form" >
                       <div class="select-itms">
-                          <select name="select" id="select1">
+                          <select name="select" id="select2">
                               <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                               <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                               <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -705,7 +705,7 @@
                 <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                   <div class="select-form" >
                     <div class="select-itms">
-                        <select name="select" id="select1">
+                        <select name="select" id="select3">
                             <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                             <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                             <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -724,7 +724,7 @@
                 <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
                   <div class="select-form" >
                       <div class="select-itms">
-                          <select name="select" id="select1">
+                          <select name="select" id="select4">
                               <OPTION VALUE=""> 5 years </option>
                               <OPTION VALUE=""> 10 years </option>
                               <OPTION VALUE=""> 15 years </option>
@@ -742,7 +742,7 @@
                   <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
                     <div class="select-form" >
                         <div class="select-itms">
-                            <select name="select" id="select1">
+                            <select name="select" id="select5">
                                 <OPTION VALUE=""> Select 0% of real discount rate </option>
                                 <OPTION VALUE=""> Select 3% of real discount rate</option>
                                 <OPTION VALUE=""> Select 7% of real discount rate </option>
@@ -769,8 +769,8 @@
 
                 <!-- Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="story1-community" id="story1-community" value = "1" class="bar"> One story</label>
+                  <label><input type="radio" name ="story2-community" id="story2-community" value = "2" class="bar"> Two or more stories</label>
                 
                 <!-- Freeboard height above the BFE -->   
                   <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
@@ -781,7 +781,7 @@
                   <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                     <div class="select-form" >
                         <div class="select-itms">
-                            <select name="select" id="select1">
+                            <select name="select" id="select6">
                                 <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                 <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                 <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -800,7 +800,7 @@
                   <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                     <div class="select-form" >
                         <div class="select-itms">
-                            <select name="select" id="select1">
+                            <select name="select" id="select7">
                                 <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                 <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                 <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -819,7 +819,7 @@
                 <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
                   <div class="select-form" >
                       <div class="select-itms">
-                          <select name="select" id="select1">
+                          <select name="select" id="select8">
                               <OPTION VALUE=""> 5 years </option>
                               <OPTION VALUE=""> 10 years </option>
                               <OPTION VALUE=""> 15 years </option>
@@ -836,7 +836,7 @@
                 <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
                   <div class="select-form" >
                       <div class="select-itms">
-                          <select name="select" id="select1">
+                          <select name="select" id="select9">
                               <OPTION VALUE=""> Select 0% of real discount rate </option>
                               <OPTION VALUE=""> Select 3% of real discount rate</option>
                               <OPTION VALUE=""> Select 7% of real discount rate </option>
@@ -908,7 +908,7 @@
       <div class="pricing-slider">
       
         <center><label class="form-slider" >
-          <img id='img' src='static/img/construction/onefoot.png' class="pricing-slider-img"/><br><br>
+          <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
           <center><div class="pricing-slider-value" ></div></center> <br>
           <datalist id="scale">
             <option>0</option>
@@ -1114,7 +1114,7 @@
         <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
         <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
         -->
-        <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
+        
       
     <!--Interactive slide-->  
       <div style="overflow-x:auto;">
@@ -1123,41 +1123,54 @@
             <td><b class="map-style">Home square footage:</b></td>
             <td>{{SquareFootage}} sq</td>
             <td></td>
-          </tr>
-          <tr>
-            <td rowspan="3"><b class="map-style">Flood insurance coverage:</b></td>
-            <td>924,000 - Content</td>
-            <td><input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></td>
-          </tr>
-          <tr>
-            <td>CRS rate is 5, with a 25% discount </td>
-            <td><input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"></td>
-          </tr>
-          <tr>
-            <td>CRS community rating </td>
+            <td></td>
             <td></td>
           </tr>
-          <tr class="table-slide-bg">
+           <tr>
             <td><b class="map-style">Number of stories: </b></td>
             <td>{{No_Floors}}</td>
             <td></td>
-          </tr>
-          <tr>
-            <td><b class="map-style">Flood zone: </b></td>
-            <td>{{floodzone}}</td>
+            <td></td>
             <td></td>
           </tr>
           <tr class="table-slide-bg">
+            <td><b class="map-style">Flood zone: </b></td>
+            <td>{{floodzone}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+           <tr>
             <td rowspan="2"><b class="map-style">Expected occupancy timeline: </b></td>
-            <td>30 years</td>
-            <td><input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="30" min="0" max="100" style="height:25px"></td>
+            <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" style="margin: 0 0 0 13px"/> Years</td>
+            <td>0 Year</td> 
+            <td><input id="rangeInput1" type="range" min="0" max="100" oninput="years.value=rangeInput1.value" /></td> 
+            <td>100 Years</td>
+          </tr>
+          <tr>
+            <td>$ <input id="bldgCost" type="number" value="231000" min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" />  - Building</td>
+            <td>$ 0 </td>
+            <td><input id="rangeInput2" type="range" min="0" max="250000" oninput="bldgCost.value=rangeInput2.value" /></td>
+            <td>$ 250,000 </td>
           </tr>
           <tr class="table-slide-bg">
-            <td>231,000 - Building</td>
-            <td><input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></td>
+            <td rowspan="2"><b class="map-style">Flood insurance coverage:</b></td>
+            <td>$ <input id="contCost" type="number" value="92400" min="0" max="100000" oninput="rangeInput3.value=contCost.value" />  - Content</td>
+            <td>$ 0 </td>
+            <td><input id="rangeInput3" type="range" min="0" max="100000" oninput="contCost.value=rangeInput3.value" /> </td>
+            <td>$ 100,000 </td>
           </tr>
+          <tr class="table-slide-bg">
+            <td>CRS rate is 5, with a <input id="crsDisc" type="number" value="25" min="0" max="100" oninput="rangeInput4.value=crsDisc.value" /> % discount </td>
+            <td>0 % </td>
+            <td><input id="rangeInput4" type="range" min="0" max="100" oninput="crsDisc.value=rangeInput4.value" /></td>
+            <td> 100 %</td>
+          </tr>         
         </table>
       </div>  <br><br>
+      
+      <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
 
       <section id="section-2"><p class=" map-style">
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
@@ -2159,8 +2172,8 @@ let chartConfig = {
               }
             }
     }); 
-
     </script>
+    
 
     <!-- Scroll Up -->
     <div id="back-top" >

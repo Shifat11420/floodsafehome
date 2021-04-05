@@ -233,3 +233,4 @@ function add(type) {
 	foo.appendChild(element);
 
 }*/
+
