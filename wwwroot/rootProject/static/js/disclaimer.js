@@ -23,6 +23,7 @@ jQuery(document).ready(function($){
             $('.bts-popup').removeClass('is-visible');
         }
     });
+
     var didScroll; 
 var lastScrollTop = 0; 
 var delta = 5; 
@@ -249,6 +250,8 @@ let cur = [];
 // });
 // Only not doing it here to keep this Pen dependency-free.
 
+
+/*Side menu highlighting based on scrolling*/
 window.addEventListener("scroll", event => {
   let fromTop = window.scrollY;
 

@@ -598,17 +598,21 @@
     </header>
 
   <!-- autosuggestion-->
-   
-
     <script> 
     jQuery.noConflict();
     jQuery(function ($) {    
     
-    $( "#tags" ).autocomplete({
+    //Autosugestion for homeowner
+    $( "#tags").autocomplete({
+      source: "{% url 'autosuggest' %}"
+        });
+
+    //Autosugestion for community analysis
+     $( "#user_input").autocomplete({
       source: "{% url 'autosuggest' %}"
         });
      } );
-    </script>
+     </script>
    <!--autosuggestion End-->
 
  <!-- Select your building information-->
@@ -758,11 +762,13 @@
                 <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
                 <i style="margin:0 0 0 30px">Please select area using a tool from the map or type address below.</i><br>
                 
-                 <!--Add fields-->
+                <!--Add fields-->
                 <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
-                <textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>
-
+                <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
+                <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                <input type="button" id="add" value="Add New">
+                    <ul id="list_item" class="a"></ul>
 
 
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
@@ -2226,6 +2232,18 @@ let chartConfig = {
     </script>
     <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
 
+    <!--Add multiple address-->
+    <script>
+    document.getElementById("add").onclick  = function() {
+
+      var node = document.createElement("Li");
+      var text = document.getElementById("user_input").value; 
+      var textnode=document.createTextNode(text);
+      node.appendChild(textnode);
+      document.getElementById("list_item").appendChild(node);
+    }
+    </script>
+    <!--Add multiple address end-->
 
 </body>
 </html>
