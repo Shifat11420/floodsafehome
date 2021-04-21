@@ -1,3 +1,5 @@
+<!--4/20 version-->
+
 <html class="no-js" lang="zxx">
 <head>
   <meta charset="utf-8">
@@ -32,18 +34,56 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://js.arcgis.com/4.17/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
+    <!--Add field-->
+    <script type="text/javascript">
+    $(document).ready(function(){
+      //Input fields increment limitation
+        var maxField = 10; 
+        var addButton = $('.add_button'); 
+        var wrapper = $('.field_wrapper'); 
+        var fieldHTML = '<div> <input type="text" name="field_name[]" value="" placeholder="Type your address" required/> <a href="javascript:void(0);" class="remove_button"> &nbsp; <img src="../static/img/logo/minus_icon.png"/></a></div>'; //New input field html 
+        var x = 1; //Initial field counter is 1
+        
+        //Once add button is clicked and maxField is smaller than x, increment field counter
+        $(addButton).click(function(){
+            if(x < maxField){ 
+                x++; 
+                $(wrapper).append(fieldHTML); 
+            }
+        });
+        
+        //Once remove button is clicked, remove the field html
+        $(wrapper).on('click', '.remove_button', function(e){
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--; 
+        });
+    });
+    </script>
+
+
 {% load humanize %}
+<!--ArcGIS API-->
 <script>
-      require(["esri/WebMap",
+       require(["esri/WebMap",
         "esri/widgets/Sketch", 
+        "esri/widgets/Sketch/SketchViewModel",
+        "esri/geometry/Polyline",
+        "esri/geometry/Point",
+        "esri/Graphic",
         "esri/layers/GraphicsLayer",          
         "esri/views/MapView",
-        "esri/layers/FeatureLayer",
+        "esri/layers/FeatureLayer",        
+        "esri/geometry/geometryEngine",
         "esri/widgets/Search",
         "esri/widgets/LayerList",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
+        "dgrid/OnDemandGrid",        
+        "esri/core/watchUtils",
         "esri/widgets/BasemapToggle",
         "esri/Map", 
         "esri/layers/GraphicsLayer",        
@@ -51,23 +91,54 @@
         function(
         WebMap,
         Sketch, 
+        SketchViewModel,
+        Polyline,
+        Point,
+        Graphic,
         GraphicsLayer,
         MapView,
-        FeatureLayer, 
+        FeatureLayer,         
+        geometryEngine,
         Search, 
         LayerList, 
         Legend, 
-        Expand, 
+        Expand,
+        OnDemandGrid,         
+        watchUtils,
         BasemapToggle,
         Map,
-        GraphicsLayer,
+        GraphicsLayer
         
       ) {
-        var webmap = new WebMap({
+        // App 'globals'
+        let sketchViewModel, featureLayerView, pausableWatchHandle;
+
+        let centerGraphic,
+          edgeGraphic,
+          polylineGraphic,
+          bufferGraphic,
+          centerGeometryAtStart,
+          labelGraphic;
+
+        const unit = "miles";
+
+        // Create layers
+        const graphicsLayer = new GraphicsLayer();
+        const bufferLayer = new GraphicsLayer({
+          blendMode: "color-burn"
+        });
+
+        const featureLayer = new FeatureLayer({
           portalItem: {
-            // autocasts as new PortalItem()
-            id: "d61a90015054449484e1bd332a3b75e2"
+            id: "7c5c929792414853b79aed972ca3e65a"
+           // id: "d61a90015054449484e1bd332a3b75e2" for FloodSafeHome
           }
+        });
+
+        // Create map
+        const webmap = new WebMap({
+          basemap: "gray-vector",
+          layers: [featureLayer, bufferLayer, graphicsLayer]
         });
         
         /************************************************************
@@ -75,7 +146,9 @@
          ************************************************************/
         var view = new MapView({
           map: webmap,
-          container: "viewDiv"
+          container: "viewDiv",
+          zoom: 11,
+          center: [-90.1446649, 30.0017509]
         });
       
         // Add the feature layer to search the location based on the address
@@ -172,13 +245,13 @@
           view: view,
           listItemCreatedFunction: function (event) {
             const item = event.item;
-            if (item.layer.type != "group") {
+{% comment %}             if (item.layer.type != "group") {
               // don't show legend twice
               item.panel = {
                 content: "legend",
                 open: false
               };
-            }
+            } {% endcomment %}
           }
         });
         view.ui.add(layerList, "top-right");
@@ -191,6 +264,281 @@
 
         // Add widget to the bottom right corner of the view
         view.ui.add(toggle, "bottom-right");
+        
+
+        // Update UI
+        setUpAppUI();
+        setUpSketch();
+
+        function setUpAppUI() {
+          // When layer is loaded, create a watcher to trigger drawing of the buffer polygon
+          view.whenLayerView(featureLayer).then(function (layerView) {
+            featureLayerView = layerView;
+
+            pausableWatchHandle = watchUtils.pausable(
+              layerView,
+              "updating",
+              function (val) {
+                if (!val) {
+                  drawBufferPolygon();
+                }
+              }
+            );
+
+            // Display directions when the layerView is loading
+            watchUtils.whenFalseOnce(layerView, "updating", function () {
+              view.popup.open({
+                title: "Center point",
+                content:
+                  "Drag this point to move the buffer.<br/> " +
+                  "Or drag the <b>Edge</b> point to resize the buffer.",
+                location: centerGraphic.geometry
+              });
+              view.popup.alignment = "top-left";
+            });
+          });
+
+          // Close the 'help' popup when view is focused
+          view.watch("focused", function (newValue) {
+            if (newValue) {
+              view.popup.close();
+            }
+          });
+        }
+
+        /*****************************************************************
+         * Create SketchViewModel and wire up event listeners
+         *****************************************************************/
+        function setUpSketch() {
+          sketchViewModel = new SketchViewModel({
+            view: view,
+            layer: graphicsLayer
+          });
+
+
+          // is updated as the graphics are updated
+          sketchViewModel.on("update", onMove);
+        }
+
+        /*********************************************************************
+         * Edge or center graphics are being moved. Recalculate the buffer with
+         * updated geometry information and run the query stats again.
+         *********************************************************************/
+        function onMove(event) {
+          // If the edge graphic is moving, keep the center graphic
+          // at its initial location. Only move edge graphic
+          if (
+            event.toolEventInfo &&
+            event.toolEventInfo.mover.attributes.edge
+          ) {
+            const toolType = event.toolEventInfo.type;
+            if (toolType === "move-start") {
+              centerGeometryAtStart = centerGraphic.geometry;
+            }
+            // keep the center graphic at its initial location when edge point is moving
+            else if (toolType === "move" || toolType === "move-stop") {
+              centerGraphic.geometry = centerGeometryAtStart;
+            }
+          }
+
+          // the center or edge graphic is being moved, recalculate the buffer
+          const vertices = [
+            [centerGraphic.geometry.x, centerGraphic.geometry.y],
+            [edgeGraphic.geometry.x, edgeGraphic.geometry.y]
+          ];
+
+          // client-side stats query of features that intersect the buffer
+          calculateBuffer(vertices);
+
+          // user is clicking on the view... call update method with the center and edge graphics
+          if (event.state === "complete") {
+            sketchViewModel.update([edgeGraphic, centerGraphic], {
+              tool: "move"
+            });
+          }
+        }
+
+        /*********************************************************************
+         * Edge or center point is being updated. Recalculate the buffer with
+         * updated geometry information.
+         *********************************************************************/
+        function calculateBuffer(vertices) {
+          // Update the geometry of the polyline based on location of edge and center points
+          polylineGraphic.geometry = new Polyline({
+            paths: vertices,
+            spatialReference: view.spatialReference
+          });
+
+          // Recalculate the polyline length and buffer polygon
+          const length = geometryEngine.geodesicLength(
+            polylineGraphic.geometry,
+            unit
+          );
+          const buffer = geometryEngine.geodesicBuffer(
+            centerGraphic.geometry,
+            length,
+            unit
+          );
+
+          // Update the buffer polygon
+          bufferGraphic.geometry = buffer;
+
+          // Query female and male age groups of the census tracts that intersect
+          // the buffer polygon on the client
+         
+
+          // Update label graphic to show the length of the polyline
+          labelGraphic.geometry = edgeGraphic.geometry;
+          labelGraphic.symbol = {
+            type: "text",
+            color: "#3d53fc",
+            text: length.toFixed(2) + " miles",
+            xoffset: 50,
+            yoffset: 10,
+            font: {
+              // autocast as Font
+              size: 14,
+              family: "sans-serif"
+            }
+          };
+        }
+
+       
+        /***************************************************
+         * Draw the buffer polygon when application loads or
+         * when user searches for a new location
+         **************************************************/
+        function drawBufferPolygon() {
+          // When pause() is called on the watch handle, the callback represented by the
+          // watch is no longer invoked, but is still available for later use
+          // this watch handle will be resumed when user searches for a new location
+          pausableWatchHandle.pause();
+
+          // Initial location for the center, edge and polylines on the view
+          const viewCenter = view.center.clone();
+          const centerScreenPoint = view.toScreen(viewCenter);
+          const centerPoint = view.toMap({
+            x: centerScreenPoint.x + 20,
+            y: centerScreenPoint.y - 20
+          });
+          const edgePoint = view.toMap({
+            x: centerScreenPoint.x + 160,
+            y: centerScreenPoint.y - 20
+          });
+
+          // Store updated vertices
+          const vertices = [
+            [centerPoint.x, centerPoint.y],
+            [edgePoint.x, edgePoint.y]
+          ];
+
+          // Create center, edge, polyline and buffer graphics for the first time
+          if (!centerGraphic) {
+            const polyline = new Polyline({
+              paths: vertices,
+              spatialReference: view.spatialReference
+            });
+
+            // get the length of the initial polyline and create buffer
+            const length = geometryEngine.geodesicLength(polyline, unit);
+            const buffer = geometryEngine.geodesicBuffer(
+              centerPoint,
+              length,
+              unit
+            );
+
+            // Create the graphics representing the line and buffer
+            const pointSymbol = {
+              type: "simple-marker",
+              style: "circle",
+              size: 10,
+              color: [0, 255, 255, 0.5]
+            };
+            centerGraphic = new Graphic({
+              geometry: centerPoint,
+              symbol: pointSymbol,
+              attributes: {
+                center: "center"
+              }
+            });
+
+            edgeGraphic = new Graphic({
+              geometry: edgePoint,
+              symbol: pointSymbol,
+              attributes: {
+                edge: "edge"
+              }
+            });
+
+            polylineGraphic = new Graphic({
+              geometry: polyline,
+              symbol: {
+                type: "simple-line",
+                color: "[254, 254, 254, 1]",
+                width: 2.5
+              }
+            });
+
+            bufferGraphic = new Graphic({
+              geometry: buffer,
+              symbol: {
+                type: "simple-fill",
+                color: [150, 150, 150],
+                outline: {
+                  color: "#3d53fc",
+                  width: 2
+                }
+              }
+            });
+            labelGraphic = labelLength(edgePoint, length);
+
+            // Add graphics to layer
+            graphicsLayer.addMany([
+              centerGraphic,
+              edgeGraphic,
+              polylineGraphic,
+              labelGraphic
+            ]);
+            // once center and edge point graphics are added to the layer,
+            // call sketch's update method pass in the graphics so that users
+            // can just drag these graphics to adjust the buffer
+            setTimeout(function () {
+              sketchViewModel.update([edgeGraphic, centerGraphic], {
+                tool: "move"
+              });
+            }, 1000);
+
+            bufferLayer.addMany([bufferGraphic]);
+          }
+          // Move the center and edge graphics to the new location returned from search
+          else {
+            centerGraphic.geometry = centerPoint;
+            edgeGraphic.geometry = edgePoint;
+          }
+
+          // Query features that intersect the buffer
+          calculateBuffer(vertices);
+        }
+
+      
+        // Label polyline with its length
+        function labelLength(geom, length) {
+          return new Graphic({
+            geometry: geom,
+            symbol: {
+              type: "text",
+              color: "#FFEB00",
+              text: length.toFixed(2) + " Miles",
+              xoffset: 50,
+              yoffset: 10,
+              font: {
+                // autocast as Font
+                size: 14,
+                family: "sans-serif"
+              }
+            }
+          });
+        }
       });
   </script>
 </head>
@@ -214,7 +562,7 @@
                                 <div class="menu-wrapper  d-flex align-items-center justify-content-end">
                                     <!-- Main-menu -->
                                     <div class="main-menu d-none d-lg-block">
-                                        <nav>
+                                        
                                             <ul id="navigation">
                                                 <li><a href="/">Home</a></li>
                                                 <li><a href="/about">About</a>
@@ -235,7 +583,7 @@
                                                 <li><a href="/survey">Survey</a></li>
                                                 <li><a href="/helpcenter">Help Center</a></li>
                                             </ul>
-                                        </nav>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -252,17 +600,21 @@
     </header>
 
   <!-- autosuggestion-->
-   
-
     <script> 
     jQuery.noConflict();
     jQuery(function ($) {    
     
-    $( "#tags" ).autocomplete({
+    //Autosugestion for homeowner
+    $( "#tags").autocomplete({
+      source: "{% url 'autosuggest' %}"
+        });
+
+    //Autosugestion for community analysis
+     $( "#user_input").autocomplete({
       source: "{% url 'autosuggest' %}"
         });
      } );
-    </script>
+     </script>
    <!--autosuggestion End-->
 
  <!-- Select your building information-->
@@ -294,8 +646,8 @@
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="story1" id="story1" value = "1" class="bar" required> One story</label>
+                  <label><input type="radio" name ="story2" id="story2" value = "2" class="bar"> Two or more stories</label>
               </div>
 
               <!--This option will be appear when user select community official-->
@@ -323,174 +675,184 @@
                           </div>
                       </div>
                     
-                      <!--Average Building Size (Livable Square Footage) -->
-                      <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+                <!--Average Building Size (Livable Square Footage) -->
+                <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
+                  <input type="text"  name="sqft-avg-bldg-community"  id="sqft-avg-bldg-community" placeholder="Type average building's square footage"  class="text"> <br>
 
 
-                      <!--Number of Stories -->        
-                      <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                <!--Number of Stories -->        
+                <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                  <label><input type="radio" name ="story1-single-community" id="story1-single-community" value = "1" class="bar"> One story</label>
+                  <label><input type="radio" name ="story2-single-community" id="story2-single-community" value = "2" class="bar"> Two or more stories</label>
 
-                      <!--Freeboard height above the BFE -->   
-                      <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                <!--Freeboard height above the BFE -->   
+                <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
+                  <input type="text"  name="freeboard-bfe-single"  id="freeboard-bfe-single" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
 
-                       <!--Current CRS rating -->                    
-                      <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="select1">
-                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                                </select>
-                            </div>
-                        </div>    
-
-                      <!--Targeted CRS rating -->  
-                      <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                          <div class="select-itms">
-                              <select name="select" id="select1">
-                                  <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                              </select>
-                          </div>
+                  <!--Current CRS rating -->                    
+                <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                  <div class="select-form" >
+                      <div class="select-itms">
+                          <select name="select" id="select2">
+                              <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                              <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                              <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                              <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                              <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                              <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                              <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                              <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                              <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                              <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                          </select>
                       </div>
-                
-                      <!--Assessment Timeline--> 
-                      <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="select1">
-                                    <OPTION VALUE=""> 5 years </option>
-                                    <OPTION VALUE=""> 10 years </option>
-                                    <OPTION VALUE=""> 15 years </option>
-                                    <OPTION VALUE=""> 20 years </option>
-                                    <OPTION VALUE=""> 30 years </option>
-                                    <OPTION VALUE=""> 40 years </option>
-                                    <OPTION VALUE=""> 70 years </option>
-                                    <OPTION VALUE=""> 100 </option>
-                                </select>
-                            </div>
-                        </div>     
+                  </div>    
+
+                <!--Targeted CRS rating -->  
+                <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                  <div class="select-form" >
+                    <div class="select-itms">
+                        <select name="select" id="select3">
+                            <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                            <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                            <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                            <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                            <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                            <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                            <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                            <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                            <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                            <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                        </select>
+                    </div>
+                </div>
+          
+                <!--Assessment Timeline--> 
+                <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
+                  <div class="select-form" >
+                      <div class="select-itms">
+                          <select name="select" id="select4">
+                              <OPTION VALUE=""> 5 years </option>
+                              <OPTION VALUE=""> 10 years </option>
+                              <OPTION VALUE=""> 15 years </option>
+                              <OPTION VALUE=""> 20 years </option>
+                              <OPTION VALUE=""> 30 years </option>
+                              <OPTION VALUE=""> 40 years </option>
+                              <OPTION VALUE=""> 70 years </option>
+                              <OPTION VALUE=""> 100 </option>
+                          </select>
+                      </div>
+                  </div>     
 
 
-                        <!--Select the appropriate real discount rate for the assessment-->
-                        <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
-                          <div class="select-form" >
-                              <div class="select-itms">
-                                  <select name="select" id="select1">
-                                      <OPTION VALUE=""> Select 0% of real discount rate </option>
-                                      <OPTION VALUE=""> Select 3% of real discount rate</option>
-                                      <OPTION VALUE=""> Select 7% of real discount rate </option>
-                                      <OPTION VALUE=""> Select 10% of real discount rate </option>
-                                  </select>
-                              </div>
-                            </div>     
-                          </div>
+                  <!--Select the appropriate real discount rate for the assessment-->
+                  <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
+                    <div class="select-form" >
+                        <div class="select-itms">
+                            <select name="select" id="select5">
+                                <OPTION VALUE=""> Select 0% of real discount rate </option>
+                                <OPTION VALUE=""> Select 3% of real discount rate</option>
+                                <OPTION VALUE=""> Select 7% of real discount rate </option>
+                                <OPTION VALUE=""> Select 10% of real discount rate </option>
+                            </select>
+                        </div>
+                      </div>     
+                    </div>
 
               <!-- This option will be appear when spatial scale is selected-->
               <div id="SpatialScale" style="display: none">
                 <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
-                <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i>
+                <i style="margin:0 0 0 30px">Please select area using a tool from the map or type address below.</i><br>
+                
+                <!--Add fields-->
+                <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
+                <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
+                <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
+                <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                <input type="button" id="add" value="Add New">
+                    <ul id="list_item" class="a"></ul>
+
+
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
                 <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
 
-                    <!-- Number of Stories -->        
-                    <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
-                    
-                    <!-- Freeboard height above the BFE -->   
-                      <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                      <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
-                    
-                    
-                     <!-- Current CRS rating -->  
-                      <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="select1">
-                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                                </select>
-                            </div>
-                        </div>    
-                      
-                      <!-- Targeted CRS rating --> 
-                      <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="select1">
-                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                                </select>
-                            </div>
+                <!-- Number of Stories -->        
+                <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                  <label><input type="radio" name ="story1-community" id="story1-community" value = "1" class="bar"> One story</label>
+                  <label><input type="radio" name ="story2-community" id="story2-community" value = "2" class="bar"> Two or more stories</label>
+                
+                <!-- Freeboard height above the BFE -->   
+                  <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
+                  <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                
+                
+                  <!-- Current CRS rating -->  
+                  <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                    <div class="select-form" >
+                        <div class="select-itms">
+                            <select name="select" id="select6">
+                                <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                            </select>
                         </div>
+                    </div>    
                   
-                    <!-- Assessment Timeline -->
-                    <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
-                      <div class="select-form" >
-                          <div class="select-itms">
-                              <select name="select" id="select1">
-                                  <OPTION VALUE=""> 5 years </option>
-                                  <OPTION VALUE=""> 10 years </option>
-                                  <OPTION VALUE=""> 15 years </option>
-                                  <OPTION VALUE=""> 20 years </option>
-                                  <OPTION VALUE=""> 30 years </option>
-                                  <OPTION VALUE=""> 40 years </option>
-                                  <OPTION VALUE=""> 70 years </option>
-                                  <OPTION VALUE=""> 100 </option>
-                              </select>
-                          </div>
-                      </div>     
+                  <!-- Targeted CRS rating --> 
+                  <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
+                    <div class="select-form" >
+                        <div class="select-itms">
+                            <select name="select" id="select7">
+                                <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
+                                <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
+                                <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
+                                <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
+                                <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
+                                <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
+                                <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
+                                <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
+                                <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
+                                <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
+                            </select>
+                        </div>
+                    </div>
+              
+                <!-- Assessment Timeline -->
+                <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
+                  <div class="select-form" >
+                      <div class="select-itms">
+                          <select name="select" id="select8">
+                              <OPTION VALUE=""> 5 years </option>
+                              <OPTION VALUE=""> 10 years </option>
+                              <OPTION VALUE=""> 15 years </option>
+                              <OPTION VALUE=""> 20 years </option>
+                              <OPTION VALUE=""> 30 years </option>
+                              <OPTION VALUE=""> 40 years </option>
+                              <OPTION VALUE=""> 70 years </option>
+                              <OPTION VALUE=""> 100 </option>
+                          </select>
+                      </div>
+                  </div>     
 
-                    <!-- Select the appropriate real discount rate for the assessment -->
-                    <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
-                      <div class="select-form" >
-                          <div class="select-itms">
-                              <select name="select" id="select1">
-                                  <OPTION VALUE=""> Select 0% of real discount rate </option>
-                                  <OPTION VALUE=""> Select 3% of real discount rate</option>
-                                  <OPTION VALUE=""> Select 7% of real discount rate </option>
-                                  <OPTION VALUE=""> Select 10% of real discount rate </option>
-                              </select>
-                          </div>
-                      </div>     
+                <!-- Select the appropriate real discount rate for the assessment -->
+                <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
+                  <div class="select-form" >
+                      <div class="select-itms">
+                          <select name="select" id="select9">
+                              <OPTION VALUE=""> Select 0% of real discount rate </option>
+                              <OPTION VALUE=""> Select 3% of real discount rate</option>
+                              <OPTION VALUE=""> Select 7% of real discount rate </option>
+                              <OPTION VALUE=""> Select 10% of real discount rate </option>
+                          </select>
+                      </div>
+                  </div>     
                 </div>
             </div>
           </div>
@@ -508,17 +870,20 @@
  <!-- Side bar naviation menu-->
   <p>
     <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
-    <nav class="nav">
-      <ul class="box ul">
-        <li class="li"><a class="sidemenu" href="#section-1">Summary</a><br>
-        <li class="li"><a class="sidemenu" href="#section-6">Monthly Savings</a></li>
-        <li class="li"><a class="sidemenu" href="#section-2">Freeboard Cost</a>
-        <li class="li"><a class="sidemenu" href="#section-3">Annual Insurance Premiums</a></li>
-        <li class="li"><a class="sidemenu" href="#section-4">Expected Annual Flood Loss</a></li>
-        <li class="li"><a class="sidemenu" href="#section-5">Time to Recover the Freeboard Cost</a></li>
-        <li class="li"><a class="sidemenu" href="#">Save as a PDF</a></li>
-      </ul> 
+    <div class="section-nav box">
+    <nav>
+    <ul >
+        <li><a href="#section-1">Summary</a></li>
+        <li><a href="#section-6">Monthly Savings</a></li>
+        <li><a href="#section-2">Freeboard Cost</a></li>
+        <li><a href="#section-3">Annual Insurance Premiums</a></li>
+        <li><a href="#section-4">Expected Annual Flood Loss</a></li>
+        <li><a href="#section-5">Time to Recover the Freeboard Cost</a></li>
+        <li><a href="#section-7">Save as a PDF</a>
+        <!--<li><a class="sidemenu" href="#">Save as a PDF</a>-->
+     </ul>
     </nav>
+    </div>
   </p>
   
 </div>
@@ -537,11 +902,11 @@
   {% endif %}
 
 <!-- Error message ends--> 
-
+<main>
 <!--ESRI Map-->
 <div id = "pdf_wrap">
-        <div id="viewDiv"><section id="section-1"></section>
-        </div>
+        <div id="viewDiv">
+        </div><section id ="section-1">
 
 <!--Result details-->
 <!--Summary-->
@@ -555,7 +920,7 @@
       <div class="pricing-slider">
       
         <center><label class="form-slider" >
-          <img id='img' src='static/img/construction/onefoot.png' class="pricing-slider-img"/><br><br>
+          <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
           <center><div class="pricing-slider-value" ></div></center> <br>
           <datalist id="scale">
             <option>0</option>
@@ -751,7 +1116,7 @@
       <div class="zc-body"><div id="chart5" class="chart5"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></div> 
     </div>
      
-     <!-- 
+    <!--
         <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
         <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
@@ -760,16 +1125,72 @@
         <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
         <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
         <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
+        -->
         
-        <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
-        
+      
+    <!--Interactive slide-->  
+      <div style="overflow-x:auto;">
+        <table class="table-slide">
+          <tr class="table-slide-bg">
+            <td><b class="map-style">Home square footage:</b></td>
+            <td>{{SquareFootage}} sq</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+           <tr>
+            <td><b class="map-style">Number of stories: </b></td>
+            <td>{{No_Floors}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td><b class="map-style">Flood zone: </b></td>
+            <td>{{floodzone}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+           <tr>
+            <td rowspan="2"><b class="map-style">Expected occupancy timeline: </b></td>
+            <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" style="margin: 0 0 0 13px"/>  Years</td>
+            <td>0 Year</td> 
+            <td><input id="rangeInput1" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" /></td> 
+            <td>100 Years</td>
+          </tr>
+          <tr>
+            <td>$ <input id="bldgCost" type="number" value="231000" min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" />  - Building</td>
+            <td>$0 </td>
+            <td><input id="rangeInput2" type="range" min="0" max="250000" value="231000" oninput="bldgCost.value=rangeInput2.value" /></td>
+            <td>$250,000 </td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td rowspan="2"><b class="map-style">Flood insurance coverage:</b></td>
+            <td>$ <input id="contCost" type="number" value="92400" min="0" max="100000" oninput="rangeInput3.value=contCost.value" />  - Content</td>
+            <td>$0 </td>
+            <td><input id="rangeInput3" type="range" min="0" max="100000" value="92400" oninput="contCost.value=rangeInput3.value" /> </td>
+            <td>$100,000 </td>
+          </tr>
+          <tr class="table-slide-bg">
+            <td>CRS rate is 5, with a <input id="crsDisc" type="number" value="25" min="0" max="100" oninput="rangeInput4.value=crsDisc.value" /> % discount </td>
+            <td>0% </td>
+            <td><input id="rangeInput4" type="range" min="0" max="100" value="25" oninput="crsDisc.value=rangeInput4.value" /></td>
+            <td>100%</td>
+          </tr>         
+        </table>
+      </div> 
+      
+      <canvas id="chart" width="400" height="150">Graph is not appeared. Will fix it soon.</canvas> <i>The graph is not displayed. Will fix it soon.</i><br><br><br><br>
+
       <section id="section-2"><p class=" map-style">
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
        ● The CRS rate is …, with a ...% discount on flood insurance. 
       </p></section>
-      <br><br>-->
+      <br><br>
 
   </div> 
 
@@ -778,42 +1199,40 @@
    <hr class="style-four">
      <h2 class="map-style-title">Freeboard Cost</h2> 
       <div class="graph-description">
-        <section id="section-3">
-        The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home range from 
+        
+        The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home ranges from 
         <b class="map-style">${{FreeboardCost1 | intcomma}}</b> to <b class="map-style">${{FreeboardCost4 | intcomma}}</b>.
         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
-      </section></div>  
-      <div class="zc-body">     <div id="chart1" class="chart1"></div></div>
+      </div>  
+      <section id="section-3"><div class="zc-body">     <div id="chart1" class="chart1"></div></div></section>
   </div>
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
    <hr class="style-four">
-    <h2 class="map-style-title">Annual Insurance Premiums</h2> 
+    <h2 class="map-style-title">Annual Insurance Premiums</h2>
      <div class="graph-description" >
-       <section id="section-4"> 
        Constructing your home with additional freeboard decreases annual insurance premiums from <b class="map-style">${{total_annual_premium0 | intcomma}}</b> to <b class="map-style">${{total_annual_premium4 | intcomma}}</b>. 
        <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
-       </section>
+      
      </div>
-     <div class="zc-body"> 
+     <section id="section-4">  <div class="zc-body"> 
       <center>
        <div id="chart2" class="chart2"></div>
-      </center> </div>
+      </center> </div> </section>
   </div>
 
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-four">
      <h2 class="map-style-title">Expected Annual Flood Loss</h2>
-      <section id="sdection-5"> 
+       
         <div class="graph-description" >
-          <section id="section-5"> Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{AAL_absCurrency0 | intcomma}}</b> to <b class="map-style">${{AAL_absCurrency4 | intcomma}}</b>. 
+          Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{AAL_absCurrency0 | intcomma}}</b> to <b class="map-style">${{AAL_absCurrency4 | intcomma}}</b>. 
           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
-          </section> 
         </div>
-      <div class="zc-body">  <div id="chart3" class="chart3"></div></div>
+      <section id="section-5"><div class="zc-body">  <div id="chart3" class="chart3"></div></div> </section> 
       </section>
   </div>
 
@@ -824,8 +1243,7 @@
       <div class="graph-description" >
         The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
         Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{time_to_recover_FC_PS1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_PS4}} month(s)</b>. 
-        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{time_to_recover_FC_TB1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_TB4}} month(s)</b>. 
-        
+        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{time_to_recover_FC_TB1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_TB4}} month(s)</b>.       
       </div>
       <div class="zc-body">     <div id="chart4" class="chart4"></div></div>
   </div>
@@ -836,7 +1254,7 @@
      <h2 class="map-style-title">Overall Graph</h2>
       <div style="display:inline-block; margin: 0 0 0 5px;" class="zc-body">     <div id="myChart" class="chart--container1"></div></div>
   </div>
-
+</main>
 <!--Freeboard graph
 <div class="left3 section-tittle-detail mb-40">
   <hr class="style-two">  
@@ -923,9 +1341,10 @@
   // CHART CONFIG
   // -----------------------------
 
-//Chart 1 (Freeboard Cost) with insurance and without insurance
-var chart1Data = {
-    type: 'line',
+
+  // Chart 1
+  var chart1Data = {
+    type: 'bar',
     title: {
       fontWeight: 'normal',
       fontColor: 'var(--black)',
@@ -965,20 +1384,6 @@ var chart1Data = {
       thousandsSeparator: ", ",
       backgroundColor:'var(--red)'
       },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--red)',
-      size : 5,
-      backgroundColor : 'var(--red)'
-    },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--red)'
-    },
     animation : {
       effect : 1,
       sequence : 2,
@@ -988,96 +1393,22 @@ var chart1Data = {
     series: [
       {
         text: 'Freeboard cost',
-        lineColor: 'var(--red)',
-        values: {{ freeboardCost_json}}   
+        backgroundColor: 'var(--red)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        values: {{freeboardCost_json}}   
       }
     ]
   };
 
-
- {% comment %}  
- // Chart 1 with insurance
-  var chart1Data = {
-    type: 'line',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ", ",
-    multiplier: true
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '$%v',
-      thousandsSeparator: ", ",
-      backgroundColor:'var(--red)'
-      },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--red)',
-      size : 5,
-      backgroundColor : 'var(--red)'
-    },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--red)'
-    },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
-    },
-  },
-    series: [
-      {
-        text: 'Freeboard cost',
-        lineColor: 'var(--red)',
-        values: {{ freeboardCost_json}}   
-      }
-    ]
-  }; {% endcomment %}
-
   // Chart 2
-  var chart2Data = {
-    type: 'line',
+   var chart2Data = {
+    type: 'bar',
     title: {
       fontWeight: 'normal',
       fontColor: 'var(--black)',
       align: 'left',
       marginLeft: '2rem'
-    },
-    tootltip: {
-      visible:false
     },
     cursor: 'hand',
     globals: {
@@ -1112,20 +1443,6 @@ var chart1Data = {
       thousandsSeparator: ", ",
       backgroundColor:'var(--blue)'
       },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--blue)',
-      size : 5,
-      backgroundColor : 'var(--blue)'
-    },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--blue)'
-    },
     animation : {
       effect : 1,
       sequence : 2,
@@ -1134,439 +1451,419 @@ var chart1Data = {
   },
     series: [
       {
-        //values: {{monthly_premium_saving_json}},
-        values: {{total_annual_premium_json}},
-        //text: 'Insurance savings per month',
         text: 'Annual insurance premiums',
-        lineColor: 'var(--blue)'      
+        backgroundColor: 'var(--blue)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        values: {{total_annual_premium_json}}   
       }
     ]
-  };
-
+  }; 
  
 
   // Chart 3
-  var chart3Data = {
-    type: 'line',
-    scaleY: {
-      label: {
-        fontWeight: 'normal',
-        fontSize: 50
-      },
-    },
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      thousandsSeparator: ", ",
-      backgroundColor:'var(--orange)'
-      },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
-      format: "$%v",
-      negation: "currency",
-      thousandsSeparator: ", ",
-      multiplier: true
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '$%v',
-      thousandsSeparator: ", "
-    },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--orange',
-      size : 5,
-      backgroundColor : 'var(--orange)'
-    },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--orange)'
-    },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
+  let chart3Data = {
+  type: 'bar',
+  legend: {
+    alpha: 0.05,
+    borderWidth: '0px',
+    layout: 'x2',
+    marker: {
+      type: 'circle',
+      borderColor: 'none',
+      size: '10px'
     },
   },
-    series: [
-      {
-        values: {{AAL_absCurrency_json}}, //need to update
-        text: 'Expected annual flood loss',
-        lineColor: 'var(--orange)'      
-      }
-    ]
-  };
-
-   // Chart 4
-  var chart4Data = {
-    type: 'line',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    plot: {
-      tooltip: {
-        visible: false
-      },
-      cursor: 'hand'
-    },
-
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      width: '100%',
-      x: '8%',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: {
-      markers: [],
-      labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    },
-    crosshairX: {},
-    scaleY: {
-      label: {
-        text: "Month(s)",
-        fontWeight: 'normal'
-      },
-    },
-    series: [
-      {
-        text: 'The reduction in insurance premiums ',
-        values: {{time_to_recover_FC_PS_json}},
-        lineColor: 'var(--orange)',
-        marker : {
-        type : 'circle',
-        borderWidth : 1,
-        borderColor : 'var(--orange)',
-        size : 5,
-        backgroundColor : 'var(--orange)'
-        },
-        hoverMarker : {
-          type : 'circle',
-          size : 6,
-          backgroundColor : '#FFF',
-          borderWidth : 1,
-          borderColor : 'var(--orange)'
-        },
-      },
-      {
-        text: 'The reduction in insurance premiums and the reduction of flood losses',
-        values: {{time_to_recover_FC_TB_json}},
-        lineColor: '#c4c722',
-        marker : {
-        type : 'circle',
-        borderWidth : 1,
-        borderColor : '#c4c722',
-        size : 5,
-        backgroundColor : '#c4c722'
-        },
-        hoverMarker : {
-          type : 'circle',
-          size : 6,
-          backgroundColor : '#FFF',
-          borderWidth : 1,
-          borderColor : '#c4c722'
-        },
-      }    
-    ]
-  };
-
-  /*
-  * define Marker class to construct
-  * markers on the fly easier.
-  */
-  function Marker(_index) {
-    return {
-      type: 'line',
-      flat: false,
-      lineColor: '#424242',
-      lineWidth: '1px',
-      range: [_index]
+  plot: {
+    animation: {
+      effect: 'ANIMATION_SLIDE_BOTTOM'
     }
-  }
-
-  /*
-  * define Label class to construct
-  * labels on the fly easier.
-  */
-  function Label(_text, _id, _offsetX, _offsetY) {
-    return {
-      id: _id,
-      text: _text,
-      angle: 0,
-      padding: '5px 10px 5px 10px',
-      backgroundColor: '#eeeeee',
-      cursor: 'pointer',
-      flat: false,
-      fontSize: '13px',
-      fontStyle: 'bold',
-      offsetX: _offsetX,
-      offsetY: _offsetY ? _offsetY : 0,
-      textAlign: 'right',
-      wrapText: true
-    }
-  }
-
-  // format the label text
-  let formatLabelText = (_nodeindex, _scaleText) => {
-    let plotInfo = null;
-    let nodeInfo;
-    let seriesText = '';
-    let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
-    let color = '';
-    let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
-      graphid: 0
-    });
-
-    for (let i = 0; i < plotLength; i++) {
-      plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-        object: 'plot',
-        plotindex: i
-      });
-      nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-        object: 'node',
-        plotindex: i,
-        nodeindex: _nodeindex
-      });
-      color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
-      seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
-      labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
-        ' ' + nodeInfo.value + '<br>';
-    }
-
-    return labelString;
-  };
-
-  // global array for markers since you can only update the whole array
-  let markersArray = [];
-  let labelsArray = [];
-
-  // hash table for markers
-  let markerHashTable = {};
-
-  /*
-  * Register a graph click event and then render a chart with the markers
-  */
-  zingchart.bind('chart4Data', 'click', (e) => {
-    let xyInformation;
-    let nodeIndex;
-    let scaleText;
-
-    // make sure not a node click and click happend in plotarea
-    if (e.target != 'node' && e.plotarea) {
-      xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
-        x: e.ev.clientX,
-        y: e.ev.clientY
-      });
-
-      // if anything is found, 0 corresponds to scale-x
-      if (xyInformation && xyInformation[0] && xyInformation[2]) {
-        nodeIndex = xyInformation[0].scalepos;
-        scaleText = xyInformation[0].scaletext;
-
-        // check hash table. Add marker
-        if (!markerHashTable['nodeindex' + nodeIndex]) {
-          let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-            object: 'node',
-            nodeindex: nodeIndex,
-            plotindex: 0
-          });
-
-          let labelText = formatLabelText(nodeIndex, scaleText);
-          let labelId = 'label_' + nodeIndex;
-          // create a marker
-          let newMarker = new Marker(nodeIndex);
-          let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
-
-          markerHashTable['nodeindex' + nodeIndex] = true;
-          markersArray.push(newMarker);
-
-          labelsArray.push(newLabel);
-
-          // render the marker
-          chart4Data.scaleX.markers = markersArray;
-          chart4Data.labels = labelsArray;
-          zingchart.exec('chart4Data', 'setdata', {
-            data: chart4Data
-          });
-        } else {
-          console.log('---marker already exists----');
-        }
-      }
-    }
-  });
-
-  /*
-  * Register a node_click event and then render a chart with the markers
-  */
-  zingchart.bind('chart4Data', 'node_click', (e) => {
-    // check hash table. Add marker
-    if (!markerHashTable['nodeindex' + e.nodeindex]) {
-      let labelText = formatLabelText(e.nodeindex, e.scaletext);
-      let labelId = 'label_' + e.nodeindex;
-      // create a marker
-      let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
-      let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
-
-      markerHashTable['nodeindex' + e.nodeindex] = true;
-      markersArray.push(newMarker);
-
-      labelsArray.push(newLabel);
-
-      // render the marker
-      chart4Data.scaleX.markers = markersArray;
-      chart4Data.labels = labelsArray;
-      zingchart.exec('chart4Data', 'setdata', {
-        data: chart4Data
-      });
-    } else {
-      console.log('---marker already exists----');
-    }
-  });
-
-  let labelMouseDown = false;
-  let labelId = null;
-
-  /*
-  * bind mousedown event for dragging label
-  */
-  zingchart.bind('chart4Data', 'label_mousedown', (e) => {
-    labelMouseDown = true;
-    labelId = e.labelid;
-    zingchart.exec('chart4Data', 'hideguide');
-  });
-
-  zingchart.bind('chart4Data', 'mousemove', (e) => {
-    if (labelMouseDown && labelId) {
-      zingchart.exec('chart4Data', 'updateobject', {
-        type: 'label',
-        data: {
-          id: labelId,
-          offsetY: e.ev.layerY
-        }
-      });
-    }
-  });
-
-  zingchart.bind('chart4Data', 'mouseup', () => {
-    labelMouseDown = false;
-    labelId = null;
-    zingchart.exec('chart4Data', 'showguide');
-  });
-
-  zingchart.bind('chart4Data', 'doubleclick', (e) => {
-    console.log(e);
-  });
-
-
-
-
-  // Chart 5
-  var chart5Data = {
-    type: 'line',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
+  },
+  scaleX: {
+    guide: {
+      visible: false
     },
-    tootltip: {
-      visible:false
+    item: {
+      fontColor: '#7e7e7e'
     },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },    
-    scaleY: {
+    labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    lineColor: '#7E7E7E'
+  },
+  scaleY: {
+      
     format: "$%v",
     negation: "currency",
     thousandsSeparator: ", ",
-    multiplier: true
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '$%v',
-      thousandsSeparator: ", ",
-      backgroundColor:'var(--green)'
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
       },
-    marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--green)',
-      size : 5,
-      backgroundColor : 'var(--green)'
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
     },
-    hoverMarker : {
-      type : 'circle',
-      size : 6,
-      backgroundColor : '#FFF',
-      borderWidth : 1,
-      borderColor : 'var(--green)'
+  tooltip: {
+    text: '$%v'
+  },
+  series: [
+    {
+      text: 'Annual flood loss with insurance',
+      values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
+      alpha: 0.95,
+      borderRadiusTopLeft: '7px',
+      backgroundColor: '#eb9d17',
     },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
+    {
+      text: 'Annual flood loss without insurance',
+      values: {{AAL_absCurrency_json}},
+      borderRadiusTopLeft: '7px',
+      alpha: 0.95,
+      backgroundColor: '#f7e0b7',
+    }
+  ]
+};
+
+   // Chart 4
+var chart4Data = {
+  type: 'line',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  plot: {
+    tooltip: {
+      visible: false
+    },
+    cursor: 'hand'
+  },
+
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+     width: '100%',
+     x: '8%',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: {
+    markers: [],
+     labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+  },
+  crosshairX: {},
+  scaleY: {
+    label: {
+      text: "Month(s)",
+      fontWeight: 'normal'
     },
   },
+  series: [
+    {
+      text: 'The reduction in insurance premiums ',
+      values: {{time_to_recover_FC_PS_json}},
+      lineColor: 'var(--orange)',
+      marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--orange)',
+      size : 5,
+      backgroundColor : 'var(--orange)'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : 'var(--orange)'
+      },
+    },
+    {
+      text: 'The reduction in insurance premiums and the reduction of flood losses',
+      values: {{time_to_recover_FC_TB_json}},
+      lineColor: '#c4c722',
+      marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : '#c4c722',
+      size : 5,
+      backgroundColor : '#c4c722'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : '#c4c722'
+      },
+    }    
+  ]
+};
+
+/*
+* define Marker class to construct
+* markers on the fly easier.
+*/
+function Marker(_index) {
+  return {
+    type: 'line',
+    flat: false,
+    lineColor: '#424242',
+    lineWidth: '1px',
+    range: [_index]
+  }
+}
+
+/*
+* define Label class to construct
+* labels on the fly easier.
+*/
+function Label(_text, _id, _offsetX, _offsetY) {
+  return {
+    id: _id,
+    text: _text,
+    angle: 0,
+    padding: '5px 10px 5px 10px',
+    backgroundColor: '#eeeeee',
+    cursor: 'pointer',
+    flat: false,
+    fontSize: '13px',
+    fontStyle: 'bold',
+    offsetX: _offsetX,
+    offsetY: _offsetY ? _offsetY : 0,
+    textAlign: 'right',
+    wrapText: true
+  }
+}
+
+// format the label text
+let formatLabelText = (_nodeindex, _scaleText) => {
+  let plotInfo = null;
+  let nodeInfo;
+  let seriesText = '';
+  let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
+  let color = '';
+  let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
+    graphid: 0
+  });
+
+  for (let i = 0; i < plotLength; i++) {
+    plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+      object: 'plot',
+      plotindex: i
+    });
+    nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+      object: 'node',
+      plotindex: i,
+      nodeindex: _nodeindex
+    });
+    color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
+    seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
+    labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
+      ' ' + nodeInfo.value + '<br>';
+  }
+
+  return labelString;
+};
+
+// global array for markers since you can only update the whole array
+let markersArray = [];
+let labelsArray = [];
+
+// hash table for markers
+let markerHashTable = {};
+
+/*
+* Register a graph click event and then render a chart with the markers
+*/
+zingchart.bind('chart4Data', 'click', (e) => {
+  let xyInformation;
+  let nodeIndex;
+  let scaleText;
+
+  // make sure not a node click and click happend in plotarea
+  if (e.target != 'node' && e.plotarea) {
+    xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
+      x: e.ev.clientX,
+      y: e.ev.clientY
+    });
+
+    // if anything is found, 0 corresponds to scale-x
+    if (xyInformation && xyInformation[0] && xyInformation[2]) {
+      nodeIndex = xyInformation[0].scalepos;
+      scaleText = xyInformation[0].scaletext;
+
+      // check hash table. Add marker
+      if (!markerHashTable['nodeindex' + nodeIndex]) {
+        let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+          object: 'node',
+          nodeindex: nodeIndex,
+          plotindex: 0
+        });
+
+        let labelText = formatLabelText(nodeIndex, scaleText);
+        let labelId = 'label_' + nodeIndex;
+        // create a marker
+        let newMarker = new Marker(nodeIndex);
+        let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
+
+        markerHashTable['nodeindex' + nodeIndex] = true;
+        markersArray.push(newMarker);
+
+        labelsArray.push(newLabel);
+
+        // render the marker
+        chart4Data.scaleX.markers = markersArray;
+        chart4Data.labels = labelsArray;
+        zingchart.exec('chart4Data', 'setdata', {
+          data: chart4Data
+        });
+      } else {
+        console.log('---marker already exists----');
+      }
+    }
+  }
+});
+
+/*
+* Register a node_click event and then render a chart with the markers
+*/
+zingchart.bind('chart4Data', 'node_click', (e) => {
+  // check hash table. Add marker
+  if (!markerHashTable['nodeindex' + e.nodeindex]) {
+    let labelText = formatLabelText(e.nodeindex, e.scaletext);
+    let labelId = 'label_' + e.nodeindex;
+    // create a marker
+    let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
+    let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
+
+    markerHashTable['nodeindex' + e.nodeindex] = true;
+    markersArray.push(newMarker);
+
+    labelsArray.push(newLabel);
+
+    // render the marker
+    chart4Data.scaleX.markers = markersArray;
+    chart4Data.labels = labelsArray;
+    zingchart.exec('chart4Data', 'setdata', {
+      data: chart4Data
+    });
+  } else {
+    console.log('---marker already exists----');
+  }
+});
+
+let labelMouseDown = false;
+let labelId = null;
+
+/*
+* bind mousedown event for dragging label
+*/
+zingchart.bind('chart4Data', 'label_mousedown', (e) => {
+  labelMouseDown = true;
+  labelId = e.labelid;
+  zingchart.exec('chart4Data', 'hideguide');
+});
+
+zingchart.bind('chart4Data', 'mousemove', (e) => {
+  if (labelMouseDown && labelId) {
+    zingchart.exec('chart4Data', 'updateobject', {
+      type: 'label',
+      data: {
+        id: labelId,
+        offsetY: e.ev.layerY
+      }
+    });
+  }
+});
+
+zingchart.bind('chart4Data', 'mouseup', () => {
+  labelMouseDown = false;
+  labelId = null;
+  zingchart.exec('chart4Data', 'showguide');
+});
+
+zingchart.bind('chart4Data', 'doubleclick', (e) => {
+  console.log(e);
+});
+
+
+
+
+  // Chart 5: Mnothyl savings
+    let chart5Data = {
+    type: 'bar',
+    legend: {
+      alpha: 0.05,
+      borderWidth: '0px',
+      layout: 'x2',
+      marker: {
+        type: 'circle',
+        borderColor: 'none',
+        size: '10px'
+      },
+    },
+    plot: {
+      animation: {
+        effect: 'ANIMATION_SLIDE_BOTTOM'
+      }
+    },
+    scaleX: {
+      guide: {
+        visible: false
+      },
+      item: {
+        fontColor: '#7e7e7e'
+      },
+      labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      lineColor: '#7E7E7E'
+    },
+    scaleY: {
+        
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true,
+        guide: {
+          lineStyle: 'solid'
+        },
+        minorTick: {
+          placement: 'cross',
+          size: '6px'
+        },
+        minorTicks: 1
+      },
+    tooltip: {
+      text: '$%v'
+    },
     series: [
       {
-        values: {{ total_monthly_saving_json}}, 
-        text: 'Monthly savings',
-        lineColor: 'var(--green)'      
+        text: 'Monthly savings with insurance',
+        values: {{total_monthly_saving_json}},
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        backgroundColor: '#189447',
+      },
+      {
+        text: 'Monthly savings without insurance',
+        values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+        borderRadiusTopLeft: '7px',
+        alpha: 0.95,
+        backgroundColor: '#add9be'
       }
     ]
   };
+
+  zingchart.render({
+    id: 'chart5Id',
+    data: chart5Data,
+    height: '100%', 
+    width: '100%',
+  });
+
 
   // Chart 6
   // DEFINE DATA
@@ -1574,10 +1871,10 @@ var chart1Data = {
  let chartData = [
     {
       type: 'line', 
-      text: 'Monthly savings',
+      text: 'Monthly savings with insurance',
       values: {{ total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
-      lineColor: '#1EA33C',
+      lineColor: '#189447',
       legendMarker: {
         type: 'circle'
       },
@@ -1588,7 +1885,25 @@ var chart1Data = {
         wrapText: true
       },
       marker: {
-        backgroundColor: '#1EA33C'
+        backgroundColor: '#189447'
+      }
+    },    {
+      type: 'line', 
+      text: 'Monthly savings without insurance',
+      values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+      scales: 'scale-x,scale-y',
+      lineColor: '#add9be',
+      legendMarker: {
+        type: 'circle'
+      },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      marker: {
+        backgroundColor: '#add9be'
       }
     },
     {
@@ -1642,8 +1957,9 @@ var chart1Data = {
 let chartConfig = {
     type: 'mixed',
     legend:{
-     layout: '1x4' ,
-     width: '99.5%',
+     layout: '2x3' ,
+     margin: '10 0 10 0',
+     x: '38%',
      borderColor: 'whtie'
     },
     scaleX: {
@@ -1656,8 +1972,7 @@ let chartConfig = {
         text: 'BFE + Freeboard (ft)'
       },
     },
-    scaleY: {
-      
+    scaleY: {  
     format: "$%v",
     negation: "currency",
     thousandsSeparator: ", ",
@@ -1671,28 +1986,24 @@ let chartConfig = {
       },
       minorTicks: 1
     },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
     crosshairX: {
       plotLabel: {
         visible: false
       }
     },
-{% comment %} labels: [
-      {
-        text: 'View External<br>Report',
-        url: 'https://www.zingchart.com/pricing',
-        target: '_blank',
-        padding: '5px',
-        backgroundColor: '#ccc',
-        borderRadius: '3px',
-        callout: true,
-        calloutHeight: '10px',
-        calloutWidth: '15px',
-        fontColor: '#000',
-        hook: 'node:plot=2,index=4',
-        offsetY: '-35px',
-        underline: true
-      }
-    ], {% endcomment %}
     series: chartData
   };
 
@@ -1829,115 +2140,49 @@ let chartConfig = {
     height:'80%'
   });
 
-var rangeslider_1 = ('#js_amount_range_1');
-var rangeslider_2 = ('#js_amount_range_2');
-var amount_1 = ('#js_amount_input_1');
-var amount_2 = ('#js_amount_input_2');
-var ctx = document.getElementById('chart').getContext('2d');
+  var ctx = document.getElementById('chart').getContext('2d');
 
-var chart = (ctx, {
-          type: 'line',
-          data: {
-              labels: ['+0ft freeboard','+`0`ft freeboard'],
-              datasets: [{
-                  label: 'My First dataset',
-                  backgroundColor: '#33b5e5',
-                  borderColor: '#33b5e5',
-                  data: [15,10]   
-              }]
-          },
-          options: {
-            responsive:true,
-            legend:{
-              display:false,
+  var chart = (ctx, {
+            type: 'line',
+            data: {
+                labels: ['+0ft freeboard','+`0`ft freeboard'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: '#33b5e5',
+                    borderColor: '#33b5e5',
+                    data: [15,10]   
+                }]
             },
-            title: {
-              display:false,
-              text:'Text',
-            },
-            
-            scales: {
-              xAxes: [{
-                display: true
-              }],
-              yAxes: [{
-                display: true,
-                scaleLabel: {
+            options: {
+              responsive:true,
+              legend:{
+                display:false,
+              },
+              title: {
+                display:false,
+                text:'Text',
+              },
+              
+              scales: {
+                xAxes: [{
+                  display: true
+                }],
+                yAxes: [{
                   display: true,
-                  labelString: 'dollar',
-                },
-                ticks: {
-                  min: 0,
-                  stepSize: 10
-                }
-              }]
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'dollar',
+                  },
+                  ticks: {
+                    min: 0,
+                    stepSize: 10
+                  }
+                }]
+              }
             }
-          }
-  }); 
-
-rangeslider_1
-  .rangeslider({
-    polyfill: false
-  })
-  .on('input', function() {
-    // Update input
-    amount_1[0].value = this.value;
-  
-    // Update chart
-
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data[0]=this.value;
-    });
-    chart.update();  
-    //Update form   
-});
-
-rangeslider_2
-  .rangeslider({
-    polyfill: false
-  })
-  .on('input', function() {
-    // Update input
-    amount_2[0].value = this.value;
-  
-    // Update chart
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data[1]=this.value;
-    });
-    chart.update();  
-    //Update form   
-});
-
-amount_1.on('input', function() {
-  rangeslider_1.val(this.value).change();
-  
-  // Update chart
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data.pop();
-  });
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data[0]=this.value;
-  });
-  chart.update()    
-  //Update form   
-  
-});
-
-amount_2.on('input', function() {
-  rangeslider_2.val(this.value).change();
-  
-  // Update chart
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data.pop();
-  });
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data[1]=this.value;
-  });
-  chart.update()    
-  //Update form   
-  
-});
+    }); 
     </script>
+    
 
     <!-- Scroll Up -->
     <div id="back-top" >
@@ -1988,7 +2233,20 @@ amount_2.on('input', function() {
         (document, document.head, document.body); 
     </script>
     <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
-    
+
+    <!--Add multiple address-->
+    <script>
+    document.getElementById("add").onclick  = function() {
+
+      var node = document.createElement("Li");
+      var text = document.getElementById("user_input").value; 
+      var textnode=document.createTextNode(text);
+      node.appendChild(textnode);
+      document.getElementById("list_item").appendChild(node);
+    }
+    </script>
+    <!--Add multiple address end-->
+
 </body>
 </html>
 
