@@ -393,26 +393,26 @@
          
               <!--User type-->
               <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
-                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "homeowner" class="bar" required onclick="ShowHideDiv()"/> Homeowner</label>
+                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
                 <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="margin2" onclick="ShowHideDiv()"/> Community official</label>
               
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
-                  <label><input type="radio" name ="selectBox" value = "new_building" class="bar" required> New building</label>
+                  <label><input type="radio" name ="selectBox" value = "new_building" class="bar" > New building</label>
                   <label><input type="radio" name ="selectBox" value = "existing_building" class="bar"> Existing building</label>
                 
                 <!--Address or Parcel ID-->
                 <label><b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b></label><br>
-                  <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text" required value={{location|safe}} > <br>
+                  <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                 
                 <!--Square footage-->
                 <label><b class="map-style">Square footage <sup class="sup">*</sup></b> </label><br>
-                  <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"  class="text" required> <br>
+                  <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"  class="text" > <br>
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" > One story</label>
                   <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
               </div>
 
@@ -443,7 +443,7 @@
                     
                       <!--Average Building Size (Livable Square Footage) -->
                       <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+                        <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>
 
 
                       <!--Number of Stories -->        
@@ -459,7 +459,7 @@
                       <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                         <div class="select-form" >
                             <div class="select-itms">
-                                <select name="select" id="select1">
+                                <select name="select" id="crsCurrent-Community">
                                     <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                     <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                     <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -478,7 +478,7 @@
                       <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                         <div class="select-form" >
                           <div class="select-itms">
-                              <select name="select" id="select1">
+                              <select name="select" id="crsTarget-Community">
                                   <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                   <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                   <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -497,7 +497,7 @@
                       <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
                         <div class="select-form" >
                             <div class="select-itms">
-                                <select name="select" id="select1">
+                                <select name="select" id="AssTime-Community">
                                     <OPTION VALUE=""> 5 years </option>
                                     <OPTION VALUE=""> 10 years </option>
                                     <OPTION VALUE=""> 15 years </option>
@@ -515,7 +515,7 @@
                         <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
                           <div class="select-form" >
                               <div class="select-itms">
-                                  <select name="select" id="select1">
+                                  <select name="select" id="realDisc-Community">
                                       <OPTION VALUE=""> Select 0% of real discount rate </option>
                                       <OPTION VALUE=""> Select 3% of real discount rate</option>
                                       <OPTION VALUE=""> Select 7% of real discount rate </option>
@@ -540,9 +540,9 @@
                   
 
 
-
+                <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                <input type="text"  name="sqft-average-building"  id="sqft-average-building" placeholder="Type average building's square footage"  class="text"> <br>
+                <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>
 
                     <!-- Number of Stories -->        
                     <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
@@ -558,7 +558,7 @@
                       <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                         <div class="select-form" >
                             <div class="select-itms">
-                                <select name="select" id="select1">
+                                <select name="select" id="crsSelection">
                                     <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                     <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                     <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -577,7 +577,7 @@
                       <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
                         <div class="select-form" >
                             <div class="select-itms">
-                                <select name="select" id="select1">
+                                <select name="select" id="crsTarget">
                                     <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
                                     <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
                                     <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
@@ -596,7 +596,7 @@
                     <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
                       <div class="select-form" >
                           <div class="select-itms">
-                              <select name="select" id="select1">
+                              <select name="select" id="AssTime">
                                   <OPTION VALUE=""> 5 years </option>
                                   <OPTION VALUE=""> 10 years </option>
                                   <OPTION VALUE=""> 15 years </option>
@@ -613,7 +613,7 @@
                     <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
                       <div class="select-form" >
                           <div class="select-itms">
-                              <select name="select" id="select1">
+                              <select name="select" id="realDiscount">
                                   <OPTION VALUE=""> Select 0% of real discount rate </option>
                                   <OPTION VALUE=""> Select 3% of real discount rate</option>
                                   <OPTION VALUE=""> Select 7% of real discount rate </option>
@@ -728,6 +728,7 @@
       node.appendChild(textnode);
       document.getElementById("list_item").appendChild(node);
     }
+    
     </script>
     <!--Add multiple address end-->
     
