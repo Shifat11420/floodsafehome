@@ -142,8 +142,8 @@ def search(request):
     #buildinglist = ["28 ACADIA ST", "29 ACADIA ST", "30 ACADIA ST", "31 ACADIA ST", "32 ACADIA ST", "33 ACADIA ST", "34 ACADIA ST"]
     #buildinglist = ["113 WOODLAKE BLVD", "117 WOODLAKE BLVD", "121 WOODLAKE BLVD", "125 WOODLAKE BLVD", "129 WOODLAKE BLVD", "133 WOODLAKE BLVD", "135 WOODLAKE BLVD"]
     #buildinglist = ["76 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
-    buildinglist = ["113 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "135 WOODLAKE BLVD","52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
-    #buildinglist = [ request.GET.get('location', 'default')]
+    #buildinglist = ["113 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "135 WOODLAKE BLVD","52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
+    buildinglist = [ request.GET.get('location', 'default')]
     for i in range(len(buildinglist)):
         location = buildinglist[i]
 
@@ -749,7 +749,7 @@ def search(request):
             #     annual_avoided_loss.append((AAL_absCurrency[0]) 
             # else:    
             #     annual_avoided_loss.append(AAL_absCurrency[0]-AAL_absCurrency[i])  
-            annual_avoided_loss.append(AAL_absCurrency[0]-AAL_absCurrency[i])          
+            annual_avoided_loss.append(AAL_absCurrency[4]-AAL_absCurrency[i])          
         print("Avoided annual loss :  ", annual_avoided_loss)
 
         annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)  
@@ -769,7 +769,7 @@ def search(request):
             #     annual_premium_saving.append(total_annual_premium[0]) 
             # else:    
             #     annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])
-            annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])    
+            annual_premium_saving.append(total_annual_premium[4]-total_annual_premium[i])    
         print("Annual premium saving :  ", annual_premium_saving)
         annual_premium_saving_json = simplejson.dumps(annual_premium_saving)  
 
@@ -875,7 +875,7 @@ def search(request):
         #from the total cost of the no action scenario.
         netbenefit = []
         for i in range(len(totalcost)):
-            netbenefit.append(int(totalcost[0]-totalcost[i]))
+            netbenefit.append(int(totalcost[4]-totalcost[i]))
 
         ##------------------Net benefit cost ratio-----------------------------------------------
 
