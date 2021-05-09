@@ -411,6 +411,10 @@ hr {
 }
 
 
+.btn-map{
+    margin-left: 25px;
+}
+
 /* line 245, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_common.scss */
 
 .btn::before {
@@ -11633,6 +11637,7 @@ del {
 
 .disclaimer-button{
     text-align:center;
+    color: #ffffff;
 }
 
 .img-replace {
@@ -11801,7 +11806,7 @@ del {
 .mapHeader {
     background: url(../img/hero/flood1_header.jpg) no-repeat;
     position:fixed;
-    z-index: 1;
+    z-index: 2;
 }
 
 
@@ -12408,7 +12413,7 @@ del {
   /*map page style*/  
   .left {
     height: 100%;
-    width: 30%;
+    width: 28%;
     float: left;
     position: fixed;
     overflow-y:auto;
@@ -12442,15 +12447,32 @@ del {
   }
 
   input.bar { 
+    margin: 0px 20px 0px 0px; 
+  }
+
+  input.bar2 { 
     margin: 0px 20px 0px 35px; 
   }
 
+  input.bar3 { 
+    margin: 0px 20px 0px 60px; 
+  }
+
+  input.bar4 { 
+    margin: 0px 20px 0px 28px; 
+  }
+
+  input.bar5 { 
+    margin: 0px 20px 0px 50px; 
+  }
+
+
   .margin1{
-      margin: 0 20px 0 21px;
+      margin: 0 20px 0 15px;
   }
 
   .margin2{
-    margin: 0 20px 0 40px;
+    margin: 0 20px 0 60px;
   }
   
   input.text {
@@ -12712,7 +12734,7 @@ nav {
     0 12.5px 6px rgba(0, 0, 0, 0.06),
     0 11.8px 13.4px rgba(0, 0, 0, 0.086)
   ;
-    width: 90%;
+    width: 95%;
     padding: 10px 10px 10px 20px;
     line-height: 31px;
     background-color:rgb(252, 252, 252);
