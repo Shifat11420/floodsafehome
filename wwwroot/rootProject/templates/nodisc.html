@@ -28,13 +28,11 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://js.arcgis.com/4.17/"></script>
+    <script src="https://js.arcgis.com/4.18/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    
+
     <!--Add field-->
     <script type="text/javascript">
     $(document).ready(function(){
@@ -65,479 +63,146 @@
 
 {% load humanize %}
 <!--ArcGIS API-->
-<script>
-       require(["esri/WebMap",
-        "esri/widgets/Sketch", 
-        "esri/widgets/Sketch/SketchViewModel",
-        "esri/geometry/Polyline",
-        "esri/geometry/Point",
-        "esri/Graphic",
-        "esri/layers/GraphicsLayer",          
-        "esri/views/MapView",
-        "esri/layers/FeatureLayer",        
-        "esri/geometry/geometryEngine",
-        "esri/widgets/Search",
-        "esri/widgets/LayerList",
-        "esri/widgets/Legend",
-        "esri/widgets/Expand",
-        "dgrid/OnDemandGrid",        
-        "esri/core/watchUtils",
-        "esri/widgets/BasemapToggle",
-        "esri/Map", 
-        "esri/layers/GraphicsLayer",        
-        "esri/views/MapView"], 
-        function(
-        WebMap,
-        Sketch, 
-        SketchViewModel,
-        Polyline,
-        Point,
-        Graphic,
-        GraphicsLayer,
-        MapView,
-        FeatureLayer,         
-        geometryEngine,
-        Search, 
-        LayerList, 
-        Legend, 
-        Expand,
-        OnDemandGrid,         
-        watchUtils,
-        BasemapToggle,
-        Map,
-        GraphicsLayer
-        
-      ) {
-        // App 'globals'
-        let sketchViewModel, featureLayerView, pausableWatchHandle;
+  <script>
+    require([
 
-        let centerGraphic,
-          edgeGraphic,
-          polylineGraphic,
-          bufferGraphic,
-          centerGeometryAtStart,
-          labelGraphic;
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/Sketch",
+      "esri/layers/GraphicsLayer",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/BasemapToggle",
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/LayerList",
+      "esri/widgets/Legend",
+      "esri/widgets/Expand",
+      "esri/widgets/Search"
 
-        const unit = "miles";
+    ], function(esriConfig,Map, MapView, Sketch, GraphicsLayer, FeatureLayer,BasemapToggle, BasemapGallery, LayerList, Legend, Expand, Search) {
 
-        // Create layers
-        const graphicsLayer = new GraphicsLayer();
-        const bufferLayer = new GraphicsLayer({
-          blendMode: "color-burn"
-        });
+      esriConfig.apiKey = "AAPKd5dd565a8e68435fa989ce6a460dee71GW1954NPzAcw3QEQG_Cawyxn2iw7zS83Hnr53ia1CJ6-B8iTjxlIBdY41LiuJ_M6";
 
-        const featureLayer = new FeatureLayer({
-          portalItem: {
-            id: "7c5c929792414853b79aed972ca3e65a"
-           // id: "d61a90015054449484e1bd332a3b75e2" for FloodSafeHome
-          }
-        });
-
-        // Create map
-        const webmap = new WebMap({
-          basemap: "gray-vector",
-          layers: [featureLayer, bufferLayer, graphicsLayer]
-        });
-        
-        /************************************************************
-         * Set the WebMap instance to the map property in a MapView.
-         ************************************************************/
-        var view = new MapView({
-          map: webmap,
-          container: "viewDiv",
-          zoom: 11,
-          center: [-90.1446649, 30.0017509]
-        });
-      
-        // Add the feature layer to search the location based on the address
-        var featureLayerAddress = new FeatureLayer({
-          url:
-            "https://services2.arcgis.com/njxlOVQKvDzk10uN/arcgis/rest/services/ADDRESS/FeatureServer",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "{FullAddress}",
-            overwriteActions: true
-          }
-        });
-
-         // Add the feature layer to search the location based on the parcel
-        var featureLayerParcel = new FeatureLayer({
-          url:
-            "https://services2.arcgis.com/njxlOVQKvDzk10uN/arcgis/rest/services/PARCEL/FeatureServer",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "Parcel ID is {SITE_ID}",
-            overwriteActions: true
-          }
-        });
-        
-            // Search widget start
-        var searchWidget = new Search({
-          view: view,
-          allPlaceholder:"Type your address or parcel ID", //"type an address",//,
-          //value:{{location|safe}},
-          sources: [
-            {
-              layer: featureLayerAddress,         // Search by address
-              searchFields:  ["FullAddress"],
-              displayField: "FullAddress",
-              exactMatch: false,
-              outFields: ["FullAddress"],
-              placeholder: "example: 1107 LAIR AVE",
-              name: "Address",
-              zoomScale: 500,
-              resultSymbol: {
-                r: 178,
-                g: 34,
-                b: 34,
-                a: 0.7
-              }
-            },
-
-            {
-              layer: featureLayerParcel,         // Search by parcel
-              searchFields: ["SITE_ID"],
-              displayField: "SITE_ID",
-              exactMatch: false,
-              outFields: ["SITE_ID"],
-              name: "Parcel",
-              placeholder: "example: M-1686"
-            }
-          ]
-
-    });
-
-        // Add the search widget to the top left corner of the view
-        view.ui.add(searchWidget, {
-          position: "top-right"
-        });
-           // Get the value from the input box
-        console.log(document.getElementById("submitButton"))
-        document.getElementById("submitButton").onclick = (e)=> {
-          e.preventDefault()
-          let el = document.getElementById("tags")
-          console.log(el.value)
-          searchWidget.search(el.value).then((result)=> {
-            console.log("result", result)
-          })
-        }
-
-        // Search widget end
-
-      
-      // Add sketch tool
-        const layer = new GraphicsLayer();
-
-        const sketch = new Sketch({
-          layer: layer,
-          view: view,
-          // graphic will be selected as soon as it is created
-          creationMode: "update"
-        });
-
-        view.ui.add(sketch, "top-right");
-
-        // Add a legend to the panel of a
-        // ListItem in a LayerList 
-        const layerList = new LayerList({
-          view: view,
-          listItemCreatedFunction: function (event) {
-            const item = event.item;
-{% comment %}             if (item.layer.type != "group") {
-              // don't show legend twice
-              item.panel = {
-                content: "legend",
-                open: false
-              };
-            } {% endcomment %}
-          }
-        });
-        view.ui.add(layerList, "top-right");
-
-        //Basemap toggle
-        var toggle = new BasemapToggle({
-          view: view, // view that provides access to the map's 'topo-vector' basemap
-          nextBasemap: "hybrid" // allows for toggling to the 'hybrid' basemap
-        });
-
-        // Add widget to the bottom right corner of the view
-        view.ui.add(toggle, "bottom-right");
-        
-
-        // Update UI
-        setUpAppUI();
-        setUpSketch();
-
-        function setUpAppUI() {
-          // When layer is loaded, create a watcher to trigger drawing of the buffer polygon
-          view.whenLayerView(featureLayer).then(function (layerView) {
-            featureLayerView = layerView;
-
-            pausableWatchHandle = watchUtils.pausable(
-              layerView,
-              "updating",
-              function (val) {
-                if (!val) {
-                  drawBufferPolygon();
-                }
-              }
-            );
-
-            // Display directions when the layerView is loading
-            watchUtils.whenFalseOnce(layerView, "updating", function () {
-              view.popup.open({
-                title: "Center point",
-                content:
-                  "Drag this point to move the buffer.<br/> " +
-                  "Or drag the <b>Edge</b> point to resize the buffer.",
-                location: centerGraphic.geometry
-              });
-              view.popup.alignment = "top-left";
-            });
-          });
-
-          // Close the 'help' popup when view is focused
-          view.watch("focused", function (newValue) {
-            if (newValue) {
-              view.popup.close();
-            }
-          });
-        }
-
-        /*****************************************************************
-         * Create SketchViewModel and wire up event listeners
-         *****************************************************************/
-        function setUpSketch() {
-          sketchViewModel = new SketchViewModel({
-            view: view,
-            layer: graphicsLayer
-          });
-
-
-          // is updated as the graphics are updated
-          sketchViewModel.on("update", onMove);
-        }
-
-        /*********************************************************************
-         * Edge or center graphics are being moved. Recalculate the buffer with
-         * updated geometry information and run the query stats again.
-         *********************************************************************/
-        function onMove(event) {
-          // If the edge graphic is moving, keep the center graphic
-          // at its initial location. Only move edge graphic
-          if (
-            event.toolEventInfo &&
-            event.toolEventInfo.mover.attributes.edge
-          ) {
-            const toolType = event.toolEventInfo.type;
-            if (toolType === "move-start") {
-              centerGeometryAtStart = centerGraphic.geometry;
-            }
-            // keep the center graphic at its initial location when edge point is moving
-            else if (toolType === "move" || toolType === "move-stop") {
-              centerGraphic.geometry = centerGeometryAtStart;
-            }
-          }
-
-          // the center or edge graphic is being moved, recalculate the buffer
-          const vertices = [
-            [centerGraphic.geometry.x, centerGraphic.geometry.y],
-            [edgeGraphic.geometry.x, edgeGraphic.geometry.y]
-          ];
-
-          // client-side stats query of features that intersect the buffer
-          calculateBuffer(vertices);
-
-          // user is clicking on the view... call update method with the center and edge graphics
-          if (event.state === "complete") {
-            sketchViewModel.update([edgeGraphic, centerGraphic], {
-              tool: "move"
-            });
-          }
-        }
-
-        /*********************************************************************
-         * Edge or center point is being updated. Recalculate the buffer with
-         * updated geometry information.
-         *********************************************************************/
-        function calculateBuffer(vertices) {
-          // Update the geometry of the polyline based on location of edge and center points
-          polylineGraphic.geometry = new Polyline({
-            paths: vertices,
-            spatialReference: view.spatialReference
-          });
-
-          // Recalculate the polyline length and buffer polygon
-          const length = geometryEngine.geodesicLength(
-            polylineGraphic.geometry,
-            unit
-          );
-          const buffer = geometryEngine.geodesicBuffer(
-            centerGraphic.geometry,
-            length,
-            unit
-          );
-
-          // Update the buffer polygon
-          bufferGraphic.geometry = buffer;
-
-          // Query female and male age groups of the census tracts that intersect
-          // the buffer polygon on the client
-         
-
-          // Update label graphic to show the length of the polyline
-          labelGraphic.geometry = edgeGraphic.geometry;
-          labelGraphic.symbol = {
-            type: "text",
-            color: "#3d53fc",
-            text: length.toFixed(2) + " miles",
-            xoffset: 50,
-            yoffset: 10,
-            font: {
-              // autocast as Font
-              size: 14,
-              family: "sans-serif"
-            }
-          };
-        }
-
-       
-        /***************************************************
-         * Draw the buffer polygon when application loads or
-         * when user searches for a new location
-         **************************************************/
-        function drawBufferPolygon() {
-          // When pause() is called on the watch handle, the callback represented by the
-          // watch is no longer invoked, but is still available for later use
-          // this watch handle will be resumed when user searches for a new location
-          pausableWatchHandle.pause();
-
-          // Initial location for the center, edge and polylines on the view
-          const viewCenter = view.center.clone();
-          const centerScreenPoint = view.toScreen(viewCenter);
-          const centerPoint = view.toMap({
-            x: centerScreenPoint.x + 20,
-            y: centerScreenPoint.y - 20
-          });
-          const edgePoint = view.toMap({
-            x: centerScreenPoint.x + 160,
-            y: centerScreenPoint.y - 20
-          });
-
-          // Store updated vertices
-          const vertices = [
-            [centerPoint.x, centerPoint.y],
-            [edgePoint.x, edgePoint.y]
-          ];
-
-          // Create center, edge, polyline and buffer graphics for the first time
-          if (!centerGraphic) {
-            const polyline = new Polyline({
-              paths: vertices,
-              spatialReference: view.spatialReference
-            });
-
-            // get the length of the initial polyline and create buffer
-            const length = geometryEngine.geodesicLength(polyline, unit);
-            const buffer = geometryEngine.geodesicBuffer(
-              centerPoint,
-              length,
-              unit
-            );
-
-            // Create the graphics representing the line and buffer
-            const pointSymbol = {
-              type: "simple-marker",
-              style: "circle",
-              size: 10,
-              color: [0, 255, 255, 0.5]
-            };
-            centerGraphic = new Graphic({
-              geometry: centerPoint,
-              symbol: pointSymbol,
-              attributes: {
-                center: "center"
-              }
-            });
-
-            edgeGraphic = new Graphic({
-              geometry: edgePoint,
-              symbol: pointSymbol,
-              attributes: {
-                edge: "edge"
-              }
-            });
-
-            polylineGraphic = new Graphic({
-              geometry: polyline,
-              symbol: {
-                type: "simple-line",
-                color: "[254, 254, 254, 1]",
-                width: 2.5
-              }
-            });
-
-            bufferGraphic = new Graphic({
-              geometry: buffer,
-              symbol: {
-                type: "simple-fill",
-                color: [150, 150, 150],
-                outline: {
-                  color: "#3d53fc",
-                  width: 2
-                }
-              }
-            });
-            labelGraphic = labelLength(edgePoint, length);
-
-            // Add graphics to layer
-            graphicsLayer.addMany([
-              centerGraphic,
-              edgeGraphic,
-              polylineGraphic,
-              labelGraphic
-            ]);
-            // once center and edge point graphics are added to the layer,
-            // call sketch's update method pass in the graphics so that users
-            // can just drag these graphics to adjust the buffer
-            setTimeout(function () {
-              sketchViewModel.update([edgeGraphic, centerGraphic], {
-                tool: "move"
-              });
-            }, 1000);
-
-            bufferLayer.addMany([bufferGraphic]);
-          }
-          // Move the center and edge graphics to the new location returned from search
-          else {
-            centerGraphic.geometry = centerPoint;
-            edgeGraphic.geometry = edgePoint;
-          }
-
-          // Query features that intersect the buffer
-          calculateBuffer(vertices);
-        }
-
-      
-        // Label polyline with its length
-        function labelLength(geom, length) {
-          return new Graphic({
-            geometry: geom,
-            symbol: {
-              type: "text",
-              color: "#FFEB00",
-              text: length.toFixed(2) + " Miles",
-              xoffset: 50,
-              yoffset: 10,
-              font: {
-                // autocast as Font
-                size: 14,
-                family: "sans-serif"
-              }
-            }
-          });
-        }
+      const map = new Map({
+        basemap: "arcgis-topographic" //Basemap layer service
       });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-90.2,30.00], //Longitude, latitude
+        zoom: 13
+      });
+
+      // Add sketch widget
+      const graphicsLayerSketch = new GraphicsLayer();
+      map.add(graphicsLayerSketch);
+
+      const sketch = new Sketch({
+        layer: graphicsLayerSketch,
+        view: view,
+        creationMode: "update" // Auto-select
+      });
+
+      view.ui.add(sketch, "top-right");
+
+      // Add sketch events to listen for and execute query
+      sketch.on("update", (event) => {
+
+        // Create
+        if (event.state === "start") {
+          queryFeaturelayer(event.graphics[0].geometry);
+        }
+        if (event.state === "complete"){
+          graphicsLayerSketch.remove(event.graphics[0]); // Clear the graphic when a user clicks off of it or sketches new one
+        }
+        // Change
+        if (event.toolEventInfo && (event.toolEventInfo.type === "scale-stop" || event.toolEventInfo.type === "reshape-stop" || event.toolEventInfo.type === "move-stop")) {
+          queryFeaturelayer(event.graphics[0].geometry);
+        }
+
+      });
+
+      // Reference query layer
+      const parcelLayer = new FeatureLayer({
+         url: "https://services2.arcgis.com/njxlOVQKvDzk10uN/arcgis/rest/services/BUILDING_shp/FeatureServer/0",     //Building
+        //parecel url: "https://services2.arcgis.com/njxlOVQKvDzk10uN/ArcGIS/rest/services/PARCEL/FeatureServer/0",
+      });
+
+      function queryFeaturelayer(geometry) {
+
+        const parcelQuery = {
+         spatialRelationship: "intersects", // Relationship operation to apply
+         geometry: geometry,  // The sketch feature geometry
+         outFields: ["ADDRESS","STREET", "SFT"], // Attributes to return
+         //parcel outFields: ["SITE_ID","SUBDIVISIO"], // Attributes to return
+         returnGeometry: true
+        };
+
+        parcelLayer.queryFeatures(parcelQuery)
+        .then((results) => {
+
+
+          displayResults(results);
+
+        }).catch((error) => {
+          console.log(error);
+        });
+
+      }
+
+      // Show features (graphics)
+      function displayResults(results) {
+
+      // Create a blue polygon
+        const symbol = {
+          type: "simple-fill",
+          color: [ 20, 130, 200, 0.5 ],
+          outline: {
+            color: "white",
+            width: .5
+          },
+        };
+
+
+        //Building
+        const popupTemplate = {
+          title: "<b> {ADDRESS} {STREET} </b>",
+          content: "Sqaure fottage:  {SFT}"
+        };
+
+                
+        //Parcel
+       // const popupTemplate = {
+       //   title: "<b>{SITE_ID} </b>",
+       //   content: "Subdivision:  {SUBDIVISIO}"
+       // }; 
+
+        // Set symbol and popup
+        results.features.map((feature) => {
+          feature.symbol = symbol;
+          feature.popupTemplate = popupTemplate;
+          return feature;
+        });
+
+        // Clear display
+        view.popup.close();
+        view.graphics.removeAll();
+
+       // Add features to graphics layer
+        view.graphics.addMany(results.features);
+
+      }
+      
+      
+      //basemap toggle
+      const basemapToggle = new BasemapToggle({
+        view: view,
+        nextBasemap: "arcgis-imagery"
+     });
+
+      view.ui.add(basemapToggle,"bottom-right");
+    });
   </script>
 </head>
 
@@ -625,14 +290,17 @@
          
               <!--User type-->
               <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
-                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="margin2" onclick="ShowHideDiv()"/> Community official</label>
-              
+                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "individual1" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "individual2" class="bar2" onclick="ShowHideDiv3()"/> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "individual2" class="bar" onclick="ShowHideDiv4()"/> Landlord</label>
+                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
+
+                
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
                   <label><input type="radio" name ="selectBox" value = "new_building" class="bar" > New building</label>
-                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar"> Existing building</label>
+                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar4"> Existing building</label>
                 
                 <!--Address or Parcel ID-->
                 <label><b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b></label><br>
@@ -645,7 +313,7 @@
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
                   <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" > One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
               </div>
 
               <!--This option will be appear when user select community official-->
@@ -654,7 +322,7 @@
                   <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()">
                   Single-building</label>
                   <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
-                  Spatial Scale</label>
+                  Spatial scale</label>
              
 
                     <!--This option will be appear when user select single-building-->
@@ -675,17 +343,17 @@
                     
                       <!--Average Building Size (Livable Square Footage) -->
                       <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                        <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
+                        <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>
+
 
                       <!--Number of Stories -->        
                       <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label>
 
                       <!--Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                        <input type="text"  name="freeboard-bfe-Indi"  id="freeboard-bfe-Indi" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
 
                        <!--Current CRS rating -->                    
                       <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
@@ -737,7 +405,7 @@
                                     <OPTION VALUE=""> 30 years </option>
                                     <OPTION VALUE=""> 40 years </option>
                                     <OPTION VALUE=""> 70 years </option>
-                                    <OPTION VALUE=""> 100 </option>
+                                    <OPTION VALUE=""> 100 years</option>
                                 </select>
                             </div>
                         </div>     
@@ -766,25 +434,26 @@
                 <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
-                <input type="button" id="add" value="Add New">
-                    <ul id="list_item" class="a"></ul>
-                  
+                  <input type="text" id="user_input-co"  onfocus="this.value=''" value={{location|safe}}>
+                  <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
+                  <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
+                    <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                      <ul id="list"></ul>
+                    </div>
 
 
                 <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                {% comment %} <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
+                <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>
 
                     <!-- Number of Stories -->        
                     <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                      <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label>
                     
                     <!-- Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                      <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                      <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
                     
                     
                      <!-- Current CRS rating -->  
@@ -837,7 +506,7 @@
                                   <OPTION VALUE=""> 30 years </option>
                                   <OPTION VALUE=""> 40 years </option>
                                   <OPTION VALUE=""> 70 years </option>
-                                  <OPTION VALUE=""> 100 </option>
+                                  <OPTION VALUE=""> 100 years</option>
                               </select>
                           </div>
                       </div>     
@@ -860,9 +529,8 @@
       
       
         <br>
-        &nbsp; &nbsp;  <button class="btn btn-primary" type="submit" > Get results</button>  
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>   
+       <button class="btn btn-primary btn-map" type="submit" > Get results</button>  
+       <button class="btn btn-primary btn-map" type="submit" id="submitButton"> Show map</button>   
       </form>
       </p>
  <hr class="style-three">
@@ -1105,9 +773,13 @@
   </div><br><br><br>
 
     <!--Interactive slide-->  
-      <div style="overflow-x:auto;"><section id="section-6">
-      <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" > Recalculation</button>
-        <table class="table-slide">
+      <div style="overflow-x:auto;">
+       <section id="section-6">
+        <!-- Need to update
+        <form method="get" action="/search" name="recalculation">
+        -->
+         <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" > Recalculation</button>
+          <table class="table-slide">
           <tr class="table-slide-bg">
             <td><b class="map-style">Home square footage:</b></td>
             <td>{{SquareFootage}} SF</td>
@@ -1143,7 +815,7 @@
            <tr class="table-slide-bg">
             <td><b class="map-style">Expected occupancy timeline: </b></td>
             <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" />  Years</td>
-            <td>0 Year</td> 
+            <td>0 Years</td> 
             <td><input id="rangeInput1" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" /></td> 
             <td>100 Years</td>
           </tr>
@@ -1180,7 +852,7 @@
           </tr>
           <tr>
             <td>
-              <label for="DeductibleValue">Cost deductible:&nbsp; &nbsp;$ </label>
+              <label for="DeductibleValue">Content deductible:&nbsp; &nbsp;$ </label>
                 <select name="DeductibleValue" id="DeductibleValue">
                   <option value="V1">1,000</option>
                   <option value="V2">1,250</option>
@@ -1216,7 +888,9 @@
             <td></td>
             <td></td>
           </tr>         
-        </table></section>
+        </table>
+        </section>
+       <!--</form>-->
       </div> 
       
       
@@ -2312,6 +1986,26 @@ let chartConfig = {
     }
     </script>
     <!--Add multiple address end-->
+
+    <script>
+    function addItem() {
+            var a = document.getElementById("list");
+            var candidate = document.getElementById("user_input-co");
+            var li = document.createElement("li");
+            li.setAttribute('id', candidate.value);
+            li.appendChild(document.createTextNode(candidate.value));
+            a.appendChild(li);
+        }
+  
+        // Creating a function to remove item from list
+        function removeItem() {
+  
+            // Declaring a varible to get select element
+            var a = document.getElementById("list");
+            var candidate = document.getElementById("user_input-co");
+            var item = document.getElementById(candidate.value);
+            a.removeChild(item);}
+            </script>
 
     <!--CRS rate selection-->
     <script>
