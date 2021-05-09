@@ -196,10 +196,10 @@ function handleSliderValuePosition(input) {
 function ShowHideDiv() {
   var chkYes = document.getElementById("chkYes");
   var dvPassport = document.getElementById("dvPassport");
-  dvPassport.style.display = chkYes.checked ? "block" : "none";
-
-  var chkNo = document.getElementById("chkNo");
   var as = document.getElementById("as");
+  var chkNo = document.getElementById("chkNo");
+
+  dvPassport.style.display = chkYes.checked ? "block" : "none";
   as.style.display = chkNo.checked ? "block" : "none";
   
 }
@@ -207,14 +207,36 @@ function ShowHideDiv() {
 function ShowHideDiv2() {
   var chkYes = document.getElementById("chkYes2");
   var singleBuilding = document.getElementById("singleBuilding");
-  singleBuilding.style.display = chkYes.checked ? "block" : "none";
-
   var chkNo = document.getElementById("chkNo2");
   var SpatialScale = document.getElementById("SpatialScale");
+
+  singleBuilding.style.display = chkYes.checked ? "block" : "none";  
   SpatialScale.style.display = chkNo.checked ? "block" : "none";
   
 }
 
+
+function ShowHideDiv3() {
+  var chkTenant = document.getElementById("chkTenant");
+  var dvPassport = document.getElementById("dvPassport");
+  var as = document.getElementById("as");
+  var chkNo = document.getElementById("chkNo");
+
+
+  dvPassport.style.display = chkTenant.checked ? "block" : "none";  
+  as.style.display = chkNo.checked ? "block" : "none";
+}
+
+function ShowHideDiv4() {
+  var dvPassport = document.getElementById("dvPassport");
+  var chkLandlord = document.getElementById("chkLandlord");
+  var as = document.getElementById("as");
+  var chkNo = document.getElementById("chkNo");
+  
+  dvPassport.style.display = chkLandlord.checked ? "block" : "none";
+  as.style.display = chkNo.checked ? "block" : "none";
+  
+}
 
 /* Add/Delete fields 
 function add(type) {
