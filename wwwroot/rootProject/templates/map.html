@@ -8,8 +8,7 @@
   <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
   
   <title>Flood Safe Home</title>
-      <!-- CSS here -->
-      
+    <!-- CSS here -->  
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="static/css/slicknav.css">
@@ -59,21 +58,21 @@
         });
     });
     </script>
+
   <script>
     require([
 
       "esri/config",
       "esri/Map",
       "esri/views/MapView",
-
       "esri/widgets/Sketch",
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
       "esri/widgets/BasemapToggle",
       "esri/widgets/BasemapGallery",
       "esri/widgets/LayerList",
-        "esri/widgets/Legend",
-        "esri/widgets/Expand",
+      "esri/widgets/Legend",
+      "esri/widgets/Expand",
       "esri/widgets/Search"
 
     ], function(esriConfig,Map, MapView, Sketch, GraphicsLayer, FeatureLayer,BasemapToggle, BasemapGallery, LayerList, Legend, Expand, Search) {
@@ -185,6 +184,7 @@
         // Clear display
         view.popup.close();
         view.graphics.removeAll();
+
        // Add features to graphics layer
         view.graphics.addMany(results.features);
 
@@ -278,7 +278,7 @@
 
   <!--Disclaimer start-->
   <div class="bts-popup" role="alert">
-      <div class="bts-popup-container type-details">
+      <div class="bts-popup-container">
         <center><img src="../static/img/logo/logo.png" alt="Flood Safe Home" width="50%" /></center>
           <div class="disclaimer">
             <p class="p-style">
@@ -326,8 +326,8 @@
 
         <center>
         <hr>
-          <p class="disclaimer-button"> 
-          I read the disclaimer information above and understands the limitations of the data herein.   
+          <div class="disclaimer-button"> 
+            I read the disclaimer information above and understands the limitations of the data herein. <br>
             <div class="bts-popup-button bts-popup-container-disagree landing-inputfile" >
               <a href="/">Disagree </a>
             </div>   
@@ -335,7 +335,7 @@
             <div class="bts-popup-button bts-popup-container-agree landing-inputfile">
               <a href="#0" id="cd-tour-trigger" class="button bts-popup-close">Agree</a>
             </div> 
-          </p>
+          </div>
         </center>
       </div>
   </div>
@@ -348,7 +348,7 @@
 
 			<div class="cd-more-info right cd-single-step:nth-of-type(1)">
 				<h2>Step Number 1</h2>
-				<p class="tour-guide-align">Please fill out the following form completely <i> (All fields are .)</i> After your building information is filed, please hit the <b class="tour-guide-b">"Get Results"</b>  button!</i></p>
+				<p class="tour-guide-align">Please fill out the following form completely <i> (All fields are required).</i> After your building information is filed, please hit the <b class="tour-guide-b">"Get Results"</b>  button!</i></p>
 			</div>
 		</li> <!-- .cd-single-step -->
 
@@ -393,14 +393,17 @@
          
               <!--User type-->
               <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
-                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="margin2" onclick="ShowHideDiv()"/> Community official</label>
-              
+                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "individual1" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "individual2" class="bar2" onclick="ShowHideDiv3()"/> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "individual2" class="bar" onclick="ShowHideDiv4()"/> Landlord</label>
+                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
+
+                
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
                   <label><input type="radio" name ="selectBox" value = "new_building" class="bar" > New building</label>
-                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar"> Existing building</label>
+                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar4"> Existing building</label>
                 
                 <!--Address or Parcel ID-->
                 <label><b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b></label><br>
@@ -413,7 +416,7 @@
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
                   <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" > One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
               </div>
 
               <!--This option will be appear when user select community official-->
@@ -422,7 +425,7 @@
                   <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()">
                   Single-building</label>
                   <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
-                  Spatial Scale</label>
+                  Spatial scale</label>
              
 
                     <!--This option will be appear when user select single-building-->
@@ -443,17 +446,17 @@
                     
                       <!--Average Building Size (Livable Square Footage) -->
                       <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                      <!--  <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>-->
-                        <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
+                        <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>
+
 
                       <!--Number of Stories -->        
                       <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label>
 
                       <!--Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                        <input type="text"  name="freeboard-bfe-Indi"  id="freeboard-bfe-Indi" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
 
                        <!--Current CRS rating -->                    
                       <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
@@ -505,7 +508,7 @@
                                     <OPTION VALUE=""> 30 years </option>
                                     <OPTION VALUE=""> 40 years </option>
                                     <OPTION VALUE=""> 70 years </option>
-                                    <OPTION VALUE=""> 100 </option>
+                                    <OPTION VALUE=""> 100 years</option>
                                 </select>
                             </div>
                         </div>     
@@ -534,25 +537,23 @@
                 <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                <input type="0text" id="user_input2" onfocus="this.value=''" value={{location|safe}}>
                 <input type="button" id="add" value="Add New">
                     <ul id="list_item" class="a"></ul>
-                  
 
 
                 <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                <!--<input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>-->
-                <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
+                <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>
 
                     <!-- Number of Stories -->        
                     <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar"> Two or more stories</label>
+                      <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label>
                     
                     <!-- Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                      <input type="text"  name="freeboard-bfe"  id="freeboard-bfe" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
+                      <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
                     
                     
                      <!-- Current CRS rating -->  
@@ -605,7 +606,7 @@
                                   <OPTION VALUE=""> 30 years </option>
                                   <OPTION VALUE=""> 40 years </option>
                                   <OPTION VALUE=""> 70 years </option>
-                                  <OPTION VALUE=""> 100 </option>
+                                  <OPTION VALUE=""> 100 years</option>
                               </select>
                           </div>
                       </div>     
@@ -628,9 +629,8 @@
       
       
         <br>
-        &nbsp; &nbsp;  <button class="btn btn-primary" type="submit" > Get results</button>  
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-       <button class="btn btn-primary" type="submit" id="submitButton"> Show map</button>   
+       <button class="btn btn-primary btn-map" type="submit" > Get results</button>  
+       <button class="btn btn-primary btn-map" type="submit" id="submitButton"> Show map</button>   
       </form>
       </p>
  <hr class="style-three">
@@ -729,7 +729,6 @@
       node.appendChild(textnode);
       document.getElementById("list_item").appendChild(node);
     }
-    
     </script>
     <!--Add multiple address end-->
     
