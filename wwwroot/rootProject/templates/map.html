@@ -537,9 +537,12 @@
                 <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                <input type="0text" id="user_input2" onfocus="this.value=''" value={{location|safe}}>
-                <input type="button" id="add" value="Add New">
-                    <ul id="list_item" class="a"></ul>
+                  <input type="text" id="user_input-co"  onfocus="this.value=''" value={{location|safe}}>
+                  <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
+                  <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
+                    <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                      <ul id="list"></ul>
+                    </div>
 
 
                 <!--Average Building Size (Livable Square Footage) -->
@@ -674,63 +677,93 @@
 
 <!--ESRI Map-->
 <div id = "pdf_wrap">
-        <div id="viewDiv" ><section id="section-1"></section>
-        </div>
+  <div id="viewDiv" ><section id="section-1"></section>
+  </div>
 
  
 
 
-    <script src="../static/js/disclaimer.js"></script>
-    <script src="../static/js/tourguide.js"></script>
-    <script src="./static/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery-->
-    <script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="./static/js/jquery.slicknav.min.js"></script>
-
-  
-    <!-- Jquery Plugins, main Jquery -->
-    <script src="./static/js/plugins.js"></script>
-    <script src="./static/js/main.js"></script>
-    <!-- Accessibility Code for "floodsafehome.lsu.edu" -->
-    <script> 
-        window.interdeal = { 
-            "sitekey": "e8d3d174e189523ecbfdacfddd4c53b8", 
-            "Position": "Left", 
-            "Menulang": "EN", 
-            "domains": { "js": "https://cdn.equalweb.com/", 
-            "acc": "https://access.equalweb.com/" }, 
-            "btnStyle": { "vPosition": [ "80%", null ], 
-            "scale": [ "0.5", "0.5" ], 
-            "icon": { "type": 7, 
-            "shape": "semicircle", "outline": false }, 
-            "color": { "main": "#1876c9", "second": "" } 
-            } }; 
-            
-        (function(doc, head, body) { 
-            var coreCall = doc.createElement('script'); 
-            coreCall.src = 'https://cdn.equalweb.com/core/2.1.10/accessibility.js'; 
-            coreCall.defer = true; 
-            coreCall.integrity = 'sha512-PWvjZ/e9EGeHEPppEOqscViKxQIW1/5rJeFedXLJiv0IrltJPvuhrYOiUsOkQ49FaZ5HSDp51/O/6V9uL2nNIA=='; 
-            coreCall.crossOrigin = 'anonymous'; coreCall.setAttribute('data-cfasync', true ); 
-            body? body.appendChild(coreCall) : head.appendChild(coreCall); })
-        (document, document.head, document.body); 
-    </script>
-    <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
+<script src="../static/js/disclaimer.js"></script>
+<script src="../static/js/tourguide.js"></script>
+<script src="./static/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery-->
+<script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./static/js/jquery.slicknav.min.js"></script>
 
 
-    <!--Add multiple address-->
-    <script>
-    document.getElementById("add").onclick  = function() {
+<!-- Jquery Plugins, main Jquery -->
+<script src="./static/js/plugins.js"></script>
+<script src="./static/js/main.js"></script>
 
-      var node = document.createElement("Li");
-      var text = document.getElementById("user_input").value; 
-      var textnode=document.createTextNode(text);
-      node.appendChild(textnode);
-      document.getElementById("list_item").appendChild(node);
+<!-- Accessibility Code for "floodsafehome.lsu.edu" -->
+<script> 
+    window.interdeal = { 
+        "sitekey": "e8d3d174e189523ecbfdacfddd4c53b8", 
+        "Position": "Left", 
+        "Menulang": "EN", 
+        "domains": { "js": "https://cdn.equalweb.com/", 
+        "acc": "https://access.equalweb.com/" }, 
+        "btnStyle": { "vPosition": [ "80%", null ], 
+        "scale": [ "0.5", "0.5" ], 
+        "icon": { "type": 7, 
+        "shape": "semicircle", "outline": false }, 
+        "color": { "main": "#1876c9", "second": "" } 
+        } }; 
+        
+    (function(doc, head, body) { 
+        var coreCall = doc.createElement('script'); 
+        coreCall.src = 'https://cdn.equalweb.com/core/2.1.10/accessibility.js'; 
+        coreCall.defer = true; 
+        coreCall.integrity = 'sha512-PWvjZ/e9EGeHEPppEOqscViKxQIW1/5rJeFedXLJiv0IrltJPvuhrYOiUsOkQ49FaZ5HSDp51/O/6V9uL2nNIA=='; 
+        coreCall.crossOrigin = 'anonymous'; coreCall.setAttribute('data-cfasync', true ); 
+        body? body.appendChild(coreCall) : head.appendChild(coreCall); })
+    (document, document.head, document.body); 
+</script>
+<!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
+
+<!--Add multiple address-->
+<script>
+document.getElementById("add").onclick  = function() {
+
+  var node = document.createElement("Li");
+  var text = document.getElementById("user_input").value; 
+  var textnode=document.createTextNode(text);
+  node.appendChild(textnode);
+  document.getElementById("list_item").appendChild(node);
+}
+</script>
+<!--Add multiple address end-->
+
+<script>
+function addItem() {
+        var a = document.getElementById("list");
+        var candidate = document.getElementById("user_input-co");
+        var li = document.createElement("li");
+        li.setAttribute('id', candidate.value);
+        li.appendChild(document.createTextNode(candidate.value));
+        a.appendChild(li);
     }
-    </script>
-    <!--Add multiple address end-->
-    
+
+    // Creating a function to remove item from list
+    function removeItem() {
+
+        // Declaring a varible to get select element
+        var a = document.getElementById("list");
+        var candidate = document.getElementById("user_input-co");
+        var item = document.getElementById(candidate.value);
+        a.removeChild(item);}
+        </script>
+
+<!--CRS rate selection-->
+<script>
+function myFunction() {
+  var x = document.getElementById("crsRate").value;
+  document.getElementById("crsRate_value").innerHTML = ", with a " + x + "% discount";
+  }
+</script>
+<!--CRS rate selection end-->
 </body>
 </html>
+
+
