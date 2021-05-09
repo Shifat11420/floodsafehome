@@ -431,10 +431,10 @@
                 <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                 
                 <!--Add fields-->
-                <label> <b class="map-style"> Type your address(s)  <sup class="sup">*</sup> </b></label><br>
+                <label> <b class="map-style"> Type your address(es)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                  <input type="text" id="user_input-co"  onfocus="this.value=''" value={{location|safe}}>
+                  <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                   <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
                   <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
                     <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
@@ -1988,24 +1988,25 @@ document.getElementById("add").onclick  = function() {
 <!--Add multiple address end-->
 
 <script>
+// Creating a function to add item from list
 function addItem() {
         var a = document.getElementById("list");
-        var candidate = document.getElementById("user_input-co");
+        var candidate = document.getElementById("user-input-co");
         var li = document.createElement("li");
         li.setAttribute('id', candidate.value);
         li.appendChild(document.createTextNode(candidate.value));
         a.appendChild(li);
     }
 
-    // Creating a function to remove item from list
-    function removeItem() {
+// Creating a function to remove item from list
+function removeItem() {
 
-        // Declaring a varible to get select element
-        var a = document.getElementById("list");
-        var candidate = document.getElementById("user_input-co");
-        var item = document.getElementById(candidate.value);
-        a.removeChild(item);}
-        </script>
+    // Declaring a varible to get select element
+    var a = document.getElementById("list");
+    var candidate = document.getElementById("user-input-co");
+    var item = document.getElementById(candidate.value);
+    a.removeChild(item);}
+</script>
 
 <!--CRS rate selection-->
 <script>
