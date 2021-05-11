@@ -411,7 +411,7 @@
                 
                 <!--Square footage-->
                 <label><b class="map-style">Square footage <sup class="sup">*</sup></b> </label><br>
-                  <input type="text"  name="sqft"  id="sqft" placeholder="Type your building's square footage"  class="text" > <br>
+                  <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
@@ -446,13 +446,16 @@
                     
                       <!--Average Building Size (Livable Square Footage) -->
                       <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>
-
+                        {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                        <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
 
                       <!--Number of Stories -->        
                       <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label>
+                        {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
+
 
                       <!--Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
@@ -537,23 +540,41 @@
                 <label> <b class="map-style"> Type your address(es)  <sup class="sup">*</sup> </b></label><br>
                 <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                  <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
+                  
+                <!-- new code with remove button-->  
+                  {% comment %} <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                   <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
                   <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
                     <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                      <input type="hidden" name="addr_list" id="addr_list" value="" />
                       <ul id="list"></ul>
-                    </div>
+                    </div> {% endcomment %}
+                    <!-- new code with remove button ends--> 
+           
+                  <!-- code with just add new button-->
+                  <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                  <input type="button" id="add" value="Add New">
+                  <input type="hidden" name="addr_list" id="addr_list" value="" />
+                    <ul id="list_item" class="a"></ul>
+                  <!-- code with just add new button ends->
+
+ 
 
 
                 <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
                 <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>
+                {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+
 
                     <!-- Number of Stories -->        
                     <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label>
-                    
+                      {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
+
+
                     <!-- Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
                       <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
@@ -731,11 +752,17 @@ document.getElementById("add").onclick  = function() {
   var textnode=document.createTextNode(text);
   node.appendChild(textnode);
   document.getElementById("list_item").appendChild(node);
+  addr_list_str = document.getElementById("addr_list").value
+    if(addr_list_str.length == 0) {
+      document.getElementById("addr_list").value = text
+    } else {
+      document.getElementById("addr_list").value = document.getElementById("addr_list").value + "$$" + text
+    }
 }
 </script>
 <!--Add multiple address end-->
 
-<script>
+{% comment %} <script>
 // Creating a function to add item from list
 function addItem() {
         var a = document.getElementById("list");
@@ -744,6 +771,14 @@ function addItem() {
         li.setAttribute('id', candidate.value);
         li.appendChild(document.createTextNode(candidate.value));
         a.appendChild(li);
+        
+        addr_list_str = document.getElementById("addr_list").value
+        if(addr_list_str.length == 0) {
+          document.getElementById("addr_list").value =  a.textContent
+        } else {
+          document.getElementById("addr_list").value = document.getElementById("addr_list").value + "$$" + li.textContent
+          
+        }
     }
 
 // Creating a function to remove item from list
@@ -754,7 +789,7 @@ function removeItem() {
     var candidate = document.getElementById("user-input-co");
     var item = document.getElementById(candidate.value);
     a.removeChild(item);}
-</script>
+</script> {% endcomment %}
 
 <!--CRS rate selection-->
 <script>

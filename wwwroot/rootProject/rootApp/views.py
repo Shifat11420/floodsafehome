@@ -143,16 +143,27 @@ def search(request):
     #buildinglist = ["113 WOODLAKE BLVD", "117 WOODLAKE BLVD", "121 WOODLAKE BLVD", "125 WOODLAKE BLVD", "129 WOODLAKE BLVD", "133 WOODLAKE BLVD", "135 WOODLAKE BLVD"]
     #buildinglist = ["76 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
     #buildinglist = ["113 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "135 WOODLAKE BLVD","52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
-    buildinglist = [ request.GET.get('location', 'default')]
+    #buildinglist = [ request.GET.get('location', 'default')]
+
+
+    buildinglist = []
+    addr_list = request.GET.get('addr_list')
+    print(addr_list)
+    if addr_list:
+        buildinglist = addr_list.split('$$')
+        Square_footage = float(request.GET.get('sqftCSSCL', 'default'))
+    else:
+        buildinglist = [ request.GET.get('location', 'default')]
+        Square_footage = float(request.GET.get('sqft1', 'default'))
+        
+
+    print("\n\n*************************************************\n\n")
+    print(buildinglist)
+    print("\n\n*************************************************\n\n")
+
     for i in range(len(buildinglist)):
         location = buildinglist[i]
 
-    # parcel = request.GET.get('parcel', 'default')
-    ##### find location of each building from parcel number, say buildinglist[*]
-    #
-    # for i in range(len(buildinglist)):
-    #     location = buildinglist[i]   ##something like this 
-    #     
         ##------location-----------------------
         #location = request.GET.get('location', 'default')
         commasplit =location.split(',')
@@ -166,7 +177,8 @@ def search(request):
         print("accepted floors:", No_Floors)
 
         ##--------------square footage-----------------------
-        Square_footage = float(request.GET.get('sqft', 'default'))
+        
+        print ("square footage = ", Square_footage)
     ##----------user input ends---------------------------------------
 
 

@@ -343,13 +343,15 @@
                     
                       <!--Average Building Size (Livable Square Footage) -->
                       <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br>
-
+                        {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                        <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
 
                       <!--Number of Stories -->        
                       <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label>
+                        {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
 
                       <!--Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
@@ -444,13 +446,17 @@
 
                 <!--Average Building Size (Livable Square Footage) -->
                 <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br>
-
+                {% comment %} <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
+                
                     <!-- Number of Stories -->        
                     <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label>
-                    
+                      {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
+
+
                     <!-- Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
                       <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
