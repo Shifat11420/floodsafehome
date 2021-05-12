@@ -827,15 +827,15 @@
           </tr>
           <tr>
             <td rowspan="5"><b class="map-style">Flood insurance coverage:</b></td>
-            <td>Building coverage:  $ <input id="bldgCost" type="number" value="231000" min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" /></td>
+            <td>Building coverage:  $ <input id="bldgCost" type="number" value={{BuildingCoverage}} min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" /></td>
             <td>$0 </td>
-            <td><input id="rangeInput2" type="range" min="0" max="250000" value="231000" oninput="bldgCost.value=rangeInput2.value" /></td>
+            <td><input id="rangeInput2" type="range" min="0" max="250000" value={{BuildingCoverage}} oninput="bldgCost.value=rangeInput2.value" /></td>
             <td>$250,000 </td>
           </tr>
           <tr>
             <td>
               <label for="DeductibleValue">Building deductible:&nbsp; &nbsp;$ </label>
-                <select name="DeductibleValue" id="DeductibleValue">
+                <select name="DeductibleValue" id="DeductibleValue" placeholder={{BuildingDeductibe}}>
                   <option value="V1">1,000</option>
                   <option value="V2">1,250</option>
                   <option value="V3">1,500</option>
@@ -851,15 +851,15 @@
             <td></td>
           </tr>
           <tr>
-            <td>Content coverage:  $ <input id="contCost" type="number" value="92400" min="0" max="100000" oninput="rangeInput3.value=contCost.value" /></td>
+            <td>Content coverage:  $ <input id="contCost" type="number" value={{ContentCoverage}} min="0" max="100000" oninput="rangeInput3.value=contCost.value" /></td>
             <td>$0 </td>
-            <td><input id="rangeInput3" type="range" min="0" max="100000" value="92400" oninput="contCost.value=rangeInput3.value" /> </td>
+            <td><input id="rangeInput3" type="range" min="0" max="100000" value={{ContentCoverage}} oninput="contCost.value=rangeInput3.value" /> </td>
             <td>$100,000 </td>
           </tr>
           <tr>
             <td>
               <label for="DeductibleValue">Content deductible:&nbsp; &nbsp;$ </label>
-                <select name="DeductibleValue" id="DeductibleValue">
+                <select name="DeductibleValue" id="DeductibleValue" placeholder={{ContentDeductible}}>
                   <option value="V1">1,000</option>
                   <option value="V2">1,250</option>
                   <option value="V3">1,500</option>
@@ -904,7 +904,7 @@
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
-       ● The CRS rate is …, with a ...% discount on flood insurance. 
+       ● The CRS rate is 5, with a 25% discount on flood insurance. 
       </p></section>
       <br><br>
 
@@ -918,7 +918,7 @@
      <h2 class="map-style-title" >Monthly Savings</h2>
       <div class="graph-description" >
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b class="map-style">${{total_monthly_saving1}}</b> to <b class="map-style">${{total_monthly_saving4}}</b>.
+        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
         </div>
       <div class="zc-body"><div id="chart5" class="chart5"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></div> 
@@ -947,7 +947,7 @@
       <div class="graph-description">
         
         The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home ranges from 
-        <b class="map-style">${{FreeboardCost1 | intcomma}}</b> to <b class="map-style">${{FreeboardCost4 | intcomma}}</b>.
+        <b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>.
         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
       </div>  
       <section id="section-3"><div class="zc-body">     <div id="chart1" class="chart1"></div></div></section>
@@ -958,7 +958,7 @@
    <hr class="style-four">
     <h2 class="map-style-title">Annual Insurance Premiums</h2>
      <div class="graph-description" >
-       Constructing your home with additional freeboard decreases annual insurance premiums from <b class="map-style">${{total_annual_premium0 | intcomma}}</b> to <b class="map-style">${{total_annual_premium4 | intcomma}}</b>. 
+       Constructing your home with additional freeboard decreases annual insurance premiums from <b class="map-style">${{summation_total_annual_premiumlow | intcomma}}</b> to <b class="map-style">${{summation_total_annual_premiumhigh | intcomma}}</b>. 
        <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
       
@@ -975,7 +975,7 @@
      <h2 class="map-style-title">Expected Annual Flood Loss</h2>
        
         <div class="graph-description" >
-          Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{AAL_absCurrency0 | intcomma}}</b> to <b class="map-style">${{AAL_absCurrency4 | intcomma}}</b>. 
+          Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{summation_AAL_absCurrencyhigh | intcomma}}</b> to <b class="map-style">${{summation_AAL_absCurrencylow | intcomma}}</b>. 
           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
         </div>
       <section id="section-5"><div class="zc-body">  <div id="chart3" class="chart3"></div></div> </section> 
@@ -988,8 +988,8 @@
      <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
       <div class="graph-description" >
         The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
-        Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{time_to_recover_FC_PS1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_PS4}} month(s)</b>. 
-        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{time_to_recover_FC_TB1}}</b> month(s) and <b class="map-style">{{time_to_recover_FC_TB4}} month(s)</b>.       
+        Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{summation_time_to_recover_FC_PSlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_PShigh}} month(s)</b>. 
+        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{summation_time_to_recover_FC_TBlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_TBhigh}} month(s)</b>.       
       </div>
       <div class="zc-body">     <div id="chart4" class="chart4"></div></div>
   </div>

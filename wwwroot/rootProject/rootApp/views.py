@@ -138,7 +138,8 @@ def search(request):
     total_annual_premium_list_c = []
     AAL_absCurrency_list_c = []
     time_to_recover_FC_TB_list_c = []
-          
+    time_to_recover_FC_PS_list_c = []      
+
     #buildinglist = ["28 ACADIA ST", "29 ACADIA ST", "30 ACADIA ST", "31 ACADIA ST", "32 ACADIA ST", "33 ACADIA ST", "34 ACADIA ST"]
     #buildinglist = ["113 WOODLAKE BLVD", "117 WOODLAKE BLVD", "121 WOODLAKE BLVD", "125 WOODLAKE BLVD", "129 WOODLAKE BLVD", "133 WOODLAKE BLVD", "135 WOODLAKE BLVD"]
     #buildinglist = ["76 WOODLAKE BLVD","80 WOODLAKE BLVD", "124 WOODLAKE BLVD", "52 WOODLAKE BLVD", "60 WOODLAKE BLVD", "56 WOODLAKE BLVD", "104 WOODLAKE BLVD"]
@@ -834,8 +835,9 @@ def search(request):
                 time_to_recover_FC_PS.append(round(total_loanbased_FC[i]/annual_premium_saving[i],1))
         print("Time to recover FC PS :", time_to_recover_FC_PS)
             
-        time_to_recover_FC_PS_json = simplejson.dumps(time_to_recover_FC_PS)  
-
+        time_to_recover_FC_PS_json = simplejson.dumps(time_to_recover_FC_PS)     
+        time_to_recover_FC_PS_list_c.append(time_to_recover_FC_PS)
+        
         ##---------Time to recover freeboard cost through avoided annual loss alone------------
         time_to_recover_FC_AvAL = []
         #time_to_recover_FC_AvAL.append(round(total_loanbased_FC[i]/annual_avoided_loss[i],1))
@@ -1076,7 +1078,7 @@ def search(request):
     print("avglist_AAL_absCurrency = " ,avg_AAL_absCurrency) 
     print("\n")
 
-## Time to recover the freeboard cost ##
+## Time to recover the freeboard cost TB ##
     print("time_to_recover_FC_TB_list_c : ", time_to_recover_FC_TB_list_c)
  
     summation_time_to_recover_FC_TB = []
@@ -1095,11 +1097,33 @@ def search(request):
         avg_time_to_recover_FC_TB.append(round(summation_time_to_recover_FC_TB[z]/len(buildinglist),3))
     print("avglist_time_to_recover_FC_TB = " ,avg_time_to_recover_FC_TB) 
     print("\n")
+    
+
+    ## Time to recover the freeboard cost PS ##
+    print("time_to_recover_FC_PS_list_c : ", time_to_recover_FC_PS_list_c)
+ 
+    summation_time_to_recover_FC_PS = []
+    avg_time_to_recover_FC_PS = []
+    for z in range(len(time_to_recover_FC_PS)):
+        summation_time_to_recover_FC_PS.append(0)
+    #print("summationlist_time_to_recover_FC_PS = " ,summation_time_to_recover_FC_PS)
+
+    for i in range(len(buildinglist)):   
+        for z in range(len(time_to_recover_FC_PS)):
+            summation_time_to_recover_FC_PS[z] = round(summation_time_to_recover_FC_PS[z] + time_to_recover_FC_PS_list_c[i][z],3)
+    print("summationlist_time_to_recover_FC_PS = " ,summation_time_to_recover_FC_PS)
+    summation_time_to_recover_FC_PS_json = simplejson.dumps(summation_time_to_recover_FC_PS)       
+    
+    for z in range(len(time_to_recover_FC_PS)):
+        avg_time_to_recover_FC_PS.append(round(summation_time_to_recover_FC_PS[z]/len(buildinglist),3))
+    print("avglist_time_to_recover_FC_PS = " ,avg_time_to_recover_FC_PS) 
+    print("\n")
 
     ####################********Community level analysis ENDS*********########################
 
     #Json---------------------------------------
     time_to_recover_FC_TB_json = summation_time_to_recover_FC_TB_json
+    time_to_recover_FC_PS_json = summation_time_to_recover_FC_PS_json
     freeboardCost_json = summation_freeboardCost_json
     total_annual_premium_json = summation_total_annual_premium_json
     total_monthly_saving_json = summation_total_monthly_saving_json
@@ -1107,7 +1131,7 @@ def search(request):
     
     location_json_list = simplejson.dumps(location)    
 
-    data_dictionary = {"location": location_json_list, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "optimal_total_annual_premium_freeboard":optimal_total_annual_premium_freeboard, "optimal_total_annual_premium":optimal_total_annual_premium, "total_annual_premium_json":total_annual_premium_json,"total_annual_premium0": total_annual_premium[0],"total_annual_premium1": total_annual_premium[1],"total_annual_premium2": total_annual_premium[2],"total_annual_premium3": total_annual_premium[3],"total_annual_premium4": total_annual_premium[4],"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":Square_footage, "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_saving4" : total_monthly_saving[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 'script_insurance': script_insurance, 'div_insurance':div_insurance,  "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4] }
+    data_dictionary = {"location": location_json_list, "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),"summation_time_to_recover_FC_TBlow":min(summation_time_to_recover_FC_TB),"summation_time_to_recover_FC_TBhigh":max(summation_time_to_recover_FC_TB), "optimal_total_annual_premium_freeboard":optimal_total_annual_premium_freeboard, "optimal_total_annual_premium":optimal_total_annual_premium, "total_annual_premium_json":total_annual_premium_json,"total_annual_premium0": total_annual_premium[0],"total_annual_premium1": total_annual_premium[1],"total_annual_premium2": total_annual_premium[2],"total_annual_premium3": total_annual_premium[3],"total_annual_premium4": total_annual_premium[4], "summation_total_annual_premiumlow": min(summation_total_annual_premium), "summation_total_annual_premiumhigh":max(summation_total_annual_premium),"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "summation_freeboardCostlow":min(summation_freeboardCost), "summation_freeboardCosthigh":max(summation_freeboardCost), "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency), "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving), "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_savinglast" : total_monthly_saving[8], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 'script_insurance': script_insurance, 'div_insurance':div_insurance,  "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4] }
 
     
     return render(request, 'nodisc.html', data_dictionary)
