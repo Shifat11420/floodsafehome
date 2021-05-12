@@ -269,7 +269,12 @@
         });
 
     //Autosugestion for community analysis
-     $( "#user_input").autocomplete({
+    // $( "#user_input").autocomplete({
+     // source: "{% url 'autosuggest' %}"
+    //    });
+     //} );
+
+     $( "#user-input-co").autocomplete({
       source: "{% url 'autosuggest' %}"
         });
      } );
@@ -542,20 +547,20 @@
                 <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
                   
                 <!-- new code with remove button-->  
-                  {% comment %} <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
+                  <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                   <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
                   <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
                     <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
                       <input type="hidden" name="addr_list" id="addr_list" value="" />
                       <ul id="list"></ul>
-                    </div> {% endcomment %}
+                    </div> 
                     <!-- new code with remove button ends--> 
            
                   <!-- code with just add new button-->
-                  <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                  {% comment %} <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
                   <input type="button" id="add" value="Add New">
                   <input type="hidden" name="addr_list" id="addr_list" value="" />
-                    <ul id="list_item" class="a"></ul>
+                    <ul id="list_item" class="a"></ul> {% endcomment %}
                   <!-- code with just add new button ends->
 
  
@@ -744,8 +749,8 @@
 <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
 
 <!--Add multiple address-->
-<script>
-document.getElementById("add").onclick  = function() {
+{% comment %}<script>
+ document.getElementById("add").onclick  = function() {
 
   var node = document.createElement("Li");
   var text = document.getElementById("user_input").value; 
@@ -758,11 +763,12 @@ document.getElementById("add").onclick  = function() {
     } else {
       document.getElementById("addr_list").value = document.getElementById("addr_list").value + "$$" + text
     }
-}
-</script>
+} 
+</script>{% endcomment %}
+
 <!--Add multiple address end-->
 
-{% comment %} <script>
+<script>
 // Creating a function to add item from list
 function addItem() {
         var a = document.getElementById("list");
@@ -776,8 +782,8 @@ function addItem() {
         if(addr_list_str.length == 0) {
           document.getElementById("addr_list").value =  a.textContent
         } else {
-          document.getElementById("addr_list").value = document.getElementById("addr_list").value + "$$" + li.textContent
-          
+          //document.getElementById("addr_list").value = document.getElementById("addr_list").value + "$$" + a.textContent
+          document.getElementById("addr_list").value =  a.textContent
         }
     }
 
@@ -789,7 +795,7 @@ function removeItem() {
     var candidate = document.getElementById("user-input-co");
     var item = document.getElementById(candidate.value);
     a.removeChild(item);}
-</script> {% endcomment %}
+</script> 
 
 <!--CRS rate selection-->
 <script>

@@ -151,7 +151,12 @@ def search(request):
     addr_list = request.GET.get('addr_list')
     print(addr_list)
     if addr_list:
-        buildinglist = addr_list.split('$$')
+        #buildinglist = addr_list.split('$$')
+        buildinglist = addr_list.split('Parish')
+        print("buildinglist before deleting last element : ", buildinglist)
+        lenghofBlist = len(buildinglist)
+        print(" length of  B list : ", lenghofBlist)
+        buildinglist.remove(buildinglist[lenghofBlist-1])
         Square_footage = float(request.GET.get('sqftCSSCL', 'default'))
     else:
         buildinglist = [ request.GET.get('location', 'default')]
