@@ -273,10 +273,17 @@
         });
 
     //Autosugestion for community analysis
-     $( "#user_input").autocomplete({
+          // $( "#user_input").autocomplete({
+     // source: "{% url 'autosuggest' %}"
+    //    });
+     //} );
+
+     $( "#user-input-co").autocomplete({
       source: "{% url 'autosuggest' %}"
         });
      } );
+     </script>
+
      </script>
    <!--autosuggestion End-->
 
