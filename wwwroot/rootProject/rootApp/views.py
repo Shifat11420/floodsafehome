@@ -73,6 +73,8 @@ def gotomap(request):
     else:
         mylist = ["valid address"]  
 
+
+    
 ##Error message ends-------------------------------
     
     
@@ -163,10 +165,17 @@ def search(request):
         lenghofBlist = len(buildinglist)
         print(" length of  B list : ", lenghofBlist)
         buildinglist.remove(buildinglist[lenghofBlist-1])
-        Square_footage = float(request.GET.get('sqftCSSCL', 'default'))
+        Square_footage = request.GET.get('sqftCSSCL', 'default')
     else:
         buildinglist = [ request.GET.get('location', 'default')]
-        Square_footage = float(request.GET.get('sqft1', 'default'))
+        Square_footage = request.GET.get('sqft1', 'default')
+    
+    ###error message
+    if Square_footage == '':
+        messages.error(request, 'Please choose square footage of your building!')
+        return render(request, 'nodisc.html')
+    else:
+        Square_footage = float(Square_footage)
         
 
     print("\n\n*************************************************\n\n")
@@ -185,12 +194,19 @@ def search(request):
         streetlist = locationList[1:]
 
         ##-------number of stories------------------------
-        No_Floors = request.GET['stories']
+        No_Floors = request.GET.get('stories', 'default') #request.GET['stories']
         print("accepted floors:", No_Floors)
+            ## error message
+        if No_Floors == 'default':
+            messages.error(request, 'Please choose number of stories!')
+            return render(request, 'nodisc.html')
+        else:
+            mylist = ["valid stories"]  
 
         ##--------------square footage-----------------------
         
         print ("square footage = ", Square_footage)
+             
     ##----------user input ends---------------------------------------
 
 

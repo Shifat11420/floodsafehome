@@ -826,9 +826,11 @@
       <div style="overflow-x:auto;">
        <section id="section-6">
         <!-- Need to update
-        <form method="get" action="/search" name="recalculation">
+        <form method="get" action="/search" name="Advanced features">
         -->
-         <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" > Recalculation</button>
+         <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" onclick='show(1);'>Advanced features</button>
+ 
+          <div id="table1">
           <table class="table-slide">
           <tr class="table-slide-bg">
             <td><b class="map-style">Home square footage:</b></td>
@@ -937,22 +939,26 @@
             <td></td>
             <td></td>
             <td></td>
-          </tr>         
+          </tr> 
+
         </table>
-        </section>
-       <!--</form>-->
-      </div> 
-      
-      
-      <section id="section-2"><p class=" map-style">
+          <section id="section-2"><p class=" map-style">
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
        ● The CRS rate is 5, with a 25% discount on flood insurance. 
       </p></section>
       <br><br>
+        </section>
+       <!--</form>-->
+     
+      </div> 
+      
+      
+      
 
-
+    </div>
+    
 </div>  
 
 
@@ -2082,6 +2088,15 @@ function myFunction() {
   }
 </script>
 <!--CRS rate selection end-->
+
+<!--Advanced features -->
+<script>
+function show(nr) {
+    document.getElementById("table1").style.display="none";
+    document.getElementById("table"+nr).style.display="block";
+}
+</script>
+<!--Advanced features end-->
 </body>
 </html>
 
