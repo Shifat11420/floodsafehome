@@ -200,6 +200,60 @@
       view.ui.add(basemapToggle,"bottom-right");
     });
   </script>
+  <style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  * {box-sizing: border-box;}
+
+  /* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 1000px;
+  padding: 10px;
+  background-color: yellow;
+  color: green;
+}
+
+
+
+
+/* Set a style for the close button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  margin-bottom:10px;
+  opacity: 0.7;
+}
+
+
+    /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+
+  /* Add some hover effects to buttons */
+  .form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+  }
+  </style>
 </head>
 
 <body>
@@ -286,6 +340,20 @@
       <div class="bts-popup-container">
         <center><img src="../static/img/logo/logo.png" alt="Flood Safe Home" width="50%" /></center>
           <div class="disclaimer">
+
+          <div class="form-popup" id="myForm">
+              <form action="/action_page.php" class="form-container">
+                  <h1 style="text-align:center"><strong>Important notice</strong></h1>
+
+                  <h2> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in October 2021 for final version. </h2>
+
+                  <div style="text-align:center">  
+                    <button type="button" class="btn cancel"  onclick="closeForm()">Close</button>
+                  </div>
+              </form>
+          </div> 
+
+
             <p class="p-style">
               Welcome to the Web portal for the FloodSafeHome decision-making tool. 
               We hope that you will find this free product to be a useful aid in your research to protect one of the most important investments you will ever make – your home. 
@@ -805,6 +873,18 @@ function myFunction() {
   }
 </script>
 <!--CRS rate selection end-->
+
+
+
+    <script>
+    function openForm() {
+    document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+    }
+    </script>
 </body>
 </html>
 

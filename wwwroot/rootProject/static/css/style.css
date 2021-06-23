@@ -12968,3 +12968,37 @@ td {
 #table1 {
     display: none;
 }
+
+
+/* banner */
+
+.banner {
+    background: red;
+    margin-top: 5%;
+}
+
+.banner__content {
+    padding: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.banner__text {
+    flex-grow: 1;
+    line-height: 1.4;
+    font-family: "Quicksand", sans-serif;
+    font-size: x-large;
+}
+
+.banner__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.banner__text,
+.banner__close>span {
+    color: #ffffff;
+}
