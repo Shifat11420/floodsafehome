@@ -1,5 +1,6 @@
 <html class="no-js" lang="zxx">
 <head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">    
   <meta name="description" content="">
@@ -207,8 +208,10 @@
 </head>
 
 <body>
-
+   
      <header class="header header-map">
+
+
         <!-- Header Start -->
         <div class="header-area header-transparent mapHeader">
             <div class="main-header ">
@@ -262,6 +265,9 @@
         <!-- Header End -->
     </header>
 
+ 
+  
+
   <!-- autosuggestion-->
     <script> 
     jQuery.noConflict();
@@ -286,7 +292,22 @@
 
      </script>
    <!--autosuggestion End-->
+ <!-- Banner-->
+    <div class="banner">
+        <div class="banner__content">
+            <div class="banner__text">
+                <strong> WEB TOOL UNDER DEVELOPMENT</strong> 
+            </div>
+            <button class="banner__close" type="button">
+                <span class="material-icons">
+                close
+                </span>
+            </button>
+        </div>
+    </div>
+    <!--Banner ends-->
 
+ 
  <!-- Select your building information-->
  <div class="container left" > 
       <form method="get" action="/search" name="userInput">
@@ -298,8 +319,8 @@
               <!--User type-->
               <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
                 <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "individual1" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "individual2" class="bar2" onclick="ShowHideDiv3()"/> Tenant</label> <br>         
-                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "individual2" class="bar" onclick="ShowHideDiv4()"/> Landlord</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "individual2" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "individual2" class="bar" onclick="ShowHideDiv4()"/disabled> Landlord</label>
                 <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
 
                 
@@ -307,177 +328,137 @@
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
                   <label><input type="radio" name ="selectBox" value = "new_building" class="bar" > New building</label>
-                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar4"> Existing building</label>
+                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar4"  disabled> Existing building</label>
+                <br>  
                 
                 <!--Address or Parcel ID-->
                 <label><b class="map-style">Address or Parcel ID <sup class="sup">*</sup></b></label><br>
                   <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                 
-                <!--Square footage-->
+                {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage <sup class="sup">*</sup></b> </label><br>
                   <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" > One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
-              </div>
+                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"  > One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  > Two or more stories</label> {% endcomment %}
+              </div> <!--Building type div end-->
 
               <!--This option will be appear when user select community official-->
               <div id="as" style="display: none">
-                <label> <b class="map-style"> Assessment Scale <sup class="sup">*</sup> </b></label><br>
-                  <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()">
-                  Single-building</label>
-                  <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
-                  Spatial scale</label>
-             
-
-                    <!--This option will be appear when user select single-building-->
-                    <div id="singleBuilding" style="display: none">
-                     
-                      <!--Select location for building location -->
-                      <div class="select-form" style="margin: 0 0 0 30px">
-                          <div class="select-itms">
-                              <select name="select" id="select1">
-                                  <option value="">Building Location</option>
-                                  <option value=""> Address</option>
-                                  <option value=""> Parcel</option>
-                                  <option value=""> Zipcode </option>
-                                  <option value=""> Subdivision</option>
-                              </select>
-                          </div>
-                      </div>
-                    
-                      <!--Average Building Size (Livable Square Footage) -->
-                      <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                        {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                        <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br>
-
-                      <!--Number of Stories -->        
-                      <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                        {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
-                        <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                        <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
-
-                      <!--Freeboard height above the BFE -->   
-                      <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
-                        <input type="text"  name="freeboard-bfe-Indi"  id="freeboard-bfe-Indi" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
-
-                       <!--Current CRS rating -->                    
-                      <label><b class="map-style"> Select the <i>current</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="crsCurrent-Community">
-                                    <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                    <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                                </select>
-                            </div>
-                        </div>    
-
-                      <!--Targeted CRS rating -->  
-                      <label><b class="map-style"> Select the <i>targeted</i> CRS rating <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                          <div class="select-itms">
-                              <select name="select" id="crsTarget-Community">
-                                  <OPTION VALUE=""> CRS rate of 1, with a 45% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 2, with a 40% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 3, with a 35% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 4, with a 30% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 5, with a 25% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 6, with a 20% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 7, with a 15% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 8, with a 10% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 9, with a 5% discount </option>
-                                  <OPTION VALUE=""> CRS rate of 10, with a 0% discount </option>
-                              </select>
-                          </div>
-                      </div>
+                    <label> <b class="map-style"> Assessment Scale <sup class="sup">*</sup> </b></label><br>
+                      <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
+                      Single-building</label>
+                      <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
+                      Spatial scale</label>
                 
-                      <!--Assessment Timeline--> 
-                      <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
-                        <div class="select-form" >
-                            <div class="select-itms">
-                                <select name="select" id="AssTime-Community">
-                                    <OPTION VALUE=""> 5 years </option>
-                                    <OPTION VALUE=""> 10 years </option>
-                                    <OPTION VALUE=""> 15 years </option>
-                                    <OPTION VALUE=""> 20 years </option>
-                                    <OPTION VALUE=""> 30 years </option>
-                                    <OPTION VALUE=""> 40 years </option>
-                                    <OPTION VALUE=""> 70 years </option>
-                                    <OPTION VALUE=""> 100 years</option>
-                                </select>
-                            </div>
-                        </div>     
 
-
-                        <!--Select the appropriate real discount rate for the assessment-->
-                        <label><b class="map-style"> Select the appropriate real discount rate for the assessment  <sup class="sup">*</sup></b> </label><br>              
-                          <div class="select-form" >
+                      <!--This option will be appear when user select single-building-->
+                      <div id="singleBuilding" style="display: none">
+                      
+                          <!--Select location for building location -->
+                          <div class="select-form" style="margin: 0 0 0 30px">
                               <div class="select-itms">
-                                  <select name="select" id="realDisc-Community">
-                                      <OPTION VALUE=""> Select 0% of real discount rate </option>
-                                      <OPTION VALUE=""> Select 3% of real discount rate</option>
-                                      <OPTION VALUE=""> Select 7% of real discount rate </option>
-                                      <OPTION VALUE=""> Select 10% of real discount rate </option>
+                                  <select name="select" id="select1">
+                                      <option value="">Building Location</option>
+                                      <option value=""> Address</option>
+                                      <option value=""> Parcel</option>
+                                      <option value=""> Zipcode </option>
+                                      <option value=""> Subdivision</option>
                                   </select>
                               </div>
-                            </div>     
                           </div>
+                      
+                        {% comment %} <!--Average Building Size (Livable Square Footage) -->
+                        <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
+                          {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                          {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
 
-              <!-- This option will be appear when spatial scale is selected-->
-              <div id="SpatialScale" style="display: none">
-                <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
-                <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
-                
-                <!--Add fields-->
-                <label> <b class="map-style"> Type your address(es)  <sup class="sup">*</sup> </b></label><br>
-                <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
-                <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                 
+                        <!--Number of Stories -->        
+                        {% comment %} <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br> {% endcomment %}
+                          {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                          <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                          {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                          <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %} 
 
-                 <!-- new code with remove button-->  
-                  <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
-                  <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
-                  <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
-                    <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
-                      <input type="hidden" name="addr_list" id="addr_list" value="" />
-                      <ul id="list"></ul>
-                    </div> 
-                    <!-- new code with remove button ends--> 
-           
-                  <!-- code with just add new button-->
-                  {% comment %} <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
-                  <input type="button" id="add" value="Add New">
-                  <input type="hidden" name="addr_list" id="addr_list" value="" />
-                    <ul id="list_item" class="a"></ul> {% endcomment %}
-                  <!-- code with just add new button ends->
+                      </div> <!--singlebuilding div end -->    
+
+                      <!-- This option will be appear when spatial scale is selected-->
+                      <div id="SpatialScale" style="display: none">
+                        <label> <b class="map-style"> Select area from the map  <sup class="sup">*</sup> </b></label><br>
+                        <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
+                        
+                        <!--Add fields-->
+                        <label> <b class="map-style"> Type your address(es)  <sup class="sup">*</sup> </b></label><br>
+                        <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
+                        <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
+                          
+                          <!-- new code with remove button-->  
+                            <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
+                            <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
+                            <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
+                              <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                                <input type="hidden" name="addr_list" id="addr_list" value="" />
+                                <ul id="list"></ul>
+                              </div> 
+                              <!-- new code with remove button ends--> 
+                    
+                          <!-- code with just add new button-->
+                          {% comment %} <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                          <input type="button" id="add" value="Add New">
+                          <input type="hidden" name="addr_list" id="addr_list" value="" />
+                            <ul id="list_item" class="a"></ul> {% endcomment %}
+                          <!-- code with just add new button ends-->
+
+                        <!--Average Building Size (Livable Square Footage) -->
+                        {% comment %} <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
+                        <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                        {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
 
 
+                            <!-- Number of Stories -->        
+                            {% comment %} <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br> {% endcomment %}
+                              {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                              <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                              {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                              <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
 
-                <!--Average Building Size (Livable Square Footage) -->
-                <label><b class="map-style"> Average Building Size (Livable Square Footage) <sup class="sup">*</sup></b> </label><br>
-                <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> 
-                {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                
-                    <!-- Number of Stories -->        
-                    <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                      {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
-                      <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label>
+                      </div>  <!-- spatial scale div end -->
 
 
-                    <!-- Freeboard height above the BFE -->   
+              </div> <!-- community official options div end -->
+              <br>
+
+               <!--Square footage-->
+                <label><b class="map-style"> Average Building Size (Livable Square Footage)  <sup class="sup">*</sup></b> </label><br>
+                  <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" required> <br>
+               
+               <!--Number of Stories -->        
+                <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
+                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  required> Two or more stories</label> 
+            
+            <!--Advanced parameter-->
+            
+
+<table>
+    <tr>
+        <td>
+        <input type="button" onclick='show(1);' class="buttonClass" value="Advanced parameters">
+          <br />
+        </td>
+        <td>
+            &nbsp;
+        </td>
+      
+        
+        <td>
+       <div id="table1">
+            
+             <table class="table-slide">
+         
+                          <!-- Freeboard height above the BFE -->   
                       <label><b class="map-style"> Freeboard height above the BFE (in feet) <sup class="sup">*</sup></b> </label><br>
                       <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br>
                     
@@ -520,7 +501,9 @@
                             </div>
                         </div>
                   
-                    <!-- Assessment Timeline -->
+				  
+				  
+				   <!-- Assessment Timeline -->
                     <label><b class="map-style"> Assessment Timeline <sup class="sup">*</sup></b> </label><br>              
                       <div class="select-form" >
                           <div class="select-itms">
@@ -532,7 +515,7 @@
                                   <OPTION VALUE=""> 30 years </option>
                                   <OPTION VALUE=""> 40 years </option>
                                   <OPTION VALUE=""> 70 years </option>
-                                  <OPTION VALUE=""> 100 years</option>
+                                <OPTION VALUE=""> 100 years</option>
                               </select>
                           </div>
                       </div>     
@@ -549,10 +532,19 @@
                               </select>
                           </div>
                       </div>     
-                </div>
-            </div>
-          </div>
+       
+       
+        </table>
+      <br><br>
+        
+   
+         </div>
+        </td>
       
+    </tr>
+</table>
+            <!--Advanced parameter ends-->
+          </div> <!--dib box end-->     
       
         <br>
        <button class="btn btn-primary btn-map" type="submit" > Get results</button>  
@@ -561,7 +553,6 @@
       </p>
  <hr class="style-three">
  <!-- Select your building information end-->
-
  <!-- Side bar naviation menu-->
   <p>
     <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
@@ -2097,6 +2088,14 @@ function show(nr) {
 }
 </script>
 <!--Advanced features end-->
+
+<!--Banner: under construction-->
+    <script>
+    document.querySelector(".banner__close").addEventListener("click", function () {
+        this.closest(".banner").style.display = "none";
+    });
+    </script>
+
 </body>
 </html>
 

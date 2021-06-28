@@ -1,6 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Flood Safe Home</title>
@@ -28,6 +29,7 @@
    
 </head>
 <body>
+ 
     <!-- ? Preloader Start -->
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
@@ -40,6 +42,7 @@
         </div>
     </div>
     <!-- Preloader Start -->
+      
     <header>
         <!-- Header Start -->
         <div class="header-area header-transparent">
@@ -90,6 +93,20 @@
                     </div>
                 </div>
             </div>
+             <!-- Banner-->
+    <div class="banner">
+        <div class="banner__content">
+            <div class="banner__text">
+                <strong> WEB TOOL UNDER DEVELOPMENT</strong> 
+            </div>
+            <button class="banner__close" type="button">
+                <span class="material-icons">
+                close
+                </span>
+            </button>
+        </div>
+    </div>
+    <!--Banner ends-->    
         </div>
         <!-- Header End -->
     </header>
@@ -116,6 +133,9 @@
 
 
     </main>
+
+
+
 
 {% if messages %}
 {% for message in messages %}
@@ -287,5 +307,13 @@
         (document, document.head, document.body); 
     </script>
     <!-- Accessibility Code for "floodsafehome.lsu.edu" end-->
+
+    <!--Banner: under construction-->
+    <script>
+    document.querySelector(".banner__close").addEventListener("click", function () {
+        this.closest(".banner").style.display = "none";
+    });
+    </script>
+
     </body>
     </html>

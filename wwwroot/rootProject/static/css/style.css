@@ -4142,6 +4142,7 @@ hr {
 .main-header {
     position: relative;
     z-index: 3;
+    /*margin-top: 2.2%; */
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
@@ -12961,6 +12962,9 @@ ul.a {
     list-style-type: square;
 }
 
+
+/* Advanced parameters  */
+
 td {
     vertical-align: top;
 }
@@ -12974,7 +12978,7 @@ td {
 
 .banner {
     background: red;
-    margin-top: 5%;
+    /* margin-top: 5%; */
 }
 
 .banner__content {
