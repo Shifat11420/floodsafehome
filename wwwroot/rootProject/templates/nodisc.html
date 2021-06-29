@@ -439,9 +439,8 @@
                   <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
                   <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  required> Two or more stories</label> 
             
-            <!--Advanced parameter-->
             
-
+            <!--Advanced parameter-->
 <table>
     <tr>
         <td>
@@ -819,9 +818,11 @@
         <!-- Need to update
         <form method="get" action="/search" name="Advanced features">
         -->
-         <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" onclick='show(1);'>Advanced features</button>
+
+    <!-- Advanced features -->    
+         <button class="btn btn-primary float-right" type="submit" style="margin: 0 75px 20px 0" onclick='showAF(2);'>Advanced features</button>
  
-          <div id="table1">
+          <div id="table2">
           <table class="table-slide">
           <tr class="table-slide-bg">
             <td><b class="map-style">Home square footage:</b></td>
@@ -2082,12 +2083,21 @@ function myFunction() {
 
 <!--Advanced features -->
 <script>
+function showAF(nr) {
+    document.getElementById("table2").style.display="none";
+    document.getElementById("table"+nr).style.display="block";
+}
+</script>
+<!--Advanced features end-->
+
+<!--Advanced parameters -->
+<script>
 function show(nr) {
     document.getElementById("table1").style.display="none";
     document.getElementById("table"+nr).style.display="block";
 }
 </script>
-<!--Advanced features end-->
+<!--Advanced parameters end-->
 
 <!--Banner: under construction-->
     <script>
