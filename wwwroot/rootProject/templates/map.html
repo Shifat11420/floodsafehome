@@ -602,10 +602,13 @@
                   <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  required> Two or more stories</label> 
             
             <!--Advanced parameter-->
+            <!--<div style="text-align:center">--> 
+            <input type="button" onclick='show(1);' class="buttonClass"  value="Advanced parameters">
+            <!--</div>-->
             
 
 <table>
-    <tr>
+    {% comment %} <tr>
         <td>
         <input type="button" onclick='show(1);' class="buttonClass" value="Advanced parameters">
           <br />
@@ -613,7 +616,7 @@
         <td>
             &nbsp;
         </td>
-      
+       {% endcomment %}
         
         <td>
        <div id="table1">
