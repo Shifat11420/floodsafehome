@@ -572,13 +572,12 @@
         <li><a href="#section-7" >Save the outcome as a 
             <select name="saveresult" id="saveresult" onchange="location = this.value;">
                                       <option value="{% url 'exportfile'  %}"> CSV file </option>
-                                      {% comment %} <option value="{% url 'exportpdf'  %}"> PDF file</option> {% endcomment %}
                                       <option value="{% url 'exportshp'  %}"> SHAPE file </option>
-                                     
+                                      <option value="{% url 'report'  %}"> Report</option>
             </select>    
              {% comment %} <button class="btn btn-dl"><i class="fa fa-download"></i> </button> {% endcomment %}
             </a>   
-        <li><a href="{% url 'report'  %}"><strong>Export report </strong></a></li>    
+        {% comment %} <li><a href="{% url 'report'  %}"><strong>Export report </strong></a></li>     {% endcomment %}
          {% comment %} 
         <li><a href="{% url 'exportpdf'  %}">Save the outcome as a PDF  
             <button class="btn btn-dl"><i class="fa fa-download"></i> </button>
