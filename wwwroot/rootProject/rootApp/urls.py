@@ -2,6 +2,13 @@ from django.contrib import admin
 from django.urls import path
 from rootApp import views
 
+from django.contrib.gis import admin
+from django.urls import include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+
 urlpatterns = [
     path("", views.index, name='Home'),
     path("about", views.about, name='About'),
@@ -16,4 +23,8 @@ urlpatterns = [
     path("starter", views.starter, name="starter"),
     path("nodisc", views.nodisc, name="nodisc"),
     path("disclaimer", views.disclaimer, name="disclaimer"),
+    path("exportfile", views.exportfile, name="exportfile"),
+    path("exportpdf", views.exportpdf, name="exportpdf"),   
+    path("exportshp", views.exportshp, name="exportshp"),
+    path("report", views.report, name="report"),   
     ]

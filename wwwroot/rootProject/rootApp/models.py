@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.contrib.gis.db import models
 
 
 # Create your models here.
@@ -100,3 +101,42 @@ class dataAll(models.Model):
     
     def __str__(self):
         return self.address+" , "+self.street          
+
+
+class JeffersonbuildingdataFSH(models.Model):
+    # Regular Django fields corresponding to the attributes in the
+    # JeffersonBUILDING shapefile.
+  
+    FID_1 = models.BigIntegerField()
+    BLDG_ID = models.CharField(max_length=10, null =True)
+    HEIGHT = models.FloatField()
+    FOOTPRINT = models.FloatField()           #
+    address = models.CharField(max_length=100, null =True)
+    street = models.CharField(max_length=200, null =True)
+    no_floors = models.FloatField()
+    DATA_YEAR = models.CharField(max_length=10, null =True)
+    SFT = models.FloatField()
+    Area_SqMet = models.FloatField()
+    FloodDepth = models.FloatField()
+    FloodDep_1 = models.FloatField()
+    FloodDep_2 = models.FloatField()
+    FloodDep_3 = models.FloatField()
+    ElevationU = models.FloatField()
+    Elevation = models.FloatField()      #
+    Elevatio_1 = models.FloatField()
+    FID_2 = models.BigIntegerField()
+    Source = models.CharField(max_length=50, null =True)
+    u_intercept = models.FloatField()
+    a_slope = models.FloatField()
+    Latitude = models.FloatField()
+    Longitude = models.FloatField()
+    FloodZone = models.CharField(max_length=100, null =True)
+    Parish = models.CharField(max_length=50, null =True)
+
+
+    # GeoDjango-specific: a geometry field (PointField)
+    mpoint = models.MultiPointField()
+
+    # Returns the string representation of the model.
+    def __str__(self):
+        return str(self.address)+" , "+str(self.street)                

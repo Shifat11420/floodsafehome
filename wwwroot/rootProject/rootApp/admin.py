@@ -2,6 +2,11 @@ from django.contrib import admin
 from rootApp.models import Contact
 from rootApp.models import FreeboardConstructionCost, Sampledata, Sample, dataAll
 
+from django.contrib.gis import admin
+from rootApp.models import JeffersonbuildingdataFSH
+
+admin.site.register(JeffersonbuildingdataFSH, admin.GeoModelAdmin)
+
 class FreeboardConstructionCostAdmin(admin.ModelAdmin):
     list_display = ("address", "street", "floodzone", "parish", "no_floors",)
 
