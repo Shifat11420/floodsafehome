@@ -7,8 +7,15 @@ from django.contrib.gis.db import models
 
 class Contact(models.Model):
     name=models.CharField(max_length=122)
-    email=models.CharField(max_length=122)
-    desc=models.TextField(max_length=122)
+    email=models.EmailField(max_length=122)
+    selecttype=models.CharField(max_length=100, default='SOME STRING')
+    locationproblem=models.TextField(max_length=100, default='SOME STRING')
+    detail=models.TextField(max_length=200, default='SOME STRING')
+    subject1=models.TextField(max_length=60, default='SOME STRING')
+    detailmethodse1=models.TextField(max_length=200, default='SOME STRING')
+    subject2=models.TextField(max_length=60, default='SOME STRING')
+    detailmethodse2=models.TextField(max_length=200, default='SOME STRING')
+
     date=models.DateField()
 
     def __str__(self):

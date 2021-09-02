@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render, HttpResponse
 from rootApp.models import Contact, FreeboardConstructionCost, Sampledata, Sample, dataAll, JeffersonbuildingdataFSH
 from datetime import datetime
 from django.contrib import messages
 from django.db.models import Q
+from django.core.mail import message, send_mail
 from functools import reduce
 import operator
 from django.http import JsonResponse
@@ -158,12 +159,53 @@ def helpcenter(request):
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
-        desc = request.POST.get('desc')
-        contact = Contact(name=name, email=email, desc=desc, date=datetime.today()) 
+
+        selecttype = request.POST.get('select-type','')
+        if not selecttype:
+            messages.error(request, 'Please select the following options')
+            return redirect('/helpcenter')
+        locationproblem = request.POST.get('locationproblem')
+        detail = request.POST.get('detail')
+        subject1 = request.POST.get('subject1')
+        detailmethodse1 = request.POST.get('detail-method-or-se1')
+        subject2 = request.POST.get('subject2')
+        detailmethodse2 = request.POST.get('detail-method-or-se2')
+
+        data = {
+            'name' : name,
+            'email' : email,
+            'selecttype' : selecttype,
+            'locationproblem' : locationproblem,
+            'location_problem_detail' : detail,
+            'subject_Ques_about_methodology' : subject1,
+            'detail_Ques_about_methodology' : detailmethodse1,
+            'subject_other_problem' : subject2,
+            'detail_other_problem' : detailmethodse2
+        }
+
+
+        message = '''
+        New message from : {}
+        
+        Problem type: {}
+
+        Problem with location: {} 
+        Details about location problem: {}
+
+        Question about methodology- Subject : {}
+        Question about methodology- Details : {}
+
+        Other problem- Subject : {}
+        Other problem- Details : {}
+
+        '''.format(data['email'], data['selecttype'], data['locationproblem'], data['location_problem_detail'],data['subject_Ques_about_methodology'],data['detail_Ques_about_methodology'],data['subject_other_problem'],data['detail_other_problem'])
+        send_mail(data['selecttype'], message, '', ['floodsafehome@gmail.com'])
+
+        contact = Contact(name=name, email=email, selecttype=selecttype, locationproblem=locationproblem, detail=detail, subject1=subject1, detailmethodse1=detailmethodse1, subject2=subject2, detailmethodse2=detailmethodse2, date=datetime.today()) 
         contact.save()
         messages.success(request, 'Your message has been sent!')
 
-    return render(request, 'contact.html')    
+    return render(request, 'contact.html', {})    
 
 
 

@@ -158,7 +158,7 @@
                             <h2>Contact US</h2><br>
                             <p class="help-center"> All fields are required.</p>
                             <hr>
-                            <form method="post" action="/helpcenter">
+                            <form method="post" action="/helpcenter" class="was-validated">
                             
                             {% csrf_token %} 
                                         <p class="p-style"><b>Name</b> <br>
@@ -169,35 +169,46 @@
 
                                         <p class="p-style"><b>How can we help?</b> <br>
                                     
-                                            <select name="select-type" id="select-type" size="1" onchange="visibleDiv(this.value);" class="dropdown-help">
-                                                <option value="" selected>-</option>
-                                                <option value="location">Unable to find a location</option>
-                                                <option value="methodologies">Question about methodologies</option>
-                                                <option value="methodologies">Something else</option>
+                                             <select name="select-type" id="select-type" size="1" onchange="visibleDiv(this.value);" class="dropdown-help" required>
+                                                <option value="">Please choose an option</option>
+                                                <option value="locationproblem">Unable to find a location</option>
+                                                <option value="QuestionMethodologies">Question about methodologies</option>
+                                                <option value="OtherMethodologies">Something else</option>
                                             </select>
                                         </p>
                                         <br><br>
-
-                                <div id="location" class="hiddenDiv">
+                               
+                                <div id="locationproblem" class="hiddenDiv">
                                         <p class="p-style"><b>Address or location searched</b> <br>
-                                            <input type="location" class="input-help" id="location" name="location" placeholder="Please tell us what you have searched" required></p>
+                                            <input type="location" class="input-help" id="locationproblem" name="locationproblem" placeholder="Please tell us what you have searched" ></p>
                                 
                                         <p class="p-style"><b>Details</b> <br>
-                                            <input type="detail"  class="details" id="detail" name="detail" placeholder="Please tell us specific information" required></p>
+                                            <input type="detail"  class="details" id="detail" name="detail" placeholder="Please tell us specific information" ></p>
                                 </div>
-
-                                <div id="methodologies" class="hiddenDiv">
+                                 
+                                <div id="QuestionMethodologies" class="hiddenDiv">
                                 
-                                            <p class="p-style"><b>Subject</b><br>
-                                                <input type="subject" class="input-help" id="subject" name="subject" placeholder="Please type your subject" required></p>
+                                            <p class="p-style"><b>Question statement</b><br>
+                                                <input type="subject" class="input-help" id="subject1" name="subject1" placeholder="Please type your subject" ></p>
                                             
                                             <p class="p-style"><b>Details</b> <br>
-                                                <input type="detail-method-or-se" class="details" id="detail-method-or-se" name="detail-method-or-se" placeholder="Please provide information to help us better understand your request" required></p>
+                                                <input type="detail-method-or-se" class="details" id="detail-method-or-se1" name="detail-method-or-se1" placeholder="Please provide information to help us better understand your queries"></p>
                                 </div>
-                                <br>
+                                
+
+                                <div id="OtherMethodologies" class="hiddenDiv">
+                                
+                                            <p class="p-style"><b>Subject</b><br>
+                                                <input type="subject" class="input-help" id="subject2" name="subject2" placeholder="Please type your subject" ></p>
+                                            
+                                            <p class="p-style"><b>Details</b> <br>
+                                                <input type="detail-method-or-se" class="details" id="detail-method-or-se2" name="detail-method-or-se2" placeholder="Please provide information to help us better understand your request" ></p>
+                                </div>
+                                <br> {% comment %}{% endcomment %}
                                 <center><div class ="g-recaptcha" data-sitekey="6LczVOgZAAAAABekyhXydKkKHFAwzXWVjQFDO2xV"></div> <!--recaptcha-->
                                 <br>
-                                   <button class="btn btn-primary" type="submit">Submit</button></center>                      
+                                   <button class="btn btn-primary" type="submit">Submit</button></center>  
+                                                   
                             </form>
 
                         </div>

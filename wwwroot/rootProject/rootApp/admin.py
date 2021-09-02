@@ -6,6 +6,7 @@ from django.contrib.gis import admin
 from rootApp.models import JeffersonbuildingdataFSH
 
 admin.site.register(JeffersonbuildingdataFSH, admin.GeoModelAdmin)
+admin.site.register(Contact)
 
 class FreeboardConstructionCostAdmin(admin.ModelAdmin):
     list_display = ("address", "street", "floodzone", "parish", "no_floors",)
@@ -21,7 +22,7 @@ class dataAllAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Contact)
+#admin.site.register(Contact)
 admin.site.register(FreeboardConstructionCost, FreeboardConstructionCostAdmin)
 admin.site.register(Sampledata)
 admin.site.register(Sample, SampleAdmin) 
