@@ -480,17 +480,17 @@
          
               <!--User type-->
               <label> <b class="map-style"> User Type <sup class="sup">*</sup> </b></label><br>
-                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "individual1" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "individual2" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
-                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "individual2" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
-                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "community-official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
+                <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "Homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
+                <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
 
                 
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type <sup class="sup">*</sup></b></label><br>
-                  <label><input type="radio" name ="selectBox" value = "new_building" class="bar" > New building</label>
-                  <label><input type="radio" name ="selectBox" value = "existing_building" class="bar4"  disabled> Existing building</label>
+                  <label><input type="radio" name ="selectBox" value = "New building" class="bar" > New building</label>
+                  <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>
                 <br>  
                 
                 <!--Address or Parcel ID-->
@@ -510,11 +510,11 @@
               <!--This option will be appear when user select community official-->
               <div id="as" style="display: none">
                     <label> <b class="map-style"> Assessment Scale <sup class="sup">*</sup> </b></label><br>
-                      <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "single-building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
-                      Single-building</label>
-                      <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "spatial-scale" class="margin1" onclick="ShowHideDiv2()">
+                      <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "Single building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
+                      Single building</label>
+                      <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "Spatial scale" class="margin1" onclick="ShowHideDiv2()">
                       Spatial scale</label>
-                
+                     
 
                       <!--This option will be appear when user select single-building-->
                       <div id="singleBuilding" style="display: none">
@@ -523,12 +523,13 @@
                           <div class="select-form" style="margin: 0 0 0 30px">
                               <div class="select-itms">
                                   <select name="select" id="select1">
-                                      <option value="">Building Location</option>
-                                      <option value=""> Address</option>
-                                      <option value=""> Parcel</option>
-                                      <option value=""> Zipcode </option>
-                                      <option value=""> Subdivision</option>
+                                      <option value="Building Location">Building Location</option>
+                                      <option value="Address"> Address</option>
+                                      <option value="Parcel"> Parcel</option>
+                                      <option value="Zipcode"> Zipcode </option>
+                                      <option value="Subdivision"> Subdivision</option>
                                   </select>
+                                  <h3><strong>Selected location type:</strong> {{buildinglocation_type|safe}} </h3>
                               </div>
                           </div>
                       
@@ -598,8 +599,8 @@
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories <sup class="sup">*</sup> </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "1" class="bar" required> One story</label>
-                  <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  required> Two or more stories</label> 
+                  <label><input type="radio" name ="stories" id="stories" value = "One story" class="bar" required> One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label> 
                      <br>
                      &nbsp;
             
