@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="static/css/themify-icons.css">
     <link rel="stylesheet" href="static/css/slick.css">
     <link rel="stylesheet" href="static/css/nice-select.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="static/css/style.css">
     <script src="static/js/modernizr.js"></script> 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -34,7 +34,31 @@
     <script src="https://js.arcgis.com/4.18/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <style>
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 300px;
+        width: 100%;
+      }
+      </style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("#btnPrint").live("click", function () {
+            var divContents = $("#dvContainer").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+    </script>
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <!--Add field-->
     <script type="text/javascript">
     $(document).ready(function(){
@@ -42,7 +66,7 @@
         var maxField = 10; 
         var addButton = $('.add_button'); 
         var wrapper = $('.field_wrapper'); 
-        var fieldHTML = '<div> <input type="text" name="field_name[]" value="" placeholder="Type your address" required/> <a href="javascript:void(0);" class="remove_button"> &nbsp; <img src="../static/img/logo/minus_icon.png"/></a></div>'; //New input field html 
+        var fieldHTML = '<div> <input type="text" name="field_name[]" value="" placeholder="Type your address" required/> <a href="javascript:void(0);" class="remove_button"> &nbsp; <img src="static/img/logo/minus_icon.png"/></a></div>'; //New input field html 
         var x = 1; //Initial field counter is 1
         
         //Once add button is clicked and maxField is smaller than x, increment field counter
@@ -207,7 +231,7 @@
     });
   </script>
 
-<!--screenshot to pdf-->
+<!--screenshot to pdf
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -226,40 +250,47 @@ html2canvas {
 
 </style>
 
-<!--screenshot to pdf ends-->
+screenshot to pdf ends-->
 </head>
 
 <body>   
 
 <!--screenshot to pdf-->
-<a href="javascript:genScreenshot()"><button style="background:aqua; cursor:pointer">Get Screenshot</button> </a>
+{% comment %} <a href="javascript:genScreenshot()"><button style="background:aqua; cursor:pointer">Get Screenshot</button> </a>
 <a id="test"></a>
 
 <div id="box1">
-</div>
+</div> {% endcomment %}
 <!--screenshot to pdf ends-->
 
      <header class="header header-map">
 
 <main>
       <form action="/exportpdf">
-          <input type="submit" style="float: right;" value="Export PDF" />
+          {% comment %} <input type="submit" style="float: right;" value="Export PDF" id="downloadPDF" /> {% endcomment %}
+          <input type="button" value="Export PDF" id="btnPrint" />
       </form> 
     
 
-    {% comment %} <div id="createpdf">   {% endcomment %}
-       <!-- <section id ="section-1">  -->
-      <div class="left2 section-tittle mb-40">
-     <h2>Freeboard Cost Analysis Report</h2> </hr>
-
-
+    
+      <div class="left2 section-tittle mb-40" id="dvContainer">
+      <h2>Freeboard Cost Analysis Report</h2>
       <hr class="style-four">
+     
+
+      <!--Esri map-->
+      <div id="viewDiv" >
+       </div>
+       <!--Esri map-->
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <hr class="style-four">
+     
 
 
-         <h1><strong>Individual Building Information</strong></h1>
+         <h2 class="map-style-title" >Individual Building Information</h2>
+         
          <div style="overflow-x:auto;">
-       <section id="section-6">
-
+  
       {% for individual in listindividual %}
        <table class="table-slide">
            <tr class="table-slide-bg">
@@ -284,12 +315,9 @@ html2canvas {
          <hr class="style-four">
 
 
-         <h1><strong>Other Common Building Information</strong></h1>
+         <h2 class="map-style-title" >Other Common Building Information</h2>
    <!--Interactive slide-->  
-      <div style="overflow-x:auto;">
-       <section id="section-6">
-      
-
+      <div style="overflow-x:auto;">  
           <table class="table-slide">
            
           <tr class="table-slide-bg">
@@ -403,39 +431,39 @@ html2canvas {
           </tr> 
 
         </table> 
-          <section id="section-2"><p class=" map-style">
+      <p class=" map-style">
        ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
        ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
        ● The CRS rate is 5, with a 25% discount on flood insurance. 
-      </p></section>
+      </p>
       <br><br>
-        </section>
+        
      
       </div>   
 
     </div>
     
 
-     </div>
 <!--Result details-->
 <!--Summary-->
 
 
-  <div class="left2 section-tittle mb-40"> 
+  <div style="overflow-x:auto;">
   
  <hr class="style-four">
-  <h1><strong>Overall Freeboard Cost Results and Analysis</strong></h1>
+  <h2 class="map-style-title" >Overall Freeboard Cost Results and Analysis</h2>
 
   
-        <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
+    <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
           resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u></div> <br>
-      <div class="pricing" > 
+     <div class="row2">
+      <div class="pricing column2" style="width: 450px; margin: 10px; padding: 30px" > 
 
-      <div class="pricing-slider">
+      <div class="pricing-slider" >
       
         <center><label class="form-slider" >
-          <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
+          <img id='img_pdf' src='static/img/construction/twofeet_white.png' style="width: 250px; height: 250px;"/><br><br>
           <center><div class="pricing-slider-value" ></div></center> <br>
           <datalist id="scale">
             <option>0</option>
@@ -459,13 +487,14 @@ html2canvas {
         </label></center>
         
       </div>
+      </div>
 
       
-  <div  style=" display:inline-block; vertical-align: top; "  >
-     
-      <!--Monthly premium savings-->
+  <div class="column2" style="width: 750px; margin: 10px; padding: 20px" >
+          
+    <!--Monthly premium savings-->
 
-      <!--  for calculations with below BFE   -->
+    <!--  for calculations with below BFE   -->
     <!--  <div
         class="pricing-item-price" 
         data-price-output='{
@@ -481,8 +510,8 @@ html2canvas {
         }'
       > -->
 
-       <!--  for calculations without below BFE   -->
-      <div
+      <!--  for calculations without below BFE   -->
+      <div style="overflow-x:auto; "
         class="pricing-item-price" 
         data-price-output='{
           "0": ["$", {{summation_total_monthly_premium_saving0}},""],
@@ -500,7 +529,7 @@ html2canvas {
         <b class="b-summary-value map-style">        
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> insurance savings per month <img id='img' src='static/img/logo/blue_question.png' class="img-q"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood loss reduction."/></p>
+     --><span class="pricing-item-price-after"></span> </b> insurance savings per month</p>
     
     <!--Flood loss-->
 
@@ -536,7 +565,7 @@ html2canvas {
       <b class="b-summary-value map-style"> 
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> reduction in expected flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+     --><span class="pricing-item-price-after"></span> </b> reduction in expected flood losses per month </p>
       </div>
     </div>    
    <br>
@@ -578,7 +607,7 @@ html2canvas {
       <b class="b-summary-value map-style">      
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> amortized cost per month <img id='img' src='static/img/logo/blue_question.png' class="img-q" title=""/></p>
+     --><span class="pricing-item-price-after"></span> </b> amortized cost per month</p>
       </div>   
 
       <!--Freeboard cost-->
@@ -619,7 +648,7 @@ html2canvas {
          (based on <b class="map-style b-summary-value2">
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b>construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
+     --><span class="pricing-item-price-after"></span> </b>construction cost)  </p>
       </div>   
     </div><br>
 
@@ -658,7 +687,7 @@ html2canvas {
       <b class="b-summary-value map-style">      
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance only) <img id='img' src='static/img/logo/blue_question.png' class="img-q" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/>
+     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance only) </p>
       </div>
 
        <!--Flood loss-->
@@ -697,7 +726,7 @@ html2canvas {
       <b class="b-summary-value map-style"> 
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) <img id='img' src='static/img/logo/blue_question.png' class="img-q" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) </p>
       </div>
 
       <!--Time to recover
@@ -735,30 +764,28 @@ html2canvas {
         <span class="pricing-item-price-after">month(s)</span>
       </div> -->
       </div>
-    </div>
-    </div>
-  </div><br><br><br>
-
- </div>  
+    </div><br><br><br>
+   </div>  
+  </div> 
 
 
 <!--Monthly saving-->
-  <div class="left2 section-tittle-detail mb-40"> 
+  <div style="overflow-x:auto;">
    <hr class="style-four">
      <h2 class="map-style-title" >Monthly Savings</h2>
       <div class="graph-description" >
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.BFE stands for <b>B</b>ase <b>F</b>lood <b>E</b>levation.
         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
         </div>
-      <div class="zc-body"><div id="chart5" class="chart5"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></div> 
-    </div>
+      <center><div style="width:50%;"><div id="chart5" ></div><div class="bfe"></div>
+    </div></center>
      
  
   </div> 
 
 <!--Freeboard cost-->
-  <div class="left2 section-tittle-detail mb-40"> 
+  <div style="overflow-x:auto;">
    <hr class="style-four">
      <h2 class="map-style-title">Freeboard Cost</h2> 
       <div class="graph-description">
@@ -767,11 +794,11 @@ html2canvas {
         <b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>.
         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
       </div>  
-      <section id="section-3"><div class="zc-body">     <div id="chart1" class="chart1"></div></div></section>
+     <center><div style="width:60%;"><div id="chart1" class="chart1"></div></div></center>
   </div>
 
 <!--Insurance-->
-  <div class="left2 section-tittle-detail mb-40"> 
+  <div style="overflow-x:auto;">
    <hr class="style-four">
     <h2 class="map-style-title">Annual Insurance Premiums</h2>
      <div class="graph-description" >
@@ -780,14 +807,13 @@ html2canvas {
        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
       
      </div>
-     <section id="section-4">  <div class="zc-body"> 
-      <center>
-       <div id="chart2" class="chart2"></div>
-      </center> </div> </section>
+      <center><div style="width:60%;">
+      <div id="chart2" class="chart2"></div>
+      </div> </center>
   </div>
 
 <!--Reduction in expected flood losses-->
-<div class="left2 section-tittle-detail mb-40"> 
+<div style="overflow-x:auto;">
   <hr class="style-four">
      <h2 class="map-style-title">Expected Annual Flood Loss</h2>
        
@@ -795,12 +821,12 @@ html2canvas {
           Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{summation_AAL_absCurrencyhigh | intcomma}}</b> to <b class="map-style">${{summation_AAL_absCurrencylow | intcomma}}</b>. 
           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
         </div>
-      <section id="section-5"><div class="zc-body">  <div id="chart3" class="chart3"></div></div> </section> 
-      </section>
+    <center><div style="width:60%;"><div id="chart3" class="chart3"></div></div>  </center>
+      
   </div>
 
 <!--Recover-->
-<div class="left2 section-tittle-detail mb-40"> 
+<div style="overflow-x:auto;">
   <hr class="style-four">
      <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
       <div class="graph-description" >
@@ -808,14 +834,14 @@ html2canvas {
         Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{summation_time_to_recover_FC_PSlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_PShigh}} month(s)</b>. 
         Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{summation_time_to_recover_FC_TBlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_TBhigh}} month(s)</b>.       
       </div>
-      <div class="zc-body">     <div id="chart4" class="chart4"></div></div>
+     <center><div style="width:60%;"><div id="chart4" class="chart4"></div></div></center>
   </div>
 
 <!--Overall-->
-  <div class="left2 section-tittle-detail mb-40"> 
+  <div style="overflow-x:auto;">
     <hr class="style-four">
      <h2 class="map-style-title">Overall Graph</h2>
-      <div style="display:inline-block; margin: 0 0 0 5px;" class="zc-body">     <div id="myChart" class="chart--container1"></div></div>
+     <center><div style="width:60%;"><div id="myChart" class="chart--container1"></div></div></center>
   </div>
 </main>
 
@@ -1364,8 +1390,8 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
   zingchart.render({
     id: 'chart5Id',
     data: chart5Data,
-    height: '100%', 
-    width: '100%',
+    width: '500px',
+    height:'300px'
   });
 
 
@@ -1522,43 +1548,49 @@ let chartConfig = {
   zingchart.render({ 
     id: chart1Id, 
     data : chart1Data, 
-    width: '100%'
+    width: '500px',
+    height:'300px'
   });
+
 
   // Chart 2
   zingchart.render({ 
     id: chart2Id, 
     data : chart2Data, 
-    width: '100%'
+    width: '500px',
+    height:'300px'
   });
 
   // Chart 3
   zingchart.render({ 
     id: chart3Id, 
     data : chart3Data, 
-    width: '100%'
+    width: '500px',
+    height:'300px'
   });
 
   // Chart 4
   zingchart.render({ 
     id: chart4Id, 
     data : chart4Data, 
-    width: '100%'
+    width: '500px',
+    height:'300px'
   });
 
   // Chart 5
   zingchart.render({ 
     id: chart5Id, 
     data : chart5Data, 
-    width: '100%'
+    width: '500px',
+    height:'300px'
   });
 
   // Chart 6
   zingchart.render({
     id: 'myChart',
     data: chartConfig,
-    width: '100%',
-    height:'80%'
+    width: '500px',
+    height:'300px'
   });
 
   var ctx = document.getElementById('chart').getContext('2d');
@@ -1704,13 +1736,13 @@ function show(nr) {
     });
     </script>
 
-<!--screenshot to pdf-->
+<!--screenshot to pdf
 <script>
 function genScreenshot() {
     html2canvas(document.body, {
       onrendered: function(canvas) {
-      $('#box1').html("");
-			$('#box1').append(canvas);
+      $('#createpd').html("");
+			$('#createpd').append(canvas);
       
       if (navigator.userAgent.indexOf("MSIE ") > 0 || 
 					navigator.userAgent.match(/Trident.*rv\:11\./)) 
@@ -1722,13 +1754,13 @@ function genScreenshot() {
       }
       else   {
         
-        $('#test').attr('href', canvas.toDataURL("image/png"));
+        $('#test').attr('href', canvas.toDataURL("../static/img/logo"));
         doc = new jsPDF({
                      unit: 'px',
                      format: 'a4'
                  });
-                doc.addImage(canvas.toDataURL("image/png"), 'JPEG', 0, 0);
-                doc.save('ExportFile.pdf');
+                doc.addImage(canvas.toDataURL("../static/img/logo"), 'PNG', 0, 0);
+                doc.save('Freeboard_Report.pdf');
                 form.width(cache_width);
         $('#test').attr('download','Test file.png');
         $('#test')[0].click();
@@ -1738,8 +1770,65 @@ function genScreenshot() {
       }
     });
 }
-</script>
+</script>-->
 <!--screenshot to pdf ends-->
+
+
+<!--JavaScript for saving as a pdf file-->
+<script>
+$("#downloadPDF").click(function () {
+  // $("#content2").addClass('ml-215'); // JS solution for smaller screen but better to add media queries to tackle the issue
+  getScreenshotOfElement(
+    $("div#content2").get(0),
+    0,
+    0,
+    $("#content2").width() + 45,  // added 45 because the container's (content2) width is smaller than the image, if it's not added then the content from right side will get cut off
+    $("#content2").height() + 30, // same issue as above. if the container width / height is changed (currently they are fixed) then these values might need to be changed as well.
+    function (data) {
+      var pdf = new jsPDF("l", "pt", [
+        $("#content2").width(),
+        $("#content2").height(),
+      ]);
+
+      pdf.addImage(
+        "data:image/png;base64," + data,
+        "PNG",
+        0,
+        0,
+        $("#content2").width(),
+        $("#content2").height()
+      );
+      pdf.save("azimuth-certificte.pdf");
+    }
+  );
+});
+
+// this function is the configuration of the html2cavas library (https://html2canvas.hertzen.com/)
+// $("#content2").removeClass('ml-215'); is the only custom line here, the rest comes from the library.
+function getScreenshotOfElement(element, posX, posY, width, height, callback) {
+  html2canvas(element, {
+    onrendered: function (canvas) {
+      // $("#content2").removeClass('ml-215');  // uncomment this if resorting to ml-125 to resolve the issue
+      var context = canvas.getContext("2d");
+      var imageData = context.getImageData(posX, posY, width, height).data;
+      var outputCanvas = document.createElement("canvas");
+      var outputContext = outputCanvas.getContext("2d");
+      outputCanvas.width = width;
+      outputCanvas.height = height;
+
+      var idata = outputContext.createImageData(width, height);
+      idata.data.set(imageData);
+      outputContext.putImageData(idata, 0, 0);
+      callback(outputCanvas.toDataURL().replace("data:../static/img/logo/png;base64,", ""));
+    },
+    width: width,
+    height: height,
+    useCORS: true,
+    taintTest: false,
+    allowTaint: false,
+  });
+}
+</script>
 </body> 
 </html>
 

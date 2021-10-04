@@ -114,7 +114,7 @@ class JeffersonbuildingdataFSH(models.Model):
     # Regular Django fields corresponding to the attributes in the
     # JeffersonBUILDING shapefile.
   
-    FID_1 = models.BigIntegerField()
+    FID_1 = models.BigIntegerField(default=" ")
     BLDG_ID = models.CharField(max_length=10, null =True)
     HEIGHT = models.FloatField()
     FOOTPRINT = models.FloatField()           #

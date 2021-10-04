@@ -416,8 +416,42 @@ hr {
     margin: 0;
 }
 
+
+.btn-adv {
+    background: #367FFF;
+    font-family: "Raleway", sans-serif;
+    padding: 17px 20px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 200;
+    border-radius: 30px;
+    line-height: 1;
+    -moz-user-select: none;
+    letter-spacing: 1px;
+    line-height: 0;
+    margin-bottom: 0;
+    cursor: pointer;
+    transition: color 0.4s linear;
+    position: relative;
+    z-index: 1;
+    border: 0;
+    overflow: hidden;
+    margin: 0;
+}
+
 .btn-map {
     margin-left: 25px;
+}
+
+.btn-result {
+    margin-right: 35px;
+}
+
+.btn-result2 {
+    position: absolute;
+    right: 22px;
+    top: 8px;
 }
 
 
@@ -11628,7 +11662,6 @@ del {
     width: 80%;
     max-width: 1000px;
     margin: 4em auto;
-    background: #7fc2e9e8;
     border-radius: none;
     text-align: justify;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -11646,6 +11679,10 @@ del {
     -moz-transition-duration: 0.3s;
     transition-duration: 0.3s;
     z-index: 1;
+    box-shadow: 0 2px 2.2px rgba(0, 0, 0, 0.034), 0 5px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 6px rgba(0, 0, 0, 0.06), 0 11.8px 13.4px rgba(0, 0, 0, 0.086);
+    background-color: rgb(252, 252, 252);
+    border-radius: 12px;
+    color: #363636;
 }
 
 .bts-popup-container img {
@@ -12491,6 +12528,12 @@ input.text {
 
 
 /*line style for the map page */
+hr.style-one {
+    border-top: 1px solid #a8a8a8;
+    border-bottom: 1px solid #fff;
+    width: 99%;
+    margin: 25px 0 25px 0;
+}
 
 hr.style-two {
     border-top: 1px solid #a8a8a8;
@@ -12500,7 +12543,7 @@ hr.style-two {
 hr.style-three {
     border-top: 1px solid #a8a8a8;
     border-bottom: 1px solid #fff;
-    width: 90%;
+    width: 95%;
     margin: 27px 0 18px 0;
 }
 
@@ -12508,6 +12551,13 @@ hr.style-four {
     border-top: 1px solid #a8a8a8;
     border-bottom: 1px solid #fff;
     width: 98%;
+    margin: 25px 0 25px 0;
+}
+
+hr.style-five {
+    border-top: 4px solid #a8a8a8;
+    border-bottom: 4px solid #fff;
+    width: 50%;
     margin: 25px 0 25px 0;
 }
 
@@ -12660,27 +12710,11 @@ ul li a.current {
 /*zingchart*/
 
 .zc-body {
-    width: 90%;
+    width: 97%;
     background: #fff;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    margin-bottom: 50px;
+    margin: 30px 50px 10px 0px;
 }
 
-.zc-body1 {
-    background: #fff;
-    width: 95%;
-}
-
-.chart--container {
-    height: 30%;
-    width: 100%;
-}
-
-.chart--container1 {
-    width: 1150px;
-}
 
 .zc-ref {
     display: none;
@@ -12755,6 +12789,7 @@ section {
     font-size: 16px;
     color: #363636;
 }
+
 
 .box2 {
     box-shadow: 0 2px 2.2px rgba(0, 0, 0, 0.034), 0 5px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 6px rgba(0, 0, 0, 0.06), 0 11.8px 13.4px rgba(0, 0, 0, 0.086);
@@ -12836,9 +12871,8 @@ section {
 }
 
 .vl {
-    border-left: 1.9px solid rgb(156, 156, 156);
-    height: 150px;
-    padding: 0 0 0 20px;
+    border-left: 5px solid rgb(0,112,192);
+    padding: 0 0 0 15px;
     margin: 0 0 0 5px;
 }
 
@@ -13024,3 +13058,52 @@ td {
 .btn-dl:hover {
   background-color: RoyalBlue;
 }
+
+
+  
+/* Container for flexboxes */
+.row2 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  /* Create four equal columns */
+  .colum2 {
+    flex: 75%;
+    margin: 15px 25px 15px 0px; 
+    padding: 10px;
+  }
+  
+  /* On screens that are 992px wide or less, go from four columns to two columns */
+  @media screen and (max-width: 992px) {
+    .column2 {
+      flex: 50%;
+    }
+  }
+  
+  /* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .row2 {
+      flex-direction: column2;
+    }
+  }
+
+  .form-container {
+    position: relative;
+    max-width: 1000px;
+    padding: 10px;
+    margin: 4em auto;
+    border-radius: none;
+    text-align: justify;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    background-color: yellow;
+    box-shadow: 0 2px 2.2px rgba(0, 0, 0, 0.034), 0 5px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 6px rgba(0, 0, 0, 0.06), 0 11.8px 13.4px rgba(0, 0, 0, 0.086);
+    background-color: rgb(252, 252, 252);
+    border-radius: 12px;
+  }
+
+
+  .pricing-slider-value {
+    font-size: 22px;   
+    font-weight: bold;
+  }
