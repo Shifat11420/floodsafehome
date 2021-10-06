@@ -422,7 +422,7 @@
       <form method="get" action="/search" name="userInput">
             {% csrf_token %} 
       <p> 
-        <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <button class="btn btn-result2" type="submit" > Get results</button></h2> 
+        <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <!--<button class="btn btn-result2" type="submit" > Get results</button>--></h2> 
           <div class="box">
          
               <!--User type-->
@@ -551,7 +551,8 @@
                         
               <!--Advanced parameter-->
                 <div style="text-align:right">
-                  <input type="button" onclick='show(1);' class="buttonClass btn-adv"  value="Advanced parameters">
+                  {% comment %} <input type="button" onclick='show(1);' class="buttonClass btn-adv"  value="Advanced parameters"> {% endcomment %}
+                  <a class="buttonClass btn-adv" title="Under development"> Advanced parameters </a>
                 </div>
             
 
@@ -647,11 +648,12 @@
           </div> <!--dib box end-->     
       
         <br>
-       {% comment %} <center><button class="btn btn-result" type="submit" > Get results</button> </center>
-       <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
+        <div style="text-align:right">
+        <button class="btn-result" type="submit" > Get results</button></div>
+        {% comment %} <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
       </form>
       </p>
- <hr class="style-three">
+ <hr class="style-four">
  <!-- Select your building information end-->
 
  <!-- Side bar naviation menu-->
