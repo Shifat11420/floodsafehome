@@ -1,0 +1,157 @@
+body{
+    margin: 10;
+    padding: 10;
+    background: url('http://cdn.backgroundhost.com/backgrounds/subtlepatterns/paper_3.png');
+    font-family: Tahoma, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+tr {
+border-bottom: 1px solid #ddd;
+}
+
+
+
+h3{
+background-color:powderblue;
+}
+
+
+@media print {
+
+body {
+    margin: 10;
+    padding: 10;
+    background: url('http://cdn.backgroundhost.com/backgrounds/subtlepatterns/paper_3.png');
+    font-family: Tahoma, sans-serif;
+    font-size: 16px;
+    -webkit-print-color-adjust: exact !important;
+    color: #363636;
+}
+
+i {
+    font-style: italic;
+  }
+
+div{
+    line-height: 2.0;
+}
+
+
+h3{
+    background-color:powderblue;
+    }
+
+
+hr.style-five {
+    border-top: 3px solid #a8a8a8;
+    border-bottom: 4px solid #fff;
+    width: 55%;
+    margin: 70px 0 25px 0;
+}
+
+hr.style {
+    border-top: 3px solid #a8a8a8;
+    border-bottom: 4px solid #fff;
+    width: 55%;
+    margin: 30px 0 25px 0;
+}
+
+#viewDiv {
+    height: 30%;
+    width: 100%;
+}
+
+.pricing-slider-img {
+    width: 350px;
+    height: 350px;
+    margin: 70px 50px 0 50px;
+}
+
+.optimal {
+    font-size: 23px;
+    line-height: 40px;
+    font-weight: 450;
+}
+
+
+.summary-b {
+    font-size: 25px;
+}
+
+.vl {
+    border-left: 5px solid rgb(0,112,192);
+    padding: 0 0 0 15px;
+    margin: 0 0 0 5px;
+}
+  
+/* Container for flexboxes */
+.row2 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  /* Create four equal columns */
+  .colum2 {
+    flex: 75%;
+    margin: 15px 25px 15px 0px; 
+    padding: 10px;
+  }
+
+.ttl{
+    margin: 30px 0px 0px 0px;    
+    font-weight: 700;
+    color: #363636;
+ }
+
+
+.map-style-title {
+    padding: 10px 0 20px 0;
+    font-weight: 600;
+    font-size: 20px;
+    color: #363636;
+}
+/* print.css */
+table, img, svg, div {
+  break-inside: avoid;
+}
+
+
+.zc-body {
+    width: 100%;
+    background: #fff;
+    margin: 30px 00px 30px 0px;
+}
+
+.btn {
+    background: #367FFF;
+    font-family: "Raleway", sans-serif;
+    text-transform: capitalize;
+    padding: 25px 38px;
+    margin: 10px 10px 10px 0px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 30px;
+    line-height: 1;
+    -moz-user-select: none;
+    letter-spacing: 1px;
+    line-height: 0;
+    margin-bottom: 0;
+    cursor: pointer;
+    transition: color 0.4s linear;
+    position: relative;
+    z-index: 1;
+    border: 0;
+    overflow: hidden;
+}
+    
+}
+
+
