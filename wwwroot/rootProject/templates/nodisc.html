@@ -1440,7 +1440,8 @@ function formProcess(){
       minorTicks: 1
     },
   tooltip: {
-    text: '$%v'
+    text: '$%v',
+    thousandsSeparator: ", ",
   },
   series: [
     {
@@ -1766,7 +1767,7 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
     scaleY: {
         
       format: "$%v",
-      negation: "currency",
+      negation: "currency",      
       thousandsSeparator: ", ",
       multiplier: true,
         guide: {
@@ -1779,7 +1780,8 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
         minorTicks: 1
       },
     tooltip: {
-      text: '$%v'
+      text: '$%v',
+      thousandsSeparator: ", ",
     },
     series: [
       {

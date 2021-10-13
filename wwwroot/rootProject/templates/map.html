@@ -395,20 +395,20 @@
 			</div>
 		</li> <!-- .cd-single-step -->
 
-    <li class="cd-single-step">
+{% comment %}     <li class="cd-single-step">
 			<span>Step 3</span>
 
 			<div class="cd-more-info bottom">
 				<h2>Step Number 3</h2>
 				<p>Check your flood zone! You can turn on/off layers.</p>
 			</div>
-		</li> <!-- .cd-single-step -->
+		</li> <!-- .cd-single-step --> {% endcomment %}
 
     <li class="cd-single-step">
-			<span>Step 4</span>
+			<span>Step 3</span>
 
 			<div class="cd-more-info bottom">
-				<h2>Step Number 4</h2>
+				<h2>Step Number 3</h2>
 				<p>You can find the detailed information here when you click the 'Get results' button (Step number 2).</p>
 			</div>
 		</li> <!-- .cd-single-step -->
@@ -508,7 +508,7 @@
                             <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                             <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
                             <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
-                              <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                              <div style="border-style:outset; width:96%; margin: 10px 0px 10px 0px;" > 
                                 <input type="hidden" name="addr_list" id="addr_list" value="" />
                                 <ul id="list"></ul>
                               </div> 

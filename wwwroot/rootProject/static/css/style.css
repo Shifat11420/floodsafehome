@@ -12039,11 +12039,11 @@ del {
         top: 80%;
         left: 25%;
     }
-    .cd-single-step:nth-of-type(3) {
+/*     .cd-single-step:nth-of-type(3) {
         top: 20%;
         right: 17%;
-    }
-    .cd-single-step:nth-of-type(4) {
+    } */
+    .cd-single-step:nth-of-type(3) {
         top: 70%;
         right: 40%;
     }
