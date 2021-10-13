@@ -590,9 +590,10 @@ function formProcess(){
                                       <option value="{% url 'nodisc'  %}"> Format</option>
                                       <option value="{% url 'exportfile'  %}"> CSV file </option>
                                       <option value="{% url 'exportshp'  %}"> SHAPE file </option>
-                                      <option value="{% url 'report'  %}"> PDF file</option>
+                                      <option value="{% url 'report'  %}"><a value="{% url 'report'  %}" target="_blank"> PDF file</a></option>
                                       
-            </select>    
+            </select>
+            </li>    
              {% comment %} <button class="btn btn-dl"><i class="fa fa-download"></i> </button> {% endcomment %}
             </a>  
         {% comment %} <li><a href="{% url 'report'  %}"><strong>Export report </strong></a></li>     {% endcomment %}
