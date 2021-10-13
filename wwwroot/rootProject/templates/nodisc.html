@@ -417,11 +417,11 @@ function formProcess(){
                             <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                             <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
                             <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
-                              <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                              <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
                                 <input type="hidden" name="addr_list" id="addr_list" value="" />
                                 <ul id="list"></ul>
                               </div> 
-                              <div style="border-style:outset; width:95%; margin: 10px 0px 10px 0px;" > 
+                              <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
                                <h3 style="color:blue;"><strong>Selected buildings:</strong> </h3>
                                 {% for individual in buildinglocation %}
                                     {{individual|safe}} <br>
