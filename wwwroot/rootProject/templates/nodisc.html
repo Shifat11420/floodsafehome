@@ -594,11 +594,11 @@ function formProcess(){
        {% comment %}  <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
         <li><a href="#section-7">Overall graph</a></li> {% endcomment %}
         <li><a>Save the outcome as a &nbsp;
-            <select name="saveresult" id="saveresult" onchange="location = this.value;"  target="_blank">
+            <select name="saveresult" id="saveresult" onchange="openInNewTab(this);"  target="_blank">
                                       <option value="{% url 'nodisc'  %}"> Format</option>
                                       <option value="{% url 'exportfile'  %}"> CSV file </option>
                                       <option value="{% url 'exportshp'  %}"> SHAPE file </option>
-                                      <option value="{% url 'report'  %}"><a value="{% url 'report'  %}" target="_blank"> PDF file</a></option>
+                                      <option value="{% url 'report'  %}"> PDF file</option>
                                       
             </select>
             </li>    
@@ -2408,6 +2408,15 @@ function show(nr) {
     });
     </script>
 
+<!--Open PDF separate window-->
+<script>
+function openInNewTab(obj)
+{
+    //alert(obj.value);
+    var win = window.open(obj.value, '_blank');
+    win.focus();
+}
+</script>
 </body>
 </html>
 
