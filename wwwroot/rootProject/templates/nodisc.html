@@ -349,9 +349,17 @@ function formProcess(){
                 <br>  
                 
                 <!--Address or Parcel ID-->
-                <label><b class="map-style">Address or Parcel ID </b></label><br>
+                <label><b class="map-style">Select By </b></label>
+            
+                    <select name="select1" id="select1" style="margin: 0px 0px 0px 10px">
+                        <option value="">Selection</option>
+                        <option value="Address">Address</option>
+                        <option value="Subdivison" disabled>Subdivison</option>
+                        <option value="Parcel" disabled>Parcel</option>
+                        <option value="Zip code" disabled>Zip code</option>
+                    </select>
+                              
                   <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
-                
                 {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage </b> </label><br>
                   <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
@@ -583,8 +591,8 @@ function formProcess(){
         <li><a href="#section-3">Freeboard Cost</a></li>
         <li><a href="#section-4">Annual Insurance Premiums</a></li>
         <li><a href="#section-5">Expected Annual Flood Loss</a></li>
-        <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
-        <li><a href="#section-7">Overall graph</a></li>
+       {% comment %}  <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
+        <li><a href="#section-7">Overall graph</a></li> {% endcomment %}
         <li><a>Save the outcome as a &nbsp;
             <select name="saveresult" id="saveresult" onchange="location = this.value;"  target="_blank">
                                       <option value="{% url 'nodisc'  %}"> Format</option>
@@ -961,6 +969,7 @@ function formProcess(){
 
     <!-- Advanced features -->    
          {% comment %} <button class="btn float-right tip" type="submit" style="margin: 0 75px 20px 0" ></button> {% endcomment %}
+         {% comment %} <a class="buttonClass btn-adv tip" onclick='showAF(2);' title="Under development"> Advanced features </a>  {% endcomment %}
                  <div style="text-align:right">
                      {% comment %} <a class="buttonClass btn-adv tip" onclick='showAF(2);' title="Under development"> Advanced features </a> {% endcomment %}
                      <a class="buttonClass btn-adv tip" title="Under development"> Advanced features </a>
@@ -1099,7 +1108,8 @@ function formProcess(){
         <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
         </div>
-        <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section>
+        {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
+        <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
     </div>
      
     <!--
@@ -1161,7 +1171,7 @@ function formProcess(){
   </div>
 
 <!--Recover-->
-<div class="left3 section-tittle-detail mb-40"> 
+{% comment %} <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-five">
      <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
       <div class="graph-description" >
@@ -1170,17 +1180,17 @@ function formProcess(){
         Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{summation_time_to_recover_FC_TBlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_TBhigh}} month(s)</b>.       
       </div>
       <div id="chart4" class="zc-body"></div>
-  </div>
+  </div> {% endcomment %}
 
 <!--Overall-->
-  <div class="left3 section-tittle-detail"> 
+ {% comment %}  <div class="left3 section-tittle-detail"> 
    <hr class="style-five"> 
      <h2 class="map-style-title">Overall Graph</h2>
        <div class="graph-description" >
         This overall graph includes all analysis information integrated in one chart that provides intuitive decision making information with all estimates converted to monthly basis.       
       </div>
        <Section id="section-7" >   <div id="myChart" class="zc-body-overall"></div>  </section>
-  </div>
+  </div> {% endcomment %}
 </main>
 <!--Freeboard graph
 <div class="left3 section-tittle-detail mb-40">
@@ -1960,6 +1970,129 @@ let chartConfig = {
   };
 
 
+
+ // Chart new
+  // DEFINE DATA
+  // -----------------------------
+ let chartNew = [
+    {
+      type: 'bar',    
+      text: 'Freeboard cost',
+      values: {{freeboardCost_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#ff614f',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }, 
+    {
+      type: 'bar', 
+      text: 'Insurance saving',
+      values: {{total_annual_premium_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#FFBF00',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Flood loss reduction',
+      values: {{AAL_absCurrency_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#337AFF',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Monthly saving',
+      values: {{total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#189447',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+
+  ];
+
+let chartConfig2 = {
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+     layout: '1x4' ,
+     borderColor: 'whtie'
+    },
+    scaleX: {
+      values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      guide: {
+        lineColor: '#BDBDBD',
+        lineStyle: 'solid'
+      },
+      label: {
+        text: 'BFE + Freeboard (ft)'
+      },
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartNew
+  };
+
+
   // CHART CONFIG
   // ----------------------------- commented out
   {% comment %} let chartConfig = {
@@ -2091,6 +2224,12 @@ let chartConfig = {
     width: '100%'
   });
 
+  // Chart 7 (New)
+  zingchart.render({
+    id: 'NewChart',
+    data: chartConfig2,
+    width: '100%'
+  });
   var ctx = document.getElementById('chart').getContext('2d');
 
   var chart = (ctx, {

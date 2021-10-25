@@ -431,6 +431,7 @@
                 <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
                 <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
                 <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
+ 
 
                 
               <!--Building type-->
@@ -441,7 +442,18 @@
                 <br>  
                 
                 <!--Address or Parcel ID-->
-                <label><b class="map-style">Address or Parcel ID </b></label><br>
+                 
+ 
+                <label><b class="map-style">Select By </b></label>
+            
+                    <select name="select1" id="select1" style="margin: 0px 0px 0px 10px">
+                        <option value="">Selection</option>
+                        <option value="Address">Address</option>
+                        <option value="Subdivison" disabled>Subdivison</option>
+                        <option value="Parcel" disabled>Parcel</option>
+                        <option value="Zip code" disabled>Zip code</option>
+                    </select>
+                              
                   <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                 
                 {% comment %} <!--Square footage-->
