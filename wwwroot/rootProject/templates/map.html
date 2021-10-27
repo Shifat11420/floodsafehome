@@ -74,7 +74,8 @@
       "esri/widgets/LayerList",
       "esri/widgets/Legend",
       "esri/widgets/Expand",
-      "esri/widgets/Search"
+      "esri/widgets/Search",
+      "dojo/domReady!"
 
     ], function(esriConfig,Map, MapView, Sketch, GraphicsLayer, FeatureLayer,BasemapToggle, BasemapGallery, LayerList, Legend, Expand, Search) {
 
@@ -191,7 +192,21 @@
 
       }
       
-      
+      //search widget
+      var searchWidget = new Search({
+        view: view
+      });
+    
+    console.log(document.getElementById("submitButton"))
+    document.getElementById("submitButton").onclick = (e)=> {
+      e.preventDefault()
+      let el = document.getElementById("input")
+      console.log(el.value)
+      searchWidget.search(el.value).then((result)=> {
+        console.log("result", result)
+      })
+    }
+
       //basemap toggle
       const basemapToggle = new BasemapToggle({
         view: view,
@@ -443,18 +458,24 @@
                 
                 <!--Address or Parcel ID-->
                  
- 
-                <label><b class="map-style">Select By </b></label>
-            
-                    <select name="select1" id="select1" style="margin: 0px 0px 0px 10px">
-                        <option value="">Selection</option>
+             
+                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
+                        <option value="">Select by</option>
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
                         <option value="Parcel" disabled>Parcel</option>
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
+
+                        <select name="select2" id="select2" >
+                            <option value="">Select your parish</option>
+                            <option value="Jefferson"> Jefferson</option>
+                            <option value="St. Tammany"> St. Tammany</option>
+                            <option value="Terrebonne"> Terrebonne </option>
+                        </select>
+         
                               
-                  <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
+                  <input type="text"  name="location"  id="input" placeholder="Type your building information (i.e. Address, subdivision, parcel ID, or zipcode)"  class="text"  value={{location|safe}} > <br>
                 
                 {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage </b> </label><br>
@@ -511,11 +532,29 @@
                         <label> <b class="map-style"> Select area from the map   </b></label><br>
                         <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                         
-                        <!--Add fields-->
-                        <label> <b class="map-style"> Type your address(es)   </b></label><br>
+                      
                         <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                         <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                          
+
+                                    
+                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
+                        <option value="">Select by</option>
+                        <option value="Address">Address</option>
+                        <option value="Subdivison" disabled>Subdivison</option>
+                        <option value="Parcel" disabled>Parcel</option>
+                        <option value="Zip code" disabled>Zip code</option>
+                    </select>
+
+                        <select name="select2" id="select2" >
+                            <option value="">Select your parish</option>
+                            <option value="Jefferson"> Jefferson</option>
+                            <option value="St. Tammany"> St. Tammany</option>
+                            <option value="Terrebonne"> Terrebonne </option>
+                        </select><br>
+         
+                           <!--Add fields-->
+                        <label> <b class="map-style"> Type your address(es)   </b></label><br>     
+              
                           <!-- new code with remove button-->  
                             <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                             <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
