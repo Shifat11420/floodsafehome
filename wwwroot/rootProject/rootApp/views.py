@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render, HttpResponse
 from rootApp.models import Contact, FreeboardConstructionCost, Sampledata, Sample, dataAll, JeffersonbuildingdataFSH
+from rootApp.models import JeffersonAddress
 from datetime import datetime
 from django.contrib import messages
 from django.db.models import Q
@@ -25,13 +26,13 @@ import pandas as pd
 import geopandas as gpd
 from zipfile import ZipFile
 import os
-import pdfkit
+# import pdfkit
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template.loader import get_template
 
 from rootProject.utils import render_to_pdf #created in step 4
-import imgkit
+# import imgkit
 import re
 
 
@@ -41,7 +42,7 @@ import re
 
 
 
-datafile = JeffersonbuildingdataFSH   #dataAll
+datafile = JeffersonAddress   #JeffersonbuildingdataFSH   #dataAll
  
  
 # Create your views here.
@@ -92,14 +93,14 @@ def gotomap(request):
     streetlist = locationList[1:]
 ##Error message---------------------
     if (len(locationList)==1):
-        queryset = datafile.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+        queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
     elif (len(locationList)==2):
-        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1]))  ).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1]))  ).all()[:10]
     elif (len(locationList)==3):
-        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
     else:
         print("lalalala")
-        queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
 
     mylist = []        
     if len(queryset)<=0:
@@ -139,17 +140,20 @@ def autosuggest(request):
     query_originalList=query_original.split(' ')
 
     if (len(query_originalList)==1):
-        queryset = datafile.objects.filter(Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))  ).all()[:10]
+        queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))  ).all()[:10]
     elif (len(query_originalList)==2):
-        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1]))  ).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1]))  ).all()[:10]
     elif (len(query_originalList)==3):
-        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
     else:
-        queryset = datafile.objects.filter((Q(address__istartswith = query_originalList[0]) | (Q(street__icontains = query_originalList[0]))), (Q(street__icontains = query_originalList[1])), (Q(street__icontains = query_originalList[1]))).all()[:10]
+        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
+
+    
 
     mylist = []        
     if len(queryset)>0:
-        mylist += [x.address+" "+x.street+","+" "+x.Parish+ " Parish" for x in queryset]
+        #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
+        mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
     else:
         mylist = ["No results found"]    
     return JsonResponse(mylist, safe=False)
@@ -234,6 +238,7 @@ def search(request):
     building_type = request.GET.get('selectBox')
     assessment_type = request.GET.get('as')
     buildinglocation_type = request.GET.get('select')
+    selectParish = request.GET.get('select2', 'default')
     print("User type =", user_type)
     print("Building type =", building_type)
     print("Assessment type =", assessment_type)
@@ -273,7 +278,9 @@ def search(request):
     search.buildinglocation = buildinglist
     print("\n\n*************************************************\n\n")
 
-    with open('results.csv', 'w', newline='') as output:
+    
+    #with open(r'C:\inetpub\wwwroot\rootProject\output\results.csv', 'w', newline='') as output:           ##**********server copy  
+    with open('output/results.csv', 'w', newline='') as output:                                            ##**********local copy  
         line_count=0
         fieldnames = ['Address', 'Lattitude', 'Longitude', 'Parish', 'Flood zone', 'Individual building optimal saving', 'Individual building recommended freeboard']
         output_data = csv.DictWriter(output, fieldnames=fieldnames)
@@ -315,13 +322,13 @@ def search(request):
 
         ##----------------------- Error message---------------------
             if (len(locationList)==1):
-                queryset = datafile.objects.filter(Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))  ).all()[:10]
+                queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
             elif (len(locationList)==2):
-                queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(street__icontains = locationList[1]))  ).all()[:10]
+                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(STREET__icontains = locationList[1]))  ).all()[:10]
             elif (len(locationList)==3):
-                queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
             else:
-                queryset = datafile.objects.filter((Q(address__istartswith = locationList[0]) | (Q(street__icontains = locationList[0]))), (Q(address__icontains = locationList[1]) | Q(street__icontains = locationList[1])), (Q(street__icontains = locationList[2]))).all()[:10]
+                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
 
             mylist = []        
             if len(queryset)<=0:
@@ -338,16 +345,16 @@ def search(request):
         ##--------------------autocomplete-------------------------------------
             if (len(streetlist)==1):
                 addressvalue = datafile.objects.filter(
-                Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1]))).all()
+                Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1]))).all()
             elif (len(streetlist)==2):
                 addressvalue = datafile.objects.filter(
-                Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2])).all()        
+                Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2])).all()        
             elif (len(streetlist)==3):
                 addressvalue = datafile.objects.filter(
-                    Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3])).all()    
+                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3])).all()    
             else:  
                 addressvalue = datafile.objects.filter(
-                    Q(address__icontains=locationList[0]) ,  (Q(address__icontains=locationList[1]) | Q(street__icontains=locationList[1])), Q(street__icontains=locationList[2]), Q(street__icontains=locationList[3]), Q(street__icontains=locationList[4])).all()
+                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
             print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
         ##------------------autocomplete ends--------------------------------------------------
                         
@@ -358,12 +365,12 @@ def search(request):
             zonevalue = ""
             parishvalue = ""
             for data in addressvalue:
-                zonevalue = data.FloodZone
+                zonevalue = data.FLD_ZONE
                 zonelist.append(zonevalue)
                 #u = 1.5218
                 #a = 0.335
-                u = data.u_intercept
-                a = data.a_slope
+                u = data.u_Intercep
+                a = data.a_Slope
                 if u == "Unknown" or u == -9999.0:
                     u = 1.5218
                 else:
@@ -376,7 +383,8 @@ def search(request):
                 print("ZONE: ", zonevalue )
                 print("u value: ", u )
                 print("a value: ", a )
-                parishvalue = data.Parish
+                parishvalue = selectParish
+                print("Parish is : ", parishvalue)
                 lat = data.Latitude
                 lon =  data.Longitude
               
@@ -384,7 +392,8 @@ def search(request):
 
 
         ##--------------DEMO values-----------------TO BE CHANGED------
-            BFE = data.FloodDep_2
+            #BFE = data.FloodDep_2
+            BFE = data.BFE
             print( "BFE : ", BFE)            
             r = 0.03    # say, interest rate 3%
             n = 12       # no of payments per year
@@ -1042,7 +1051,7 @@ def search(request):
             #         NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
             #     print(NBcostRatio[i])
 
-            output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish':parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
+            output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish': parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
 
         ##########-----for summery analysis section ---------------##########
         ##----------------TOTAL----savings per month (flood insurance only)---------------------
@@ -1448,7 +1457,8 @@ def search(request):
 
 
     ## read the .csv file using Pandas
-    results_data = pd.read_csv('results.csv')
+    #results_data = pd.read_csv(r'C:\inetpub\wwwroot\rootProject\output\results.csv')             ##**********server copy
+    results_data = pd.read_csv('output/results.csv')                                              ##**********local copy
 
     results_data["Aggregated recommended freeboard"] = optimal_freeboard
     results_data["Aggregated total optimal monthly saving"] = optimal_saving
@@ -1458,7 +1468,8 @@ def search(request):
     results_data["Aggregated time to recover FC (total benefit)"] = aggregated_time_to_recover_FC_TB
     results_data["Aggregated time to recover FC PS"] = aggregated_time_to_recover_FC_PS
 
-    results_data.to_csv("results.csv", index=False)
+    #results_data.to_csv(r"C:\inetpub\wwwroot\rootProject\output\results.csv", index=False)            ##*********server copy
+    results_data.to_csv("output/results.csv", index=False)                                            ##*********local copy
     print(results_data.head(3))
 
     ## creating GeoPandas GeoDataFrame using the Pandas dataframe
@@ -1467,10 +1478,11 @@ def search(request):
     print( results_gdf)
 
     ## obtain ESRI WKT
-    #ESRI_WKT = 'GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]'
+    ESRI_WKT = 'GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]'
  
     ## save the file as an ESRI Shaefile
-    results_gdf.to_file(filename = 'results_shp', driver = 'ESRI Shapefile', crs='EPSG:4326')
+    #results_gdf.to_file(filename = r'C:\inetpub\wwwroot\rootProject\results_shp', driver = 'ESRI Shapefile', crs='EPSG:4326')             ##*********server copy
+    results_gdf.to_file(filename = 'results_shp', driver = 'ESRI Shapefile', crs='EPSG:4326')                                            ##*********local copy
 
    
     ## Individual report ###
@@ -1600,7 +1612,8 @@ def exportfile(request):
     response['Content-disposition']='attachment;filename=FloodSafeHomeResults'+'.csv'
 
     # opening the CSV file 
-    with open('results.csv', mode ='r')as file:     
+    #with open(r'C:\inetpub\wwwroot\rootProject\output\results.csv', mode ='r')as file:     ##**********server copy
+    with open('output/results.csv', mode ='r')as file:                                      ##**********local copy
         # reading the CSV file 
         csvFile = csv.reader(file) 
         # creating a csv writer object 
@@ -1618,7 +1631,8 @@ def exportshp(request):
     response['Content-disposition']='attachment;filename=FloodsafehomeResults_shp'+'.zip'
 
     # path to folder which needs to be zipped
-    directory = './results_shp'
+    #directory = r'rootProject\results_shp'  # './results_shp'  ##**********server copy
+    directory = './results_shp'                                 ##**********local copy
     # initializing empty file paths list
     file_paths = []
 

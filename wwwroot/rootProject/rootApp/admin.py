@@ -3,9 +3,10 @@ from rootApp.models import Contact
 from rootApp.models import FreeboardConstructionCost, Sampledata, Sample, dataAll
 
 from django.contrib.gis import admin
-from rootApp.models import JeffersonbuildingdataFSH
+from rootApp.models import JeffersonbuildingdataFSH, JeffersonAddress
 
 admin.site.register(JeffersonbuildingdataFSH, admin.GeoModelAdmin)
+admin.site.register(JeffersonAddress, admin.GeoModelAdmin) 
 admin.site.register(Contact)
 
 class FreeboardConstructionCostAdmin(admin.ModelAdmin):

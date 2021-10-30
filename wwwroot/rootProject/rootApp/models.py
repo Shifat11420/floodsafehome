@@ -147,3 +147,35 @@ class JeffersonbuildingdataFSH(models.Model):
     # Returns the string representation of the model.
     def __str__(self):
         return str(self.address)+" , "+str(self.street)                
+
+
+class JeffersonAddress(models.Model):
+    # Regular Django fields corresponding to the attributes in the
+    # JeffersonAddress shapefile.
+  
+    ADDRESS = models.CharField(max_length=10, null =True,default=" ")
+    STREET = models.CharField(max_length=25, null =True)
+    SUITE = models.CharField(max_length=10, null =True)
+    ZIP = models.CharField(max_length=10, null =True)
+    AREA_NAME = models.CharField(max_length=30, null =True)
+    STREET_NAM = models.CharField(max_length=43, null =True)
+    ST_TYPE = models.CharField(max_length=5, null =True)
+    WO_AREA = models.CharField(max_length=30, null =True)
+    a_Slope = models.FloatField()
+    u_Intercep = models.FloatField()
+    FD100Year = models.FloatField()
+    FD500Year = models.FloatField()
+    FLD_ZONE = models.CharField(max_length=17, null =True)
+    BFE = models.FloatField()
+    Latitude = models.FloatField()
+    Longitude = models.FloatField()
+    WSF1 = models.FloatField()
+    WSF2 = models.FloatField()
+    
+
+    # GeoDjango-specific: a geometry field (PointField)
+    mpoint = models.MultiPointField()
+
+    # Returns the string representation of the model.
+    def __str__(self):
+        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.ZIP)                

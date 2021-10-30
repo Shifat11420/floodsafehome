@@ -1,6 +1,6 @@
 from pathlib import Path
 from django.contrib.gis.utils import LayerMapping
-from rootApp.models import JeffersonbuildingdataFSH
+from rootApp.models import JeffersonbuildingdataFSH, JeffersonAddress
 
 
 JeffersonbuildingdataFSH_mapping = {
@@ -34,6 +34,38 @@ JeffersonbuildingdataFSH_mapping = {
 
 JeffersonbuildingdataFSH_shp = Path(__file__).resolve().parent / 'data' / 'JeffersonParishBuildingData.shp'
 
+# def run(verbose=True):
+#     lm = LayerMapping(JeffersonbuildingdataFSH, JeffersonbuildingdataFSH_shp, JeffersonbuildingdataFSH_mapping, transform=False)
+#     lm.save(strict=True, verbose=verbose)
+
+
+
+JeffersonAddress_mapping = {
+    'ADDRESS' : 'ADDRESS',
+    'STREET' : 'STREET',
+    'SUITE' : 'SUITE',
+    'ZIP' : 'ZIP',         
+    'AREA_NAME' : 'AREA_NAME',
+    'STREET_NAM' : 'STREET_NAM',
+    'ST_TYPE' : 'ST_TYPE',
+    'WO_AREA' : 'WO_AREA',
+    'a_Slope' : 'a_Slope',
+    'u_Intercep' : 'u_Intercep',
+    'FD100Year' : 'FD100Year',
+    'FD500Year' : 'FD500Year',
+    'FLD_ZONE' : 'FLD_ZONE',
+    'BFE' : 'BFE',
+    'Latitude' : 'Latitude',
+    'Longitude' : 'Longitude',
+    'WSF1' : 'WSF1',
+    'WSF2' : 'WSF2',
+    'mpoint' : 'MULTIPOINT',
+}
+
+
+
+JeffersonAddress_shp = Path(__file__).resolve().parent / 'data' / 'JeffersonAddress.shp'
+
 def run(verbose=True):
-    lm = LayerMapping(JeffersonbuildingdataFSH, JeffersonbuildingdataFSH_shp, JeffersonbuildingdataFSH_mapping, transform=False)
+    lm = LayerMapping(JeffersonAddress, JeffersonAddress_shp, JeffersonAddress_mapping, transform=False)
     lm.save(strict=True, verbose=verbose)
