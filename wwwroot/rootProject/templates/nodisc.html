@@ -349,7 +349,7 @@ function formProcess(){
                 <br>  
                 
                 <!--Address or Parcel ID-->
-                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
+                    <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;">
                         <option value="">Select by</option>
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
@@ -357,7 +357,7 @@ function formProcess(){
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
 
-                        <select name="select2" id="select2" >
+                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 192px 5px 0px;">
                             <option value="">Select your parish</option>
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
@@ -2001,7 +2001,7 @@ let chartConfig = {
       text: 'Freeboard cost',
       values: {{freeboardCost_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: 'var(--red)',
+      backgroundColor: '#EC5B57',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2016,7 +2016,7 @@ let chartConfig = {
       text: 'Insurance saving',
       values: {{total_annual_premium_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: 'var(--orange)',
+      backgroundColor: '#37615B',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2031,7 +2031,7 @@ let chartConfig = {
       text: 'Flood loss reduction',
       values: {{AAL_absCurrency_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: 'var(--green)',
+      backgroundColor: '#44B0AB',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2046,7 +2046,7 @@ let chartConfig = {
       text: 'Monthly saving',
       values: {{total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: 'var(--blue)',
+      backgroundColor: '#49c8c5',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {

@@ -302,7 +302,7 @@
   <div class="bts-popup-container">
         <form action="/action_page.php" class="form-container">
           <h1 style="text-align:center; padding: 10px"><strong>Important notice</strong></h1>
-            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in October 2021 for final version. <br><br></h2>
+            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in November 2021 for final version. <br><br></h2>
             <center><div class="btn ">  
               <a href="#0" class="button bts-popup-close">Close</a><br><br>
             </div></center>
@@ -312,7 +312,7 @@
 
 <!--Important notice end-->
   <!--Disclaimer start-->
-  <div class="bts-popup" role="alert">
+  <div class="bts-popup" role="alert" id="popup">
       <div class="bts-popup-container">
         <center><img src="../static/img/logo/logo_disclaimer.png" alt="Flood Safe Home" width="50%"  style="padding:8px; margin:15px"/></center>
           <div class="disclaimer">
@@ -459,7 +459,7 @@
                 <!--Address or Parcel ID-->
                  
              
-                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
+                    <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;">
                         <option value="">Select by</option>
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
@@ -467,7 +467,7 @@
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
 
-                        <select name="select2" id="select2" >
+                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 192px 5px 0px;">
                             <option value="">Select your parish</option>
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
@@ -839,6 +839,8 @@ function removeItem() {
     var item = document.getElementById(candidate.value);
     a.removeChild(item);}
 </script> 
+
+
 
 <!--CRS rate selection-->
 <script>
