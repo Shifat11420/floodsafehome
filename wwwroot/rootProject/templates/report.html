@@ -454,8 +454,8 @@
      <h2 class="map-style-title" >Monthly Savings</h2>
       
         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b>${{summation_total_monthly_saving_low}}</b> to <b>${{Optimalsavingsumm}}</b>. 
-        <div id="chart5" class="zc-body"></div><i>BFE stands for <b>Base Flood Elevation</i></b>
+        <b>${{summation_total_monthly_saving_low | intcomma}}</b> to <b>${{Optimalsavingsumm| intcomma}}</b>. 
+        <div id="NewChart" class="zc-body"></div><i>BFE stands for <b>Base Flood Elevation</i></b>
     </div>
 
 
@@ -490,7 +490,7 @@
       <div id="chart3" class="zc-body"></div> 
   </div>
 
-<!--Recover-->
+<!--Recover
 <div>
   <hr class="style-five">
      <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
@@ -500,9 +500,9 @@
         Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b>{{summation_time_to_recover_FC_TBlow}}</b> month(s) and <b>{{summation_time_to_recover_FC_TBhigh}} month(s)</b>.       
    
       <div id="chart4" class="zc-body"></div>
-  </div>
+  </div>-->
 
-<!--Overall-->
+<!--Overall
   <div>
    <hr class="style-five"> 
      <h2 class="map-style-title">Overall Graph</h2>
@@ -510,7 +510,7 @@
         This overall graph includes all analysis information integrated in one chart that provides intuitive decision making information with all estimates converted to monthly basis.       
  
       <div id="myChart" class="zc-body-end"></div> 
-  </div>
+  </div>-->
 
   <div>
    <hr class="style-five"> 
@@ -1387,6 +1387,162 @@ let chartConfig = {
     series: chartData
   }; {% endcomment %}
 
+
+ // Chart new
+  // DEFINE DATA
+  // -----------------------------
+ let chartNew = [
+    {
+      type: 'bar',    
+      text: 'Freeboard cost',
+      values: {{freeboardCost_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#EC5B57',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+     valueBox: {
+      text : '$%v',       
+      thousandsSeparator: ",",
+      fontColor: '#000',
+      fontSize: '11px',
+      offsetY: '5px',
+      placement: 'top'
+    },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }, 
+    {
+      type: 'bar', 
+      text: 'Insurance saving',
+      values: {{total_annual_premium_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#37615B',
+      borderRadiusTopLeft: '5px',
+      alpha: 0.90,
+     valueBox: {
+      text : '$%v',       
+      thousandsSeparator: ",",
+      fontColor: '#000',
+      fontSize: '11px',
+      offsetY: '7px',
+      placement: 'top'
+    },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Flood loss reduction',
+      values: {{AAL_absCurrency_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#44B0AB',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+     valueBox: {
+      text : '$%v',       
+      thousandsSeparator: ",",
+      fontColor: '#000',
+      fontSize: '11px',
+      offsetY: '5px',
+      placement: 'top'
+    },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Monthly saving',
+      values: {{total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#49c8c5',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+     valueBox: {
+      text : '$%v',       
+      thousandsSeparator: ",",
+      fontColor: '#000',
+      fontSize: '11px',
+      offsetY: '5px',
+      placement: 'top'
+    },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+
+  ];
+
+let chartConfig2 = {
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+     layout: '1x4' ,
+     borderColor: 'whtie'
+    },
+    scaleX: {
+      values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      guide: {
+        lineColor: '#BDBDBD',
+        lineStyle: 'solid'
+      },
+      label: {
+        text: 'BFE + Freeboard (ft)'
+      },
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartNew
+  };
+
+
+
   // RENDER CHARTS
   // -----------------------------
 
@@ -1432,6 +1588,54 @@ let chartConfig = {
     width: '100%'
   });
 
+  var ctx = document.getElementById('chart');
+
+  var chart = (ctx, {
+            type: 'line',
+            data: {
+                labels: ['+0ft freeboard','+`0`ft freeboard'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: '#33b5e5',
+                    borderColor: '#33b5e5',
+                    data: [15,10]   
+                }]
+            },
+            options: {
+              responsive:true,
+              legend:{
+                display:false,
+              },
+              title: {
+                display:false,
+                text:'Text',
+              },
+              
+              scales: {
+                xAxes: [{
+                  display: true
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'dollar',
+                  },
+                  ticks: {
+                    min: 0,
+                    stepSize: 10
+                  }
+                }]
+              }
+            }
+    }); 
+
+  // Chart 7 (New)
+  zingchart.render({
+    id: 'NewChart',
+    data: chartConfig2,
+    width: '100%'
+  });
   var ctx = document.getElementById('chart').getContext('2d');
 
   var chart = (ctx, {

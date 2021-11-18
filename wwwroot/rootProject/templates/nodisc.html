@@ -357,7 +357,7 @@ function formProcess(){
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
 
-                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 192px 5px 0px;">
+                        <select name="selec2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 102px 5px 0px;">
                             <option value="">Select your parish</option>
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
@@ -421,22 +421,6 @@ function formProcess(){
                         <label> <b class="map-style"> Select area from the map   </b></label><br>
                         <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                         
-                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
-                        <option value="">Select by</option>
-                        <option value="Address">Address</option>
-                        <option value="Subdivison" disabled>Subdivison</option>
-                        <option value="Parcel" disabled>Parcel</option>
-                        <option value="Zip code" disabled>Zip code</option>
-                    </select>
-
-                        <select name="select2" id="select2" >
-                            <option value="">Select your parish</option>
-                            <option value="Jefferson"> Jefferson</option>
-                            <option value="St. Tammany"> St. Tammany</option>
-                            <option value="Terrebonne"> Terrebonne </option>
-                        </select><br>
-         
-
                         <!--Add fields-->
                         <label> <b class="map-style"> Type your address(es)   </b></label><br>
                         <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
@@ -1131,8 +1115,22 @@ function formProcess(){
         </div>
         {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
         <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
+        
+        <br>X zone graph (test)
+        <div id="Xzone" class="zc-body"></div>
     </div>
-     
+
+ {% comment %}    <div class="left3 section-tittle-detail mb-40"> 
+   <hr class="style-five">
+     <h2 class="map-style-title" >Monthly Savings</h2>
+      <div class="graph-description" >
+        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>. {% endcomment %}
+        <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
+       <!--</div>--> 
+        {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
+        
+    <!--</div>-->  
     <!--
         <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
         <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
@@ -1161,6 +1159,7 @@ function formProcess(){
       </div>  
       <section id="section-4"><div id="chart1" class="zc-body"></div></section>
   </div>
+  
 
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
@@ -1992,10 +1991,10 @@ let chartConfig = {
 
 
 
- // Chart new
+ // Chart 7: new
   // DEFINE DATA
   // -----------------------------
- let chartNew = [
+  let chartNew = [
     {
       type: 'bar',    
       text: 'Freeboard cost',
@@ -2111,6 +2110,115 @@ let chartConfig2 = {
       }
     },
     series: chartNew
+  };
+
+
+ // Chart 8: new x zone
+  // DEFINE DATA
+  // -----------------------------
+  let chartXzone = [
+    {
+      type: 'bar',    
+      text: 'Freeboard cost',
+      values: {{freeboardCost_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#EC5B57',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }, 
+    {
+      type: 'bar', 
+      text: 'Insurance saving',
+      values: {{total_monthly_premium_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#37615B',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Flood loss reduction',
+      values: {{AAL_absCurrency_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#44B0AB',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Monthly saving',
+      values: {{total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#49c8c5',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+
+  ];
+
+let chartConfig3 = {
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+     layout: '1x4' ,
+     borderColor: 'whtie'
+    },
+    scaleX: {
+      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      guide: {
+        lineColor: '#BDBDBD',
+        lineStyle: 'solid'
+      },
+      label: {
+        text: 'Ground + Freeboard (ft)'
+      },
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartXzone
   };
 
 
@@ -2251,6 +2359,14 @@ let chartConfig2 = {
     data: chartConfig2,
     width: '100%'
   });
+
+      // Chart 8 (New)
+  zingchart.render({
+    id: 'Xzone',
+    data: chartConfig3,
+    width: '100%'
+  });
+  
   var ctx = document.getElementById('chart').getContext('2d');
 
   var chart = (ctx, {
@@ -2292,6 +2408,8 @@ let chartConfig2 = {
               }
             }
     }); 
+
+
     </script>
     
 

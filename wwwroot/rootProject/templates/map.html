@@ -74,8 +74,7 @@
       "esri/widgets/LayerList",
       "esri/widgets/Legend",
       "esri/widgets/Expand",
-      "esri/widgets/Search",
-      "dojo/domReady!"
+      "esri/widgets/Search"
 
     ], function(esriConfig,Map, MapView, Sketch, GraphicsLayer, FeatureLayer,BasemapToggle, BasemapGallery, LayerList, Legend, Expand, Search) {
 
@@ -192,21 +191,7 @@
 
       }
       
-      //search widget
-      var searchWidget = new Search({
-        view: view
-      });
-    
-    console.log(document.getElementById("submitButton"))
-    document.getElementById("submitButton").onclick = (e)=> {
-      e.preventDefault()
-      let el = document.getElementById("input")
-      console.log(el.value)
-      searchWidget.search(el.value).then((result)=> {
-        console.log("result", result)
-      })
-    }
-
+      
       //basemap toggle
       const basemapToggle = new BasemapToggle({
         view: view,
@@ -302,7 +287,7 @@
   <div class="bts-popup-container">
         <form action="/action_page.php" class="form-container">
           <h1 style="text-align:center; padding: 10px"><strong>Important notice</strong></h1>
-            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in November 2021 for final version. <br><br></h2>
+            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in October 2021 for final version. <br><br></h2>
             <center><div class="btn ">  
               <a href="#0" class="button bts-popup-close">Close</a><br><br>
             </div></center>
@@ -312,7 +297,7 @@
 
 <!--Important notice end-->
   <!--Disclaimer start-->
-  <div class="bts-popup" role="alert" id="popup">
+  <div class="bts-popup" role="alert">
       <div class="bts-popup-container">
         <center><img src="../static/img/logo/logo_disclaimer.png" alt="Flood Safe Home" width="50%"  style="padding:8px; margin:15px"/></center>
           <div class="disclaimer">
@@ -457,8 +442,6 @@
                 <br>  
                 
                 <!--Address or Parcel ID-->
-                 
-             
                     <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;">
                         <option value="">Select by</option>
                         <option value="Address">Address</option>
@@ -467,15 +450,14 @@
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
 
-                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 192px 5px 0px;">
+                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 2px 102px 5px 0px;">
                             <option value="">Select your parish</option>
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
                             <option value="Terrebonne"> Terrebonne </option>
-                        </select>
-         
+                        </select><br>
                               
-                  <input type="text"  name="location"  id="input" placeholder="Type your building information (i.e. Address, subdivision, parcel ID, or zipcode)"  class="text"  value={{location|safe}} > <br>
+                  <input type="text"  name="location"  id="tags" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                 
                 {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage </b> </label><br>
@@ -532,29 +514,11 @@
                         <label> <b class="map-style"> Select area from the map   </b></label><br>
                         <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                         
-                      
+                        <!--Add fields-->
+                        <label> <b class="map-style"> Type your address(es)   </b></label><br>
                         <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
                         <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-
-                                    
-                    <select name="select1" id="select1" style="margin: 0px 53px 0px 0px">
-                        <option value="">Select by</option>
-                        <option value="Address">Address</option>
-                        <option value="Subdivison" disabled>Subdivison</option>
-                        <option value="Parcel" disabled>Parcel</option>
-                        <option value="Zip code" disabled>Zip code</option>
-                    </select>
-
-                        <select name="select2" id="select2" >
-                            <option value="">Select your parish</option>
-                            <option value="Jefferson"> Jefferson</option>
-                            <option value="St. Tammany"> St. Tammany</option>
-                            <option value="Terrebonne"> Terrebonne </option>
-                        </select><br>
-         
-                           <!--Add fields-->
-                        <label> <b class="map-style"> Type your address(es)   </b></label><br>     
-              
+                          
                           <!-- new code with remove button-->  
                             <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
                             <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
@@ -839,8 +803,6 @@ function removeItem() {
     var item = document.getElementById(candidate.value);
     a.removeChild(item);}
 </script> 
-
-
 
 <!--CRS rate selection-->
 <script>
