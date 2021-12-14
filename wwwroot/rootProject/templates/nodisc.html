@@ -594,7 +594,7 @@ function formProcess(){
         <li><a href="#section-1">Summary</a></li>
         <li><a href="#section-2">Monthly Savings</a></li>
         <li><a href="#section-3">Freeboard Cost</a></li>
-        <li><a href="#section-4">Annual Insurance Premiums</a></li>
+        <li><a href="#section-4">Monthly Insurance Premiums Savings</a></li>
         <li><a href="#section-5">Expected Annual Flood Loss</a></li>
        {% comment %}  <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
         <li><a href="#section-7">Overall graph</a></li> {% endcomment %}
@@ -718,7 +718,7 @@ function formProcess(){
 
     <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
     
-      <p class="grid-style3 map-style" ><b class="summary-b">Savings</b> <br>
+      <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
        <div class="vl"><p class="grid-style3 map-style" >
         <b class="b-summary-value map-style">        
         <span class="pricing-item-price-currency">$</span><!-- 
@@ -759,7 +759,7 @@ function formProcess(){
       <b class="b-summary-value map-style"> 
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> reduction in expected flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+     --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
       </div>
     </div>    
    <br>
@@ -796,7 +796,7 @@ function formProcess(){
 
 
 
-      <p class="grid-style3 map-style" ><b class="summary-b">Costs</b> <br>
+      <p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
       <div class="vl"> <p class="grid-style3 map-style" >
       <b class="b-summary-value map-style">      
         <span class="pricing-item-price-currency">$</span><!-- 
@@ -827,22 +827,41 @@ function formProcess(){
       -->
 
       <!--  for calculations without below BFE   -->
+
       <div
         class="pricing-item-price"
         data-price-output='{
-         "0": ["$", {{summation_freeboardCost0}},""],
+          "0": ["$", {{summation_freeboardCost0}},""],
           "1": ["$", {{summation_freeboardCost1}},""],
           "2": ["$", {{summation_freeboardCost2}},""],
           "3": ["$", {{summation_freeboardCost3}},""],
-          "4": ["$", {{summation_freeboardCost4}},""]
+          "4": ["$", {{summation_freeboardCost4}},""]       
         }'
       >
+      
+
+      <!--  for calculations without below BFE  (switched from FC to amortised_FC) -->
+      <!--
+      <div
+        class="pricing-item-price"
+        data-price-output='{
+          "0": ["$", {{summation_Amortized_FC0}},""],
+          "1": ["$", {{summation_Amortized_FC1}},""],
+          "2": ["$", {{summation_Amortized_FC2}},""],
+          "3": ["$", {{summation_Amortized_FC3}},""],
+          "4": ["$", {{summation_Amortized_FC4}},""]
+        }'
+      >
+      -->
+
+
+
       <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
       <p class="grid-style3 map-style b-summary-const">
          (based on <b class="map-style b-summary-value2">
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b>construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
+     --><span class="pricing-item-price-after"></span> </b> additional construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
       </div>   
     </div><br>
 
@@ -877,7 +896,7 @@ function formProcess(){
         }'
       >
 
-      <p class="grid-style3 map-style" ><b class="summary-b">Total</b> <br>
+      <p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
       <div class="vl"> <p class="grid-style3 map-style" >
       <b class="b-summary-value map-style">      
         <span class="pricing-item-price-currency">$</span><!-- 
@@ -1150,11 +1169,12 @@ function formProcess(){
 <!--Freeboard cost-->
   <div class="left3 section-tittle-detail mb-40"> 
    <hr class="style-five">
-     <h2 class="map-style-title">Freeboard Cost</h2> 
+     <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
       <div class="graph-description">
         
-        The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home ranges from 
-        <b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>.
+        The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+        <!--<b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>. -->
+        <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
       </div>  
       <section id="section-4"><div id="chart1" class="zc-body"></div></section>
@@ -1164,9 +1184,9 @@ function formProcess(){
 <!--Insurance-->
   <div class="left3 section-tittle-detail mb-40"> 
    <hr class="style-five">
-    <h2 class="map-style-title">Annual Insurance Premiums</h2>
+    <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
      <div class="graph-description" >
-       Constructing your home with additional freeboard decreases annual insurance premiums from <b class="map-style">${{summation_total_annual_premiumlow | intcomma}}</b> to <b class="map-style">${{summation_total_annual_premiumhigh | intcomma}}</b>. 
+      Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
        <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
       
@@ -1180,10 +1200,11 @@ function formProcess(){
 <!--Reduction in expected flood losses-->
 <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-five">
-     <h2 class="map-style-title">Expected Annual Flood Loss</h2>
+     <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>
        
         <div class="graph-description" >
-          Adding a freeboard also reduces flood losses in flooding events from <b class="map-style">${{summation_AAL_absCurrencyhigh | intcomma}}</b> to <b class="map-style">${{summation_AAL_absCurrencylow | intcomma}}</b>. 
+          Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
         </div>
       <section id="section-6"><div id="chart3" class="zc-body"></div> </section> 
@@ -1352,11 +1373,12 @@ function formProcess(){
   },
     series: [
       {
-        text: 'Freeboard cost',
+        text: 'Monthly freeboard cost',
         backgroundColor: 'var(--red)',
         alpha: 0.95,
         borderRadiusTopLeft: '7px',
-        values: {{freeboardCost_json}}   
+        //values: {{freeboardCost_json}}   
+        values: {{Amortized_FC_json}}  
       }
     ]
   };
@@ -1414,11 +1436,11 @@ function formProcess(){
   },
     series: [
       {
-        text: 'Annual insurance premiums',
+        text: 'Monthly insurance premium savings',
         backgroundColor: 'var(--blue)',
         alpha: 0.95,
         borderRadiusTopLeft: '7px',
-        values: {{total_annual_premium_json}}   
+        values: {{monthly_premium_saving_json}}   
       }
     ]
   }; 
@@ -1476,7 +1498,7 @@ function formProcess(){
   },
   series: [
     {
-      text: 'Annual flood loss with insurance',
+      text: 'Monthly savings from flood loss reduction - with insurance',
       values: [ 0, 0, 0, 0, 0],
       //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
       alpha: 0.95,
@@ -1484,8 +1506,9 @@ function formProcess(){
       backgroundColor: '#eb9d17',
     },
     {
-      text: 'Annual flood loss without insurance',
-      values: {{AAL_absCurrency_json}},
+      text: 'Monthly savings from flood loss reduction - without insurance',
+      values: {{monthly_avoided_loss_json}},
+      //values: {{AAL_absCurrency_json}},
       borderRadiusTopLeft: '7px',
       alpha: 0.95,
       backgroundColor: '#f7e0b7',
@@ -1998,7 +2021,8 @@ let chartConfig = {
     {
       type: 'bar',    
       text: 'Freeboard cost',
-      values: {{freeboardCost_json}},
+      //values: {{freeboardCost_json}},
+      values: {{Amortized_FC_neg_json}},
       scales: 'scale-x,scale-y',
       backgroundColor: '#EC5B57',
       borderRadiusTopLeft: '7px',
@@ -2012,8 +2036,8 @@ let chartConfig = {
     }, 
     {
       type: 'bar', 
-      text: 'Insurance saving',
-      values: {{total_monthly_premium_json}},
+      text: 'Insurance savings',
+      values: {{monthly_premium_saving_json}},
       scales: 'scale-x,scale-y',
       backgroundColor: '#37615B',
       borderRadiusTopLeft: '7px',
@@ -2028,7 +2052,8 @@ let chartConfig = {
     {
       type: 'bar',
       text: 'Flood loss reduction',
-      values: {{AAL_absCurrency_json}},
+      values: {{monthly_avoided_loss_json}},
+      //values: {{AAL_absCurrency_json}},
       scales: 'scale-x,scale-y',
       backgroundColor: '#44B0AB',
       borderRadiusTopLeft: '7px',
@@ -2042,7 +2067,7 @@ let chartConfig = {
     },
     {
       type: 'bar',
-      text: 'Monthly saving',
+      text: 'Total monthly savings',
       values: {{total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
       backgroundColor: '#49c8c5',

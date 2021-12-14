@@ -226,14 +226,17 @@ def search(request):
     freeboardCost_list_c = []
     total_annual_premium_list_c = []
     total_monthly_premium_list_c = []
-    AAL_absCurrency_list_c = []
+    #AAL_absCurrency_list_c = []
+    AAL_Total_list_c = []
     time_to_recover_FC_TB_list_c = []
     time_to_recover_FC_PS_list_c = []   
     avoided_monthly_loss_homeowner_list_c =[]
     avoided_monthly_loss_landlord_list_c = []
     avoided_monthly_loss_tenant_list_c = []   
 
+
     total_monthly_premium_saving_list_c = []
+    annual_avoided_loss_list_c = []
     monthly_avoided_loss_list_c = []
     Amortized_FC_list_c = []
     total_savings_permonth_insurance_list_c = []
@@ -272,11 +275,6 @@ def search(request):
         print("buildinglist before deleting last element : ", buildinglist)
         lenghofBlist = len(buildinglist)
         print(" length of  B list : ", lenghofBlist)
-
-        
-
-
-
         buildinglist.remove(buildinglist[lenghofBlist-1])
     else:
         buildinglist = [ request.GET.get('location', 'default')]
@@ -440,7 +438,7 @@ def search(request):
             totalBFE = [0, 1, 2, 3, 4]
             #totalBFE = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
 
-        ##----------FFE-----------------------------
+        ##----------FFE (Ehab's method)-----------------------------
             FFE = []
             for i in range(len(totalBFE)):
                 FFE.append(totalBFE[i]+BFE)   
@@ -471,127 +469,127 @@ def search(request):
 
         ##---------------AAL (Ehab's method)------------------------
 
-            def integrand_Bldg(E):
-                y = (E-u)/a
-                term = -y - math.exp(-y)
+        #     def integrand_Bldg(E):
+        #         y = (E-u)/a
+        #         term = -y - math.exp(-y)
 
-                #### V zones functions for AAL building
-                if zonevalue == "VE":
+        #         #### V zones functions for AAL building
+        #         if zonevalue == "VE":
                     
-                    EminusF_bldg = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-                    damage_bldg = [0.215, 0.24, 0.29, 0.37, 0.54, 0.605, 0.645, 0.68, 0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.815, 0.83, 0.84, 0.85, 0.86, 0.87]
+        #             EminusF_bldg = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        #             damage_bldg = [0.215, 0.24, 0.29, 0.37, 0.54, 0.605, 0.645, 0.68, 0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.815, 0.83, 0.84, 0.85, 0.86, 0.87]
 
-                    for i in range(len(EminusF_bldg)):
-                        if EminusF_bldg[i] == math.floor(E-F):
-                            loss_bldg_inftoneg1 = np.interp(E-F, EminusF_bldg, damage_bldg)
-                        elif (E-F) < -1:
-                            loss_bldg_inftoneg1 = 0                ### for now, check on the values
-                        elif (E-F) > 18 :
-                            loss_bldg_inftoneg1 = 0.87                 ### for now, check on the values
-                        else:
-                            pass    
+        #             for i in range(len(EminusF_bldg)):
+        #                 if EminusF_bldg[i] == math.floor(E-F):
+        #                     loss_bldg_inftoneg1 = np.interp(E-F, EminusF_bldg, damage_bldg)
+        #                 elif (E-F) < -1:
+        #                     loss_bldg_inftoneg1 = 0                ### for now, check on the values
+        #                 elif (E-F) > 18 :
+        #                     loss_bldg_inftoneg1 = 0.87                 ### for now, check on the values
+        #                 else:
+        #                     pass    
 
 
-                #### Not V zones functions for AAL building    
-                else:    
-                    if No_Floors ==  "One story" : 
-                        #loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )
-                        loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5362 * ((E-F)**2) + 10.419 *(E-F) + 13.39 )        
-                    elif No_Floors =="Two or more stories":
-                        #loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
-                        loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1466 * ((E-F)**2) + 6.1218 *(E-F) + 9.2626 )
-                    else:
-                        pass  
+        #         #### Not V zones functions for AAL building    
+        #         else:    
+        #             if No_Floors ==  "One story" : 
+        #                 #loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5342 * ((E-F)**2) + 10.404 *(E-F) + 13.418 )
+        #                 loss_bldg_inftoneg1 = (0.0092 *((E-F)**3)- 0.5362 * ((E-F)**2) + 10.419 *(E-F) + 13.39 )        
+        #             elif No_Floors =="Two or more stories":
+        #                 #loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1464 * ((E-F)**2) + 6.1207 *(E-F) + 9.2646 )
+        #                 loss_bldg_inftoneg1 = ( -0.0001 *((E-F)**3)- 0.1466 * ((E-F)**2) + 6.1218 *(E-F) + 9.2626 )
+        #             else:
+        #                 pass  
 
-                loss=(((1/a)* math.exp(term))*loss_bldg_inftoneg1)
+        #         loss=(((1/a)* math.exp(term))*loss_bldg_inftoneg1)
 
-                return loss
+        #         return loss
 
-            def integrand_Cont(E):
-                y = (E-u)/a
-                term = -y - math.exp(-y)
+        #     def integrand_Cont(E):
+        #         y = (E-u)/a
+        #         term = -y - math.exp(-y)
 
-                #### V zones functions for AAL content
-                if zonevalue == "VE":
+        #         #### V zones functions for AAL content
+        #         if zonevalue == "VE":
                     
-                    EminusF_cont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-                    damage_cont = [0.15, 0.23, 0.35, 0.5, 0.58, 0.63, 0.67, 0.7, 0.72, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78]
+        #             EminusF_cont = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        #             damage_cont = [0.15, 0.23, 0.35, 0.5, 0.58, 0.63, 0.67, 0.7, 0.72, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78, 0.78]
 
-                    for i in range(len(EminusF_cont)):
-                        if EminusF_cont[i] == math.floor(E-F):
-                            loss_cont_infto0 = np.interp(E-F, EminusF_cont, damage_cont)
-                        elif (E-F) < 0:
-                            loss_cont_infto0 = 0                ### for now, check on the values
-                        elif (E-F) > 18 :
-                            loss_cont_infto0 = 0.78                 ### for now, check on the values
-                        else:
-                            pass   
+        #             for i in range(len(EminusF_cont)):
+        #                 if EminusF_cont[i] == math.floor(E-F):
+        #                     loss_cont_infto0 = np.interp(E-F, EminusF_cont, damage_cont)
+        #                 elif (E-F) < 0:
+        #                     loss_cont_infto0 = 0                ### for now, check on the values
+        #                 elif (E-F) > 18 :
+        #                     loss_cont_infto0 = 0.78                 ### for now, check on the values
+        #                 else:
+        #                     pass   
 
-                #### Not V zones functions for AAL content    
-                else:    
-                    if No_Floors ==  "One story" :         
-                        loss_cont_infto0 = ( 0.0049 *((E-F)**3)- 0.2996 * ((E-F)**2) + 5.5358 *(E-F) + 8.0402 )
-                    elif No_Floors == "Two or more stories" :        
-                        loss_cont_infto0 = ( -0.0001 *((E-F)**3)- 0.1116 * ((E-F)**2) + 3.8257 *(E-F) + 4.9975 )
-                    else:
-                        pass  
+        #         #### Not V zones functions for AAL content    
+        #         else:    
+        #             if No_Floors ==  "One story" :         
+        #                 loss_cont_infto0 = ( 0.0049 *((E-F)**3)- 0.2996 * ((E-F)**2) + 5.5358 *(E-F) + 8.0402 )
+        #             elif No_Floors == "Two or more stories" :        
+        #                 loss_cont_infto0 = ( -0.0001 *((E-F)**3)- 0.1116 * ((E-F)**2) + 3.8257 *(E-F) + 4.9975 )
+        #             else:
+        #                 pass  
 
-                loss=(((1/a)* math.exp(term))*loss_cont_infto0)
+        #         loss=(((1/a)* math.exp(term))*loss_cont_infto0)
 
-                return loss
+        #         return loss
 
 
-            AAL_absCurrency = []
-            AAL_B_ansNerr = []
-            AAL_C_ansNerr = []
-            for i in range(len(totalBFE)): 
-                F= FFE[i]
-                AAL_B_ansNerr.append(quad(integrand_Bldg, (F-1), math.inf))
-                AAL_C_ansNerr.append(quad(integrand_Cont, F, math.inf))
+        #     AAL_absCurrency = []
+        #     AAL_B_ansNerr = []
+        #     AAL_C_ansNerr = []
+        #     for i in range(len(totalBFE)): 
+        #         F= FFE[i]
+        #         AAL_B_ansNerr.append(quad(integrand_Bldg, (F-1), math.inf))
+        #         AAL_C_ansNerr.append(quad(integrand_Cont, F, math.inf))
 
          
-            AAL_bldg = []
-            AAL_cont = []
-            for tuple in AAL_B_ansNerr:
-                AAL_bldg.append(round(tuple[0],3))
-            for tuple in AAL_C_ansNerr:  
-                AAL_cont.append(round(tuple[0],3))
+        #     AAL_bldg = []
+        #     AAL_cont = []
+        #     for tuple in AAL_B_ansNerr:
+        #         AAL_bldg.append(round(tuple[0],3))
+        #     for tuple in AAL_C_ansNerr:  
+        #         AAL_cont.append(round(tuple[0],3))
 
-            print("\n")
-            print("AAL_Building : ", AAL_bldg,"\n") 
-            print("AAL_Content : ", AAL_cont,"\n") 
+        #     print("\n")
+        #     print("AAL_Building : ", AAL_bldg,"\n") 
+        #     print("AAL_Content : ", AAL_cont,"\n") 
 
-            ##--------Expected annual flood loss is AAL in absCurrency-------------------------
-            AAL_percentValue=[]
-            AAL_absCurrency=[]
-            AAL_B_absCurrency=[]
-            AAL_C_absCurrency=[]
+        #     ##--------Expected annual flood loss is AAL in absCurrency-------------------------
+        #     AAL_percentValue=[]
+        #     AAL_absCurrency=[]
+        #     AAL_B_absCurrency=[]
+        #     AAL_C_absCurrency=[]
 
-            for i in range(len(totalBFE)): 
-                AAL_B_absCurrency.append(int(AAL_bldg[i] * Building_value/100))
-                AAL_C_absCurrency.append(int(AAL_cont[i] * Building_value/100))
-                AAL_percentValue.append( round(AAL_bldg[i] + AAL_cont[i],3))
-                AAL_absCurrency.append(int(AAL_percentValue[i] * Building_value/100))
+        #     for i in range(len(totalBFE)): 
+        #         AAL_B_absCurrency.append(int(AAL_bldg[i] * Building_value/100))
+        #         AAL_C_absCurrency.append(int(AAL_cont[i] * Building_value/100))
+        #         AAL_percentValue.append( round(AAL_bldg[i] + AAL_cont[i],3))
+        #         AAL_absCurrency.append(int(AAL_percentValue[i] * Building_value/100))
         
 
-            print("AAL_B_absCurrency : ", AAL_B_absCurrency)
-            print("AAL_C_absCurrency : ", AAL_C_absCurrency)
-            print("AAL_percentValue : ", AAL_percentValue)
-            print("AAL_absCurrency : ", AAL_absCurrency)
+        #     print("AAL_B_absCurrency : ", AAL_B_absCurrency)
+        #     print("AAL_C_absCurrency : ", AAL_C_absCurrency)
+        #     print("AAL_percentValue : ", AAL_percentValue)
+        #     print("AAL_absCurrency : ", AAL_absCurrency)
 
-            AAL_absCurrency_list_c.append(AAL_absCurrency)
+        #     AAL_absCurrency_list_c.append(AAL_absCurrency)
 
-            AAL_absCurrency_json = simplejson.dumps(AAL_absCurrency)  
-            optimal_AAL_absCurrency = min(AAL_absCurrency)
+        #     AAL_absCurrency_json = simplejson.dumps(AAL_absCurrency)  
+        #     optimal_AAL_absCurrency = min(AAL_absCurrency)
 
-            for k in range(len(AAL_absCurrency)):
-                if optimal_AAL_absCurrency == AAL_absCurrency[k]:
-                    optimal_AAL_absCurrency_freeboard = totalBFE[k]
+        #     for k in range(len(AAL_absCurrency)):
+        #         if optimal_AAL_absCurrency == AAL_absCurrency[k]:
+        #             optimal_AAL_absCurrency_freeboard = totalBFE[k]
 
-            optimal_AAL_absCurrency_json = simplejson.dumps(optimal_AAL_absCurrency)  
+        #     optimal_AAL_absCurrency_json = simplejson.dumps(optimal_AAL_absCurrency)  
 
 
-        ##----------------------AAL (Ehab's method) ends ---------------------------------------
+        # ##----------------------AAL (Ehab's method) ends ---------------------------------------
 
 
         ##----------------------AAL (Adil's method) ---------------------------------------
@@ -706,7 +704,7 @@ def search(request):
                     Luse_homeowner = Luse_homeowner3
                     Luse_landlord =  Luse_landlord3
                     Luse_tenant =  Luse_tenant3   
-                    repair_cost = 145 
+                    repair_cost = 110.35  #145 
                 # for TABLE 4
                 elif basement == "yes" and stories == "One story":            
                     dh= dh4
@@ -715,7 +713,7 @@ def search(request):
                     Luse_homeowner = Luse_homeowner4
                     Luse_landlord =  Luse_landlord4
                     Luse_tenant =  Luse_tenant4
-                    repair_cost = 145
+                    repair_cost = 110.35 #145
                 # for TABLE 5
                 elif basement == "yes" and stories == "Two or more stories":            
                     dh= dh5
@@ -724,7 +722,7 @@ def search(request):
                     Luse_homeowner = Luse_homeowner5
                     Luse_landlord =  Luse_landlord5
                     Luse_tenant =  Luse_tenant5
-                    repair_cost = 145
+                    repair_cost = 106.22  #145
                 # for TABLE 6
                 elif basement == "yes" and stories == "Split level":            
                     dh= dh6
@@ -733,7 +731,7 @@ def search(request):
                     Luse_homeowner = Luse_homeowner6
                     Luse_landlord =  Luse_landlord6
                     Luse_tenant =  Luse_tenant6
-                    repair_cost = 145
+                    repair_cost = 106.22  #145
                 else:
                     print("Does not match a case for A/AE zones")
     
@@ -940,7 +938,7 @@ def search(request):
                 AAL_Total_landlord_list.append(AAL_Total_landlord)
                 AAL_Total_tenant_list.append(AAL_Total_tenant)
 
-
+                ########################################################
                 if user_type == "Homeowner":
                     AAL_Total = AAL_Total_homeowner
                 elif user_type == "Tenant":
@@ -951,7 +949,7 @@ def search(request):
                 #     AAL_Total == AAL_Total_CommunityOfficial
                 else:
                     print("None of the user type!")
-                    AAL_Total = "NONE"  
+                    AAL_Total = AAL_Total_homeowner #"NONE"   #fix it later
                     print("AAL total = ", AAL_Total)
 
                 print("                  ") 
@@ -963,8 +961,20 @@ def search(request):
             print("AAL_Total_homeowner_list : ", AAL_Total_homeowner_list) 
             print("AAL_Total_landlord_list : ", AAL_Total_landlord_list)   
             print("AAL_Total_tenant_list : ", AAL_Total_tenant_list)
-            print("AAL_Total_list : ", AAL_Total_list)
+            AAL_Total_list_c.append(AAL_Total_list)
+            print("AAL_Total_list_c : ", AAL_Total_list_c)
             print("                    ")
+
+            #
+            AAL_Total_list_json = simplejson.dumps(AAL_Total_list)  
+            optimal_AAL_Total_list = min(AAL_Total_list)
+
+            for k in range(len(AAL_Total_list)):
+                if optimal_AAL_Total_list == AAL_Total_list[k]:
+                    optimal_AAL_Total_list_freeboard = totalBFE[k]
+
+            optimal_AAL_Total_list_json = simplejson.dumps(optimal_AAL_Total_list)  
+            #
 
             avoided_annual_loss_homeowner= []
             avoided_annual_loss_landlord= []
@@ -1001,8 +1011,38 @@ def search(request):
 
         ##----------------------AAL (Adil's method) ends ---------------------------------------
 
+            ##
+            annual_avoided_loss = []
+            monthly_avoided_loss = []
+            if user_type == "Homeowner":
+                annual_avoided_loss = avoided_annual_loss_homeowner
+                monthly_avoided_loss = avoided_monthly_loss_homeowner
+            elif user_type == "Tenant":
+                annual_avoided_loss = avoided_annual_loss_tenant
+                monthly_avoided_loss = avoided_monthly_loss_tenant
+                
+            elif user_type == "Landlord":
+                annual_avoided_loss = avoided_annual_loss_landlord
+                monthly_avoided_loss = avoided_monthly_loss_landlord
 
+            # elif user_type == "Community official":
+            #     annual_avoided_loss = avoided_annual_loss_CommunityOfficial
+            #     monthly_avoided_loss = avoided_monthly_loss_CommunityOfficial
+            else:
+                print("None of the user type!")
+                annual_avoided_loss =  avoided_annual_loss_homeowner #"NONE"   #fix it later
+                monthly_avoided_loss = avoided_monthly_loss_homeowner #"NONE"  #fix it later
+                print("annual_avoided_loss = ", annual_avoided_loss)
+                print("monthly_avoided_loss = ", monthly_avoided_loss)
+            annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)   
+            monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss)   
 
+            print("                  ") 
+            print("annual_avoided_loss = ", annual_avoided_loss)
+            print("monthly_avoided_loss = ", monthly_avoided_loss)
+            annual_avoided_loss_list_c.append(annual_avoided_loss)  
+            monthly_avoided_loss_list_c.append(monthly_avoided_loss)
+         
 
 
         ###----------------Insurance-----------------------------------------
@@ -1324,36 +1364,39 @@ def search(request):
 
             print("Amortised cost :  ", Amortized_FC)
 
-            ##--------------Avoided annual loss and monthly avoided loss---------------------------------    ####check*********
-            annual_avoided_loss = []
+               ## for switching fc to amfc
+            optimal_am_freeboardCost = max(Amortized_FC)
             
-            for i in range(len(totalBFE)):                                ###check************ i+1
-                # if i==0:
-                #     annual_avoided_loss.append((AAL_absCurrency[0]) 
-                # else:    
-                #     annual_avoided_loss.append(AAL_absCurrency[0]-AAL_absCurrency[i])  
-                annual_avoided_loss.append(AAL_absCurrency[4]-AAL_absCurrency[i])          
-            print("Avoided annual loss :  ", annual_avoided_loss)
+            for k in range(len(Amortized_FC)):
+                if optimal_am_freeboardCost == Amortized_FC[k]:
+                    optimal_freeboard_am_freeboardCost = totalBFE[k]
 
-            annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)  
 
-            monthly_avoided_loss = []
-            for i in range(len(totalBFE)): 
-                monthly_avoided_loss.append(int(annual_avoided_loss[i]/12))
-            print("Avoided monthly loss :  ", monthly_avoided_loss)
-            monthly_avoided_loss_list_c.append(monthly_avoided_loss)
+            optimal_am_freeboardCost_json = simplejson.dumps(optimal_am_freeboardCost)  
+                ##
 
-            monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss)
+            # ##--------------Avoided annual loss and monthly avoided loss (Ehab's method)---------------------------------    ####check*********
+            # annual_avoided_loss = []
+            
+            # for i in range(len(totalBFE)):                                ###check************ i+1
+            #     annual_avoided_loss.append(AAL_absCurrency[4]-AAL_absCurrency[i])          
+            # print("Avoided annual loss :  ", annual_avoided_loss)
+
+            # annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)  
+
+            # monthly_avoided_loss = []
+            # for i in range(len(totalBFE)): 
+            #     monthly_avoided_loss.append(int(annual_avoided_loss[i]/12))
+            # print("Avoided monthly loss :  ", monthly_avoided_loss)
+            # monthly_avoided_loss_list_c.append(monthly_avoided_loss)
+
+            # monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss)
 
             ##-----------------Annual and monthly premium saving------------------------------         ###check************
             annual_premium_saving = []
             
             for i in range(len(totalBFE)):                                   ###check************ i+1
-                # if i ==0:
-                #     annual_premium_saving.append(total_annual_premium[0]) 
-                # else:    
-                #     annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])
-                annual_premium_saving.append(total_annual_premium[4]-total_annual_premium[i])    
+                annual_premium_saving.append(total_annual_premium[0]-total_annual_premium[i])    
             print("Annual premium saving :  ", annual_premium_saving)
             annual_premium_saving_json = simplejson.dumps(annual_premium_saving)  
 
@@ -1449,31 +1492,31 @@ def search(request):
             ##----------------------------------------------------------------------------
         
 
-            ##---------------------total cost------------------------------
-            totalcost = []
-            for i in range(len(AAL_absCurrency)):
-                totalcost.append(round((AAL_absCurrency[i]+total_annual_premium[i])*12+freeboardCost[i],3))    #discounted present value, estimated from:   1(1+R_D )^t = 12  for 7% real discount rate
+            # ##---------------------total cost------------------------------
+            # totalcost = []
+            # for i in range(len(AAL_absCurrency)):
+            #     totalcost.append(round((AAL_absCurrency[i]+total_annual_premium[i])*12+freeboardCost[i],3))    #discounted present value, estimated from:   1(1+R_D )^t = 12  for 7% real discount rate
             
 
-            ##--------------------Net benefit-------------------------------
+            # ##--------------------Net benefit-------------------------------
 
-            #Net benefit (NB) is determined by subtracting the total cost of the freeboard scenario (step 10) 
-            #from the total cost of the no action scenario.
-            netbenefit = []
-            for i in range(len(totalcost)):
-                netbenefit.append(int(totalcost[4]-totalcost[i]))
-
-            ##------------------Net benefit cost ratio-----------------------------------------------
-
-            #Net benefit to cost ratio (NBCR) for each freeboard is the total net benefit of the freeboard scenario divided by its total cost.  
-
-            # NBcostRatio = []
+            # #Net benefit (NB) is determined by subtracting the total cost of the freeboard scenario (step 10) 
+            # #from the total cost of the no action scenario.
+            # netbenefit = []
             # for i in range(len(totalcost)):
-            #     if i==0:
-            #         NBcostRatio.append(0)
-            #     else:    
-            #         NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
-            #     print(NBcostRatio[i])
+            #     netbenefit.append(int(totalcost[4]-totalcost[i]))
+
+            # ##------------------Net benefit cost ratio-----------------------------------------------
+
+            # #Net benefit to cost ratio (NBCR) for each freeboard is the total net benefit of the freeboard scenario divided by its total cost.  
+
+            # # NBcostRatio = []
+            # # for i in range(len(totalcost)):
+            # #     if i==0:
+            # #         NBcostRatio.append(0)
+            # #     else:    
+            # #         NBcostRatio.append(math.trunc(netbenefit[i]/freeboardCost[i]))
+            # #     print(NBcostRatio[i])
 
             output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish': parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
 
@@ -1548,9 +1591,15 @@ def search(request):
 
     for i in range(len(buildinglist)):   
         for z in range(len(Amortized_FC)):
-            summation_Amortized_FC[z] = summation_Amortized_FC[z] + Amortized_FC_list_c[i][z]
+            summation_Amortized_FC[z] = summation_Amortized_FC[z] + (Amortized_FC_list_c[i][z])        ##negative added to show cost only
     print("summationlist_Amortized_FC = " ,summation_Amortized_FC)
-    summation_Amortized_FC_json = simplejson.dumps(summation_Amortized_FC)        
+    summation_Amortized_FC_json = simplejson.dumps(summation_Amortized_FC) 
+
+    summation_Amortized_FC_neg = []
+    for i in range(len(summation_Amortized_FC)):
+           summation_Amortized_FC_neg.append(-1*summation_Amortized_FC[i])    
+    print("summationlist_Amortized_FC neative = " ,summation_Amortized_FC_neg)
+    summation_Amortized_FC_neg_json = simplejson.dumps(summation_Amortized_FC_neg)        
     
     for z in range(len(Amortized_FC)):
         avg_Amortized_FC.append(int(summation_Amortized_FC[z]/len(buildinglist)))
@@ -1581,7 +1630,10 @@ def search(request):
 
     print("\n")
 
+    ###
+    ## community level for amortized freeboard cost
 
+    ###
     
     ## Total Savings Permonth Insurance only ##
     print("\n")
@@ -1607,67 +1659,7 @@ def search(request):
     print("\n")
 
 
-   
-    # ##------------------barchart for insurance-------------------------------
-    # benefits = ['Insurance per year'] #['Construction Cost', 'Insurance ', 'AAL', 'Total Cost', 'Net Benefit']
-    # nofStories = ['BFE + 0ft','BFE + 1ft', 'BFE + 2ft','BFE + 3ft','BFE + 4ft']
 
-    # data = {'benefits' : benefits,
-    #         'BFE + 0ft'   : [total_annual_premium[0]],  
-    #         'BFE + 1ft'   : [total_annual_premium[1]], 
-    #         'BFE + 2ft'   : [total_annual_premium[2]],  
-    #         'BFE + 3ft'   : [total_annual_premium[3]],  
-    #         'BFE + 4ft'   : [total_annual_premium[4]]}  
-
-    # x = [nofStories]
-    # counts = sum(zip( data['BFE + 0ft'],data['BFE + 1ft'],data['BFE + 2ft'], data['BFE + 3ft'],data['BFE + 4ft']), ()) # like an hstack
-    
-    # source = ColumnDataSource(data=data)
-
-    # p = figure(x_range=benefits, plot_height=350, plot_width=500, 
-    #         toolbar_location="below", tools="save, pan, wheel_zoom, box_zoom, reset, tap, crosshair")
-
-    # p.vbar(x=dodge('benefits',  -0.30,  range=p.x_range), top='BFE + 0ft', width=0.1, source=source,
-    #     color="#253494", legend_label="BFE + 0ft")
-
-    # p.vbar(x=dodge('benefits',  -0.15,  range=p.x_range), top='BFE + 1ft', width=0.1, source=source,
-    #     color="#2c7fb8", legend_label="BFE + 1ft")
-
-    # p.vbar(x=dodge('benefits',  0.00, range=p.x_range), top='BFE + 2ft', width=0.1, source=source,
-    #     color="#41b6c4", legend_label="BFE + 2ft")
-    
-    # p.vbar(x=dodge('benefits', 0.15, range=p.x_range), top='BFE + 3ft', width=0.1, source=source,
-    #     color="#a1dab4", legend_label="BFE + 3ft")
-
-    # p.vbar(x=dodge('benefits', 0.30, range=p.x_range), top='BFE + 4ft', width=0.1, source=source,
-    #     color="#ffffcc", legend_label="BFE + 4ft")
-    
-    # p.y_range.start = 0
-    # p.xgrid.grid_line_color = None
-    # p.legend.location = "top_left"
-    # p.legend.orientation = "horizontal"
-    
-    # # tooltip
-    # p.add_tools(HoverTool(
-    # tooltips=[
-    #     ("Type", "@benefits"),
-    #     ("Cost", "@count")
-    # ],
-
-    # # display a tooltip whenever the cursor is vertically in line with a glyph
-    # mode='vline'
-    # ))
-    # script_insurance, div_insurance = components(p)
-
-    
-    # ##----------------barchart ends---------------------------------------
-        
-    ##New-------------------------------
-    ##barchart for Net benefit to cost ratio-------------------------------
-    ##benefits = ['1 foot freeboard', '2 feet freeboard', '3 feet freeboard', '4 feet freeboard']
-    ##nofStories = ['Net benefit to cost ratio']
-       
-    #New barchart ends---------------------------------------
 
    ####################********Community level analysis STARTS*********########################
     print("\n")
@@ -1800,39 +1792,76 @@ def search(request):
     print("listofOptimalsIndividialBldg_monthly_premium : ",listofOptimalsIndividialBldg_monthly_premium)
    
 
-    ## Expected annual flood loss ##
-    print("AAL_absCurrency_list_c : ", AAL_absCurrency_list_c)
+    # ## Expected annual flood loss ##
 
-    summation_AAL_absCurrency = []
-    avg_AAL_absCurrency = []
-    for z in range(len(AAL_absCurrency)):
-        summation_AAL_absCurrency.append(0)
-    #print("summationlist_AAL_absCurrency = " ,summation_AAL_absCurrency)
+    # print("AAL_absCurrency_list_c : ", AAL_absCurrency_list_c)
+
+    # summation_AAL_absCurrency = []
+    # avg_AAL_absCurrency = []
+    # for z in range(len(AAL_absCurrency)):
+    #     summation_AAL_absCurrency.append(0)
+    # #print("summationlist_AAL_absCurrency = " ,summation_AAL_absCurrency)
+
+    # for i in range(len(buildinglist)):   
+    #     for z in range(len(AAL_absCurrency)):
+    #         summation_AAL_absCurrency[z] = summation_AAL_absCurrency[z] + AAL_absCurrency_list_c[i][z]
+    # print("summationlist_AAL_absCurrency = " ,summation_AAL_absCurrency)        
+    # summation_AAL_absCurrency_json = simplejson.dumps(summation_AAL_absCurrency)
+
+    # for k in range(len(summation_total_monthly_saving)):
+    #     if optimal_saving == summation_total_monthly_saving[k]:
+    #         #optimal_freeboard = totalBFE[k]
+    #         aggregated_AAL_absCurrency = summation_AAL_absCurrency[k]
+    # print("Aggregated AAL absCurrency = ", aggregated_AAL_absCurrency)  
+
+
+    # for z in range(len(AAL_absCurrency)):
+    #     avg_AAL_absCurrency.append(int(summation_AAL_absCurrency[z]/len(buildinglist)))
+    # print("avglist_AAL_absCurrency = " ,avg_AAL_absCurrency) 
+    # print("\n")
+
+    # listofOptimalsIndividialBldg_AAL_absCurrency = []
+    # for each in range(len(total_optimal_freeboard_list_c)):
+    #     listofOptimalsIndividialBldg_AAL_absCurrency.append(AAL_absCurrency_list_c[each][total_optimal_freeboard_list_c[each]])
+        
+    # print("listofOptimalsIndividialBldg_AAL_absCurrency : ",listofOptimalsIndividialBldg_AAL_absCurrency)
+    # print("\n")
+
+
+    ##
+    print("AAL_Total_list_c : ", AAL_Total_list_c)
+
+    summation_AAL_Total = []
+    avg_AAL_Total = []
+    for z in range(len(AAL_Total_list)):
+        summation_AAL_Total.append(0)
+    #print("summationlist_AAL_Total = " ,summation_AAL_Total)
 
     for i in range(len(buildinglist)):   
-        for z in range(len(AAL_absCurrency)):
-            summation_AAL_absCurrency[z] = summation_AAL_absCurrency[z] + AAL_absCurrency_list_c[i][z]
-    print("summationlist_AAL_absCurrency = " ,summation_AAL_absCurrency)        
-    summation_AAL_absCurrency_json = simplejson.dumps(summation_AAL_absCurrency)
+        for z in range(len(AAL_Total_list)):
+            summation_AAL_Total[z] = summation_AAL_Total[z] + AAL_Total_list_c[i][z]
+    print("summation_AAL_Total = " ,summation_AAL_Total)        
+    summation_AAL_Total_json = simplejson.dumps(summation_AAL_Total)
 
     for k in range(len(summation_total_monthly_saving)):
         if optimal_saving == summation_total_monthly_saving[k]:
             #optimal_freeboard = totalBFE[k]
-            aggregated_AAL_absCurrency = summation_AAL_absCurrency[k]
-    print("Aggregated AAL absCurrency = ", aggregated_AAL_absCurrency)  
+            aggregated_AAL_Total = summation_AAL_Total[k]
+    print("Aggregated AAL_Total = ", aggregated_AAL_Total)  
 
 
-    for z in range(len(AAL_absCurrency)):
-        avg_AAL_absCurrency.append(int(summation_AAL_absCurrency[z]/len(buildinglist)))
-    print("avglist_AAL_absCurrency = " ,avg_AAL_absCurrency) 
+    for z in range(len(AAL_Total_list)):
+        avg_AAL_Total.append(int(summation_AAL_Total[z]/len(buildinglist)))
+    print("avglist_AAL_Total = " ,avg_AAL_Total) 
     print("\n")
 
-    listofOptimalsIndividialBldg_AAL_absCurrency = []
+    listofOptimalsIndividialBldg_AAL_Total = []
     for each in range(len(total_optimal_freeboard_list_c)):
-        listofOptimalsIndividialBldg_AAL_absCurrency.append(AAL_absCurrency_list_c[each][total_optimal_freeboard_list_c[each]])
+        listofOptimalsIndividialBldg_AAL_Total.append(AAL_Total_list_c[each][total_optimal_freeboard_list_c[each]])
         
-    print("listofOptimalsIndividialBldg_AAL_absCurrency : ",listofOptimalsIndividialBldg_AAL_absCurrency)
+    print("listofOptimalsIndividialBldg_AAL_Total : ",listofOptimalsIndividialBldg_AAL_Total)
     print("\n")
+
   
 ## NEW AAL method- avoided monthly loss ##
 
@@ -2010,12 +2039,15 @@ def search(request):
     #Json---------------------------------------
     time_to_recover_FC_TB_json = summation_time_to_recover_FC_TB_json
     time_to_recover_FC_PS_json = summation_time_to_recover_FC_PS_json
+    Amortized_FC_json = summation_Amortized_FC_json
+    Amortized_FC_neg_json = summation_Amortized_FC_neg_json
     freeboardCost_json = summation_freeboardCost_json
     total_annual_premium_json = summation_total_annual_premium_json
     total_monthly_premium_json = summation_total_monthly_premium_json
     total_monthly_saving_json = summation_total_monthly_saving_json
-    AAL_absCurrency_json = summation_AAL_absCurrency_json
-    
+    #AAL_absCurrency_json = summation_AAL_absCurrency_json
+    AAL_Total_json = summation_AAL_Total_json
+
     location_json_list = simplejson.dumps(location)    
 
 
@@ -2028,9 +2060,11 @@ def search(request):
     results_data["Aggregated recommended freeboard"] = optimal_freeboard
     results_data["Aggregated total optimal monthly saving"] = optimal_saving
     results_data["Aggregated total freeboard cost"] = aggregated_freeboard_cost
+    #results_data["Aggregated total amortised freeboard cost"] = aggregated_freeboard_cost   #fix it
     results_data["Aggregated total annual premium"] = aggregated_total_annual_premium
     results_data["Aggregated total monthly premium"] = aggregated_total_monthly_premium
-    results_data["Aggregated AAL absCurrency"] = aggregated_AAL_absCurrency
+    #results_data["Aggregated AAL absCurrency"] = aggregated_AAL_absCurrency
+    results_data["Aggregated AAL Total"] = aggregated_AAL_Total
     results_data["Aggregated time to recover FC (total benefit)"] = aggregated_time_to_recover_FC_TB
     results_data["Aggregated time to recover FC PS"] = aggregated_time_to_recover_FC_PS
 
@@ -2052,7 +2086,9 @@ def search(request):
 
    
     ## Individual report ###
-    listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_annual_premium, listofOptimalsIndividialBldg_AAL_absCurrency, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
+    #listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_annual_premium, listofOptimalsIndividialBldg_AAL_absCurrency, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
+    listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_annual_premium,listofOptimalsIndividialBldg_AAL_Total, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
+
 
     ###    for calculation with below BFEs       ######
     # data_dictionary = {"location": location_json_list, "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),"summation_time_to_recover_FC_TBlow":min(summation_time_to_recover_FC_TB),"summation_time_to_recover_FC_TBhigh":max(summation_time_to_recover_FC_TB), "optimal_total_annual_premium_freeboard":optimal_total_annual_premium_freeboard, "optimal_total_annual_premium":optimal_total_annual_premium, "total_annual_premium_json":total_annual_premium_json,"total_annual_premium0": total_annual_premium[0],"total_annual_premium1": total_annual_premium[1],"total_annual_premium2": total_annual_premium[2],"total_annual_premium3": total_annual_premium[3],"total_annual_premium4": total_annual_premium[4], "summation_total_annual_premiumlow": min(summation_total_annual_premium), "summation_total_annual_premiumhigh":max(summation_total_annual_premium),"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "summation_freeboardCostlow":min(summation_freeboardCost), "summation_freeboardCosthigh":max(summation_freeboardCost), "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency), "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "summation_total_monthly_premium_saving0":summation_total_monthly_premium_saving[0],"summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2],"summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4],"summation_total_monthly_premium_saving5":summation_total_monthly_premium_saving[5],"summation_total_monthly_premium_saving6":summation_total_monthly_premium_saving[6],"summation_total_monthly_premium_saving7":summation_total_monthly_premium_saving[7],"summation_total_monthly_premium_saving8":summation_total_monthly_premium_saving[8], "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],"summation_monthly_avoided_loss5":summation_monthly_avoided_loss[5],"summation_monthly_avoided_loss6":summation_monthly_avoided_loss[6],"summation_monthly_avoided_loss7":summation_monthly_avoided_loss[7],"summation_monthly_avoided_loss8":summation_monthly_avoided_loss[8], "summation_freeboardCost0" :summation_freeboardCost[0],"summation_freeboardCost1" :summation_freeboardCost[1],"summation_freeboardCost2" :summation_freeboardCost[2],"summation_freeboardCost3" :summation_freeboardCost[3],"summation_freeboardCost4" :summation_freeboardCost[4],"summation_freeboardCost5" :summation_freeboardCost[5],"summation_freeboardCost6" :summation_freeboardCost[6],"summation_freeboardCost7" :summation_freeboardCost[7],"summation_freeboardCost8" :summation_freeboardCost[8], "Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"summation_Amortized_FC0": summation_Amortized_FC[0],"summation_Amortized_FC1": summation_Amortized_FC[1],"summation_Amortized_FC2": summation_Amortized_FC[2],"summation_Amortized_FC3": summation_Amortized_FC[3],"summation_Amortized_FC4": summation_Amortized_FC[4],"summation_Amortized_FC5": summation_Amortized_FC[5],"summation_Amortized_FC6": summation_Amortized_FC[6],"summation_Amortized_FC7": summation_Amortized_FC[7],"summation_Amortized_FC8": summation_Amortized_FC[8], "summation_total_savings_permonth_insurance0":summation_total_savings_permonth_insurance[0], "summation_total_savings_permonth_insurance1":summation_total_savings_permonth_insurance[1], "summation_total_savings_permonth_insurance2":summation_total_savings_permonth_insurance[2], "summation_total_savings_permonth_insurance3":summation_total_savings_permonth_insurance[3], "summation_total_savings_permonth_insurance4":summation_total_savings_permonth_insurance[4], "summation_total_savings_permonth_insurance5":summation_total_savings_permonth_insurance[5], "summation_total_savings_permonth_insurance6":summation_total_savings_permonth_insurance[6], "summation_total_savings_permonth_insurance7":summation_total_savings_permonth_insurance[7], "summation_total_savings_permonth_insurance8":summation_total_savings_permonth_insurance[8], "summation_total_monthly_saving0":summation_total_monthly_saving[0],  "summation_total_monthly_saving1":summation_total_monthly_saving[1], "summation_total_monthly_saving2":summation_total_monthly_saving[2], "summation_total_monthly_saving3":summation_total_monthly_saving[3], "summation_total_monthly_saving4":summation_total_monthly_saving[4], "summation_total_monthly_saving5":summation_total_monthly_saving[5], "summation_total_monthly_saving6":summation_total_monthly_saving[6], "summation_total_monthly_saving7":summation_total_monthly_saving[7], "summation_total_monthly_saving8":summation_total_monthly_saving[8], "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving), "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_savinglast" : total_monthly_saving[8], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_annual_premium_BFE": total_annual_premium[0], "total_annual_premium_BFE1": total_annual_premium[1], "total_annual_premium_BFE2": total_annual_premium[2], "total_annual_premium_BFE3": total_annual_premium[3], "total_annual_premium_BFE4": total_annual_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 'script_insurance': script_insurance, 'div_insurance':div_insurance,  "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4] }
@@ -2062,57 +2098,43 @@ def search(request):
     print("avoided_monthly_loss_tenant : ", avoided_monthly_loss_tenant)
 
     #####   for calculation without below BFEs        ######
-    data_dictionary = {"location": location_json_list,"user_type":user_type, "building_type": building_type, "assessment_type":assessment_type ,"buildinglocation_type":buildinglocation_type, "CRS": CRS,"listindividual": listforindividual, "buildinglocation": buildinglist, "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),"summation_time_to_recover_FC_TBlow":min(summation_time_to_recover_FC_TB),"summation_time_to_recover_FC_TBhigh":max(summation_time_to_recover_FC_TB),"optimal_total_monthly_premium_freeboard":optimal_total_monthly_premium_freeboard, "optimal_total_monthly_premium":optimal_total_monthly_premium, "total_monthly_premium_json":total_monthly_premium_json, "total_annual_premium_json":total_annual_premium_json, "total_monthly_premium0": total_monthly_premium[0],"total_monthly_premium1": total_monthly_premium[1],"total_monthly_premium2": total_monthly_premium[2],"total_monthly_premium3": total_monthly_premium[3],"total_monthly_premium4": total_monthly_premium[4], "summation_total_monthly_premiumlow": min(summation_total_monthly_premium), "summation_total_monthly_premiumhigh":max(summation_total_monthly_premium),"summation_total_annual_premiumlow": min(summation_total_annual_premium), "summation_total_annual_premiumhigh":max(summation_total_annual_premium),"total_savings_permonth_insurance0" :total_savings_permonth_insurance[0],"total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2],"total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],"optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "summation_freeboardCostlow":min(summation_freeboardCost), "summation_freeboardCosthigh":max(summation_freeboardCost), "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],"AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency), "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], "summation_total_monthly_premium_saving0":summation_total_monthly_premium_saving[0],"summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2],"summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4], "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],"summation_freeboardCost0" :summation_freeboardCost[0],"summation_freeboardCost1" :summation_freeboardCost[1],"summation_freeboardCost2" :summation_freeboardCost[2],"summation_freeboardCost3" :summation_freeboardCost[3],"summation_freeboardCost4" :summation_freeboardCost[4],"Actual_construction_cost": Actual_construction_cost, "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC0": Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],"summation_Amortized_FC0": summation_Amortized_FC[0],"summation_Amortized_FC1": summation_Amortized_FC[1],"summation_Amortized_FC2": summation_Amortized_FC[2],"summation_Amortized_FC3": summation_Amortized_FC[3],"summation_Amortized_FC4": summation_Amortized_FC[4], "summation_total_savings_permonth_insurance0":summation_total_savings_permonth_insurance[0], "summation_total_savings_permonth_insurance1":summation_total_savings_permonth_insurance[1], "summation_total_savings_permonth_insurance2":summation_total_savings_permonth_insurance[2], "summation_total_savings_permonth_insurance3":summation_total_savings_permonth_insurance[3], "summation_total_savings_permonth_insurance4":summation_total_savings_permonth_insurance[4],"summation_total_monthly_saving0":summation_total_monthly_saving[0],  "summation_total_monthly_saving1":summation_total_monthly_saving[1], "summation_total_monthly_saving2":summation_total_monthly_saving[2], "summation_total_monthly_saving3":summation_total_monthly_saving[3], "summation_total_monthly_saving4":summation_total_monthly_saving[4], "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json, "monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json, "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving), "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard, "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4], "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_savinglast" : total_monthly_saving[4], "AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4], "total_monthly_premium_BFE": total_monthly_premium[0], "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2], "total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4], "monthly_avoided_loss0": monthly_avoided_loss[0], "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4],"time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4], "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4]}       
-
-
-    ########## pdf with wkhtmltopdf #######
-    # path_wkhtmltopdf = r'F:/floodsafehome/wwwroot/rootProject/wkhtmltopdf/bin/wkhtmltopdf.exe'
-    # config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-    # #wkhtmltopdf_options = {'enable-local-file-access': None}
-    # #pdfkit.from_file('./templates/nodisc.html','output.pdf', configuration=config, options = wkhtmltopdf_options)
-
-    # template = get_template('nodisc.html')
-    # html = template.render(data_dictionary)
-    # #wkhtmltopdf_options = {'enable-local-file-access': None}
-    # #search.pdf = pdfkit.from_string(html, False, configuration=config, options = wkhtmltopdf_options)
-    
-    # css = ['static/css/bootstrap.min.css', 'static/css/owl.carousel.min.css']
-    # static_path = "static/"
-    # file_path = "out.pdf"
-    # _status = pdfkit.from_string(
-    #     html,
-    #     os.path.join(static_path, file_path),
-    #     configuration=config,
-    #     options={
-    #         'page-size': 'A4',
-    #         'margin-top': '0',
-    #         'margin-right': '0',
-    #         'margin-left': '0',
-    #         'margin-bottom': '0',
-    #         'zoom': '1.2',
-    #         'encoding': "UTF-8",
-    #         'enable-local-file-access': None
-    #     },
-    #     css =css)
-        
-
-    ### pdf making ######
-    # template = get_template('nodisc.html')
-    # html = template.render(data_dictionary)
-    # search.pdf = render_to_pdf('nodisc.html', data_dictionary)
-    # print("what is going on?  ", type(search.pdf))
-
-    ########
-
-    #imgkit.from_file('./templates/nodisc.html', 'out.jpg' )
-
-
-    ######## pdf with weasyprint ############
-       # Rendered
-    # html_string = render_to_string('nodisc.html',data_dictionary)
-    # html = HTML(string=html_string)
-    # search.result = html.write_pdf()
-
+    data_dictionary = {"location": location_json_list,"user_type":user_type, "building_type": building_type, "assessment_type":assessment_type, "buildinglocation_type":buildinglocation_type, "CRS": CRS,"listindividual": listforindividual, "buildinglocation": buildinglist, \
+        "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , \
+        "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], \
+        "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], \
+        "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),\
+        "summation_time_to_recover_FC_TBlow":min(summation_time_to_recover_FC_TB),"summation_time_to_recover_FC_TBhigh":max(summation_time_to_recover_FC_TB),\
+        "optimal_total_monthly_premium_freeboard":optimal_total_monthly_premium_freeboard, "optimal_total_monthly_premium":optimal_total_monthly_premium,"total_monthly_premium_json":total_monthly_premium_json, "total_annual_premium_json":total_annual_premium_json,\
+        "total_monthly_premium0": total_monthly_premium[0],"total_monthly_premium1": total_monthly_premium[1],"total_monthly_premium2": total_monthly_premium[2],"total_monthly_premium3": total_monthly_premium[3],"total_monthly_premium4": total_monthly_premium[4], "summation_total_monthly_premiumlow": min(summation_total_monthly_premium),"summation_total_monthly_premiumhigh":max(summation_total_monthly_premium),\
+        "summation_total_annual_premiumlow": min(summation_total_annual_premium),"summation_total_annual_premiumhigh":max(summation_total_annual_premium),\
+        "total_savings_permonth_insurance0" :total_savings_permonth_insurance[0], "total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2], "total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],\
+        "optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "summation_freeboardCostlow":min(summation_freeboardCost), "summation_freeboardCosthigh":max(summation_freeboardCost),\
+        "summation_am_freeboardCostlow":min(summation_Amortized_FC), "summation_am_freeboardCosthigh":max(summation_Amortized_FC), \
+        "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], \
+        "summation_total_monthly_premium_saving0":summation_total_monthly_premium_saving[0],"summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2], "summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4], "summation_total_monthly_premium_savingHigh": max(summation_total_monthly_premium_saving), "summation_total_monthly_premium_savingLow": min(summation_total_monthly_premium_saving),\
+        "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],\
+        "summation_freeboardCost0" :summation_freeboardCost[0],"summation_freeboardCost1" :summation_freeboardCost[1],"summation_freeboardCost2" :summation_freeboardCost[2],"summation_freeboardCost3" :summation_freeboardCost[3],"summation_freeboardCost4" :summation_freeboardCost[4],\
+        "Actual_construction_cost": Actual_construction_cost,\
+        "Amortized_FC_json" : Amortized_FC_json, "Amortized_FC_neg_json":Amortized_FC_neg_json, "Amortized_FC0":Amortized_FC[0], "Amortized_FC1": Amortized_FC[1], "Amortized_FC2": Amortized_FC[2], "Amortized_FC3": Amortized_FC[3], "Amortized_FC4": Amortized_FC[4],\
+        "summation_Amortized_FC0":  summation_Amortized_FC[0],"summation_Amortized_FC1":  summation_Amortized_FC[1],"summation_Amortized_FC2":  summation_Amortized_FC[2],"summation_Amortized_FC3":  summation_Amortized_FC[3],"summation_Amortized_FC4":  summation_Amortized_FC[4], \
+        "summation_total_savings_permonth_insurance0":summation_total_savings_permonth_insurance[0], "summation_total_savings_permonth_insurance1":summation_total_savings_permonth_insurance[1], "summation_total_savings_permonth_insurance2":summation_total_savings_permonth_insurance[2], "summation_total_savings_permonth_insurance3":summation_total_savings_permonth_insurance[3],"summation_total_savings_permonth_insurance4":summation_total_savings_permonth_insurance[4],\
+        "summation_total_monthly_saving0":summation_total_monthly_saving[0],"summation_total_monthly_saving1":summation_total_monthly_saving[1], "summation_total_monthly_saving2":summation_total_monthly_saving[2],"summation_total_monthly_saving3":summation_total_monthly_saving[3], "summation_total_monthly_saving4":summation_total_monthly_saving[4],\
+        "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json,"monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json,\
+        "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving),\
+        "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, \
+        "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard,\
+        "FreeboardCost0": freeboardCost[0], "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4],\
+        "total_monthly_saving0" : total_monthly_saving[0],"total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_savinglast" : total_monthly_saving[4], \
+        "total_monthly_premium_BFE": total_monthly_premium[0], "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2],"total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4],\
+        "monthly_avoided_loss0": monthly_avoided_loss[0],"monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4], "summation_monthly_avoided_lossHigh": max(summation_monthly_avoided_loss), "summation_monthly_avoided_lossLow": min(summation_monthly_avoided_loss),\
+        "time_to_recover_FC_MS0" : time_to_recover_FC_MS[0], "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4],\
+        "annual_avoided_loss0": annual_avoided_loss[0], "annual_avoided_loss1": annual_avoided_loss[1],"annual_avoided_loss2":annual_avoided_loss[2],"annual_avoided_loss3": annual_avoided_loss[3],"annual_avoided_loss4": annual_avoided_loss[4],\
+        "optimal_AAL_Total_list_freeboard":optimal_AAL_Total_list_freeboard, "optimal_AAL_Total_list": optimal_AAL_Total_list, "AAL_Total_list0":AAL_Total_list[0],"AAL_Total_list1":AAL_Total_list[1],"AAL_Total_list2":AAL_Total_list[2],"AAL_Total_list3":AAL_Total_list[3],"AAL_Total_list4":AAL_Total_list[4],\
+        "AAL_Total_json":AAL_Total_json, "summation_AAL_Totallow" :min(summation_AAL_Total), "summation_AAL_Totalhigh":max(summation_AAL_Total)}       
+    # "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],\
+    # "AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency),"AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4],\
+    #  "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 
+ 
 
     search.datadict = data_dictionary
 
@@ -2121,11 +2143,6 @@ def search(request):
 
 def report(request):
     data = search.datadict
-     ### pdf making ######
-    # template = get_template('report.html')
-    # html = template.render(data)
-    # report.pdf = render_to_pdf('report.html', data)
-    # print("what is going on?  ", type(report.pdf))
     report.data = data
 
 
@@ -2145,37 +2162,10 @@ def exportpdf(request):
     if report.pdf:
         response = HttpResponse(report.pdf, content_type='application/pdf')
         response['Content-disposition']='attachment;filename=FloodsafehomeAnalysis'+'.pdf'
-        # filename = "FloodsafehomeAnalysis_%s.pdf" %("12341231")
-        # content = "inline; filename='%s'" %(filename)
-        # download = request.GET.get("pdfbtn")
-        # if download:
-           # content = "attachment; filename='%s'" %(filename)
-        #response['Content-Disposition'] = content
         return response
     #pass
 
-    # response= HttpResponse(content_type='application/pdf')
-    # response['Content-disposition']='attachment;filename=FloodsafehomeAnalysis'+'.pdf'
-
-    # path_wkhtmltopdf = r'F:/floodsafehome/wwwroot/rootProject/wkhtmltopdf/bin/wkhtmltopdf.exe'
-    # config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-    # pdfkit.from_file('./templates/report.html','out1.pdf', configuration=config)
-    #return response 
-    #pass 
-
-
-    
-    # # Creating http response with weasyprint
-    # response = HttpResponse(content_type='application/pdf;')
-    # response['Content-Disposition'] = 'inline; filename=FloodsafehomeAnalysis.pdf'
-    # response['Content-Transfer-Encoding'] = 'binary'
-    # with tempfile.NamedTemporaryFile(delete=True) as output:
-    #     output.write(search.result)
-    #     output.flush()
-    #     output = open(output.name, 'r')
-    #     response.write(output.read())
-
-    # return response
+   
 
 def exportfile(request):
     response= HttpResponse(content_type='text/csv')
