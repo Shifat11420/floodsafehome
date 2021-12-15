@@ -91,6 +91,21 @@
         zoom: 13
       });
 
+      //Search widget
+     // var searchWidget = new Search({
+     //   view: view
+     // });
+
+     // console.log(document.getElementById("submitButton"))
+     // document.getElementById("submitButton").onclick = (e)=> {
+     //   e.preventDefault()
+     //   let el = document.getElementById("tags")
+     //   console.log(el.value)
+     //   searchWidget.search(el.value).then((result)=> {
+     //     console.log("result", result)
+     //   })
+     // }
+
       // Add sketch widget
       const graphicsLayerSketch = new GraphicsLayer();
       map.add(graphicsLayerSketch);
@@ -361,6 +376,7 @@
       </div>
   </div>
   <!--Disclaimer end-->
+
  <!-- Banner-->
     <div class="banner">
         <div class="banner__content">
@@ -692,9 +708,9 @@
                             <option value="5">9</option>
                             <option value="0">10</option>
                           </select>            
-                      <span id="crsRate_value" ></span> {% endcomment %} <br>
+                      <span id="crsRate_value" ></span> {% endcomment %}
    
-                <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 5px 5px 0px;"> Expected occupancy timeline:  </b> </label> <br>
+                <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 5px 5px 0px;">Expected occupancy timeline:  </b> </label> <br>
                     
                     0 Years <input id="rangeInput1" style ="width: 80px" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" />
                     100 Years
@@ -708,8 +724,7 @@
   
     <br>
     <div style="text-align:right">
-    <button class="btn-result" type="submit" > Get results</button></div>
-   {% comment %} <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
+    <button  class="btn-result" type="submit"> Get results</button></div>
   </form>
   </p>
 <hr class="style-four">
