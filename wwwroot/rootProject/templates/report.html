@@ -194,11 +194,11 @@
         <h3><strong>Location: </strong>{{ individual.0 }}</h3>
           <b>Zone : </b>{{ individual.1 }}<br>
           <b>Recommended freeboard: </b>{{ individual.2 }}<br>
-          <b>Optimal saving:</b> {{ individual.3 }} <br>
-          <b>Freeboard construction cost:</b> {{ individual.4 }} <br>
-          <b> Total annual insurance premium : </b>{{ individual.5 }} <br>
-          <b>Expected annual flood loss : </b>{{ individual.6 }} <br>
-          <b>Time to recover the freeboard cost : </b>{{ individual.7 }} <br>          
+          <b>Optimal saving:</b> $ {{ individual.3 | intcomma}} <br>
+          <b>Freeboard construction cost:</b> $ {{ individual.4 | intcomma}} <br>
+          <b>Monthly Insurance Premium Savings : </b> $ {{ individual.5 | intcomma}} <br> <!--Value check-->
+          <b>Monthly Savings from Flood Loss Reduction : </b>$ {{ individual.6 | intcomma}} <br> <!--Value check-->
+          {% comment %} <b>Time to recover the freeboard cost : </b>{{ individual.7 | intcomma}} <br> {% endcomment %}          
         </div> <br>       
     {% endfor %}
 
@@ -211,7 +211,7 @@
           <table style="width: 85%;">
            <tr>
             <td style="width: 30%;"><b>Home square footage:</b></td>
-            <td>{{SquareFootage}} SF</td>
+            <td>{{SquareFootage | intcomma}} SF</td>
           </tr>
            <tr>
             <td><b>Number of stories: </b></td>
@@ -219,33 +219,33 @@
 
           </tr>
          
-          <tr>
+{% comment %}           <tr>
             <td><b>Insurance:  </b></td>
             <td> Without insurance </td>
-          </tr>
+          </tr> {% endcomment %}
            <tr class="table-slide-bg">
             <td><b>Expected occupancy timeline: </b></td>
             <td> 30 years </td>
           </tr>
           <tr>
             <td rowspan="5"><b>Flood insurance coverage:</b></td>
-            <td>Building coverage:  $ {{BuildingCoverage}}</td>
+            <td>Building coverage:  $ {{BuildingCoverage | intcomma}}</td>
 
           </tr>
           <tr>
-            <td>Building deductible:  $ {{BuildingDeductibe}}</td>
+            <td>Building deductible:  $ {{BuildingDeductibe | intcomma}}</td>
 
           </tr>
           <tr>
-          <td>Content coverage:  $ {{ContentCoverage}}</td>
+          <td>Content coverage:  $ {{ContentCoverage | intcomma}}</td>
           </tr>
           <tr>
            
-            <td>Content deductible:  $ {{ContentDeductible}}</td>
+            <td>Content deductible:  $ {{ContentDeductible | intcomma}}</td> 
 
           </tr>
           <tr>
-            <td>CRS rate is {{CRS}}</td>
+            <td>CRS rate is {{CRS}}</td> <!--Value check-->
           </tr> 
 
         </table> 
@@ -263,187 +263,181 @@
  
     <div >
      <hr class="style-five">
-    <h2 class="map-style-title" >Overall Freeboard Cost Results and Analysis</h2>
-      For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
-          resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u> <br>
-      <div class="pricing row2" > 
+     <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
+      resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u></div> <br>
+  <div class="pricing row2" > 
 
-      <div class="pricing-slider column2">
-      
-        <center><label class="form-slider" >
-          <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
-          <center><div class="pricing-slider-value" ></div></center> <br>
-          <datalist id="scale">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-          </datalist>
-          <input onchange='setImage(this)'
-            type="range"
-            value="{{OptimalFreeboard}}"
-            class="slider" id="myRange" list="scale"
-            data-price-input='{
-                "0": "0ft freeboard",
-                "1": "1ft freeboard",
-                "2": "2ft freeboard",
-                "3": "3ft freeboard",
-                "4": "4ft freeboard"                
-              }'
-          />
-        </label></center>
-        
-      </div>
-
-      
-  <div  style=" display:inline-block; vertical-align: top; "  >
-     
-      <!--Monthly premium savings-->
-
-       <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price" 
-        data-price-output='{
-          "0": ["$", {{summation_total_monthly_premium_saving0}},""],
-          "1": ["$", {{summation_total_monthly_premium_saving1}},""],
-          "2": ["$", {{summation_total_monthly_premium_saving2}},""],
-          "3": ["$", {{summation_total_monthly_premium_saving3}},""],
-          "4": ["$", {{summation_total_monthly_premium_saving4}},""] 
-           }'
-      > 
-
-    <p class="map-style"> When you add <b class="b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
-    
-      <p  ><b class="summary-b">Savings</b> <br>
-       <div class="vl"><p  >
-        <b class="b-summary-value map-style">        
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> insurance savings per month </p>
-    
-    <!--Flood loss-->
-
-        <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price"
-        data-price-output='{
-          "0": ["$", {{summation_monthly_avoided_loss0}},""],
-          "1": ["$", {{summation_monthly_avoided_loss1}},""],
-          "2": ["$", {{summation_monthly_avoided_loss2}},""],
-          "3": ["$", {{summation_monthly_avoided_loss3}},""],
-          "4": ["$", {{summation_monthly_avoided_loss4}},""]
+  <div class="pricing-slider column2">
+  
+    <center><label class="form-slider" >
+      <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
+      <center><div class="pricing-slider-value" ></div></center> <br>
+      <datalist id="scale">
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </datalist>
+      <input onchange='setImage(this)'
+        type="range"
+        value="{{OptimalFreeboard}}"
+        class="slider" id="myRange" list="scale"
+        data-price-input='{
+            "0": "0ft freeboard",
+            "1": "1ft freeboard",
+            "2": "2ft freeboard",
+            "3": "3ft freeboard",
+            "4": "4ft freeboard"                
           }'
-      >
-
-
-      <p>
-      <b class="b-summary-value map-style"> 
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> reduction in expected flood losses per month </p>
-      </div>
-    </div>    
-   <br>
-
-
-
-       <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price"
-        data-price-output='{
-         "0": ["$", {{summation_Amortized_FC0}},""],
-          "1": ["$", {{summation_Amortized_FC1}},""],
-          "2": ["$", {{summation_Amortized_FC2}},""],
-          "3": ["$", {{summation_Amortized_FC3}},""],
-          "4": ["$", {{summation_Amortized_FC4}},""]
-        }'
-      > 
-
-
-
-      <p  ><b class="summary-b">Costs</b> <br>
-      <div class="vl"> <p  >
-      <b class="b-summary-value map-style">      
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> amortized cost per month </p>
-       
-
-      <!--Freeboard cost-->
-      {% load humanize %}
-
-      <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price"
-        data-price-output='{
-         "0": ["$", {{summation_freeboardCost0}},""],
-          "1": ["$", {{summation_freeboardCost1}},""],
-          "2": ["$", {{summation_freeboardCost2}},""],
-          "3": ["$", {{summation_freeboardCost3}},""],
-          "4": ["$", {{summation_freeboardCost4}},""]
-        }'
-      >
-      <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
-      <p class=" b-summary-const">
-         (based on <b class="b-summary-value2">
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b>construction cost)</p>
-      </div>   
-    </div><br>
-
-        
-     <!--  for calculations with below BFE   -->
-  
-
-      <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price"
-        data-price-output='{
-          "0": ["$", {{summation_total_savings_permonth_insurance0}},""],
-          "1": ["$", {{summation_total_savings_permonth_insurance1}},""],
-          "2": ["$", {{summation_total_savings_permonth_insurance2}},""],
-          "3": ["$", {{summation_total_savings_permonth_insurance3}},""],
-          "4": ["$", {{summation_total_savings_permonth_insurance4}},""]
-        }'
-      >
-
-      <p  ><b class="summary-b">Total</b> <br>
-      <div class="vl"> <p  >
-      <b class="b-summary-value map-style">      
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance only) </p>
-      
-
-       <!--Flood loss-->
-       <!--  for calculations without below BFE   -->
-      <div
-        class="pricing-item-price"
-        data-price-output='{
-          "0": ["$", {{summation_total_monthly_saving0}},""],
-          "1": ["$", {{summation_total_monthly_saving1}},""],
-          "2": ["$", {{summation_total_monthly_saving2}},""],
-          "3": ["$", {{summation_total_monthly_saving3}},""],
-          "4": ["$", {{summation_total_monthly_saving4}},""]
-        }'
-      >
-
-      <p>
-      <b class="b-summary-value map-style"> 
-        <span class="pricing-item-price-currency">$</span><!-- 
-     --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) </p>
-      </div>
-
-  
-      </div>
-    </div>
-    </div>
-    </div>
-    </div></div>
+      />
+    </label></center>
+    
   </div>
+
+  
+<div  style=" display:inline-block; vertical-align: top; "  >
+ 
+
+   <!--  for calculations without below BFE   -->
+  <div
+    class="pricing-item-price" 
+    data-price-output='{
+      "0": ["$", {{summation_total_monthly_premium_saving0}},""],
+      "1": ["$", {{summation_total_monthly_premium_saving1}},""],
+      "2": ["$", {{summation_total_monthly_premium_saving2}},""],
+      "3": ["$", {{summation_total_monthly_premium_saving3}},""],
+      "4": ["$", {{summation_total_monthly_premium_saving4}},""] 
+       }'
+  > 
+
+<p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
+
+  <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
+   <div class="vl"><p class="grid-style3 map-style" >
+    <b class="b-summary-value map-style">        
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> insurance savings per month</p>
+
+<!--Flood loss-->
+
+    <!--  for calculations without below BFE   -->
+  <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_monthly_avoided_loss0}},""],
+      "1": ["$", {{summation_monthly_avoided_loss1}},""],
+      "2": ["$", {{summation_monthly_avoided_loss2}},""],
+      "3": ["$", {{summation_monthly_avoided_loss3}},""],
+      "4": ["$", {{summation_monthly_avoided_loss4}},""]
+      }'
+  >
+
+
+  <p class="grid-style3 map-style">
+  <b class="b-summary-value map-style"> 
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month </p>
+  </div>
+</div>    
+<br>
+
+
+   <!--  for calculations without below BFE   -->
+  <div
+    class="pricing-item-price"
+    data-price-output='{
+     "0": ["$", {{summation_Amortized_FC0}},""],
+      "1": ["$", {{summation_Amortized_FC1}},""],
+      "2": ["$", {{summation_Amortized_FC2}},""],
+      "3": ["$", {{summation_Amortized_FC3}},""],
+      "4": ["$", {{summation_Amortized_FC4}},""]
+    }'
+  > 
+
+
+
+  <p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
+  <div class="vl"> <p class="grid-style3 map-style" >
+  <b class="b-summary-value map-style">      
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> amortized cost per month </p>
+   
+
+  <!--Freeboard cost-->
+  {% load humanize %}
+
+
+  <!--  for calculations without below BFE   -->
+
+  <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_freeboardCost0}},""],
+      "1": ["$", {{summation_freeboardCost1}},""],
+      "2": ["$", {{summation_freeboardCost2}},""],
+      "3": ["$", {{summation_freeboardCost3}},""],
+      "4": ["$", {{summation_freeboardCost4}},""]       
+    }'
+  >
+        <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
+  <p class="grid-style3 map-style b-summary-const">
+     (based on <b class="map-style b-summary-value2">
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> additional construction cost) </p>
+  </div>   
+</div><br>
+
+  
+
+  <!--  for calculations without below BFE   -->
+  <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_total_savings_permonth_insurance0}},""],
+      "1": ["$", {{summation_total_savings_permonth_insurance1}},""],
+      "2": ["$", {{summation_total_savings_permonth_insurance2}},""],
+      "3": ["$", {{summation_total_savings_permonth_insurance3}},""],
+      "4": ["$", {{summation_total_savings_permonth_insurance4}},""]
+    }'
+  >
+
+  <p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
+  <div class="vl"> <p class="grid-style3 map-style" >
+  <b class="b-summary-value map-style">      
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance only) </p>
+  
+
+   <!--  for calculations without below BFE   -->
+  <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_total_monthly_saving0}},""],
+      "1": ["$", {{summation_total_monthly_saving1}},""],
+      "2": ["$", {{summation_total_monthly_saving2}},""],
+      "3": ["$", {{summation_total_monthly_saving3}},""],
+      "4": ["$", {{summation_total_monthly_saving4}},""]
+    }'
+  >
+
+  <p class="grid-style3 map-style">
+  <b class="b-summary-value map-style"> 
+    <span class="pricing-item-price-currency">$</span><!-- 
+ --><span class="pricing-item-price-amount">0</span><!-- 
+ --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) </p>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div><br><br><br>
 
 
 
@@ -453,39 +447,40 @@
   <hr class="style-five">
      <h2 class="map-style-title" >Monthly Savings</h2>
       
-        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b>${{summation_total_monthly_saving_low | intcomma}}</b> to <b>${{Optimalsavingsumm| intcomma}}</b>. 
-        <div id="NewChart" class="zc-body"></div><i>BFE stands for <b>Base Flood Elevation</i></b>
+     While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+     <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+     <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b>
     </div>
 
 
 <!--Freeboard cost-->
   <div>
    <hr class="style-five">
-     <h2 class="map-style-title">Freeboard Cost</h2>       
-        The expense of incorporating freeboard into new structures is surprisingly low. The construction cost of increasing elevation for your home ranges from 
-        <b>${{summation_freeboardCostlow | intcomma}}</b> to <b>${{summation_freeboardCosthigh | intcomma}}</b>.
-      <div id="chart1" class="zc-body"></div>
+     <h2 class="map-style-title">Monthly Freeboard Cost</h2>       
+     The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+     <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+     <div id="chart1" class="zc-body"></div>
   </div>
 
 <!--Insurance-->
   <div>
    <hr class="style-five">
-    <h2 class="map-style-title">Annual Insurance Premiums</h2>
+    <h2 class="map-style-title">Monthly Insurance Premium Saving</h2>
      
-       Constructing your home with additional freeboard decreases annual insurance premiums from <b>${{summation_total_annual_premiumlow | intcomma}}</b> to <b>${{summation_total_annual_premiumhigh | intcomma}}</b>. 
-       <div id="chart2" class="zc-body"></div>
+    Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
+    <div id="chart2" class="zc-body"></div>
 
   </div>
 
 <!--Reduction in expected flood losses-->
 <div>
   <hr class="style-five">
-     <h2 class="map-style-title">Expected Annual Flood Loss</h2>
+     <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>
        
         
-          Adding a freeboard also reduces flood losses in flooding events from <b>${{summation_AAL_absCurrencyhigh | intcomma}}</b> to <b>${{summation_AAL_absCurrencylow | intcomma}}</b>. 
-        
+     Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+     Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+             
        
       <div id="chart3" class="zc-body"></div> 
   </div>
@@ -525,339 +520,297 @@
 <!--Result details End-->
 
 <!--zingchart script-->
-  <script>
-   /*zingchart*/
-  // DEFINE CHART LOCATIONS (IDS)
-  // -----------------------------
-  // Main chart render location
-  // var chartId = 'myChart';
-  var chart1Id = 'chart1'; //Freeboard Cost
-  var chart2Id = 'chart2'; //Annual Insurance Premiums
-  var chart3Id = 'chart3'; //Expected Annual Flood Loss
-  var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
-  var chart5Id = 'chart5'; //Monthly Savings
-  var chart6Id = 'chart6'; //Overall graph
+<script>
+  /*zingchart*/
+ // DEFINE CHART LOCATIONS (IDS)
+ // -----------------------------
+ // Main chart render location
+ // var chartId = 'myChart';
+ var chart1Id = 'chart1'; //Freeboard Cost
+ var chart2Id = 'chart2'; //Annual Insurance Premiums
+ var chart3Id = 'chart3'; //Expected Annual Flood Loss
+ var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
+ var chart5Id = 'chart5'; //Monthly Savings
+ var chart6Id = 'chart6'; //Overall graph
 
-  // CHART CONFIG
-  // -----------------------------
+ // CHART CONFIG
+ // -----------------------------
 
 
-  // Chart 1
-  var chart1Data = {
-    type: 'bar',
-    borderWidth: '1px',
-    borderColor: '#dae5ec',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      x:'5%',
-      y:'2%',
-      layout: '1',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-       labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ",",
-    multiplier: true
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '$%v',
-      thousandsSeparator: ",",
-      backgroundColor:'var(--red)'
-      },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
-    },
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-    series: [
-      {
-        text: 'Freeboard cost',
-        backgroundColor: 'var(--red)',
-        alpha: 0.95,
-        borderRadiusTopLeft: '7px',
-        values: {{freeboardCost_json}}   
-      }
-    ]
-  };
+ // Chart 1
+ var chart1Data = {
+   type: 'bar',
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   title: {
+     fontWeight: 'normal',
+     fontColor: 'var(--black)',
+     align: 'left',
+     marginLeft: '2rem'
+   },
+   cursor: 'hand',
+   globals: {
+     fontColor: 'var(--fontColor)',
+     fontfamily: 'Raleway'
+   },
+   legend: {
+     borderWidth: 0,
+     layout: '1',
+     marker: {
+       type: 'pie'
+     }
+   },
+   scaleX: { 
+     markers: [],
+      labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     tick: {
+       visible: false
+     },
+   crosshairX: {},
+   },
+   scaleY: {
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true
+   },
+   plot: {
+   tooltip:{ 
+     fontColor: 'var(--white)',
+     text: '$%v',
+     thousandsSeparator: ", ",
+     backgroundColor:'var(--red)'
+     },
+   animation : {
+     effect : 1,
+     sequence : 2,
+     speed : 100
+   },
+ },
+   series: [
+     {
+       text: 'Monthly freeboard cost',
+       backgroundColor: 'var(--red)',
+       alpha: 0.95,
+       borderRadiusTopLeft: '7px',
+       //values: {{freeboardCost_json}}   
+       values: {{Amortized_FC_json}}  
+     }
+   ]
+ };
 
-  // Chart 2
-   var chart2Data = {
-    type: 'bar',
-    borderWidth: '1px',
-    borderColor: '#dae5ec',
-    title: {
-      fontWeight: 'normal',
-      fontColor: 'var(--black)',
-      align: 'left',
-      marginLeft: '2rem'
-    },
-    cursor: 'hand',
-    globals: {
-      fontColor: 'var(--fontColor)',
-      fontfamily: 'Raleway'
-    },
-    legend: {
-      borderWidth: 0,
-      layout: '1',
-      x:'5%',
-      y:'2%',
-      marker: {
-        type: 'pie'
-      }
-    },
-    scaleX: { 
-      markers: [],
-      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+ // Chart 2
+  var chart2Data = {
+   type: 'bar',
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   title: {
+     fontWeight: 'normal',
+     fontColor: 'var(--black)',
+     align: 'left',
+     marginLeft: '2rem'
+   },
+   cursor: 'hand',
+   globals: {
+     fontColor: 'var(--fontColor)',
+     fontfamily: 'Raleway'
+   },
+   legend: {
+     borderWidth: 0,
+     layout: '1',
+     marker: {
+       type: 'pie'
+     }
+   },
+   scaleX: { 
+     markers: [],
+     labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+  // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     tick: {
+       visible: false
+     },
+   crosshairX: {},
+   },
+   scaleY: {
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true
+   },
+   plot: {
+   tooltip:{ 
+     fontColor: 'var(--white)',
+     text: '$%v',
+     thousandsSeparator: ", ",
+     backgroundColor:'var(--blue)'
+     },
+   animation : {
+     effect : 1,
+     sequence : 2,
+     speed : 100
+   },
+ },
+   series: [
+     {
+       text: 'Monthly insurance premium savings',
+       backgroundColor: 'var(--blue)',
+       alpha: 0.95,
+       borderRadiusTopLeft: '7px',
+       values: {{monthly_premium_saving_json}}   
+     }
+   ]
+ }; 
+
+
+ // Chart 3
+ let chart3Data = {
+ type: 'bar',
+ borderWidth: '1px',
+ borderColor: '#dae5ec',
+ legend: {
+   alpha: 0.05,
+   borderWidth: '0px',
+   layout: 'x2',
+   marker: {
+     type: 'circle',
+     borderColor: 'none',
+     size: '10px'
+   },
+ },
+ plot: {
+   animation: {
+     effect: 'ANIMATION_SLIDE_BOTTOM'
+   }
+ },
+ scaleX: {
+   guide: {
+     visible: false
+   },
+   item: {
+     fontColor: '#7e7e7e'
+   },
+   labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
    // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      tick: {
-        visible: false
-      },
-    crosshairX: {},
-    },
-    scaleY: {
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ",",
-    multiplier: true
-    },
-    plot: {
-    tooltip:{ 
-      fontColor: 'var(--white)',
-      text: '$%v',
-      thousandsSeparator: ", ",
-      backgroundColor:'var(--blue)'
-      },
-    animation : {
-      effect : 1,
-      sequence : 2,
-      speed : 100
-    },
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-    series: [
-      {
-        text: 'Annual insurance premiums',
-        backgroundColor: 'var(--blue)',
-        alpha: 0.95,
-        borderRadiusTopLeft: '7px',
-        values: {{total_annual_premium_json}}   
-      }
-    ]
-  }; 
- 
-
-  // Chart 3
-  let chart3Data = {
-  type: 'bar',
-  borderWidth: '1px',
-  borderColor: '#dae5ec',
-  legend: {
-    alpha: 0.05,
-    borderWidth: '0px',
-    layout: 'x2',
-    x:'5%',
-    y:'2%',
-    marker: {
-      type: 'circle',
-      borderColor: 'none'
-    },
-  },
-  plot: {
-    animation: {
-      effect: 'ANIMATION_SLIDE_BOTTOM'
-    },
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-  scaleX: {
-    guide: {
-      visible: false
-    },
-    item: {
-      fontColor: '#7e7e7e'
-    },
-    labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    lineColor: '#7E7E7E'
-  },
-  scaleY: {
-      
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ",",
-    multiplier: true,
-      guide: {
-        lineStyle: 'solid'
-      },
-      minorTick: {
-        placement: 'cross',
-        size: '6px'
-      },
-      minorTicks: 1
-    },
-  tooltip: {
-    text: '$%v'
-  },
-  series: [
-    {
-      text: 'Annual flood loss with insurance',
-      values: [ 0, 0, 0, 0, 0],
-      //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
-      alpha: 0.95,
-      borderRadiusTopLeft: '7px',
-      backgroundColor: '#eb9d17',
-    },
-    {
-      text: 'Annual flood loss without insurance',
-      values: {{AAL_absCurrency_json}},
-      borderRadiusTopLeft: '7px',
-      alpha: 0.95,
-      backgroundColor: '#f7e0b7',
-    }
-  ]
+   lineColor: '#7E7E7E'
+ },
+ scaleY: {
+     
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true,
+     guide: {
+       lineStyle: 'solid'
+     },
+     minorTick: {
+       placement: 'cross',
+       size: '6px'
+     },
+     minorTicks: 1
+   },
+ tooltip: {
+   text: '$%v',
+   thousandsSeparator: ", ",
+ },
+ series: [
+   {
+     text: 'Monthly savings from flood loss reduction - with insurance',
+     values: [ 0, 0, 0, 0, 0],
+     //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
+     alpha: 0.95,
+     borderRadiusTopLeft: '7px',
+     backgroundColor: '#eb9d17',
+   },
+   {
+     text: 'Monthly savings from flood loss reduction - without insurance',
+     values: {{monthly_avoided_loss_json}},
+     borderRadiusTopLeft: '7px',
+     alpha: 0.95,
+     backgroundColor: '#f7e0b7',
+   }
+ ]
 };
 
-   // Chart 4
+  // Chart 4
 var chart4Data = {
-  type: 'line',
-  borderWidth: '1px',
-  borderColor: '#dae5ec',
-  title: {
-    fontWeight: 'normal',
-    fontColor: 'var(--black)',
-    align: 'left',
-    marginLeft: '2rem'
-  },
-  plot: {
-    tooltip: {
-      visible: false
-    },
-    cursor: 'hand',
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-  legend: {
-    borderWidth: 0,
-    layout: '1',
-     width: '90%',
-     x: '3%',
-    marker: {
-      type: 'pie'
-    }
-  },
-  scaleX: {
-    markers: [],
-    labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-  },
-  crosshairX: {},
-  scaleY: {
-    label: {
-      text: "Month(s)",
-      fontWeight: 'normal'
-    },
-  },
-  series: [
-    {
-      text: 'The reduction in insurance premiums ',
-      values: {{time_to_recover_FC_PS_json}},
-      lineColor: 'var(--orange)',
-      marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : 'var(--orange)',
-      size : 5,
-      backgroundColor : 'var(--orange)'
-      },
-      hoverMarker : {
-        type : 'circle',
-        size : 6,
-        backgroundColor : '#FFF',
-        borderWidth : 1,
-        borderColor : 'var(--orange)'
-      },
-    },
-    {
-      text: 'The reduction in insurance premiums and the reduction of flood losses',
-      values: {{time_to_recover_FC_TB_json}},
-      lineColor: '#c4c722',
-      marker : {
-      type : 'circle',
-      borderWidth : 1,
-      borderColor : '#c4c722',
-      size : 5,
-      backgroundColor : '#c4c722'
-      },
-      hoverMarker : {
-        type : 'circle',
-        size : 6,
-        backgroundColor : '#FFF',
-        borderWidth : 1,
-        borderColor : '#c4c722'
-      },
-    }    
-  ]
+ type: 'line',
+ borderWidth: '1px',
+ borderColor: '#dae5ec',
+ title: {
+   fontWeight: 'normal',
+   fontColor: 'var(--black)',
+   align: 'left',
+   marginLeft: '2rem'
+ },
+ plot: {
+   tooltip: {
+     visible: false
+   },
+   cursor: 'hand'
+ },
+
+ legend: {
+   borderWidth: 0,
+   layout: '1',
+    width: '90%',
+    x: '3%',
+   marker: {
+     type: 'pie'
+   }
+ },
+ scaleX: {
+   markers: [],
+   labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+   // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+ },
+ crosshairX: {},
+ scaleY: {
+   label: {
+     text: "Month(s)",
+     fontWeight: 'normal'
+   },
+ },
+ series: [
+   {
+     text: 'The reduction in insurance premiums ',
+     values: {{time_to_recover_FC_PS_json}},
+     lineColor: 'var(--orange)',
+     marker : {
+     type : 'circle',
+     borderWidth : 1,
+     borderColor : 'var(--orange)',
+     size : 5,
+     backgroundColor : 'var(--orange)'
+     },
+     hoverMarker : {
+       type : 'circle',
+       size : 6,
+       backgroundColor : '#FFF',
+       borderWidth : 1,
+       borderColor : 'var(--orange)'
+     },
+   },
+   {
+     text: 'The reduction in insurance premiums and the reduction of flood losses',
+     values: {{time_to_recover_FC_TB_json}},
+     lineColor: '#c4c722',
+     marker : {
+     type : 'circle',
+     borderWidth : 1,
+     borderColor : '#c4c722',
+     size : 5,
+     backgroundColor : '#c4c722'
+     },
+     hoverMarker : {
+       type : 'circle',
+       size : 6,
+       backgroundColor : '#FFF',
+       borderWidth : 1,
+       borderColor : '#c4c722'
+     },
+   }    
+ ]
 };
 
 /*
@@ -865,13 +818,13 @@ var chart4Data = {
 * markers on the fly easier.
 */
 function Marker(_index) {
-  return {
-    type: 'line',
-    flat: false,
-    lineColor: '#424242',
-    lineWidth: '1px',
-    range: [_index]
-  }
+ return {
+   type: 'line',
+   flat: false,
+   lineColor: '#424242',
+   lineWidth: '1px',
+   range: [_index]
+ }
 }
 
 /*
@@ -879,51 +832,51 @@ function Marker(_index) {
 * labels on the fly easier.
 */
 function Label(_text, _id, _offsetX, _offsetY) {
-  return {
-    id: _id,
-    text: _text,
-    angle: 0,
-    padding: '5px 10px 5px 10px',
-    backgroundColor: '#eeeeee',
-    cursor: 'pointer',
-    flat: false,
-    fontSize: '13px',
-    fontStyle: 'bold',
-    offsetX: _offsetX,
-    offsetY: _offsetY ? _offsetY : 0,
-    textAlign: 'right',
-    wrapText: true
-  }
+ return {
+   id: _id,
+   text: _text,
+   angle: 0,
+   padding: '5px 10px 5px 10px',
+   backgroundColor: '#eeeeee',
+   cursor: 'pointer',
+   flat: false,
+   fontSize: '13px',
+   fontStyle: 'bold',
+   offsetX: _offsetX,
+   offsetY: _offsetY ? _offsetY : 0,
+   textAlign: 'right',
+   wrapText: true
+ }
 }
 
 // format the label text
 let formatLabelText = (_nodeindex, _scaleText) => {
-  let plotInfo = null;
-  let nodeInfo;
-  let seriesText = '';
-  let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
-  let color = '';
-  let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
-    graphid: 0
-  });
+ let plotInfo = null;
+ let nodeInfo;
+ let seriesText = '';
+ let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
+ let color = '';
+ let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
+   graphid: 0
+ });
 
-  for (let i = 0; i < plotLength; i++) {
-    plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-      object: 'plot',
-      plotindex: i
-    });
-    nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-      object: 'node',
-      plotindex: i,
-      nodeindex: _nodeindex
-    });
-    color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
-    seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
-    labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
-      ' ' + nodeInfo.value + '<br>';
-  }
+ for (let i = 0; i < plotLength; i++) {
+   plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+     object: 'plot',
+     plotindex: i
+   });
+   nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+     object: 'node',
+     plotindex: i,
+     nodeindex: _nodeindex
+   });
+   color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
+   seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
+   labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
+     ' ' + nodeInfo.value + '<br>';
+ }
 
-  return labelString;
+ return labelString;
 };
 
 // global array for markers since you can only update the whole array
@@ -937,80 +890,80 @@ let markerHashTable = {};
 * Register a graph click event and then render a chart with the markers
 */
 zingchart.bind('chart4Data', 'click', (e) => {
-  let xyInformation;
-  let nodeIndex;
-  let scaleText;
+ let xyInformation;
+ let nodeIndex;
+ let scaleText;
 
-  // make sure not a node click and click happend in plotarea
-  if (e.target != 'node' && e.plotarea) {
-    xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
-      x: e.ev.clientX,
-      y: e.ev.clientY
-    });
+ // make sure not a node click and click happend in plotarea
+ if (e.target != 'node' && e.plotarea) {
+   xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
+     x: e.ev.clientX,
+     y: e.ev.clientY
+   });
 
-    // if anything is found, 0 corresponds to scale-x
-    if (xyInformation && xyInformation[0] && xyInformation[2]) {
-      nodeIndex = xyInformation[0].scalepos;
-      scaleText = xyInformation[0].scaletext;
+   // if anything is found, 0 corresponds to scale-x
+   if (xyInformation && xyInformation[0] && xyInformation[2]) {
+     nodeIndex = xyInformation[0].scalepos;
+     scaleText = xyInformation[0].scaletext;
 
-      // check hash table. Add marker
-      if (!markerHashTable['nodeindex' + nodeIndex]) {
-        let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-          object: 'node',
-          nodeindex: nodeIndex,
-          plotindex: 0
-        });
+     // check hash table. Add marker
+     if (!markerHashTable['nodeindex' + nodeIndex]) {
+       let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+         object: 'node',
+         nodeindex: nodeIndex,
+         plotindex: 0
+       });
 
-        let labelText = formatLabelText(nodeIndex, scaleText);
-        let labelId = 'label_' + nodeIndex;
-        // create a marker
-        let newMarker = new Marker(nodeIndex);
-        let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
+       let labelText = formatLabelText(nodeIndex, scaleText);
+       let labelId = 'label_' + nodeIndex;
+       // create a marker
+       let newMarker = new Marker(nodeIndex);
+       let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
 
-        markerHashTable['nodeindex' + nodeIndex] = true;
-        markersArray.push(newMarker);
+       markerHashTable['nodeindex' + nodeIndex] = true;
+       markersArray.push(newMarker);
 
-        labelsArray.push(newLabel);
+       labelsArray.push(newLabel);
 
-        // render the marker
-        chart4Data.scaleX.markers = markersArray;
-        chart4Data.labels = labelsArray;
-        zingchart.exec('chart4Data', 'setdata', {
-          data: chart4Data
-        });
-      } else {
-        console.log('---marker already exists----');
-      }
-    }
-  }
+       // render the marker
+       chart4Data.scaleX.markers = markersArray;
+       chart4Data.labels = labelsArray;
+       zingchart.exec('chart4Data', 'setdata', {
+         data: chart4Data
+       });
+     } else {
+       console.log('---marker already exists----');
+     }
+   }
+ }
 });
 
 /*
 * Register a node_click event and then render a chart with the markers
 */
 zingchart.bind('chart4Data', 'node_click', (e) => {
-  // check hash table. Add marker
-  if (!markerHashTable['nodeindex' + e.nodeindex]) {
-    let labelText = formatLabelText(e.nodeindex, e.scaletext);
-    let labelId = 'label_' + e.nodeindex;
-    // create a marker
-    let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
-    let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
+ // check hash table. Add marker
+ if (!markerHashTable['nodeindex' + e.nodeindex]) {
+   let labelText = formatLabelText(e.nodeindex, e.scaletext);
+   let labelId = 'label_' + e.nodeindex;
+   // create a marker
+   let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
+   let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
 
-    markerHashTable['nodeindex' + e.nodeindex] = true;
-    markersArray.push(newMarker);
+   markerHashTable['nodeindex' + e.nodeindex] = true;
+   markersArray.push(newMarker);
 
-    labelsArray.push(newLabel);
+   labelsArray.push(newLabel);
 
-    // render the marker
-    chart4Data.scaleX.markers = markersArray;
-    chart4Data.labels = labelsArray;
-    zingchart.exec('chart4Data', 'setdata', {
-      data: chart4Data
-    });
-  } else {
-    console.log('---marker already exists----');
-  }
+   // render the marker
+   chart4Data.scaleX.markers = markersArray;
+   chart4Data.labels = labelsArray;
+   zingchart.exec('chart4Data', 'setdata', {
+     data: chart4Data
+   });
+ } else {
+   console.log('---marker already exists----');
+ }
 });
 
 let labelMouseDown = false;
@@ -1020,664 +973,686 @@ let labelId = null;
 * bind mousedown event for dragging label
 */
 zingchart.bind('chart4Data', 'label_mousedown', (e) => {
-  labelMouseDown = true;
-  labelId = e.labelid;
-  zingchart.exec('chart4Data', 'hideguide');
+ labelMouseDown = true;
+ labelId = e.labelid;
+ zingchart.exec('chart4Data', 'hideguide');
 });
 
 zingchart.bind('chart4Data', 'mousemove', (e) => {
-  if (labelMouseDown && labelId) {
-    zingchart.exec('chart4Data', 'updateobject', {
-      type: 'label',
-      data: {
-        id: labelId,
-        offsetY: e.ev.layerY
-      }
-    });
-  }
+ if (labelMouseDown && labelId) {
+   zingchart.exec('chart4Data', 'updateobject', {
+     type: 'label',
+     data: {
+       id: labelId,
+       offsetY: e.ev.layerY
+     }
+   });
+ }
 });
 
 zingchart.bind('chart4Data', 'mouseup', () => {
-  labelMouseDown = false;
-  labelId = null;
-  zingchart.exec('chart4Data', 'showguide');
+ labelMouseDown = false;
+ labelId = null;
+ zingchart.exec('chart4Data', 'showguide');
 });
 
 zingchart.bind('chart4Data', 'doubleclick', (e) => {
-  console.log(e);
+ console.log(e);
 });
 
 
 
 
-  // Chart 5: Monthly savings
-    let chart5Data = {
-    type: 'bar',    
-    borderWidth: '1px',
-    borderColor: '#dae5ec',
-    legend: {
-      alpha: 0.05,
-      borderWidth: '0px',
-      layout: 'x2',
-      x:'5%',
-      marker: {
-        type: 'circle',
-        borderColor: 'none'
-      },
-    },
-    plot: {
-      animation: {
-        effect: 'ANIMATION_SLIDE_BOTTOM'
-      },
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-    scaleX: {
-      guide: {
-        visible: false
-      },
-      item: {
-        fontColor: '#7e7e7e'
-      },
-      labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      lineColor: '#7E7E7E'
-    },
-    scaleY: {
-        
-      format: "$%v",
-      negation: "currency",
-      thousandsSeparator: ",",
-      multiplier: true,
-        guide: {
-          lineStyle: 'solid'
-        },
-        minorTick: {
-          placement: 'cross',
-          size: '6px'
-        },
-        minorTicks: 1
-      },
-    tooltip: {
-      text: '$%v'
-    },
-    series: [
-      {
-        text: 'Monthly savings with insurance',
-        values: {{total_monthly_saving_json}},
-        alpha: 0.95,
-        borderRadiusTopLeft: '7px',
-        backgroundColor: '#189447',
-      },
-      {
-        text: 'Monthly savings without insurance',
-        values: [ 16733, 17088, 17074, 17041, 17006],
-        //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
-        borderRadiusTopLeft: '7px',
-        alpha: 0.95,
-        backgroundColor: '#add9be'
-      }
-    ]
-  };
+ // Chart 5: Monthly savings
+   let chart5Data = {
+   type: 'bar',    
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   legend: {
+     alpha: 0.05,
+     borderWidth: '0px',
+     layout: 'x2',
+     marker: {
+       type: 'circle',
+       borderColor: 'none',
+       size: '10px'
+     },
+   },
+   plot: {
+     animation: {
+       effect: 'ANIMATION_SLIDE_BOTTOM'
+     }
+   },
+   scaleX: {
+     guide: {
+       visible: false
+     },
+     item: {
+       fontColor: '#7e7e7e'
+     },
+     labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     lineColor: '#7E7E7E'
+   },
+   scaleY: {
+       
+     format: "$%v",
+     negation: "currency",      
+     thousandsSeparator: ", ",
+     multiplier: true,
+       guide: {
+         lineStyle: 'solid'
+       },
+       minorTick: {
+         placement: 'cross',
+         size: '6px'
+       },
+       minorTicks: 1
+     },
+   tooltip: {
+     text: '$%v',
+     thousandsSeparator: ", ",
+   },
+   series: [
+     {
+       text: 'Monthly savings with insurance',
+       values: {{total_monthly_saving_json}},
+       alpha: 0.95,
+       borderRadiusTopLeft: '7px',
+       backgroundColor: '#189447',
+     },
+     {
+       text: 'Monthly savings without insurance',
+       values: [ 16733, 17088, 17074, 17041, 17006],
+       //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+       borderRadiusTopLeft: '7px',
+       alpha: 0.95,
+       backgroundColor: '#add9be'
+     }
+   ]
+ };
 
-  zingchart.render({
-    id: 'chart5Id',
-    data: chart5Data,
-    height: '100%', 
-    width: '100%',
-  });
+ zingchart.render({
+   id: 'chart5Id',
+   data: chart5Data,
+   height: '100%', 
+   width: '100%',
+ });
 
 
-  // Chart 6
-  // DEFINE DATA
-  // -----------------------------
- let chartData = [
-    {
-      type: 'line',       
-      borderWidth: '1px',
-      borderColor: '#dae5ec',
-      text: 'Monthly savings with insurance',
-      values: {{ total_monthly_saving_json}},
-      scales: 'scale-x,scale-y',
-      lineColor: '#189447',
-      legendMarker: {
-        type: 'circle'
-      },
-      plot: {
-      animation: {
-        effect: 'ANIMATION_SLIDE_BOTTOM'
-      },
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '12px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-    barWidth: '90%',
-    jsRule: 'plot_jsRule()'
-  },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ",",
-        wrapText: true
-      },
-      marker: {
-        backgroundColor: '#189447'
-      }
-    },    {
-      type: 'line', 
-      text: 'Monthly savings without insurance',
-      values: [16733, 17088, 17074, 17041, 17006],
-      //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
-      scales: 'scale-x,scale-y',
-      lineColor: '#add9be',
-      legendMarker: {
-        type: 'circle'
-      },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ",",
-        wrapText: true
-      },
-      marker: {
-        backgroundColor: '#add9be'
-      }
-    },
-    {
-      type: 'bar',
-      text: 'Amortized cost',
-      values: {{Amortized_FC_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#ff614f',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ",",
-        wrapText: true
-      }
-    },
-    {
-      type: 'bar',
-      text: 'Insurance savings per month',
-      values: {{monthly_premium_saving_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#07d9a4',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ",",
-        wrapText: true
-      }
-    },
-    {
-      type: 'bar', 
-      text: 'Reduction in expected flood loss per month',
-      values: {{monthly_avoided_loss_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#2480bf',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ",",
-        wrapText: true
-      }
-    }
+ // Chart 6
+ // DEFINE DATA
+ // -----------------------------
+let chartData = [
+   {
+     type: 'line',       
+     borderWidth: '1px',
+     borderColor: '#dae5ec',
+     text: 'Monthly savings with insurance',
+     values: {{ total_monthly_saving_json}},
+     scales: 'scale-x,scale-y',
+     lineColor: '#189447',
+     legendMarker: {
+       type: 'circle'
+     },
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     },
+     marker: {
+       backgroundColor: '#189447'
+     }
+   },    {
+     type: 'line', 
+     text: 'Monthly savings without insurance',
+     values: [16733, 17088, 17074, 17041, 17006],
+     //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+     scales: 'scale-x,scale-y',
+     lineColor: '#add9be',
+     legendMarker: {
+       type: 'circle'
+     },
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     },
+     marker: {
+       backgroundColor: '#add9be'
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Amortized cost',
+     values: {{Amortized_FC_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#ff614f',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Insurance savings per month',
+     values: {{monthly_premium_saving_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#07d9a4',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar', 
+     text: 'Reduction in expected flood loss per month',
+     values: {{monthly_avoided_loss_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#2480bf',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   }
 
-  ];
+ ];
 
 let chartConfig = {
-    type: 'mixed',   
-    borderWidth: '1px',
-    borderColor: '#dae5ec',
-    legend:{
-     layout: 'x3',
-     x:'5%',
-     width: '95%',
-     margin: '10px 10px 10px 10px',
-     borderColor: 'whtie'
-    },
-    scaleX: {
-      values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        lineColor: '#BDBDBD',
-        lineStyle: 'solid'
-      },
-      label: {
-        text: 'BFE + Freeboard (ft)'
-      },
-    },
-    scaleY: {  
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ",",
-    multiplier: true,
-      guide: {
-        lineStyle: 'solid'
-      },
-      minorTick: {
-        placement: 'cross',
-        size: '6px'
-      },
-      minorTicks: 1
-    },
-    {% comment %} 
-    scaleY2: {
-    format: '%v',    
-    negation: "currency",
-    guide: {
-      visible: false
-    },
-    label: {
-      text: 'Y-2 label'
-    },
-    zooming: true
-  }, 
-  {% endcomment %}
-    crosshairX: {
-      plotLabel: {
-        visible: false
-      }
-    },
-    series: chartData
-  };
+   type: 'mixed',   
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   legend:{
+    layout: '1x5' ,
+    width: '95%',
+    margin: '20px 10px 10px 10px',
+    borderColor: 'whtie'
+   },
+   scaleX: {
+     values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     guide: {
+       lineColor: '#BDBDBD',
+       lineStyle: 'solid'
+     },
+     label: {
+       text: 'BFE + Freeboard (ft)'
+     },
+   },
+   scaleY: {  
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true,
+     guide: {
+       lineStyle: 'solid'
+     },
+     minorTick: {
+       placement: 'cross',
+       size: '6px'
+     },
+     minorTicks: 1
+   },
+   {% comment %} 
+   scaleY2: {
+   format: '%v',    
+   negation: "currency",
+   guide: {
+     visible: false
+   },
+   label: {
+     text: 'Y-2 label'
+   },
+   zooming: true
+ }, 
+ {% endcomment %}
+   crosshairX: {
+     plotLabel: {
+       visible: false
+     }
+   },
+   series: chartData
+ };
 
 
-  // CHART CONFIG
-  // ----------------------------- commented out
-  {% comment %} let chartConfig = {
-    type: 'hbullet',
-    backgroundColor: '#f4f4f4',
-    legend: {
-      marginBottom: '-20%',
-      backgroundColor: 'none',
-      borderWidth: '0px',
-      item: {
-        cursor: 'hand',
-        fontColor: '#307C70',
-        fontFamily: 'arial',
-        fontSize: '12px',
-        fontWeight: 'normal',
-        shadow: false
-      },
-      layout: 'float',
-      marker: {
-        cursor: 'hand'
-      },
-      position: '50% 12%',
-      toggleAction: 'remove'
-    },
-    plot: {
-      alpha: 1,
-      backgroundColor: '#000000',
-      barSpace: '50%',
-      tooltipText: 'Value: %v',
-      animation: {
-        effect: 'ANIMATION_EXPAND_BOTTOM',
-        method: 'ANIMATION_LINEAR',
-        sequence: 'null'
-      }
-    },
-    plotarea: {
-      margin: '22% 5% 15% 10%',
-      backgroundColor: '#ffffff'
-    },
-    scaleX: {
-      values: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        alpha: 0.5,
-        lineColor: '#434F5B',
-        lineStyle: 'solid'
-      },
-      item: {
-        fontColor: '#434F5B',
-        fontFamily: 'arial',
-        fontSize: '12px',
-        fontWeight: 'normal',
-        offsetX: '-5%'
-      },
-      lineColor: '#434F5B',
-      lineStyle: 'solid',
-      lineWidth: '1px',
-      tick: {
-        lineColor: '#434F5B',
-        lineWidth: '1px'
-      }
-    },
-    scaleY: {
-      format: '%v',
-      guide: {
-        alpha: 0.25,
-        lineColor: '#434F5B',
-        lineStyle: 'solid'
-      },
-      item: {
-        fontColor: '#434F5B',
-        fontFamily: 'arial',
-        fontSize: '12px',
-        fontWeight: 'normal',
-        offsetY: '5%'
-      },
-      lineColor: '#434F5B',
-      lineStyle: 'solid',
-      lineWidth: '1px',
-      tick: {
-        lineColor: '#434F5B',
-        lineWidth: '1px'
-      }
-    },
-    series: chartData
-  }; {% endcomment %}
 
-
- // Chart new
-  // DEFINE DATA
-  // -----------------------------
+// Chart 7: new
+ // DEFINE DATA
+ // -----------------------------
+ // Chart 7: new
+ // DEFINE DATA
+ // -----------------------------
  let chartNew = [
-    {
-      type: 'bar',    
-      text: 'Freeboard cost',
-      values: {{freeboardCost_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#EC5B57',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '11px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ", ",
-        wrapText: true
-      }
-    }, 
-    {
-      type: 'bar', 
-      text: 'Insurance saving',
-      values: {{total_annual_premium_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#37615B',
-      borderRadiusTopLeft: '5px',
-      alpha: 0.90,
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '11px',
-      offsetY: '7px',
-      placement: 'top'
-    },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ", ",
-        wrapText: true
-      }
-    },
-    {
-      type: 'bar',
-      text: 'Flood loss reduction',
-      values: {{AAL_absCurrency_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#44B0AB',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '11px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ", ",
-        wrapText: true
-      }
-    },
-    {
-      type: 'bar',
-      text: 'Monthly saving',
-      values: {{total_monthly_saving_json}},
-      scales: 'scale-x,scale-y',
-      backgroundColor: '#49c8c5',
-      borderRadiusTopLeft: '7px',
-      alpha: 0.90,
-     valueBox: {
-      text : '$%v',       
-      thousandsSeparator: ",",
-      fontColor: '#000',
-      fontSize: '11px',
-      offsetY: '5px',
-      placement: 'top'
-    },
-      tooltip: {
-        text: '$%v',
-        negation: "currency",
-        thousandsSeparator: ", ",
-        wrapText: true
-      }
-    }
+   {
+     type: 'bar',    
+     text: 'Freeboard cost',
+     values: {{Amortized_FC_neg_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#CD5B77',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   }, 
+   {
+     type: 'bar', 
+     text: 'Insurance savings',
+     values: {{monthly_premium_saving_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#953F8A',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Flood loss reduction',
+     values: {{monthly_avoided_loss_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#4959D9',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Total monthly savings',
+     values: {{total_monthly_saving_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#65A8EA',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   }
 
-  ];
+ ];
 
 let chartConfig2 = {
-    type: 'mixed',   
-    borderWidth: '1px',
-    borderColor: '#dae5ec',
-    legend:{
-     layout: '1x4' ,
-     borderColor: 'whtie'
-    },
-    scaleX: {
-      values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        lineColor: '#BDBDBD',
-        lineStyle: 'solid'
-      },
-      label: {
-        text: 'BFE + Freeboard (ft)'
-      },
-    },
-    scaleY: {  
-    format: "$%v",
-    negation: "currency",
-    thousandsSeparator: ", ",
-    multiplier: true,
-      guide: {
-        lineStyle: 'solid'
-      },
-      minorTick: {
-        placement: 'cross',
-        size: '6px'
-      },
-      minorTicks: 1
-    },
-    {% comment %} 
-    scaleY2: {
-    format: '%v',    
-    negation: "currency",
-    guide: {
-      visible: false
-    },
-    label: {
-      text: 'Y-2 label'
-    },
-    zooming: true
-  }, 
-  {% endcomment %}
-    crosshairX: {
-      plotLabel: {
-        visible: false
-      }
-    },
-    series: chartNew
-  };
+   type: 'mixed',   
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   legend:{
+    layout: '1x4' ,
+    borderColor: 'whtie'
+   },
+   scaleX: {
+     values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     guide: {
+       lineColor: '#BDBDBD',
+       lineStyle: 'solid'
+     },
+     label: {
+       text: 'BFE + Freeboard (ft)'
+     },
+   },
+   scaleY: {  
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true,
+     guide: {
+       lineStyle: 'solid'
+     },
+     minorTick: {
+       placement: 'cross',
+       size: '6px'
+     },
+     minorTicks: 1
+   },
+   {% comment %} 
+   scaleY2: {
+   format: '%v',    
+   negation: "currency",
+   guide: {
+     visible: false
+   },
+   label: {
+     text: 'Y-2 label'
+   },
+   zooming: true
+ }, 
+ {% endcomment %}
+   crosshairX: {
+     plotLabel: {
+       visible: false
+     }
+   },
+   series: chartNew
+ };
 
 
+// Chart 8: new x zone
+ // DEFINE DATA
+ // -----------------------------
+{% comment %}   let chartXzone = [
+   {
+     type: 'bar',    
+     text: 'Freeboard cost',
+     values: {{freeboardCost_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#EC5B57',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   }, 
+   {
+     type: 'bar', 
+     text: 'Insurance saving',
+     values: {{total_monthly_premium_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#37615B',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Flood loss reduction',
+     values: {{AAL_absCurrency_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#44B0AB',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   },
+   {
+     type: 'bar',
+     text: 'Monthly saving',
+     values: {{total_monthly_saving_json}},
+     scales: 'scale-x,scale-y',
+     backgroundColor: '#49c8c5',
+     borderRadiusTopLeft: '7px',
+     alpha: 0.90,
+     tooltip: {
+       text: '$%v',
+       negation: "currency",
+       thousandsSeparator: ", ",
+       wrapText: true
+     }
+   }
 
-  // RENDER CHARTS
-  // -----------------------------
+ ];
 
-  // Chart 1
-  zingchart.render({ 
-    id: chart1Id, 
-    data : chart1Data, 
-    width: '100%'
-  });
+let chartConfig3 = {
+   type: 'mixed',   
+   borderWidth: '1px',
+   borderColor: '#dae5ec',
+   legend:{
+    layout: '1x4' ,
+    borderColor: 'whtie'
+   },
+   scaleX: {
+     values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+     //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     guide: {
+       lineColor: '#BDBDBD',
+       lineStyle: 'solid'
+     },
+     label: {
+       text: 'Ground + Freeboard (ft)'
+     },
+   },
+   scaleY: {  
+   format: "$%v",
+   negation: "currency",
+   thousandsSeparator: ", ",
+   multiplier: true,
+     guide: {
+       lineStyle: 'solid'
+     },
+     minorTick: {
+       placement: 'cross',
+       size: '6px'
+     },
+     minorTicks: 1
+   },
+   crosshairX: {
+     plotLabel: {
+       visible: false
+     }
+   },
+   series: chartXzone
+ };
+{% endcomment %}
 
-  // Chart 2
-  zingchart.render({ 
-    id: chart2Id, 
-    data : chart2Data, 
-    width: '100%'
-  });
+ // CHART CONFIG
+ // ----------------------------- commented out
+ {% comment %} let chartConfig = {
+   type: 'hbullet',
+   backgroundColor: '#f4f4f4',
+   legend: {
+     marginBottom: '-20%',
+     backgroundColor: 'none',
+     borderWidth: '0px',
+     item: {
+       cursor: 'hand',
+       fontColor: '#307C70',
+       fontFamily: 'arial',
+       fontSize: '12px',
+       fontWeight: 'normal',
+       shadow: false
+     },
+     layout: 'float',
+     marker: {
+       cursor: 'hand'
+     },
+     position: '50% 12%',
+     toggleAction: 'remove'
+   },
+   plot: {
+     alpha: 1,
+     backgroundColor: '#000000',
+     barSpace: '50%',
+     tooltipText: 'Value: %v',
+     animation: {
+       effect: 'ANIMATION_EXPAND_BOTTOM',
+       method: 'ANIMATION_LINEAR',
+       sequence: 'null'
+     }
+   },
+   plotarea: {
+     margin: '22% 5% 15% 10%',
+     backgroundColor: '#ffffff'
+   },
+   scaleX: {
+     values: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+     guide: {
+       alpha: 0.5,
+       lineColor: '#434F5B',
+       lineStyle: 'solid'
+     },
+     item: {
+       fontColor: '#434F5B',
+       fontFamily: 'arial',
+       fontSize: '12px',
+       fontWeight: 'normal',
+       offsetX: '-5%'
+     },
+     lineColor: '#434F5B',
+     lineStyle: 'solid',
+     lineWidth: '1px',
+     tick: {
+       lineColor: '#434F5B',
+       lineWidth: '1px'
+     }
+   },
+   scaleY: {
+     format: '%v',
+     guide: {
+       alpha: 0.25,
+       lineColor: '#434F5B',
+       lineStyle: 'solid'
+     },
+     item: {
+       fontColor: '#434F5B',
+       fontFamily: 'arial',
+       fontSize: '12px',
+       fontWeight: 'normal',
+       offsetY: '5%'
+     },
+     lineColor: '#434F5B',
+     lineStyle: 'solid',
+     lineWidth: '1px',
+     tick: {
+       lineColor: '#434F5B',
+       lineWidth: '1px'
+     }
+   },
+   series: chartData
+ }; {% endcomment %}
 
-  // Chart 3
-  zingchart.render({ 
-    id: chart3Id, 
-    data : chart3Data, 
-    width: '100%'
-  });
+ // RENDER CHARTS
+ // -----------------------------
 
-  // Chart 4
-  zingchart.render({ 
-    id: chart4Id, 
-    data : chart4Data, 
-    width: '100%'
-  });
+ // Chart 1
+ zingchart.render({ 
+   id: chart1Id, 
+   data : chart1Data, 
+   width: '100%'
+ });
 
-  // Chart 5
-  zingchart.render({ 
-    id: chart5Id, 
-    data : chart5Data, 
-    width: '100%'
-  });
+ // Chart 2
+ zingchart.render({ 
+   id: chart2Id, 
+   data : chart2Data, 
+   width: '100%'
+ });
 
-  // Chart 6
-  zingchart.render({
-    id: 'myChart',
-    data: chartConfig,
-    width: '100%'
-  });
+ // Chart 3
+ zingchart.render({ 
+   id: chart3Id, 
+   data : chart3Data, 
+   width: '100%'
+ });
 
-  var ctx = document.getElementById('chart');
+ // Chart 4
+ zingchart.render({ 
+   id: chart4Id, 
+   data : chart4Data, 
+   width: '100%'
+ });
 
-  var chart = (ctx, {
-            type: 'line',
-            data: {
-                labels: ['+0ft freeboard','+`0`ft freeboard'],
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: '#33b5e5',
-                    borderColor: '#33b5e5',
-                    data: [15,10]   
-                }]
-            },
-            options: {
-              responsive:true,
-              legend:{
-                display:false,
-              },
-              title: {
-                display:false,
-                text:'Text',
-              },
-              
-              scales: {
-                xAxes: [{
-                  display: true
-                }],
-                yAxes: [{
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'dollar',
-                  },
-                  ticks: {
-                    min: 0,
-                    stepSize: 10
-                  }
-                }]
-              }
-            }
-    }); 
+ // Chart 5
+ zingchart.render({ 
+   id: chart5Id, 
+   data : chart5Data, 
+   width: '100%'
+ });
 
-  // Chart 7 (New)
-  zingchart.render({
-    id: 'NewChart',
-    data: chartConfig2,
-    width: '100%'
-  });
-  var ctx = document.getElementById('chart').getContext('2d');
+ // Chart 6
+ zingchart.render({
+   id: 'myChart',
+   data: chartConfig,
+   width: '100%'
+ });
 
-  var chart = (ctx, {
-            type: 'line',
-            data: {
-                labels: ['+0ft freeboard','+`0`ft freeboard'],
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: '#33b5e5',
-                    borderColor: '#33b5e5',
-                    data: [15,10]   
-                }]
-            },
-            options: {
-              responsive:true,
-              legend:{
-                display:false,
-              },
-              title: {
-                display:false,
-                text:'Text',
-              },
-              
-              scales: {
-                xAxes: [{
-                  display: true
-                }],
-                yAxes: [{
-                  display: true,
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'dollar',
-                  },
-                  ticks: {
-                    min: 0,
-                    stepSize: 10
-                  }
-                }]
-              }
-            }
-    }); 
-    </script>
+ // Chart 7 (New)
+ zingchart.render({
+   id: 'NewChart',
+   data: chartConfig2,
+   width: '100%'
+ });
+
+{% comment %}       // Chart 8 (New)
+ zingchart.render({
+   id: 'Xzone',
+   data: chartConfig3,
+   width: '100%'
+ }); {% endcomment %}
+ 
+ var ctx = document.getElementById('chart').getContext('2d');
+
+ var chart = (ctx, {
+           type: 'line',
+           data: {
+               labels: ['+0ft freeboard','+`0`ft freeboard'],
+               datasets: [{
+                   label: 'My First dataset',
+                   backgroundColor: '#33b5e5',
+                   borderColor: '#33b5e5',
+                   data: [15,10]   
+               }]
+           },
+           options: {
+             responsive:true,
+             legend:{
+               display:false,
+             },
+             title: {
+               display:false,
+               text:'Text',
+             },
+             
+             scales: {
+               xAxes: [{
+                 display: true
+               }],
+               yAxes: [{
+                 display: true,
+                 scaleLabel: {
+                   display: true,
+                   labelString: 'dollar',
+                 },
+                 ticks: {
+                   min: 0,
+                   stepSize: 10
+                 }
+               }]
+             }
+           }
+   }); 
+
+
+   </script>
 
     <script src="./static/js/disclaimer.js"></script>
 
