@@ -1780,10 +1780,13 @@ def search(request):
     print("\n")
 
     listofOptimalsIndividialBldg_annual_premium = []
+    listofOptimalsIndividialBldg_monthly_premium = []
     for each in range(len(total_optimal_freeboard_list_c)):
         listofOptimalsIndividialBldg_annual_premium.append(total_annual_premium_list_c[each][total_optimal_freeboard_list_c[each]])
+        listofOptimalsIndividialBldg_monthly_premium.append((total_annual_premium_list_c[each][total_optimal_freeboard_list_c[each]])/12)
         
     print("listofOptimalsIndividialBldg_annual_premium : ",listofOptimalsIndividialBldg_annual_premium)
+    print("listofOptimalsIndividialBldg_monthly_premium : ",listofOptimalsIndividialBldg_monthly_premium)
   
     listofOptimalsIndividialBldg_monthly_premium = []
     for each in range(len(total_optimal_freeboard_list_c)):
@@ -1972,7 +1975,22 @@ def search(request):
         listofOptimalsIndividialBldg_avoided_monthly_loss_tenant.append(avoided_monthly_loss_tenant_list_c[each][total_optimal_freeboard_list_c[each]])
         
     print("listofOptimalsIndividialBldg_avoided_monthly_loss_tenant : ",listofOptimalsIndividialBldg_avoided_monthly_loss_tenant)
-  
+    
+    
+    
+    if user_type == "Homeowner":
+        listofOptimalsIndividialBldg_avoided_monthly_loss = listofOptimalsIndividialBldg_avoided_monthly_loss_homeowner
+    elif user_type == "Tenant":
+        listofOptimalsIndividialBldg_avoided_monthly_loss = listofOptimalsIndividialBldg_avoided_monthly_loss_tenant
+    elif user_type == "Landlord":
+        listofOptimalsIndividialBldg_avoided_monthly_loss = listofOptimalsIndividialBldg_avoided_monthly_loss_landlord
+    # elif user_type == "Community official":
+    #     listofOptimalsIndividialBldg_avoided_monthly_loss == listofOptimalsIndividialBldg_avoided_monthly_loss_CommunityOfficial
+    else:
+        print("None of the user type!")
+        listofOptimalsIndividialBldg_avoided_monthly_loss = listofOptimalsIndividialBldg_avoided_monthly_loss_homeowner #"NONE"   #fix it later
+        print("listofOptimalsIndividialBldg_avoided_monthly_loss = ", listofOptimalsIndividialBldg_avoided_monthly_loss)
+
 
 ## Time to recover the freeboard cost TB ##
     print("time_to_recover_FC_TB_list_c : ", time_to_recover_FC_TB_list_c)
@@ -2087,7 +2105,7 @@ def search(request):
    
     ## Individual report ###
     #listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_annual_premium, listofOptimalsIndividialBldg_AAL_absCurrency, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
-    listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_annual_premium,listofOptimalsIndividialBldg_AAL_Total, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
+    listforindividual = zip(buildinglist, zonelist, total_optimal_freeboard_list_c, total_optimal_saving_list_c, listofOptimalsIndividialBldg_freeboardcost, listofOptimalsIndividialBldg_monthly_premium, listofOptimalsIndividialBldg_avoided_monthly_loss, listofOptimalsIndividialBldg_time_to_recover_FC_TB)
 
 
     ###    for calculation with below BFEs       ######
