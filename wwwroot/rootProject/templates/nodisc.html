@@ -371,7 +371,7 @@ function formProcess(){
                         <option value="Zip code" disabled>Zip code</option>
                     </select>
 
-                        <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                        <select name="select12" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
                             <option value="">Select your parish</option>
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
@@ -392,9 +392,9 @@ function formProcess(){
               <!--This option will be appear when user select community official-->
               <div id="as" style="display: none">
                     <label> <b class="map-style"> Assessment Scale  </b></label><br>
-                      <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "Single building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
+                      <label for="chkYes2"><input type="radio" name ="chkYes2" id="chkYes2" value = "Single_building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
                       Single building</label>
-                      <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "Spatial scale" class="margin1" onclick="ShowHideDiv2()">
+                      <label for="chkNo2"><input type="radio" name ="chkYes2" id="chkNo2" value = "Spatial_scale" class="margin1" onclick="ShowHideDiv2()">
                         Spatial scale</label>
                 
 
@@ -409,7 +409,7 @@ function formProcess(){
                       <option value="Zip code" disabled>Zip code</option>
                   </select>
 
-                      <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                      <select name="select12" id="select3" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
                           <option value="">Select your parish</option>
                           <option value="Jefferson"> Jefferson</option>
                           <option value="St. Tammany"> St. Tammany</option>
@@ -444,8 +444,8 @@ function formProcess(){
                       <option value="Zip code" disabled>Zip code</option>
                   </select>
 
-                      <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
-                          <option value="">Select your parish</option>
+                      <select name="select12" id="select4" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                          {% comment %} <option value="">Select your parish</option> {% endcomment %}
                           <option value="Jefferson"> Jefferson</option>
                           <option value="St. Tammany"> St. Tammany</option>
                           <option value="Terrebonne"> Terrebonne </option>
@@ -760,7 +760,7 @@ function formProcess(){
       <div
         class="pricing-item-price" 
         data-price-output='{
-          "0": ["$", {{summation_total_monthly_premium_saving0}},""],
+          "0": ["$", {{summation_total_monthly_premium_saving0}},""], 
           "1": ["$", {{summation_total_monthly_premium_saving1}},""],
           "2": ["$", {{summation_total_monthly_premium_saving2}},""],
           "3": ["$", {{summation_total_monthly_premium_saving3}},""],
@@ -1380,7 +1380,7 @@ Adding freeboard results in monthly savings from flood loss reduction of  <b cla
     },
     scaleX: { 
       markers: [],
-       labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
       //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
       tick: {
         visible: false
