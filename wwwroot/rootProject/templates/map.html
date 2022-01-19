@@ -433,343 +433,344 @@
   <!--Tour guide end-->
 
 
- <!-- Select your building information-->
- <div class="container left" > 
-  <form method="get" action="/search" name="userInput" >
-        {% csrf_token %} 
-  <p> 
-    <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <!-- <button class="btn btn-result2" type="submit" > Get results</button>--></h2> 
-      <div class="box">
-     
-          <!--User type-->
-          <label> <b class="map-style"> User Type  </b></label><br>
-            <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "Homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-            <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
-            <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
-            <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
-            
-          <!--Building type-->
-          <div id="dvPassport" style="display: none">
-            <label><b class="map-style">Building Type </b></label><br>
-              <label><input type="radio" name ="selectBox" value = "New building" class="bar"  checked> New building</label>
-              <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>    
-            <br>  
-            
-            <!--Address or Parcel ID-->
-                <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                    <option value="">Select by</option>
-                    <option value="Address">Address</option>
-                    <option value="Subdivison" disabled>Subdivison</option>
-                    <option value="Parcel" disabled>Parcel</option>
-                    <option value="Zip code" disabled>Zip code</option>
-                </select>
-
-                    <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
-                        <option value="">Select your parish</option>
-                        <option value="Jefferson"> Jefferson</option>
-                        <option value="St. Tammany"> St. Tammany</option>
-                        <option value="Terrebonne"> Terrebonne </option>
-                    </select><br>
-                          
-                    <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
-                    {% comment %} <!--Square footage-->
-            <label><b class="map-style">Square footage </b> </label><br>
-              <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
+  <!-- Select your building information-->
+  <div class="container left" > 
+    <form method="get" action="/search" name="userInput" >
+              {% csrf_token %} 
+        <p> 
+          <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <!-- <button class="btn btn-result2" type="submit" > Get results</button>--></h2> 
+            <div class="box">
            
-           <!--Number of Stories -->        
-            <label> <b class="map-style">Number of Stories  </b> </label><br>
-              <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"  > One story</label>
-              <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  > Two or more stories</label> {% endcomment %}
-          </div> <!--Building type div end-->
-
-          <!--This option will be appear when user select community official-->
-          <div id="as" style="display: none">
-                <label> <b class="map-style"> Assessment Scale  </b></label><br>
-                  <label for="chkYes2"><input type="radio" name ="as" id="chkYes2" value = "Single building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
-                  Single building</label>
-                  <label for="chkNo2"><input type="radio" name ="as" id="chkNo2" value = "Spatial scale" class="margin1" onclick="ShowHideDiv2()">
-                    Spatial scale</label>
-            
-
-                  <!--This option will be appear when user select single-building-->
-                  <div id="singleBuilding" style="display: none">
-            <!--Address or Parcel ID-->
-                <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                  <option value="">Select by</option>
-                  <option value="Address">Address</option>
-                  <option value="Subdivison" disabled>Subdivison</option>
-                  <option value="Parcel" disabled>Parcel</option>
-                  <option value="Zip code" disabled>Zip code</option>
-              </select>
-
-                  <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
-                      <option value="">Select your parish</option>
-                      <option value="Jefferson"> Jefferson</option>
-                      <option value="St. Tammany"> St. Tammany</option>
-                      <option value="Terrebonne"> Terrebonne </option>
-                  </select><br>
+                <!--User type-->
+                <label> <b class="map-style"> User Type  </b></label><br>
+                  <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "Homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
+                  <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
+                  <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
+                  <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
                   
-                    {% comment %} <!--Average Building Size (Livable Square Footage) -->
-                    <label><b class="map-style"> Average Building Size (Livable Square Footage) </b> </label><br>
-                      {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                      {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-
-                    <!--Number of Stories -->        
-                    {% comment %} <label> <b class="map-style">Number of Stories  </b> </label><br> {% endcomment %}
-                      {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
-                      {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                      <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %} 
-
-                  </div> <!--singlebuilding div end -->    
-
-                  <!-- This option will be appear when spatial scale is selected-->
-                  <div id="SpatialScale" style="display: none">
-                    <label> <b class="map-style"> Select area from the map   </b></label><br>
-                    <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
-                
-                    <!--Address or Parcel ID-->
-                <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                  <option value="">Select by</option>
-                  <option value="Address">Address</option>
-                  <option value="Subdivison" disabled>Subdivison</option>
-                  <option value="Parcel" disabled>Parcel</option>
-                  <option value="Zip code" disabled>Zip code</option>
-              </select>
-
-                  <select name="select2" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
-                      <option value="">Select your parish</option>
-                      <option value="Jefferson"> Jefferson</option>
-                      <option value="St. Tammany"> St. Tammany</option>
-                      <option value="Terrebonne"> Terrebonne </option>
-                  </select><br>
-
-                    <!--Add fields-->
-                    <label> <b class="map-style"> Type your address(es)   </b></label><br>
-                    <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
-                    <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
-                      
-                      <!-- new code with remove button-->  
-                        <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
-                        <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
-                        <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
-                          <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
-                            <input type="hidden" name="addr_list" id="addr_list" value="" />
-                            <ul id="list"></ul>
-                          </div> 
-                          <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
-                           <!--<h3 style="color:blue;"><strong>Selected buildings:</strong> </h3>-->
-                            {% for individual in buildinglocation %}
-                                {{individual|safe}} <br>
-                                {% endfor %}  
-                          </div>                                
-                      
-                          <!-- new code with remove button ends--> 
-                
-                      <!-- code with just add new button-->
-                      {% comment %} <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
-                      <input type="button" id="add" value="Add New">
-                      <input type="hidden" name="addr_list" id="addr_list" value="" />
-                        <ul id="list_item" class="a"></ul> {% endcomment %}
-                      <!-- code with just add new button ends-->
-
-                    <!--Average Building Size (Livable Square Footage) -->
-                    {% comment %} <label><b class="map-style"> Average Building Size (Livable Square Footage) </b> </label><br>
-                    <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-                    {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
-
-
-                        <!-- Number of Stories -->        
-                        {% comment %} <label> <b class="map-style">Number of Stories  </b> </label><br> {% endcomment %}
-                          {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
-                          <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
-                          {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
-                          <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
-
-                  </div>  <!-- spatial scale div end -->
-
-
-          </div> <!-- community official options div end -->
-      
-
-           <!--Square footage-->
-            <label><b class="map-style"> Average Building Size (Livable Square Footage)  </b> </label><br>
-            <input type="text"  name="sqft1"  id="sqft1" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your building's square footage"  class="text" required> <br>
-           
-           <!--Number of Stories -->        
-            <label> <b class="map-style">Number of Stories  </b> </label><br>
-              <label><input type="radio" name ="stories" id="stories" value = "One story" class="bar" required> One story</label>
-              <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label>  <br>
-            <!-- <h3 style="color:blue;"><strong>Selected number of stories:</strong> {{No_Floors|safe}} </h3>-->
-                    
-          <!--Advanced parameter-->
-                
- <input type="button" onclick='displayAdv()' class="btn-adv"  style="display: flex; justify-content:flex-end" value="Advanced parameters">
- {% comment %} <a class="buttonClass btn-adv tip" title="Under development"> Advanced parameters </a> {% endcomment %}
-
-
-{% comment %} <tr>
-    <td>
-     <input type="button" onclick='show(1);' class="buttonClass" value="Advanced parameters"> 
-      <br />
-    </td>
-    <td>
-        &nbsp;
-    </td>
-   {% endcomment %}
-    
-   <div id="adv_Box_Div" style="display:none;">
-     
-                      <!-- Freeboard height above the BFE -->   
-{% comment %}         <label><b class="map-style"> Freeboard height above the BFE (in feet) </b> </label><br>
-                  <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br> {% endcomment %}
-                
-                
-                 <!-- Current CRS rating -->  
-                 <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the <i>current</i> CRS rating of </b> </label><br>              
-                 <div class="select-form" >
-                        <div class="select-itms">
-                          <select name="select" id="crsSelection" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                            <OPTION VALUE=""> 1, with a 45% discount </option>
-                            <OPTION VALUE=""> 2, with a 40% discount </option>
-                            <OPTION VALUE=""> 3, with a 35% discount </option>
-                            <OPTION VALUE=""> 4, with a 30% discount </option>
-                            <OPTION VALUE=""> 5, with a 25% discount </option>
-                            <OPTION VALUE=""> 6, with a 20% discount </option>
-                            <OPTION VALUE=""> 7, with a 15% discount </option>
-                            <OPTION VALUE=""> 8, with a 10% discount </option>
-                            <OPTION VALUE=""> 9, with a 5% discount </option>
-                            <OPTION VALUE=""> 10, with a 0% discount </option>
-                            </select>
-                        </div>
-                    </div>    
+                <!--Building type-->
+                <div id="dvPassport" style="display: none">
+                  <label><b class="map-style">Building Type </b></label><br>
+                    <label><input type="radio" name ="selectBox" value = "New building" class="bar"  checked> New building</label>
+                    <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>    
+                  <br>  
                   
-                  <!-- Targeted CRS rating --> 
-                  <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the <i>targeted</i> CRS rating of </b> </label><br>              
-                    <div class="select-form" >
-                        <div class="select-itms">
-                            <select name="select" id="crsTarget" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                                <OPTION VALUE=""> 1, with a 45% discount </option>
-                                <OPTION VALUE=""> 2, with a 40% discount </option>
-                                <OPTION VALUE=""> 3, with a 35% discount </option>
-                                <OPTION VALUE=""> 4, with a 30% discount </option>
-                                <OPTION VALUE=""> 5, with a 25% discount </option>
-                                <OPTION VALUE=""> 6, with a 20% discount </option>
-                                <OPTION VALUE=""> 7, with a 15% discount </option>
-                                <OPTION VALUE=""> 8, with a 10% discount </option>
-                                <OPTION VALUE=""> 9, with a 5% discount </option>
-                                <OPTION VALUE=""> 10, with a 0% discount </option>
-                            </select>
-                        </div>
-                    </div>
-              
-      
-      
-       <!-- Assessment Timeline -->
-                <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Assessment Timeline </b> </label>     <br>       
-                          <select name="select" id="AssTime" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                              <OPTION VALUE=""> 5 years </option>
-                              <OPTION VALUE=""> 10 years </option>
-                              <OPTION VALUE=""> 15 years </option>
-                              <OPTION VALUE=""> 20 years </option>
-                              <OPTION VALUE=""> 30 years </option>
-                              <OPTION VALUE=""> 40 years </option>
-                              <OPTION VALUE=""> 70 years </option>
-                            <OPTION VALUE=""> 100 years</option>
-                          </select>
-
-
-                <!-- Select the appropriate real discount rate for the assessment -->
-                <label><b class="map-style"style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the appropriate real discount rate for the assessment  </b> </label><br>              
-                  <div class="select-form" >
-                      <div class="select-itms">
-                          <select name="select" id="realDiscount" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;">
-                              <OPTION VALUE=""> Select 0% of real discount rate </option>
-                              <OPTION VALUE=""> Select 3% of real discount rate</option>
-                              <OPTION VALUE=""> Select 7% of real discount rate </option>
-                              <OPTION VALUE=""> Select 10% of real discount rate </option>
-                          </select>
-                      </div>
-                  </div>     
-
-                <!-- Select the appropriate real discount rate for the assessment -->
-{% comment %}                     <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 33px 5px 0px;"> CRS Rate  </b> </label>             
-
-                          <select name="crsRate" id="crsRate" onchange="myFunction()" style="margin: 5px 0px 5px 0px; padding: 5px 33px 5px 0px;">
-                            <option value="null"> - </option>
-                            <option value="45">1</option>
-                            <option value="40">2</option>
-                            <option value="35">3</option>
-                            <option value="30">4 </option>
-                            <option value="25">5</option>
-                            <option value="20">6</option>
-                            <option value="15">7</option>
-                            <option value="10">8</option>
-                            <option value="5">9</option>
-                            <option value="0">10</option>
-                          </select>            
-                      <span id="crsRate_value" ></span> {% endcomment %}
-   
-                <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 5px 5px 0px;">Expected occupancy timeline:  </b> </label> <br>
-                    
-                    0 Years <input id="rangeInput1" style ="width: 80px" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" />
-                    100 Years
-
-                    <input id="years" type="number" style="margin: 5px 0px 5px 15px; padding: 2px 5px 5px 0px;" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" />  Years 
-
-     </div>
-        <!--Advanced parameter ends-->
-      </div> <!--dib box end-->     
-
+                  <!--Address or Parcel ID-->
+                      <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                          <option value="">Select by</option>
+                          <option value="Address">Address</option>
+                          <option value="Subdivison" disabled>Subdivison</option>
+                          <option value="Parcel" disabled>Parcel</option>
+                          <option value="Zip code" disabled>Zip code</option>
+                      </select>
   
-    <br>
-    <div style="text-align:right">
-    <button  class="btn-result" type="submit"> Get results</button></div>
-  </form>
-  </p>
-<hr class="style-four">
-<!-- Select your building information end-->
-<!-- Side bar naviation menu-->
-<p>
-<h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
-<div class="section-nav box">
-<nav>
-<ul >
-    <li><a href="#section-1">Summary</a></li>
-    <li><a href="#section-2">Monthly Savings</a></li>
-    <li><a href="#section-3">Monthly Freeboard Cost</a></li>
-    <li><a href="#section-4">Monthly Insurance Premium Savings</a></li>
-    <li><a href="#section-5">Monthly Savings from Flood Loss Reduction</a></li>
-   {% comment %}  <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
-    <li><a href="#section-7">Overall graph</a></li> {% endcomment %}
-    <li><a>Save the outcome as a &nbsp;
-        <select name="saveresult" id="saveresult" onchange="openInNewTab(this);"  target="_blank">
-                                  <option value="{% url 'nodisc'  %}"> Format</option>
-                                  <option value="{% url 'exportfile'  %}"> CSV file </option>
-                                  <option value="{% url 'exportshp'  %}"> SHAPE file </option>
-                                  <option value="{% url 'report'  %}"> PDF file</option>
-                                  
-        </select>
-        </li>    
-         {% comment %} <button class="btn btn-dl"><i class="fa fa-download"></i> </button> {% endcomment %}
-        </a>  
-    {% comment %} <li><a href="{% url 'report'  %}"><strong>Export report </strong></a></li>     {% endcomment %}
-     {% comment %} 
-    <li><a href="{% url 'exportpdf'  %}">Save the outcome as a PDF  
-        <button class="btn btn-dl"><i class="fa fa-download"></i> </button>
+                          <select name="select12" id="select2" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                              <option value="">Select your parish</option>
+                              <option value="Jefferson"> Jefferson</option>
+                              <option value="St. Tammany"> St. Tammany</option>
+                              <option value="Terrebonne"> Terrebonne </option>
+                          </select><br>
+                                
+                          <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
+                          {% comment %} <!--Square footage-->
+                  <label><b class="map-style">Square footage </b> </label><br>
+                    <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
+                 
+                 <!--Number of Stories -->        
+                  <label> <b class="map-style">Number of Stories  </b> </label><br>
+                    <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"  > One story</label>
+                    <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"  > Two or more stories</label> {% endcomment %}
+                </div> <!--Building type div end-->
+  
+                <!--This option will be appear when user select community official-->
+                <div id="as" style="display: none">
+                      <label> <b class="map-style"> Assessment Scale  </b></label><br>
+                        <label for="chkYes2"><input type="radio" name ="chkYes2" id="chkYes2" value = "Single_building" class="bar" data-require-pair="#chkNo" onclick="ShowHideDiv2()" disabled>
+                        Single building</label>
+                        <label for="chkNo2"><input type="radio" name ="chkYes2" id="chkNo2" value = "Spatial_scale" class="margin1" onclick="ShowHideDiv2()">
+                          Spatial scale</label>
+                  
+  
+                        <!--This option will be appear when user select single-building-->
+                        <div id="singleBuilding" style="display: none">
+                  <!--Address or Parcel ID-->
+                      <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                        <option value="">Select by</option>
+                        <option value="Address">Address</option>
+                        <option value="Subdivison" disabled>Subdivison</option>
+                        <option value="Parcel" disabled>Parcel</option>
+                        <option value="Zip code" disabled>Zip code</option>
+                    </select>
+  
+                        <select name="select12" id="select3" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                            <option value="">Select your parish</option>
+                            <option value="Jefferson"> Jefferson</option>
+                            <option value="St. Tammany"> St. Tammany</option>
+                            <option value="Terrebonne"> Terrebonne </option>
+                        </select><br>
+                        
+                          {% comment %} <!--Average Building Size (Livable Square Footage) -->
+                          <label><b class="map-style"> Average Building Size (Livable Square Footage) </b> </label><br>
+                            {% comment %} <input type="text"  name="sqftCSBLD"  id="sqftCSBLD" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                            {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+  
+                          <!--Number of Stories -->        
+                          {% comment %} <label> <b class="map-style">Number of Stories  </b> </label><br> {% endcomment %}
+                            {% comment %} <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "1" class="bar"> One story</label>
+                            <label><input type="radio" name ="stories1-co1" id="stories1-co1" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                            {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                            <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %} 
+  
+                        </div> <!--singlebuilding div end -->    
+  
+                        <!-- This option will be appear when spatial scale is selected-->
+                        <div id="SpatialScale" style="display: none">
+                          <label> <b class="map-style"> Select area from the map   </b></label><br>
+                          <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
+                      
+                          <!--Address or Parcel ID-->
+                      <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                        <option value="">Select by</option>
+                        <option value="Address">Address</option>
+                        <option value="Subdivison" disabled>Subdivison</option>
+                        <option value="Parcel" disabled>Parcel</option>
+                        <option value="Zip code" disabled>Zip code</option>
+                    </select>
+  
+                        <select name="select12" id="select4" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
+                            {% comment %} <option value="">Select your parish</option> {% endcomment %}
+                            <option value="Jefferson"> Jefferson</option>
+                            <option value="St. Tammany"> St. Tammany</option>
+                            <option value="Terrebonne"> Terrebonne </option>
+                        </select><br>
+  
+                          <!--Add fields-->
+                          <label> <b class="map-style"> Type your address(es)   </b></label><br>
+                          <!--<input type="text" name="location" id="location" placeholder="Please type your address(es). You can type multiple addresses" class="text" multiple style="height:100px"/>-->
+                          <!--<textarea rows="4" cols="39" name="comment" form="userInput" placeholder="Please type your address(es). You can type multiple addresses"></textarea>-->
+                            
+                            <!-- new code with remove button-->  
+                              <input type="text" id="user-input-co"  onfocus="this.value=''" value={{location|safe}}>
+                              <input type="button" onclick="addItem()" class="buttonClass" value="Add new">
+                              <input type="button" onclick="removeItem()" class="buttonClass" value="Remove">
+                                <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
+                                  <input type="hidden" name="addr_list" id="addr_list" value="" />
+                                  <ul id="list"></ul>
+                                </div> 
+                                <div style="border-style:outset; width:100%; margin: 10px 0px 10px 0px;" > 
+                                 <!--<h3 style="color:blue;"><strong>Selected buildings:</strong> </h3>-->
+                                  {% for individual in buildinglocation %}
+                                      {{individual|safe}} <br>
+                                      {% endfor %}  
+                                </div>                                
+                            
+                                <!-- new code with remove button ends--> 
+                      
+                            <!-- code with just add new button-->
+                            {% comment %} <input type="0text" id="user_input" onfocus="this.value=''" value={{location|safe}} />
+                            <input type="button" id="add" value="Add New">
+                            <input type="hidden" name="addr_list" id="addr_list" value="" />
+                              <ul id="list_item" class="a"></ul> {% endcomment %}
+                            <!-- code with just add new button ends-->
+  
+                          <!--Average Building Size (Livable Square Footage) -->
+                          {% comment %} <label><b class="map-style"> Average Building Size (Livable Square Footage) </b> </label><br>
+                          <input type="text"  name="sqftCSSCL"  id="sqftCSSCL" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+                          {% comment %} <input type="text"  name="sqft"  id="sqft" placeholder="Type average building's square footage"  class="text"> <br> {% endcomment %}
+  
+  
+                              <!-- Number of Stories -->        
+                              {% comment %} <label> <b class="map-style">Number of Stories  </b> </label><br> {% endcomment %}
+                                {% comment %} <label><input type="radio" name ="stories1-co2" id="stories1-co2" value = "1" class="bar"> One story</label>
+                                <label><input type="radio" name ="stories2-co2" id="stories2-co2" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+                                {% comment %} <label><input type="radio" name ="stories" id="stories" value = "1" class="bar"> One story</label>
+                                <label><input type="radio" name ="stories" id="stories" value = "2" class="bar5"> Two or more stories</label> {% endcomment %}
+  
+                        </div>  <!-- spatial scale div end -->
+  
+  
+                </div> <!-- community official options div end -->
+            
+  
+                 <!--Square footage-->
+                  <label><b class="map-style"> Average Building Size (Livable Square Footage)  </b> </label><br>
+                  <input type="text"  name="sqft1"  id="sqft1" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your building's square footage"  class="text" required> <br>
+                 
+                 <!--Number of Stories -->        
+                  <label> <b class="map-style">Number of Stories  </b> </label><br>
+                    <label><input type="radio" name ="stories" id="stories" value = "One story" class="bar" required> One story</label>
+                    <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label>  <br>
+                  <!-- <h3 style="color:blue;"><strong>Selected number of stories:</strong> {{No_Floors|safe}} </h3>-->
+                          
+                <!--Advanced parameter-->
+                      
+       <input type="button" onclick='displayAdv()' class="btn-adv"  style="display: flex; justify-content:flex-end" value="Advanced parameters">
+       {% comment %} <a class="buttonClass btn-adv tip" title="Under development"> Advanced parameters </a> {% endcomment %}
+  
+  
+      {% comment %} <tr>
+          <td>
+           <input type="button" onclick='show(1);' class="buttonClass" value="Advanced parameters"> 
+            <br />
+          </td>
+          <td>
+              &nbsp;
+          </td>
          {% endcomment %}
-        {% comment %}  
-    <li><a href="{% url 'exportshp'  %}">Save the outcome as a SHP  
-        <button class="btn btn-dl"><i class="fa fa-download"></i> </button>
-        </a>                  {% endcomment %}
-    <!--<li><a class="sidemenu" href="#">Save as a PDF</a>-->
- </ul>
-</nav>
-</div>
-</p>
-
-</div>
-<!-- Side bar naviation menu end-->
+          
+         <div id="adv_Box_Div" style="display:none;">
+           
+                            <!-- Freeboard height above the BFE -->   
+  {% comment %}         <label><b class="map-style"> Freeboard height above the BFE (in feet) </b> </label><br>
+                        <input type="text"  name="freeboard-bfe-co1"  id="freeboard-bfe-co1" placeholder="Type targeted freeboard height above the Based Flood Elevation"  class="text"> <br> {% endcomment %}
+                      
+                      
+                       <!-- Current CRS rating -->  
+                       <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the <i>current</i> CRS rating of </b> </label><br>              
+                       <div class="select-form" >
+                              <div class="select-itms">
+                                <select name="select" id="crsSelection" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                                  <OPTION VALUE=""> 1, with a 45% discount </option>
+                                  <OPTION VALUE=""> 2, with a 40% discount </option>
+                                  <OPTION VALUE=""> 3, with a 35% discount </option>
+                                  <OPTION VALUE=""> 4, with a 30% discount </option>
+                                  <OPTION VALUE=""> 5, with a 25% discount </option>
+                                  <OPTION VALUE=""> 6, with a 20% discount </option>
+                                  <OPTION VALUE=""> 7, with a 15% discount </option>
+                                  <OPTION VALUE=""> 8, with a 10% discount </option>
+                                  <OPTION VALUE=""> 9, with a 5% discount </option>
+                                  <OPTION VALUE=""> 10, with a 0% discount </option>
+                                  </select>
+                              </div>
+                          </div>    
+                        
+                        <!-- Targeted CRS rating --> 
+                        <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the <i>targeted</i> CRS rating of </b> </label><br>              
+                          <div class="select-form" >
+                              <div class="select-itms">
+                                  <select name="select" id="crsTarget" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                                      <OPTION VALUE=""> 1, with a 45% discount </option>
+                                      <OPTION VALUE=""> 2, with a 40% discount </option>
+                                      <OPTION VALUE=""> 3, with a 35% discount </option>
+                                      <OPTION VALUE=""> 4, with a 30% discount </option>
+                                      <OPTION VALUE=""> 5, with a 25% discount </option>
+                                      <OPTION VALUE=""> 6, with a 20% discount </option>
+                                      <OPTION VALUE=""> 7, with a 15% discount </option>
+                                      <OPTION VALUE=""> 8, with a 10% discount </option>
+                                      <OPTION VALUE=""> 9, with a 5% discount </option>
+                                      <OPTION VALUE=""> 10, with a 0% discount </option>
+                                  </select>
+                              </div>
+                          </div>
+                    
+            
+            
+             <!-- Assessment Timeline -->
+                      <label><b class="map-style" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Assessment Timeline </b> </label>     <br>       
+                                <select name="select" id="AssTime" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                                    <OPTION VALUE=""> 5 years </option>
+                                    <OPTION VALUE=""> 10 years </option>
+                                    <OPTION VALUE=""> 15 years </option>
+                                    <OPTION VALUE=""> 20 years </option>
+                                    <OPTION VALUE=""> 30 years </option>
+                                    <OPTION VALUE=""> 40 years </option>
+                                    <OPTION VALUE=""> 70 years </option>
+                                  <OPTION VALUE=""> 100 years</option>
+                                </select>
+      
+  
+                      <!-- Select the appropriate real discount rate for the assessment -->
+                      <label><b class="map-style"style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;"> Select the appropriate real discount rate for the assessment  </b> </label><br>              
+                        <div class="select-form" >
+                            <div class="select-itms">
+                                <select name="select" id="realDiscount" style="margin: 5px 20px 5px 0px; padding: 2px 33px 5px 0px;">
+                                    <OPTION VALUE=""> Select 0% of real discount rate </option>
+                                    <OPTION VALUE=""> Select 3% of real discount rate</option>
+                                    <OPTION VALUE=""> Select 7% of real discount rate </option>
+                                    <OPTION VALUE=""> Select 10% of real discount rate </option>
+                                </select>
+                            </div>
+                        </div>     
+  
+                      <!-- Select the appropriate real discount rate for the assessment -->
+  {% comment %}                     <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 33px 5px 0px;"> CRS Rate  </b> </label>             
+  
+                                <select name="crsRate" id="crsRate" onchange="myFunction()" style="margin: 5px 0px 5px 0px; padding: 5px 33px 5px 0px;">
+                                  <option value="null"> - </option>
+                                  <option value="45">1</option>
+                                  <option value="40">2</option>
+                                  <option value="35">3</option>
+                                  <option value="30">4 </option>
+                                  <option value="25">5</option>
+                                  <option value="20">6</option>
+                                  <option value="15">7</option>
+                                  <option value="10">8</option>
+                                  <option value="5">9</option>
+                                  <option value="0">10</option>
+                                </select>            
+                            <span id="crsRate_value" ></span> {% endcomment %} 
+         
+                      <label><b class="map-style" style="margin: 5px 0px 5px 0px; padding: 2px 5px 5px 0px;">Expected occupancy timeline:  </b> </label> <br>
+                          
+                          0 Years <input id="rangeInput1" style ="width: 80px" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" />
+                          100 Years
+  
+                          <input id="years" type="number" style="margin: 5px 0px 5px 15px; padding: 2px 5px 5px 0px;" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" />  Years 
+     
+           </div>
+              <!--Advanced parameter ends-->
+            </div> <!--dib box end-->     
+  
+        
+          <br>
+          <div style="text-align:right">
+          <button class="btn-result"  type="submit" > Get results</button></div>
+         {% comment %} <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
+        </form>
+        </p>
+   <hr class="style-four">
+   <!-- Select your building information end-->
+   <!-- Side bar naviation menu-->
+    <p>
+      <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b map">Freeboard Cost Analysis Report</b></h2>
+      <div class="section-nav box">
+      <nav>
+      <ul >
+          <li><a href="#section-1">Summary</a></li>
+          <li><a href="#section-2">Monthly Savings</a></li>
+          <li><a href="#section-3">Monthly Freeboard Cost</a></li>
+          <li><a href="#section-4">Monthly Insurance Premium Savings</a></li>
+          <li><a href="#section-5">Monthly Savings from Flood Loss Reduction</a></li>
+         {% comment %}  <li><a href="#section-6">Time to Recover the Freeboard Cost</a></li>
+          <li><a href="#section-7">Overall graph</a></li> {% endcomment %}
+          <li><a>Save the outcome as a &nbsp;
+              <select name="saveresult" id="saveresult" onchange="openInNewTab(this);"  target="_blank">
+                                        <option value="{% url 'nodisc'  %}"> Format</option>
+                                        <option value="{% url 'exportfile'  %}"> CSV file </option>
+                                        <option value="{% url 'exportshp'  %}"> SHAPE file </option>
+                                        <option value="{% url 'report'  %}"> PDF file</option>
+                                        
+              </select>
+              </li>    
+               {% comment %} <button class="btn btn-dl"><i class="fa fa-download"></i> </button> {% endcomment %}
+              </a>  
+          {% comment %} <li><a href="{% url 'report'  %}"><strong>Export report </strong></a></li>     {% endcomment %}
+           {% comment %} 
+          <li><a href="{% url 'exportpdf'  %}">Save the outcome as a PDF  
+              <button class="btn btn-dl"><i class="fa fa-download"></i> </button>
+               {% endcomment %}
+              {% comment %}  
+          <li><a href="{% url 'exportshp'  %}">Save the outcome as a SHP  
+              <button class="btn btn-dl"><i class="fa fa-download"></i> </button>
+              </a>                  {% endcomment %}
+          <!--<li><a class="sidemenu" href="#">Save as a PDF</a>-->
+       </ul>
+      </nav>
+      </div>
+    </p>
+    
+  </div>
+  <!-- Side bar naviation menu end-->
 
 <!-- Error message-->                                
   {% if messages %}
