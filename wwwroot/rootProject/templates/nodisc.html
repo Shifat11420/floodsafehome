@@ -505,7 +505,7 @@ function formProcess(){
                
                <!--Number of Stories -->        
                 <label> <b class="map-style">Number of Stories  </b> </label><br>
-                  <label><input type="radio" name ="stories" id="stories" value = "One story" class="bar" required> One story</label>
+                  <label><input type="radio" name ="stories" id="stories" value = "One story" class="bar" required> One-story</label>
                   <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label>  <br>
                 <!-- <h3 style="color:blue;"><strong>Selected number of stories:</strong> {{No_Floors|safe}} </h3>-->
                         
@@ -1533,7 +1533,7 @@ Adding freeboard results in monthly savings from flood loss reduction of  <b cla
   },
   series: [
     {
-      text: 'Monthly savings from flood loss reduction — with insurance',
+      text: 'Monthly savings from flood loss reduction — without insurance',
       values: [ 0, 0, 0, 0, 0],
       //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
       alpha: 0.95,
@@ -1541,7 +1541,7 @@ Adding freeboard results in monthly savings from flood loss reduction of  <b cla
       backgroundColor: '#eb9d17',
     },
     {
-      text: 'Monthly savings from flood loss reduction — without insurance',
+      text: 'Monthly savings from flood loss reduction — with insurance',
       values: {{monthly_avoided_loss_json}},
       borderRadiusTopLeft: '7px',
       alpha: 0.95,

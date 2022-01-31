@@ -4622,7 +4622,7 @@ hr {
 
 .slider-area form.search-box .input-form,
 .slider-area2 form.search-box .input-form {
-    width: 26%;
+    width: 100%;
     position: relative;
     border-top-left-radius: 50px;
     overflow: hidden;
@@ -4633,7 +4633,7 @@ hr {
     /* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form,
     .slider-area2 form.search-box .input-form {
-        width: 50%;
+        width: 100%;
         margin-bottom: 20px;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
@@ -4644,7 +4644,7 @@ hr {
     /* line 155, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form,
     .slider-area2 form.search-box .input-form {
-        width: 50%;
+        width: 100%;
         margin-bottom: 20px;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
@@ -4729,7 +4729,7 @@ hr {
 
 .slider-area form.search-box .input-form2,
 .slider-area2 form.search-box .input-form2 {
-    width: 26%;
+    width: 100%;
     position: relative;
     overflow: hidden;
 }
@@ -4738,7 +4738,7 @@ hr {
     /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
-        width: 49%;
+        width: 100%;
     }
 }
 
@@ -4746,7 +4746,7 @@ hr {
     /* line 219, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .input-form2,
     .slider-area2 form.search-box .input-form2 {
-        width: 49%;
+        width: 100%;
         margin-bottom: 20px;
     }
 }
@@ -4827,13 +4827,13 @@ hr {
 
 .slider-area form.search-box .select-form,
 .slider-area2 form.search-box .select-form {
-    width: 26%;
+    width: 100%;
     position: relative;
 }
 
 .slider-area form.search-box .select-form1,
 .slider-area2 form.search-box .select-form1 {
-    width: 26%;
+    width: 100%;
     position: relative;
 }
 
@@ -4841,7 +4841,7 @@ hr {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form,
     .slider-area2 form.search-box .select-form {
-        width: 50%;
+        width: 100%;
     }
 }
 
@@ -4849,7 +4849,7 @@ hr {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form1,
     .slider-area2 form.search-box .select-form1 {
-        width: 50%;
+        width:100%;
     }
 }
 
@@ -4857,7 +4857,7 @@ hr {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form,
     .slider-area2 form.search-box .select-form {
-        width: 50%;
+        width: 100%;
     }
 }
 
@@ -4865,7 +4865,7 @@ hr {
     /* line 272, C:/Users/HP/Desktop/July-HTML/287.Job_board/Job_board_Template/assets/scss/_h1-hero.scss */
     .slider-area form.search-box .select-form1,
     .slider-area2 form.search-box .select-form1 {
-        width: 50%;
+        width: 100%;
     }
 }
 
@@ -5061,7 +5061,7 @@ hr {
 
 .slider-area form.search-box .search-form,
 .slider-area2 form.search-box .search-form {
-    width: 21%;
+    width: 100%;
     border-top-right-radius: 50px;
     overflow: hidden;
     border-bottom-right-radius: 50px;

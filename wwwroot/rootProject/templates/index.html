@@ -156,7 +156,8 @@
                             {% csrf_token %} 
 
                           <!--Select search type -->
-                              <div class="select-form1" >
+{% comment %}                               
+                            <div class="select-form1" >
                                   <div class="select-itms" style ="border-radius: 50px 0px 0px 50px;">
                                       <select name="select1" id="select1" >
                                           <option value="">Search by</option>
@@ -178,15 +179,16 @@
                                           <option value="Terrebonne"> Terrebonne </option>
                                       </select>
                                   </div>
-                              </div>
+                              </div> {% endcomment %}
 
                           <!--Input text based on search type -->
-                              <div class="input-form2 select-form" >
-                                  <input type="text"  name="location" id="tags" placeholder="Where?">
-                                  <!-- icon -->
-                                  <div class="icon">
-                                      <i class="fas fa-map-marker-alt"></i>
-                                  </div>
+                              <div class="select-form" >   
+                                <!-- icon -->
+                                <div class="icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                  <input type="text"  name="location" id="tags" placeholder="Type your address in Jefferson, St. Tammany, or Terrebonne Parish" style="width:1000px; height: 63px;  border-radius: 25px;  border: 0px solid;  text-indent: 30px;">
+                               
                               </div>
 
                             <!--Search button -->
