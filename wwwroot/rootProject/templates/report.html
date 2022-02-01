@@ -193,7 +193,7 @@
         <div>
         <h3><strong>Location: </strong>{{ individual.0 }}</h3>
           <b>Zone : </b>{{ individual.1 }}<br>
-          <b>Recommended freeboard: </b>{{ individual.2 }}<br>
+          <b>Recommended freeboard: </b> At least {{ individual.2 }} ft<br>
           <b>Optimal saving:</b> $ {{ individual.3 | intcomma}} <br>
           <b>Freeboard construction cost:</b> $ {{ individual.4 | intcomma}} <br>
           <b>Monthly Insurance Premium Savings : </b> $ {{ individual.5 | intcomma}} <br> <!--Value check-->
@@ -427,7 +427,6 @@
   >
 
   <p class="grid-style3 map-style">
-  <b class="b-summary-value map-style"> 
     <span class="pricing-item-price-currency">$</span><!-- 
  --><span class="pricing-item-price-amount">0</span><!-- 
  --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) </p>
@@ -446,9 +445,10 @@
   <div>
   <hr class="style-five">
      <h2 class="map-style-title" >Monthly Savings</h2>
-      
-     While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-     <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+   
+      While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+      <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>. 
+  
      <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b>
     </div>
 
@@ -456,9 +456,11 @@
 <!--Freeboard cost-->
   <div>
    <hr class="style-five">
-     <h2 class="map-style-title">Monthly Freeboard Cost</h2>       
-     The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
-     <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+     <h2 class="map-style-title">Monthly Freeboard Cost</h2>   
+    
+      The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+      <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+  
      <div id="chart1" class="zc-body"></div>
   </div>
 
@@ -466,24 +468,23 @@
   <div>
    <hr class="style-five">
     <h2 class="map-style-title">Monthly Insurance Premium Saving</h2>
-     
-    Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
-    <div id="chart2" class="zc-body"></div>
+
+       Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
+
+  <div id="chart2" class="zc-body"></div>
 
   </div>
 
 <!--Reduction in expected flood losses-->
-<div>
-  <hr class="style-five">
-     <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>
-       
-        
-     Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
-     Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
-             
-       
-      <div id="chart3" class="zc-body"></div> 
-  </div>
+  <div>
+    <hr class="style-five">
+      <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>  
+ 
+        Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+        Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+         
+  <div id="chart3" class="zc-body"></div> 
+</div>
 
 <!--Recover
 <div>
@@ -671,7 +672,7 @@
  legend: {
    alpha: 0.05,
    borderWidth: '0px',
-   layout: 'x2',
+   layout: '2X1',
    marker: {
      type: 'circle',
      borderColor: 'none',
@@ -715,7 +716,7 @@
  },
  series: [
    {
-     text: 'Monthly savings from flood loss reduction - with insurance',
+     text: 'Monthly savings from flood loss reduction — without insurance',
      values: [ 0, 0, 0, 0, 0],
      //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
      alpha: 0.95,
@@ -723,7 +724,7 @@
      backgroundColor: '#eb9d17',
    },
    {
-     text: 'Monthly savings from flood loss reduction - without insurance',
+     text: 'Monthly savings from flood loss reduction — with insurance',
      values: {{monthly_avoided_loss_json}},
      borderRadiusTopLeft: '7px',
      alpha: 0.95,
