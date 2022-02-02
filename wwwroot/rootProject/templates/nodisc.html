@@ -363,7 +363,7 @@ function formProcess(){
                 <br>  
                 
                 <!--Address or Parcel ID-->
-{% comment %}                     <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                    <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
                         <option value="">Select by</option>
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
@@ -376,7 +376,7 @@ function formProcess(){
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
                             <option value="Terrebonne"> Terrebonne </option>
-                        </select><br> {% endcomment %}
+                        </select><br> 
                               
                         <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                         {% comment %} <!--Square footage-->
@@ -436,7 +436,7 @@ function formProcess(){
                         <i style="margin:0 0 0 30px">Please select area using a tool from the map.</i><br>
                     
                         <!--Address or Parcel ID-->
-                    <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                  <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
                       <option value="">Select by</option>
                       <option value="Address">Address</option>
                       <option value="Subdivison" disabled>Subdivison</option>
@@ -445,11 +445,11 @@ function formProcess(){
                   </select>
 
                       <select name="select12" id="select4" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;">
-                          {% comment %} <option value="">Select your parish</option> {% endcomment %}
+                         <option value="">Select your parish</option> 
                           <option value="Jefferson"> Jefferson</option>
                           <option value="St. Tammany"> St. Tammany</option>
                           <option value="Terrebonne"> Terrebonne </option>
-                      </select><br>
+                      </select><br> 
 
                         <!--Add fields-->
                         <label> <b class="map-style"> Type your address(es)   </b></label><br>
