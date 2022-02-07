@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+   <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
   
   <title>Flood Safe Home</title>
     <!-- CSS here -->  
@@ -36,7 +43,7 @@
     
 
 {% load humanize %}
-<!--ArcGIS API-->
+{% comment %} <!--ArcGIS API-->
   <script>
     require([
 
@@ -170,7 +177,7 @@
 
       view.ui.add(basemapToggle,"bottom-right");
     });
-  </script>
+  </script> {% endcomment %}
 </head>
 
 <body>   
@@ -182,8 +189,11 @@
 
 
 <!--Esri map-->
-<div id="viewDiv"  >
-</div>
+<div id = "pdf_wrap">
+  <div id="map" style=" height: 45%; width: 100%; z-index: -1"><section id="section-1"></section>
+  <script src="../static/js/map.js"></script>
+  </div>
+  
 <hr class="style-five">
 
 
