@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, HttpResponse
 from rootApp.models import Contact, FreeboardConstructionCost, Sampledata, Sample, dataAll, JeffersonbuildingdataFSH
-from rootApp.models import JeffersonAddress
+from rootApp.models import JeffersonAddress, TerrebonneAddress
 from datetime import datetime
 from django.contrib import messages
 from django.db.models import Q
@@ -42,7 +42,7 @@ import re
 
 
 
-datafile = JeffersonAddress   #JeffersonbuildingdataFSH   #dataAll
+datafile = JeffersonAddress #TerrebonneAddress #   #JeffersonbuildingdataFSH   #dataAll
  
  
 # Create your views here.
@@ -467,7 +467,7 @@ def search(request):
 
         ##-------BFE increments i---------------------------
 
-            totalBFE = [0,1, 2, 3, 4]
+            totalBFE = [0, 1, 2, 3, 4]
             #totalBFE = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
 
         ##----------FFE (Ehab's method)-----------------------------
@@ -1074,7 +1074,7 @@ def search(request):
             #monthly_avoided_lossnoBFE0 = monthly_avoided_loss.remove(monthly_avoided_loss[0])
             
             annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)   
-            monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss)   
+            monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss[1:])     #**   
 
             print("                  ") 
             print("annual_avoided_loss = ", annual_avoided_loss)
@@ -1403,7 +1403,7 @@ def search(request):
 
             Amortized_FC_list_c.append(Amortized_FC)
             #Amortized_FC_jsonnoBFE0 = Amortized_FC_json.remove(Amortized_FC_json[0])
-            Amortized_FC_json = simplejson.dumps(Amortized_FC)    
+            Amortized_FC_json = simplejson.dumps(Amortized_FC[1:0])   #**    
 
             print("Amortised cost :  ", Amortized_FC)
 
@@ -1448,7 +1448,7 @@ def search(request):
                 monthly_premium_saving.append(int(annual_premium_saving[i]/12))
             print("Monthly premium saving :  ", monthly_premium_saving)
             total_monthly_premium_saving_list_c.append(monthly_premium_saving)
-            monthly_premium_saving_json = simplejson.dumps(monthly_premium_saving)
+            monthly_premium_saving_json = simplejson.dumps(monthly_premium_saving[1:])         #**
 
 
             ##-----------Total monthly saving---------------------------------------------
@@ -1467,7 +1467,7 @@ def search(request):
                     optimal_freeboard = totalBFE[k]
             total_optimal_freeboard_list_c.append(optimal_freeboard)
 
-            total_monthly_saving_json = simplejson.dumps(total_monthly_saving)  
+            total_monthly_saving_json = simplejson.dumps(total_monthly_saving[1:])   #**  
             optimal_saving_json = simplejson.dumps(optimal_saving)  
 
             ##-----------Total yearly saving---------------------------------------------
@@ -1569,7 +1569,7 @@ def search(request):
         for z in range(len(monthly_premium_saving)):
             summation_total_monthly_premium_saving[z] = summation_total_monthly_premium_saving[z] + total_monthly_premium_saving_list_c[i][z]
     print("summationlist_total_monthly_premium_saving = " ,summation_total_monthly_premium_saving)
-    summation_total_monthly_premium_saving_json = simplejson.dumps(summation_total_monthly_premium_saving)        
+    summation_total_monthly_premium_saving_json = simplejson.dumps(summation_total_monthly_premium_saving[1:])   #**        
 
     for z in range(len(monthly_premium_saving)):
         avg_total_monthly_premium_saving.append(int(summation_total_monthly_premium_saving[z]/len(buildinglist)))
@@ -1602,7 +1602,7 @@ def search(request):
         for z in range(len(monthly_avoided_loss)):
             summation_monthly_avoided_loss[z] = summation_monthly_avoided_loss[z] + monthly_avoided_loss_list_c[i][z]
     print("summationlist_monthly_avoided_loss = " ,summation_monthly_avoided_loss)
-    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss)        
+    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss[1:0])   #**        
     
     for z in range(len(monthly_avoided_loss)):
         avg_monthly_avoided_loss.append(int(summation_monthly_avoided_loss[z]/len(buildinglist)))
@@ -1626,13 +1626,13 @@ def search(request):
         for z in range(len(Amortized_FC)):
             summation_Amortized_FC[z] = summation_Amortized_FC[z] + (Amortized_FC_list_c[i][z])        ##negative added to show cost only
     print("summationlist_Amortized_FC = " ,summation_Amortized_FC)
-    summation_Amortized_FC_json = simplejson.dumps(summation_Amortized_FC) 
+    summation_Amortized_FC_json = simplejson.dumps(summation_Amortized_FC[1:])  #** 
 
     summation_Amortized_FC_neg = []
     for i in range(len(summation_Amortized_FC)):
            summation_Amortized_FC_neg.append(-1*summation_Amortized_FC[i])    
     print("summationlist_Amortized_FC neative = " ,summation_Amortized_FC_neg)
-    summation_Amortized_FC_neg_json = simplejson.dumps(summation_Amortized_FC_neg)        
+    summation_Amortized_FC_neg_json = simplejson.dumps(summation_Amortized_FC_neg[1:0])    #**        
     
     for z in range(len(Amortized_FC)):
         avg_Amortized_FC.append(int(summation_Amortized_FC[z]/len(buildinglist)))
@@ -1710,7 +1710,7 @@ def search(request):
         for z in range(len(total_monthly_saving)):
             summation_total_monthly_saving[z] = summation_total_monthly_saving[z] + total_monthly_saving_list_c[i][z]
     print("summationlist_total_monthly_saving = " ,summation_total_monthly_saving)
-    summation_total_monthly_saving_json = simplejson.dumps(summation_total_monthly_saving)        
+    summation_total_monthly_saving_json = simplejson.dumps(summation_total_monthly_saving[1:0]) #**        
     
     for z in range(len(total_monthly_saving)):
         avg_total_monthly_saving.append(int(summation_total_monthly_saving[z]/len(buildinglist)))
@@ -2159,10 +2159,10 @@ def search(request):
         "total_savings_permonth_insurance0" :total_savings_permonth_insurance[0], \
         "total_savings_permonth_insurance1" :total_savings_permonth_insurance[1],"total_savings_permonth_insurance2" :total_savings_permonth_insurance[2], "total_savings_permonth_insurance3" :total_savings_permonth_insurance[3],"total_savings_permonth_insurance4" :total_savings_permonth_insurance[4],\
         "optimal_freeboardCost": optimal_freeboardCost,"optimal_freeboard_freeboardCost":optimal_freeboard_freeboardCost,"optimal_freeboardCost_json":optimal_freeboardCost_json, "summation_freeboardCostlow":min(summation_freeboardCost), "summation_freeboardCosthigh":max(summation_freeboardCost),\
-        "summation_am_freeboardCostlow":min(summation_Amortized_FC), "summation_am_freeboardCosthigh":max(summation_Amortized_FC), \
+        "summation_am_freeboardCostlow":min(summation_Amortized_FC[1:]), "summation_am_freeboardCosthigh":max(summation_Amortized_FC[1:]), \
         "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], \
         "summation_total_monthly_premium_saving0":summation_total_monthly_premium_saving[0],\
-        "summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2], "summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4], "summation_total_monthly_premium_savingHigh": max(summation_total_monthly_premium_saving), "summation_total_monthly_premium_savingLow": min(summation_total_monthly_premium_saving),\
+        "summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2], "summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4], "summation_total_monthly_premium_savingHigh": max(summation_total_monthly_premium_saving[1:]), "summation_total_monthly_premium_savingLow": min(summation_total_monthly_premium_saving[1:]),\
         "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], \
         "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],\
         "summation_freeboardCost0" :summation_freeboardCost[0],\
@@ -2176,7 +2176,7 @@ def search(request):
         "summation_total_monthly_saving0":summation_total_monthly_saving[0],\
         "summation_total_monthly_saving1":summation_total_monthly_saving[1], "summation_total_monthly_saving2":summation_total_monthly_saving[2],"summation_total_monthly_saving3":summation_total_monthly_saving[3], "summation_total_monthly_saving4":summation_total_monthly_saving[4],\
         "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json,"monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json,\
-        "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving),\
+        "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving[1:]),\
         "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, \
         "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard,\
         "FreeboardCost0": freeboardCost[0],\
@@ -2186,7 +2186,7 @@ def search(request):
         "total_monthly_premium_BFE": total_monthly_premium[0],\
          "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2],"total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4],\
         "monthly_avoided_loss0": monthly_avoided_loss[0],\
-        "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4], "summation_monthly_avoided_lossHigh": max(summation_monthly_avoided_loss), "summation_monthly_avoided_lossLow": min(summation_monthly_avoided_loss),\
+        "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4], "summation_monthly_avoided_lossHigh": max(summation_monthly_avoided_loss[1:]), "summation_monthly_avoided_lossLow": min(summation_monthly_avoided_loss[1:]),\
         "time_to_recover_FC_MS0" : time_to_recover_FC_MS[0],\
          "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4],\
         "annual_avoided_loss0": annual_avoided_loss[0], \
