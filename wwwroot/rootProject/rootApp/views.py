@@ -240,6 +240,10 @@ def search(request):
     monthly_avoided_loss_list_c = []
     Amortized_FC_list_c = []
     total_savings_permonth_insurance_list_c = []
+
+    latlon_c = []
+    lattitude_c = []
+    longitude_c = []
     
 
     buildinglist = []
@@ -425,6 +429,16 @@ def search(request):
                 print("Parish is : ", parishvalue)
                 lat = data.Latitude
                 lon =  data.Longitude
+
+                latlon_pair = []
+                lattitude_c.append(lat)
+                longitude_c.append(lon)
+
+                latlon_pair.append(buildinglist[0])
+                latlon_pair.append(lat)
+                latlon_pair.append(lon)
+
+                latlon_c.append(latlon_pair)
 
                 BFE = 0 #data.BFE
                 print( "BFE : ", BFE) 
@@ -1553,6 +1567,12 @@ def search(request):
             print("total_savings_permonth_insurance :",total_savings_permonth_insurance)
             total_savings_permonth_insurance_list_c.append(total_savings_permonth_insurance)
 
+    ## lattitude and longitude ###
+    print("\n")
+    print("lattitude list : ", lattitude_c)
+    print("longitude list : ", longitude_c)
+    print("lattitude-longitude pair list : ", latlon_c)
+
 
     ## Total monthly premium saving ##
     print("\n")
@@ -2148,6 +2168,7 @@ def search(request):
 
     #####   for calculation without below BFEs        ######
     data_dictionary = {"location": location_json_list,"user_type":user_type, "building_type": building_type, "assessment_type":assessment_type, "buildinglocation_type":buildinglocation_type, "CRS": CRS, "CRSpercent":CRSpercent, "listindividual": listforindividual, "buildinglocation": buildinglist, \
+        "latlon_pair_list" :latlon_c , "latlon_pair_list(oneaddress) " :latlon_c[0]  ,"lattitude_list" : lattitude_c, "longitude_list" : longitude_c,\
         "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , \
         "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], \
         "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),\
