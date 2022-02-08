@@ -2168,7 +2168,7 @@ def search(request):
 
     #####   for calculation without below BFEs        ######
     data_dictionary = {"location": location_json_list,"user_type":user_type, "building_type": building_type, "assessment_type":assessment_type, "buildinglocation_type":buildinglocation_type, "CRS": CRS, "CRSpercent":CRSpercent, "listindividual": listforindividual, "buildinglocation": buildinglist, \
-        "latlon_pair_list" :latlon_c , "latlon_pair_list(oneaddress) " :latlon_c[0]  ,"lattitude_list" : lattitude_c, "longitude_list" : longitude_c,\
+        "latlon_pair_list" :latlon_c , "latlon_pair_list_oneaddress" :latlon_c[0]  ,"lattitude_list" : lattitude_c[0], "longitude_list" : longitude_c[0],\
         "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , \
         "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], \
         "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),\
@@ -2277,8 +2277,8 @@ def exportshp(request):
     response['Content-disposition']='attachment;filename=FloodsafehomeResults_shp'+'.zip'
 
     # path to folder which needs to be zipped
-    #directory = r'rootProject\results_shp'  # './results_shp'  ##**********server copy
-    directory = './results_shp'                                 ##**********local copy
+    directory = r'rootProject\results_shp'  # './results_shp'  ##**********server copy
+    #directory = './results_shp'                                 ##**********local copy
     # initializing empty file paths list
     file_paths = []
 

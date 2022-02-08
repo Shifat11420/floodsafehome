@@ -814,13 +814,22 @@ crossorigin=""></script>
 <div id = "pdf_wrap">
   <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section>
     <script>
-      var map = L.map('map').setView([40.91, -96.63], 4);
-    
+
+      //Set the lat/lot & zoom level for the initial map
+      var map = L.map('map').setView([29.99,-90.15], 9);
+
+
+      //Setting for the tile layer style
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
+
+
+      //Add scale
+      L.control.scale().addTo(map);
+      
     
-      var searchControl = L.esri.Geocoding.geosearch({
+      {% comment %} var searchControl = L.esri.Geocoding.geosearch({
         position: 'topright',
         placeholder: 'Enter an address or place e.g. 1 York St',
         useMapBounds: false,
@@ -831,7 +840,7 @@ crossorigin=""></script>
             lng: 151.2093
           }
         })]
-      }).addTo(map);
+      }).addTo(map); 
     
       var results = L.layerGroup().addTo(map);
     
@@ -840,7 +849,7 @@ crossorigin=""></script>
         for (var i = data.results.length - 1; i >= 0; i--) {
           results.addLayer(L.marker(data.results[i].latlng));
         }
-      });
+      });{% endcomment %}
     </script>
   </div>
 

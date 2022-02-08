@@ -7,14 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="site.webmanifest">
   <link rel="shortcut icon" type="../static/img/logo" href="../static/img/logo/logo_short.png">
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-  crossorigin=""/>
-   <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
- integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
- crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <title>Flood Safe Home</title>
       <!-- CSS here -->
       
@@ -38,7 +32,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
     <!--<script src="https://kit.fontawesome.com/a076d05399.js"></script>-->
-    <script src="https://js.arcgis.com/4.18/"></script>
+    <!--<script src="https://js.arcgis.com/4.18/"></script>-->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -82,7 +76,7 @@ function formProcess(){
 
 {% load humanize %}
 <!--ArcGIS API-->
-  <script>
+{% comment %}   <script>
     require([
 
       "esri/config",
@@ -237,7 +231,7 @@ function formProcess(){
 
       view.ui.add(basemapToggle,"bottom-right");
     });
-  </script>
+  </script> {% endcomment %}
 </head>
 
 <body>
@@ -704,7 +698,56 @@ function formProcess(){
 <!--ESRI Map-->
 <div id = "pdf_wrap">
   <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section>
-  <script src="../static/js/map.js"></script>
+  <!--<script src="../static/js/map.js"></script>-->
+{% comment %}   <script>
+    var locations = [
+    [{{latlon_pair_list_oneaddress}}]
+  ];
+  
+  var map = L.map('map').setView([11.206051, 122.447886], 8);
+  mapLink =
+    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+  L.tileLayer(
+    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; ' + mapLink + ' Contributors',
+      maxZoom: 18,
+    }).addTo(map);
+  
+  for (var i = 0; i < locations.length; i++) {
+    marker = new L.marker([locations[i][1], locations[i][2]])
+      .bindPopup(locations[i][0])
+      .addTo(map);
+  }
+  </script> {% endcomment %}
+
+  <script>
+  // initialize the map on the "map" div with a given center and zoom
+  var map = L.map('map', {
+    center: [29.99,-90.15],
+    measureControl:true,
+    zoomSnap: 0.25,
+    zoomControl:true, maxZoom:45, minZoom:1,
+    zoomDelta: 0.25,
+    zoom: 10
+  });
+
+  //Add scale
+  L.control.scale().addTo(map);
+
+  //Tile layer
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
+  }).addTo(map);
+
+
+  var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map);
+  </script>
+
 </div>
 
 <!--Result details-->
@@ -2446,7 +2489,7 @@ let chartConfig3 = {
     width: '100%'
   }); {% endcomment %}
   
-  var ctx = document.getElementById('chart').getContext('2d');
+  var ctx = document.getElementById('chart');
 
   var chart = (ctx, {
             type: 'line',
