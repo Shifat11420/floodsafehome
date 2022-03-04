@@ -41,8 +41,8 @@ import re
 # import tempfile
 
 
-
-datafile = JeffersonAddress #TerrebonneAddress #   #JeffersonbuildingdataFSH   #dataAll
+datafile_list = [JeffersonAddress, TerrebonneAddress]
+#datafile = JeffersonAddress #TerrebonneAddress #   #JeffersonbuildingdataFSH   #dataAll
  
  
 # Create your views here.
@@ -92,17 +92,21 @@ def gotomap(request):
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
 ##Error message---------------------
-    if (len(locationList)==1):
-        queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
-    elif (len(locationList)==2):
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1]))  ).all()[:10]
-    elif (len(locationList)==3):
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
-    else:
-        print("lalalala")
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
-
-    mylist = []        
+    mylist = []    
+    for datafile in datafile_list:
+        print("datafile in errmess : ", datafile)
+        if (len(locationList)==1):
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
+        elif (len(locationList)==2):
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1]))  ).all()[:10]
+        elif (len(locationList)==3):
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
+        else:
+            print("lalalala")
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
+        if queryset:
+            break
+            
     if len(queryset)<=0:
         #mylist = ["Enter a valid address!"]
         messages.error(request, 'Enter a valid address!')
@@ -138,26 +142,30 @@ def autosuggest(request):
     query_original = request.GET.get('term')
 
     query_originalList=query_original.split(' ')
+    mylist = [] 
+    for datafile in datafile_list:
+        print("datafile ", datafile)
+        if (len(query_originalList)==1):
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))  ).all()[:10]
+        elif (len(query_originalList)==2):
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1]))  ).all()[:10]
+        elif (len(query_originalList)==3):
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
+        else:
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
 
-    if (len(query_originalList)==1):
-        queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))  ).all()[:10]
-    elif (len(query_originalList)==2):
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1]))  ).all()[:10]
-    elif (len(query_originalList)==3):
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
-    else:
-        queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:10]
+        
 
-    
+               
+        if len(queryset)>0:
+            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
+            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
+            mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
 
-    mylist = []        
-    if len(queryset)>0:
-        #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
-        #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
-        mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
+        else:
+            mylist = ["No results found"]  
 
-    else:
-        mylist = ["No results found"]    
+    print("my list in autosuggest : ", mylist)          
     return JsonResponse(mylist, safe=False)
 
 
@@ -339,16 +347,19 @@ def search(request):
 
 
         ##----------------------- Error message---------------------
-            if (len(locationList)==1):
-                queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
-            elif (len(locationList)==2):
-                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(STREET__icontains = locationList[1]))  ).all()[:10]
-            elif (len(locationList)==3):
-                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
-            else:
-                queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
-
-            mylist = []        
+            mylist = [] 
+            for datafile in datafile_list:
+                if (len(locationList)==1):
+                    queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:10]
+                elif (len(locationList)==2):
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(STREET__icontains = locationList[1]))  ).all()[:10]
+                elif (len(locationList)==3):
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
+                else:
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:10]
+                if queryset:
+                    break
+                       
             if len(queryset)<=0:
                 #mylist = ["Enter a valid address!"]
                 messages.error(request, 'Enter a valid address!')
@@ -357,23 +368,26 @@ def search(request):
             else:
                 mylist = ["valid address"]  
 
-        ##------------------Error message ends-------------------------------
+            ##------------------Error message ends-------------------------------
 
 
-        ##--------------------autocomplete-------------------------------------
-            if (len(streetlist)==1):
-                addressvalue = datafile.objects.filter(
-                Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1]))).all()
-            elif (len(streetlist)==2):
-                addressvalue = datafile.objects.filter(
-                Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2])).all()        
-            elif (len(streetlist)==3):
-                addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3])).all()    
-            else:  
-                addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
-            print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
+            ##--------------------autocomplete-------------------------------------
+            for datafile in datafile_list:
+                if (len(streetlist)==1):
+                    addressvalue = datafile.objects.filter(
+                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1]))).all()
+                elif (len(streetlist)==2):
+                    addressvalue = datafile.objects.filter(
+                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2])).all()        
+                elif (len(streetlist)==3):
+                    addressvalue = datafile.objects.filter(
+                        Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3])).all()    
+                else:  
+                    addressvalue = datafile.objects.filter(
+                        Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
+                print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
+                if addressvalue:
+                    break 
         ##------------------autocomplete ends--------------------------------------------------
                         
         ##-----------queries------------------------------
