@@ -30,7 +30,7 @@ import os
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template.loader import get_template
-
+import random
 from rootProject.utils import render_to_pdf #created in step 4
 # import imgkit
 import re
@@ -221,7 +221,41 @@ def helpcenter(request):
 
     return render(request, 'contact.html', {})    
 
-
+def get_probability(min_value, max_value):
+    return (random.uniform(min_value,max_value))/(max_value-min_value)
+def inv_flood_elevation(x,u,a):
+    return u - a * np.log(-(np.log(1-x))) 
+def monte_carlo(u,a,ffe,livable_area,replacement_cost,coverage_str,deductible_str,lower_bound=0,upper_bound=1000000,num_samples=50000):    
+    sum_of_str = 0
+    sum_of_owner_deduct_str = 0
+    sum_of_nfip_deduct_str = 0
+    building_value = livable_area*replacement_cost
+    for i in range(num_samples):
+        x = get_probability(lower_bound, upper_bound)    
+        flood_elev = inv_flood_elevation(x,u,a)
+        depth_above_ff = flood_elev - ffe
+        
+        if depth_above_ff<-2:
+            str_dam = 0 
+        elif depth_above_ff<-1 and depth_above_ff>-2:
+            str_dam = ((0.025-(-0.999-depth_above_ff)*0.025)/100) * building_value 
+        else:
+            str_dam = ((0.0092*(depth_above_ff**3)-0.5342*(depth_above_ff**2)+10.404*depth_above_ff+13.418)/100) * building_value 
+                              
+        if str_dam<coverage_str:
+            str_deduct_owner = [deductible_str if str_dam>deductible_str else str_dam][0]
+            str_deduct_nfip = str_dam-str_deduct_owner
+        elif str_dam>coverage_str:
+            str_deduct_owner = deductible_str + (str_dam-coverage_str)
+            str_deduct_nfip = str_dam-str_deduct_owner
+            
+        sum_of_str += str_dam 
+        sum_of_owner_deduct_str += str_deduct_owner
+        sum_of_nfip_deduct_str += str_deduct_nfip 
+    
+    owner_portion = [float(sum_of_owner_deduct_str)/float(sum_of_str) if sum_of_str>0 else 0]   
+    #print(owner_portion)
+    return round(owner_portion[0],4)
 
 def search(request):
     
@@ -1073,7 +1107,15 @@ def search(request):
             print("                  ")
 
         ##----------------------AAL (Adil's method) ends ---------------------------------------
+            ########## owner portion calculation ##################
+            owner_portions = []
+            for i in range(len(totalBFE)):
+                owner_portions.append(monte_carlo(u, a, FFE[i], Square_footage, Building_cost, coverage_lvl_bldg, deductible_bldg ,lower_bound=0,upper_bound=1000000,num_samples=50000))
+            print("owner_portions : ", owner_portions)
 
+
+
+            ######################################
             ##
             annual_avoided_loss = []
             monthly_avoided_loss = []
