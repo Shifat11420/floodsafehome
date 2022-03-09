@@ -1,7 +1,6 @@
 from pathlib import Path
 from django.contrib.gis.utils import LayerMapping
-from rootApp.models import JeffersonbuildingdataFSH, JeffersonAddress
-
+from rootApp.models import JeffersonbuildingdataFSH, JeffersonAddress, TerrebonneAddress
 
 JeffersonbuildingdataFSH_mapping = {
     'FID_1' : 'FID_1',
@@ -69,3 +68,34 @@ JeffersonAddress_shp = Path(__file__).resolve().parent / 'data' / 'JeffersonAddr
 def run(verbose=True):
     lm = LayerMapping(JeffersonAddress, JeffersonAddress_shp, JeffersonAddress_mapping, transform=False)
     lm.save(strict=True, verbose=verbose)
+
+
+
+
+TerrebonneAddress_mapping = {
+    'ADDRESS' : 'ADDRESS',
+    'STREET' : 'STREET',
+    'SUITE' : 'SUITE',
+    'ZIP' : 'ZIP',         
+    'AREA_NAME' : 'AREA_NAME',
+    'STREET_NAM' : 'STREET_NAM',
+    'ST_TYPE' : 'ST_TYPE',
+    'WO_AREA' : 'WO_AREA',
+    'a_Slope' : 'a_Slope',
+    'u_Intercep' : 'u_Intercep',
+    'FD100Year' : 'FD100Year',
+    'FD500Year' : 'FD500Year',
+    'FLD_ZONE' : 'FLD_ZONE',
+    'BFE' : 'BFE',
+    'Latitude' : 'Latitude',
+    'Longitude' : 'Longitude',
+    'WSF1' : 'WSF1',
+    'WSF2' : 'WSF2',
+    'mpoint' : 'MULTIPOINT',
+}
+
+TerrebonneAddress_shp = Path(__file__).resolve().parent / 'data' / 'TerrebonneAddress.shp'
+
+def run(verbose=True):
+    lm1 = LayerMapping(TerrebonneAddress, TerrebonneAddress_shp, TerrebonneAddress_mapping, transform=False)
+    lm1.save(strict=True, verbose=verbose)
