@@ -343,7 +343,7 @@ function formProcess(){
   
  <!-- Select your building information-->
  <div class="container left" > 
-  <form method="get" action="/search" name="userInput" >
+  <form method="get" action="/search" name="userInput" id="my-form">
             {% csrf_token %} 
       <p> 
         <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <!-- <button class="btn btn-result2" type="submit" > Get results</button>--></h2> 
@@ -365,7 +365,6 @@ function formProcess(){
                 
                 <!--Address or Parcel ID-->
                     <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
-                        <option value="">Select by</option>
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
                         <option value="Parcel" disabled>Parcel</option>
@@ -631,8 +630,10 @@ function formProcess(){
 
       
         <br>
-        <div style="text-align:right">
-        <button class="btn-result"  type="submit" > Get results</button></div>
+        <p align="right">
+          <input type="text" style="display:none;"/> <!--To avoid resfresh page-->
+          <input class ="btn-result" type="submit" id="buttontest" value="Get results" onkeydown="javascript: if (event.keyCode == 13) {mf_KeyDown();}"/> 
+        </p>
        {% comment %} <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
       </form>
       </p>
@@ -694,73 +695,49 @@ function formProcess(){
 
 <!-- Error message ends--> 
 <main>
-<!--ESRI Map-->
-<!--ESRI Map-->
+<!--Leaflet map-->
 <div id = "pdf_wrap">
-  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section>
-  <!--<script src="../static/js/map.js"></script>-->
-{% comment %}   <script>
-    var locations = [
-    [{{latlon_pair_list_oneaddress}}]
-  ];
-  
-  var map = L.map('map').setView([11.206051, 122.447886], 8);
-  mapLink =
-    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-  L.tileLayer(
-    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; ' + mapLink + ' Contributors',
-      maxZoom: 18,
-    }).addTo(map);
-  
-  for (var i = 0; i < locations.length; i++) {
-    marker = new L.marker([locations[i][1], locations[i][2]])
-      .bindPopup(locations[i][0])
-      .addTo(map);
-  }
-  </script> {% endcomment %}
+  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section> 
+    <script>
+      // initialize the map on the "map" div with a given center and zoom
+      var map = L.map('map', {
+        center: [29.99,-90.15],
+        measureControl:true,
+        zoomSnap: 0.25,
+        zoomControl:true, maxZoom:45, minZoom:1,
+        zoomDelta: 0.25,
+        zoom: 10
+      });
+    
+      //Add scale
+      L.control.scale().addTo(map);
+    
+      //Tile layer
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
+      }).addTo(map);
+    
+    
+      var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map);
+    </script>
+  </div>
 
-  <script>
-  // initialize the map on the "map" div with a given center and zoom
-  var map = L.map('map', {
-    center: [29.99,-90.15],
-    measureControl:true,
-    zoomSnap: 0.25,
-    zoomControl:true, maxZoom:45, minZoom:1,
-    zoomDelta: 0.25,
-    zoom: 10
-  });
-
-  //Add scale
-  L.control.scale().addTo(map);
-
-  //Tile layer
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
-  }).addTo(map);
-
-
-  var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map);
-  </script>
-
-</div>
-
+ 
 <!--Result details-->
 <!--Summary-->
 <div class="left2 section-tittle mb-40"> 
  <hr class="style-five">
+ <section id="section-2"> 
   <h2>Freeboard Cost Analysis Report</h2>
         <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
           resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u></div> <br>
       <div class="pricing row2" > 
-
-      <div class="pricing-slider column2">
-      
+      <div class="pricing-slider column2"> 
         <center><label class="form-slider" >
           <img id='img' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
           <center><div class="pricing-slider-value" ></div></center> <br>
@@ -784,16 +761,13 @@ function formProcess(){
               }'
           />
         </label></center>
-        
       </div>
-
-      
+          
   <div  style=" display:inline-block; vertical-align: top; "  >
      
       <!--Monthly premium savings-->
-
       <!--  for calculations with below BFE   -->
-    <!--  <div
+      <!--  <div
         class="pricing-item-price" 
         data-price-output='{
           "-4": ["$", {{summation_total_monthly_premium_saving0}},""],
@@ -821,16 +795,13 @@ function formProcess(){
       > 
 
     <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
-    
       <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
        <div class="vl"><p class="grid-style3 map-style" >
         <b class="b-summary-value map-style">        
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
      --><span class="pricing-item-price-after"></span> </b> insurance savings per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood loss reduction."/></p>
-    
     <!--Flood loss-->
-
     <!--  for calculations with below BFE   -->
     <!--  <div
         class="pricing-item-price"
@@ -866,11 +837,11 @@ function formProcess(){
      --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
       </div>
     </div>    
-   <br>
+  </div>
+<br>
 
       <!--amortized cost-->
-
-          <!--  for calculations with below BFE   -->
+      <!--  for calculations with below BFE   -->
        <!-- <div
         class="pricing-item-price"
         data-price-output='{
@@ -885,7 +856,6 @@ function formProcess(){
           "4": ["$", {{summation_Amortized_FC8}},""]
         }'
       > -->
-
        <!--  for calculations without below BFE   -->
       <div
         class="pricing-item-price"
@@ -897,7 +867,6 @@ function formProcess(){
           "4": ["$", {{summation_Amortized_FC4}},""]
         }'
       > 
-
 
 
       <p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
@@ -949,7 +918,8 @@ function formProcess(){
      --><span class="pricing-item-price-amount">0</span><!-- 
      --><span class="pricing-item-price-after"></span> </b> additional construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
       </div>   
-    </div><br>
+    </div>
+    <br>
 
         
      <!--  for calculations with below BFE   -->
@@ -1063,242 +1033,154 @@ function formProcess(){
         <span class="pricing-item-price-amount">0</span>
         <span class="pricing-item-price-after">month(s)</span>
       </div> -->
-      </div>
     </div>
-    </div>
-    </div>
-    </div>
-  </div><br><br><br>
+  </div>
+</div>
+</div> 
+</section>
+<br>
+<br>
+<br>
 
-    <!--Interactive slide--> <section id="section-2"> 
-      <div style="overflow-x:auto;">
-       
-{% comment %}
-       <!-- Need to update
-        <form method="get" action="/search" name="Advanced features">
-        -->
+<!--Interactive slide--> 
+<section id="section-2"> 
+<div style="overflow-x:auto;">
 
-    <!-- Advanced features -->    
-          <button class="btn float-right tip" type="submit" style="margin: 0 75px 20px 0" ></button> 
-          <a class="buttonClass btn-adv tip" onclick='showAF(2);' title="Under development"> Advanced features </a> 
-                  <div style="text-align:right">
-                     <a class="buttonClass btn-adv tip" onclick='showAF(2);' title="Under development"> Advanced features </a> 
-                     <a class="buttonClass btn-adv tip" title="Under development"> Advanced features </a>
-                </div>
-          <div id="table2">
-          <table class="table-slide">
-          <tr class="table-slide-bg">
-            <td><b class="map-style">Home square footage:</b></td>
-            <td>{{SquareFootage}} SF</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-           <tr>
-            <td><b class="map-style">Number of stories: </b></td>
-            <td>{{No_Floors}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr class="table-slide-bg">
-            <td><b class="map-style">Flood zone: </b></td>
-            <td>{{floodzone}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td><b class="map-style">Insurance: </b></td>
-            <td><input type="radio" id="Yes_ins" name="insuracnce_option" value="Yes_ins"> <label for="Yes_ins">With insurance</label>
-                <input type="radio" id="No_ins" name="insuracnce_option" value="No_ins" style="margin: 0px 0px 0px 100px;"> <label for="No_ins" >Without insurance</label>
-            </td>
-            <td>Min</td>
-            <td></td>
-            <td>Max</td>
-            <td colspan="3"></td>
-          </tr>
-           <tr class="table-slide-bg">
-            <td><b class="map-style">Expected occupancy timeline: </b></td>
-            <td ><input id="years" type="number" value="30" min="0" max="100" oninput="rangeInput1.value=years.value" />  Years</td>
-            <td>0 Years</td> 
-            <td><input id="rangeInput1" type="range" min="0" max="100" value="30" oninput="years.value=rangeInput1.value" /></td> 
-            <td>100 Years</td>
-          </tr>
-          <tr>
-            <td rowspan="5"><b class="map-style">Flood insurance coverage:</b></td>
-            <td>Building coverage:  $ <input id="bldgCost" type="number" value={{BuildingCoverage}} min="0" max="250000" oninput="rangeInput2.value=bldgCost.value" /></td>
-            <td>$0 </td>
-            <td><input id="rangeInput2" type="range" min="0" max="250000" value={{BuildingCoverage}} oninput="bldgCost.value=rangeInput2.value" /></td>
-            <td>$250,000 </td>
-          </tr>
-          <tr>
-            <td>
-              <label for="DeductibleValue">Building deductible:&nbsp; &nbsp;$ </label>
-                <select name="DeductibleValue" id="DeductibleValue" placeholder={{BuildingDeductibe}}>
-                  <option value="V1">1,000</option>
-                  <option value="V2">1,250</option>
-                  <option value="V3">1,500</option>
-                  <option value="V4">2,000 </option>
-                  <option value="V5">3,000 </option>
-                  <option value="V6">4,000 </option>
-                  <option value="V7">5,000 </option>
-                  <option value="V8">10,000 </option>
-                </select>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Content coverage:  $ <input id="contCost" type="number" value={{ContentCoverage}} min="0" max="100000" oninput="rangeInput3.value=contCost.value" /></td>
-            <td>$0 </td>
-            <td><input id="rangeInput3" type="range" min="0" max="100000" value={{ContentCoverage}} oninput="contCost.value=rangeInput3.value" /> </td>
-            <td>$100,000 </td>
-          </tr>
-          <tr>
-            <td>
-              <label for="DeductibleValue">Content deductible:&nbsp; &nbsp;$ </label>
-                <select name="DeductibleValue" id="DeductibleValue" placeholder={{ContentDeductible}}>
-                  <option value="V1">1,000</option>
-                  <option value="V2">1,250</option>
-                  <option value="V3">1,500</option>
-                  <option value="V4">2,000 </option>
-                  <option value="V5">3,000 </option>
-                  <option value="V6">4,000 </option>
-                  <option value="V7">5,000 </option>
-                  <option value="V8">10,000 </option>
-                </select>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>CRS rate is
-                <select name="crsRate" id="crsRate" onchange="myFunction()">
-                  <option value="null"> - </option>
-                  <option value="45">1</option>
-                  <option value="40">2</option>
-                  <option value="35">3</option>
-                  <option value="30">4 </option>
-                  <option value="25">5</option>
-                  <option value="20">6</option>
-                  <option value="15">7</option>
-                  <option value="10">8</option>
-                  <option value="5">9</option>
-                  <option value="0">10</option>
-                </select>            
-             <span id="crsRate_value" ></span> </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr> 
+<!--
+//////////////////////  
+X ZONE: Ground + 0.
+//////////////////////  
+-->
 
-        </table>
-          <p class=" map-style">
-       ● The location entered is in a/an {{floodzone}} flood zone, and insurance not/is mandatory.<br>
-       ● Maximum limits of $250,000 for building and $100,000 for content with deductible of $1,250. <br>
-       ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
-       ● The CRS rate is 5, with a 25% discount on flood insurance. 
-      </p>        
-       <!--</form>-->
-      </div> </section>{% endcomment %}
-    </div>
-    
-</div>  
+<div id="no">
+    <!--Monthly saving-->
+    <hr class="style-five">
+    <h2 class="map-style-title" >Monthly Savings</h2>
+     <div class="graph-description" >
+       While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+       <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+       </div>
+       <section id="section-3"><div id="chartNew_XZONE" class="zc-body"></div><div class="bfe"><br></section> 
 
-
-<!--Monthly saving-->
-  <div class="left3 section-tittle-detail mb-40"> 
-   <hr class="style-five">
-     <h2 class="map-style-title" >Monthly Savings</h2>
-      <div class="graph-description" >
-        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
-        <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
-        </div>
-        {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
-        <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
-        
-{% comment %}         <br>X zone graph (test)
-        <div id="Xzone" class="zc-body"></div> {% endcomment %}
-    </div>
-
- {% comment %}    <div class="left3 section-tittle-detail mb-40"> 
-   <hr class="style-five">
-     <h2 class="map-style-title" >Monthly Savings</h2>
-      <div class="graph-description" >
-        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-        <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>. {% endcomment %}
-        <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
-       <!--</div>--> 
-        {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
-        
-    <!--</div>-->  
-    <!--
-        <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
-        <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
-        <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
-        <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS community rating</p> 
-        <b class="map-style" style="padding: 0px 89px 0px 0px;">Number of stories:</b> {{No_Floors}}<br><br>
-        <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
-        <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
-        <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
-        -->
-        
-      
-
-
-  </div> 
-
-<!--Freeboard cost-->
-  <div class="left3 section-tittle-detail mb-40"> 
-   <hr class="style-five">
+     <!--Freeboard cost-->
+     <hr class="style-five">
      <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
       <div class="graph-description">
-        
         The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
-        <!--<b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>. -->
         <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
-        <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
       </div>  
-      <section id="section-4"><div id="chart1" class="zc-body"></div></section>
-  </div>
-  
-
-<!--Insurance-->
-  <div class="left3 section-tittle-detail mb-40"> 
-   <hr class="style-five">
+      <section id="section-4"><div id="chart1_XZONE" class="zc-body"></div></section>
+    
+    
+    <!--Insurance-->
+    <hr class="style-five">
     <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
      <div class="graph-description" >
-      Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
-       <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
-       <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
-      
-     </div>
+      Since your building is located in the <b class="map-style">X zone</b>, there is no monthly insurance premium savings information. 
+      </div>
      <section id="section-5">  
       <center>
-       <div id="chart2" class="zc-body"></div>
+       <div id="chart2_XZONE" class="zc-body"></div>
       </center> </section>
-  </div>
 
-<!--Reduction in expected flood losses-->
-<div class="left3 section-tittle-detail mb-40"> 
-  <hr class="style-five">
-     <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>
-       
-        <div class="graph-description" >
-          Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
-Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
-          <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
-        </div>
-      <section id="section-6"><div id="chart3" class="zc-body"></div> </section> 
-      </section>
-  </div>
+    <!--Reduction in expected flood losses-->
+   <hr class="style-five">
+   <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
+      <div class="graph-description" >
+        Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+        Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+      </div>
+    <section id="section-6"><div id="chart3_XZONE" class="zc-body"></div> </section> 
+    </section>
 
-<!--Recover-->
+<!--
+//////////////////////  
+Form for other zone: BFE + 1
+//////////////////////  
+-->
+<div id="yes"> 
+  <!--Monthly saving-->
+      <hr class="style-five">
+      <h2 class="map-style-title" >Monthly Savings</h2>
+       <div class="graph-description" >
+         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+         <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
+         </div>
+         {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
+         <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
+        
+ {% comment %}         
+ <br>X zone graph (test)
+ <div id="Xzone" class="zc-body"></div> 
+ {% endcomment %}
+     
+ 
+  {% comment %}    <div class="left3 section-tittle-detail mb-40"> 
+    <hr class="style-five">
+      <h2 class="map-style-title" >Monthly Savings</h2>
+       <div class="graph-description" >
+         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+         <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>. {% endcomment %}
+         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
+        <!--</div>--> 
+         {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
+         
+     <!--</div>-->  
+     <!--
+         <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
+         <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
+         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
+         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS community rating</p> 
+         <b class="map-style" style="padding: 0px 89px 0px 0px;">Number of stories:</b> {{No_Floors}}<br><br>
+         <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
+         <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
+         <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
+         -->
+         
+ 
+   <!--Freeboard cost-->
+     <hr class="style-five">
+      <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
+       <div class="graph-description">
+         The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+         <!--<b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>. -->
+         <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+         <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
+       </div>  
+       <section id="section-4"><div id="chart1" class="zc-body"></div></section>
+ 
+ 
+ <!--Insurance-->
+    <hr class="style-five">
+     <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
+      <div class="graph-description" >
+       Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
+        <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
+        <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
+       </div>
+      <section id="section-5">  
+       <center>
+        <div id="chart2" class="zc-body"></div>
+       </center> </section>
+ 
+ 
+ <!--Reduction in expected flood losses-->
+   <hr class="style-five">
+      <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
+         <div class="graph-description" >
+           Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+           Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+           <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
+         </div>
+       <section id="section-6"><div id="chart3" class="zc-body"></div> </section> 
+       </section>
+   </div> 
+ </div>
+</div>
+
+
+  <!--Recover-->
 {% comment %} <div class="left3 section-tittle-detail mb-40"> 
   <hr class="style-five">
      <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
@@ -1320,74 +1202,10 @@ Adding freeboard results in monthly savings from flood loss reduction of  <b cla
        <Section id="section-7" >   <div id="myChart" class="zc-body-overall"></div>  </section>
   </div> {% endcomment %}
 </main>
-<!--Freeboard graph
-<div class="left3 section-tittle-detail mb-40">
-  <hr class="style-two">  
-       <h2 class="map-style">Freeboard and Benefit Graph </h2><br>
-      {{ div | safe }}   
-           <table align = "center" class="benefitTable">
-              <tr> 
-                <td></td>
-                <td><img src="../static/img/construction/feet0.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+0 feet</b></td>
-                <td><img src="../static/img/construction/feet1.png" style="width: 50px; height:50px;"><br><b class="map-style"> BFE <br>+1 feet</b></td>
-                <td><img src="../static/img/construction/feet2.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+2 feet</b></td>
-                <td><img src="../static/img/construction/feet3.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+3 feet</b></td>
-                <td><img src="../static/img/construction/feet4.png" style="width: 50px; height:50px;"><br><b class="map-style">BFE <br>+4 feet</b></td>
-              </tr>
-              <tr> 
-                <td><img src="../static/img/construction/cost.png" style="width: 30px; height:30px;"><br><b class="map-style">Elevation cost</b></td>
-                <td>${{FreeboardCost0}}</td>
-                <td>${{FreeboardCost1}}</td>
-                <td>${{FreeboardCost2}}</td>
-                <td>${{FreeboardCost3}}</td>
-                <td>${{FreeboardCost4}}</td>
-              </tr>
-              <tr> 
-                <td><img src="../static/img/construction/insurance.png" style="width: 25px; height:25px;"><br><b class="map-style">Insurance savings per month</b></td>
-                <td>${{monthly_premium_saving0}}</td>
-                <td>${{monthly_premium_saving1}}</td>
-                <td>${{monthly_premium_saving2}}</td>
-                <td>${{monthly_premium_saving3}}</td>
-                <td>${{monthly_premium_saving4}}</td>
-              </tr>
-              <tr> 
-                <td><img src="../static/img/construction/loss.png" style="width: 25px; height:25px;"><br><b class="map-style">Reduction in expected <br>flood losses per month</b></td>
-                <td>${{monthly_avoided_loss0}}</td>
-                <td>${{monthly_avoided_loss1}}</td>
-                <td>${{monthly_avoided_loss2}}</td>
-                <td>${{monthly_avoided_loss3}}</td>
-                <td>${{monthly_avoided_loss4}}</td>
-              </tr>
-              <tr></tr>
-              <tr> 
-                <td><img src="../static/img/construction/time.png" style="width: 25px; height:25px;"><br><b class="map-style">Time to recover <br>the elevation cost</b></td>
-              <td>{{time_to_recover_FC_MS0}}</td>
-                <td>{{time_to_recover_FC_MS1}}</td>
-                <td>{{time_to_recover_FC_MS2}}</td>
-                <td>{{time_to_recover_FC_MS3}}</td>
-                <td>{{time_to_recover_FC_MS4}}</td>
-                  </tr>
-              <tr> 
-                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b class="map-style">Lifetime benefits of <br>the elevation</b></td>
-                <td>${{netbenefit0}}</td>
-                <td>${{netbenefit1}}</td>
-                <td>${{netbenefit2}}</td>
-                <td>${{netbenefit3}}</td>
-                <td>${{netbenefit4}}</td>
-              </tr>
-              <tr> 
-                <td><img src="../static/img/construction/benefit.png" style="width: 25px; height:25px;"><br><b class="map-style">Monthly savings</b></td>
-                <td>${{total_monthly_saving0}}</td>
-                <td>${{total_monthly_saving1}}</td>
-                <td>${{total_monthly_saving2}}</td>
-                <td>${{total_monthly_saving3}}</td>
-                <td>${{total_monthly_saving4}}</td>
-              </tr>
-          </table>
-  </div>
-</div> -->
 
 <!--Result details End-->
+
+
 
 <!--zingchart script-->
   <script>
@@ -1397,16 +1215,21 @@ Adding freeboard results in monthly savings from flood loss reduction of  <b cla
   // Main chart render location
   // var chartId = 'myChart';
   var chart1Id = 'chart1'; //Freeboard Cost
-  var chart2Id = 'chart2'; //Annual Insurance Premiums
-  var chart3Id = 'chart3'; //Expected Annual Flood Loss
+  var chart2Id = 'chart2'; //Monthly Insurance Premiums Savings
+  var chart3Id = 'chart3'; //Expected Monthly Flood Loss
   var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
   var chart5Id = 'chart5'; //Monthly Savings
   var chart6Id = 'chart6'; //Overall graph
 
+  //XZONE
+  var chart1Id_XZONE = 'chart1_XZONE'; //Freeboard Cost & X ZONE
+  var chart2Id_XZONE = 'chart2_XZONE'; //Monthly Insurance Premiums Savings & X ZONE
+  var chart3Id_XZONE = 'chart3_XZONE'; //Expected Monthly Flood Loss & X ZONE
+
+
+
   // CHART CONFIG
   // -----------------------------
-
-
   // Chart 1
   var chart1Data = {
     type: 'bar',
@@ -1875,9 +1698,6 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
   console.log(e);
 });
 
-
-
-
   // Chart 5: Monthly savings
     let chart5Data = {
     type: 'bar',    
@@ -2188,16 +2008,9 @@ let chartConfig2 = {
      borderColor: 'whtie'
     },
     scaleX: {
-      values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft']
      // values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
       //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        lineColor: '#BDBDBD',
-        lineStyle: 'solid'
-      },
-      label: {
-        text: 'BFE + Freeboard (ft)'
-      },
     },
     scaleY: {  
     format: "$%v",
@@ -2235,16 +2048,18 @@ let chartConfig2 = {
   };
 
 
- // Chart 8: new x zone
-  // DEFINE DATA
-  // -----------------------------
-{% comment %}   let chartXzone = [
+
+
+//////////CHARTS FOR X ZONE  
+// Chart 8: X ZONE
+// MONTHLY SAVINGS
+  let chartNew_XZONE = [
     {
       type: 'bar',    
       text: 'Freeboard cost',
-      values: {{freeboardCost_json}},
+      values: {{Amortized_FC_neg_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#EC5B57',
+      backgroundColor: '#CD5B77',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2256,10 +2071,10 @@ let chartConfig2 = {
     }, 
     {
       type: 'bar', 
-      text: 'Insurance saving',
-      values: {{total_monthly_premium_json}},
+      text: 'Insurance savings',
+      values: {{monthly_premium_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#37615B',
+      backgroundColor: '#953F8A',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2272,9 +2087,9 @@ let chartConfig2 = {
     {
       type: 'bar',
       text: 'Flood loss reduction',
-      values: {{AAL_absCurrency_json}},
+      values: {{monthly_avoided_loss_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#44B0AB',
+      backgroundColor: '#4959D9',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2286,10 +2101,10 @@ let chartConfig2 = {
     },
     {
       type: 'bar',
-      text: 'Monthly saving',
+      text: 'Total monthly savings',
       values: {{total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#49c8c5',
+      backgroundColor: '#65A8EA',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2302,7 +2117,7 @@ let chartConfig2 = {
 
   ];
 
-let chartConfig3 = {
+let chartConfigXZONE = {
     type: 'mixed',   
     borderWidth: '1px',
     borderColor: '#dae5ec',
@@ -2311,15 +2126,7 @@ let chartConfig3 = {
      borderColor: 'whtie'
     },
     scaleX: {
-      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
-      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        lineColor: '#BDBDBD',
-        lineStyle: 'solid'
-      },
-      label: {
-        text: 'Ground + Freeboard (ft)'
-      },
+      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft']
     },
     scaleY: {  
     format: "$%v",
@@ -2340,96 +2147,201 @@ let chartConfig3 = {
         visible: false
       }
     },
-    series: chartXzone
+    series: chartNew_XZONE
   };
- {% endcomment %}
 
-  // CHART CONFIG
-  // ----------------------------- commented out
-  {% comment %} let chartConfig = {
-    type: 'hbullet',
-    backgroundColor: '#f4f4f4',
+
+  //Chart 9: Freeboard cost for X zone
+  var chart1Data_XZONE = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
     legend: {
-      marginBottom: '-20%',
-      backgroundColor: 'none',
-      borderWidth: '0px',
-      item: {
-        cursor: 'hand',
-        fontColor: '#307C70',
-        fontFamily: 'arial',
-        fontSize: '12px',
-        fontWeight: 'normal',
-        shadow: false
-      },
-      layout: 'float',
+      borderWidth: 0,
+      layout: '1',
       marker: {
-        cursor: 'hand'
-      },
-      position: '50% 12%',
-      toggleAction: 'remove'
-    },
-    plot: {
-      alpha: 1,
-      backgroundColor: '#000000',
-      barSpace: '50%',
-      tooltipText: 'Value: %v',
-      animation: {
-        effect: 'ANIMATION_EXPAND_BOTTOM',
-        method: 'ANIMATION_LINEAR',
-        sequence: 'null'
+        type: 'pie'
       }
     },
-    plotarea: {
-      margin: '22% 5% 15% 10%',
-      backgroundColor: '#ffffff'
-    },
-    scaleX: {
-      values: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      guide: {
-        alpha: 0.5,
-        lineColor: '#434F5B',
-        lineStyle: 'solid'
-      },
-      item: {
-        fontColor: '#434F5B',
-        fontFamily: 'arial',
-        fontSize: '12px',
-        fontWeight: 'normal',
-        offsetX: '-5%'
-      },
-      lineColor: '#434F5B',
-      lineStyle: 'solid',
-      lineWidth: '1px',
+    scaleX: { 
+      markers: [],
+      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
       tick: {
-        lineColor: '#434F5B',
-        lineWidth: '1px'
-      }
+        visible: false
+      },
+    crosshairX: {},
     },
     scaleY: {
-      format: '%v',
-      guide: {
-        alpha: 0.25,
-        lineColor: '#434F5B',
-        lineStyle: 'solid'
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--red)'
       },
-      item: {
-        fontColor: '#434F5B',
-        fontFamily: 'arial',
-        fontSize: '12px',
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Monthly freeboard cost',
+        backgroundColor: 'var(--red)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px', 
+        values: {{Amortized_FC_json}}  
+      }
+    ]
+  };
+
+  // Chart 10: Monthly Insurance Premium Savings for X Zone
+    var chart2Data_XZONE = {
+      type: 'bar',
+      borderWidth: '1px',
+      borderColor: '#dae5ec',
+      title: {
         fontWeight: 'normal',
-        offsetY: '5%'
+        fontColor: 'var(--black)',
+        align: 'left',
+        marginLeft: '2rem'
       },
-      lineColor: '#434F5B',
-      lineStyle: 'solid',
-      lineWidth: '1px',
-      tick: {
-        lineColor: '#434F5B',
-        lineWidth: '1px'
+      cursor: 'hand',
+      globals: {
+        fontColor: 'var(--fontColor)',
+        fontfamily: 'Raleway'
+      },
+      legend: {
+        borderWidth: 0,
+        layout: '1',
+        marker: {
+          type: 'pie'
+        }
+      },
+      scaleX: { 
+        markers: [],
+        values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
+        tick: {
+          visible: false
+        },
+      crosshairX: {},
+      },
+      scaleY: {
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true
+      },
+      plot: {
+      tooltip:{ 
+        fontColor: 'var(--white)',
+        text: '$%v',
+        thousandsSeparator: ", ",
+        backgroundColor:'var(--blue)'
+        },
+      animation : {
+        effect : 1,
+        sequence : 2,
+        speed : 100
+      },
+    },
+      series: [
+        {
+          text: 'Monthly insurance premium savings',
+          backgroundColor: 'var(--blue)',
+          alpha: 0.95,
+          borderRadiusTopLeft: '7px',
+          values: {{monthly_premium_saving_json}}   
+        }
+      ]
+    }; 
+  
+  // Chart 11 Monthly Savings from Flood Loss Reduction & X zone
+  let chart3Data_XZONE = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend: {
+      alpha: 0.05,
+      borderWidth: '0px',
+      layout: 'x2',
+      marker: {
+        type: 'circle',
+        borderColor: 'none',
+        size: '10px'
+      },
+    },
+    plot: {
+      animation: {
+        effect: 'ANIMATION_SLIDE_BOTTOM'
       }
     },
-    series: chartData
-  }; {% endcomment %}
+    scaleX: {
+      guide: {
+        visible: false
+      },
+      item: {
+        fontColor: '#7e7e7e'
+      },
+      labels: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
+      lineColor: '#7E7E7E'
+    },
+    scaleY: {
+        
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true,
+        guide: {
+          lineStyle: 'solid'
+        },
+        minorTick: {
+          placement: 'cross',
+          size: '6px'
+        },
+        minorTicks: 1
+      },
+    tooltip: {
+      text: '$%v',
+      thousandsSeparator: ", ",
+    },
+    series: [
+      {
+        text: 'Monthly savings from flood loss reduction — without insurance',
+        values: [ 0, 0, 0, 0],
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        backgroundColor: '#eb9d17',
+      },
+      {
+        text: 'Monthly savings from flood loss reduction — with insurance',
+        values: {{monthly_avoided_loss_json}},
+        borderRadiusTopLeft: '7px',
+        alpha: 0.95,
+        backgroundColor: '#f7e0b7',
+      }
+    ]
+  };
+  
 
+  // -----------------------------
   // RENDER CHARTS
   // -----------------------------
 
@@ -2482,12 +2394,35 @@ let chartConfig3 = {
     width: '100%'
   });
 
-{% comment %}       // Chart 8 (New)
+
+  //XZONE CHARTS 
+  // Chart 8
   zingchart.render({
-    id: 'Xzone',
-    data: chartConfig3,
+    id: 'chartNew_XZONE',
+    data: chartConfigXZONE,
     width: '100%'
-  }); {% endcomment %}
+  });
+
+  // Chart 9
+  zingchart.render({ 
+    id: chart1Id_XZONE, 
+    data : chart1Data_XZONE, 
+    width: '100%'
+  });
+
+  // Chart 10
+  zingchart.render({ 
+    id: chart2Id_XZONE, 
+    data : chart2Data_XZONE, 
+    width: '100%'
+  });
+
+  // Chart 11
+  zingchart.render({ 
+    id: chart3Id_XZONE, 
+    data : chart3Data_XZONE, 
+    width: '100%'
+  });
   
   var ctx = document.getElementById('chart');
 
@@ -2545,7 +2480,7 @@ let chartConfig3 = {
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-2.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-api-2.2.1.min.js"></script> 
     <!-- {{script_insurance | safe}}-->
-    <script src="./static/js/disclaimer.js"></script>
+    <script src="../static/js/disclaimer.js"></script>
     <!-- Jquery-->
     <script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
 
@@ -2604,6 +2539,77 @@ let chartConfig3 = {
 </script>{% endcomment %}
 
 <!--Add multiple address end-->
+
+<script>
+  function myFunction(){
+    event.preventDefault();
+  } 
+</script>
+
+<!--Script for different forms based on zone types
+<script type="text/javascript">
+  $(document).ready(function(){
+    var otherzonelist = {{otherzonelist|safe}};
+    var otherzoneAddress = otherzonelist[0];
+
+    var xzonelist = {{xzonelist|safe}};
+    var xzoneAddress = xzonelist[0];
+    
+    $("#buttontest").click(function(){
+      // Other zone excecpt x zone
+    if ($('#tags').val() == otherzoneAddress) {   
+       $("#yes").show(); 
+    }
+      //x zone 
+    else {   
+       $("#no").show(); 
+       $("#yes").hide(); 
+    } 
+    });
+ 
+    console.log("Other zone:", otherzoneAddress, ", X zone:", xzoneAddress);
+    });
+</script>-->
+<!--
+<script>
+  var otherzonelist = {{otherzonelist|safe}};
+  var otherzoneAddress = otherzonelist[0];
+
+  var xzonelist = {{xzonelist|safe}};
+  var xzoneAddress = xzonelist[0];
+
+  var tags = document.getElementById('tags');
+
+  if (tags == otherzoneAddress) {
+    getElementById('no').style.display = "none";
+    getElementById('no').style.display = "block";
+  }
+  else{
+    getElementById('no').style.display = "none";
+  }
+</script>-->
+
+<script>
+  var otherzonelist = {{otherzonelist|safe}};
+  var otherzoneAddress = otherzonelist[0];
+
+  var xzonelist = {{xzonelist|safe}};
+  var xzoneAddress = xzonelist[0];
+  if ($('#tags').val() == otherzoneAddress) {   
+    $("#yes").show();
+    $("#no").hide();
+ }
+   //x zone 
+ else {   
+    $("#no").show(); 
+    $("#yes").hide(); 
+ } 
+   
+
+  console.log("Other zone:", otherzoneAddress, ", X zone:", xzoneAddress);
+
+</script>
+
 
 <script>
 // Creating a function to add item from list

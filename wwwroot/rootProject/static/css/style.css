@@ -417,6 +417,31 @@ hr {
 }
 
 
+.btn-result {
+    background: #367FFF;
+    font-family: "Raleway", sans-serif;
+    text-transform: capitalize;
+    padding: 25px 38px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 30px;
+    line-height: 1;
+    -moz-user-select: none;
+    letter-spacing: 1px;
+    line-height: 0;
+    margin-bottom: 0;
+    cursor: pointer;
+    transition: color 0.4s linear;
+    position: relative;
+    z-index: 1;
+    border: 0;
+    overflow: hidden;
+    margin: 0;
+}
+
 .btn-index {
     background: #367FFF;
     font-family: "Raleway", sans-serif;
