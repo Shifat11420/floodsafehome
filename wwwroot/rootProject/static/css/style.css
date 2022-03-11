@@ -13220,3 +13220,22 @@ td {
 .tip:hover {
     cursor: help;
 }
+
+
+@media print {
+    @page {
+    size: Letter;
+    margin-top:2.5cm;
+
+    margin-right:2cm;
+
+    margin-bottom:1.5cm;
+
+    margin-left:2cm;
+  }
+    div {
+        width: 100%;
+    }
+    html, body { border:0; margin:0; padding:0; }
+
+}
