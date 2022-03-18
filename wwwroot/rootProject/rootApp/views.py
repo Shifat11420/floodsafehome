@@ -430,9 +430,17 @@ def search(request):
             a = ""
             zonevalue = ""
             parishvalue = ""
+            xzonelist = []
+            otherzonelist = []
             for data in addressvalue:
                 zonevalue = data.FLD_ZONE
                 zonelist.append(zonevalue)
+                if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD": 
+                    xzonelist.append(buildinglist[0])
+                else:
+                    otherzonelist.append(buildinglist[0]) 
+
+ 
 
                 u = data.u_Intercep
                 a = data.a_Slope
@@ -1473,7 +1481,7 @@ def search(request):
 
             Amortized_FC_list_c.append(Amortized_FC)
             #Amortized_FC_jsonnoBFE0 = Amortized_FC_json.remove(Amortized_FC_json[0])
-            Amortized_FC_json = simplejson.dumps(Amortized_FC[1:0])   #**    
+            Amortized_FC_json = simplejson.dumps(Amortized_FC[1:])   #**    
 
             print("Amortised cost :  ", Amortized_FC)
 
@@ -1708,7 +1716,7 @@ def search(request):
     for i in range(len(summation_Amortized_FC)):
            summation_Amortized_FC_neg.append(-1*summation_Amortized_FC[i])    
     print("summationlist_Amortized_FC neative = " ,summation_Amortized_FC_neg)
-    summation_Amortized_FC_neg_json = simplejson.dumps(summation_Amortized_FC_neg[1:0])    #**        
+    summation_Amortized_FC_neg_json = simplejson.dumps(summation_Amortized_FC_neg[1:])    #**        
     
     for z in range(len(Amortized_FC)):
         avg_Amortized_FC.append(int(summation_Amortized_FC[z]/len(buildinglist)))
@@ -1786,7 +1794,7 @@ def search(request):
         for z in range(len(total_monthly_saving)):
             summation_total_monthly_saving[z] = summation_total_monthly_saving[z] + total_monthly_saving_list_c[i][z]
     print("summationlist_total_monthly_saving = " ,summation_total_monthly_saving)
-    summation_total_monthly_saving_json = simplejson.dumps(summation_total_monthly_saving[1:0]) #**        
+    summation_total_monthly_saving_json = simplejson.dumps(summation_total_monthly_saving[1:]) #**        
     
     for z in range(len(total_monthly_saving)):
         avg_total_monthly_saving.append(int(summation_total_monthly_saving[z]/len(buildinglist)))
@@ -2221,11 +2229,13 @@ def search(request):
     print("avoided_monthly_loss_homeowner : ", avoided_monthly_loss_homeowner) 
     print("avoided_monthly_loss_landlord : ", avoided_monthly_loss_landlord)   
     print("avoided_monthly_loss_tenant : ", avoided_monthly_loss_tenant)
-
+    print("xzonelist:", xzonelist) 
+    print("otherzonelist:", otherzonelist)   
+    
     #####   for calculation without below BFEs        ######
     data_dictionary = {"location": location_json_list,"user_type":user_type, "building_type": building_type, "assessment_type":assessment_type, "buildinglocation_type":buildinglocation_type, "CRS": CRS, "CRSpercent":CRSpercent, "listindividual": listforindividual, "buildinglocation": buildinglist, \
         "latlon_pair_list" :latlon_c , "latlon_pair_list_oneaddress" :latlon_c[0]  ,"lattitude_list" : lattitude_c[0], "longitude_list" : longitude_c[0],\
-        "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , \
+        "xzonelist" : xzonelist, "otherzonelist" : otherzonelist, "BuildingCoverage": coverage_lvl_bldg, "ContentCoverage": coverage_lvl_cont, "BuildingDeductibe" : deductible_bldg ,"ContentDeductible" :deductible_cont , \
         "time_to_recover_FC_TB1": time_to_recover_FC_TB[1], "time_to_recover_FC_TB2": time_to_recover_FC_TB[2], "time_to_recover_FC_TB3": time_to_recover_FC_TB[3], "time_to_recover_FC_TB4": time_to_recover_FC_TB[4], \
         "summation_time_to_recover_FC_PSlow":min(summation_time_to_recover_FC_PS), "summation_time_to_recover_FC_PShigh": max(summation_time_to_recover_FC_PS),\
         "summation_time_to_recover_FC_TBlow":min(summation_time_to_recover_FC_TB),"summation_time_to_recover_FC_TBhigh":max(summation_time_to_recover_FC_TB),\
