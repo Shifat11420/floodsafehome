@@ -121,7 +121,7 @@ hr.style {
     color: #363636;
 }
 /* print.css */
-table, img, svg {
+table, img, svg, div {
   break-inside: avoid;
 }
 
