@@ -84,21 +84,21 @@
 
   {% for individual in listindividual %}           
         <div>
-        <h3><strong>Location: </strong>{{ individual.0 }}</h3>
-          <b>Zone : </b>{{ individual.1 }}<br>
-          <b>Recommended freeboard: </b> At least {{ individual.2 }} ft<br>
-          <b>Optimal saving:</b> $ {{ individual.3 | intcomma}} <br>
-          <b>Freeboard construction cost:</b> $ {{ individual.4 | intcomma}} <br>
-          <b>Monthly Insurance Premium Savings : </b> $ {{ individual.5 | intcomma}} <br> <!--Value check-->
-          <b>Monthly Savings from Flood Loss Reduction : </b>$ {{ individual.6 | intcomma}} <br> <!--Value check-->
+          <p><h3><strong>Location: </strong> <span id ="loc">{{ individual.0 }}</span></h3></p>
+          <p><b>Zone : </b>  <span>{{ individual.1 }}</span></p>
+          <p><b>Recommended freeboard: </b><span>At least {{ individual.2 }} ft</span></p>
+          <p><b>Optimal saving:</b><span> $ {{ individual.3 | intcomma}}</span> </p>
+          <p><b>Freeboard construction cost:</b><span> $ {{ individual.4 | intcomma}}</span> </p>
+          <p><b>Monthly Insurance Premium Savings : </b><span> $ {{ individual.5 | intcomma}}</span> </p> <!--Value check-->
+          <p><b>Monthly Savings from Flood Loss Reduction : </b><span>$ {{ individual.6 | intcomma}}</span> </p> <!--Value check-->
           {% comment %} <b>Time to recover the freeboard cost : </b>{{ individual.7 | intcomma}} <br> {% endcomment %}          
-        </div> <br>       
+        </div>      
     {% endfor %}
 
          
 
    <!--Interactive slide-->  
-      <div style="overflow-x:auto;">
+      <div>
       <hr class="style-five">  
       <h2 class="map-style-title" >Other Common Building Information</h2>
           <table style="width: 85%;">
@@ -144,11 +144,8 @@
        ● The property is located in a community that is currently participating in the Community Rating System (CRS) discount. <br>
        ● The CRS rate is 5, with a 25% discount on flood insurance. 
       </p>   
-      </div>   
-    </div>
- 
-    <div>
-     <hr class="style-five">
+
+    <hr class="style-five"> 
      <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
       resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u></div> <br>
   <div class="pricing row2" > 
@@ -322,7 +319,7 @@
 </div>
 </div>
 </div>
-</div><br><br><br>
+</div>
 
 
 
@@ -345,7 +342,7 @@
          While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
          <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
          </div>
-        <div id="chartNew_XZONE" class="zc-body"></div><div class="bfe"><br>
+        <div id="chartNew_XZONE" class="zc-body"></div><div class="bfe"></div>
   
        <!--Freeboard cost-->
        <hr class="style-five">
@@ -355,7 +352,7 @@
           <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
         </div>  
       <div id="chart1_XZONE" class="zc-body"></div>
-      
+      <br>
       
       <!--Insurance-->
       <hr class="style-five">
@@ -374,7 +371,8 @@
           Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
         </div>
      <div id="chart3_XZONE" class="zc-body"></div> 
-  
+   </div>
+
   <!--
   //////////////////////  
   Form for other zone: BFE + 1
@@ -1163,7 +1161,7 @@ let chartConfig = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Freeboard cost',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1178,7 +1176,7 @@ let chartConfig = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Insurance savings',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1193,7 +1191,7 @@ let chartConfig = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Flood loss reduction',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1208,7 +1206,7 @@ let chartConfig = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Total monthly savings',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1281,7 +1279,7 @@ let chartConfig2 = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Freeobard cost',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1296,7 +1294,7 @@ let chartConfig2 = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Insurance savings',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1311,7 +1309,7 @@ let chartConfig2 = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Flood loss reduction',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1326,7 +1324,7 @@ let chartConfig2 = {
      borderRadiusTopLeft: '7px',
      alpha: 0.90,
      tooltip: {
-       text: '$%v',
+       text: '$%v <br> Total monthly savings',
        negation: "currency",
        thousandsSeparator: ", ",
        wrapText: true
@@ -1689,23 +1687,25 @@ let chartConfigXZONE = {
 
 
    <script>
+    
     var otherzonelist = {{otherzonelist|safe}};
     var otherzoneAddress = otherzonelist[0];
   
     var xzonelist = {{xzonelist|safe}};
     var xzoneAddress = xzonelist[0];
     if ($('#tags').val() == otherzoneAddress) {   
-      $("#yes").show();
-      $("#no").hide();
+      $("#no").show();
+      $("#yes").hide();
    }
      //x zone 
    else {   
-      $("#no").show(); 
-      $("#yes").hide(); 
+      $("#yes").show(); 
+      $("#no").hide(); 
    } 
      
   
-    console.log("Other zone:", otherzoneAddress, ", X zone:", xzoneAddress);
+    console.log("Other zone:", otherzoneAddress, ", X zone:", xzoneAddress, "loc", $('loc'));
+  
   
   </script>
 

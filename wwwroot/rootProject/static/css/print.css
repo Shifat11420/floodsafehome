@@ -67,9 +67,9 @@ hr.style {
 }
 
 .pricing-slider-img {
-    width: 350px;
-    height: 350px;
-    margin: 70px 50px 0 50px;
+    width: 300px;
+    height: 300px;
+    margin: 50px 50px 0 50px;
 }
 
 .optimal {
@@ -121,7 +121,7 @@ hr.style {
     color: #363636;
 }
 /* print.css */
-table, img, svg, div {
+table, img, svg {
   break-inside: avoid;
 }
 
@@ -163,5 +163,3 @@ table, img, svg, div {
 }
     
 }
-
-
