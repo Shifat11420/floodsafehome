@@ -328,7 +328,7 @@ crossorigin=""></script> {% endcomment %}
    <!--autosuggestion End-->
 
 <!--Important notice start-->
-<div class="bts-popup" role="alert">
+<div class="bts-popup" role="alert"  style="z-index:1;">
   <div class="bts-popup-container">
         <form action="/action_page.php" class="form-container">
           <h1 style="text-align:center; padding: 10px"><strong>Important notice</strong></h1>
@@ -345,7 +345,7 @@ crossorigin=""></script> {% endcomment %}
   <div class="bts-popup" role="alert">
       <div class="bts-popup-container">
         <center><img src="../static/img/logo/logo_disclaimer.png" alt="Flood Safe Home" width="50%"  style="padding:8px; margin:15px"/></center>
-          <div class="disclaimer">
+          <div class="disclaimer" style="z-index:1;">
 
             <p style="color:black">
               Welcome to the Web portal for the FloodSafeHome decision-making tool. 
@@ -408,7 +408,7 @@ crossorigin=""></script> {% endcomment %}
   <!--Disclaimer end-->
 
  <!-- Banner-->
-    <div class="banner">
+    <div class="banner"  style="z-index:-1;">
         <div class="banner__content">
             <div class="banner__text">
                 <strong> WEB TOOL UNDER DEVELOPMENT</strong> 
@@ -821,49 +821,51 @@ crossorigin=""></script> {% endcomment %}
 
 <!--ESRI Map-->
 <div id = "pdf_wrap">
-  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section>
+  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0;"><section id="section-1"></section>
     <script>
-
-      //Set the lat/lot & zoom level for the initial map
-      var map = L.map('map').setView([29.99,-90.15], 9);
-
-
-      //Setting for the tile layer style
-      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ', {
+      // initialize the map on the "map" div with a given center and zoom
+      var map = L.map('map', {
+        center: [29.99,-90.15],
+        measureControl:true,
+        zoomSnap: 0.25,
+        zoomControl:true, maxZoom:45, minZoom:1,
+        zoomDelta: 0.25,
+        zoom: 10
+      });
+    
+      //Add scale
+      L.control.scale().addTo(map);
+    
+      //Tile layer
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox/streets-v11',
         tileSize: 512,
         zoomOffset: -1,
-        accessToken: 'your.mapbox.access.token'
-    }).addTo(map);
+        accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
+      }).addTo(map);
+    
+    
+  
+ function onMapClick(e) {
+   alert("You clicked the map at " + e.latlng);
+ }
+ 
+ map.on('click', onMapClick);
 
+ var popup = L.popup();
 
-      //Add scale
-      L.control.scale().addTo(map);
-      
-    
-      {% comment %} var searchControl = L.esri.Geocoding.geosearch({
-        position: 'topright',
-        placeholder: 'Enter an address or place e.g. 1 York St',
-        useMapBounds: false,
-        providers: [L.esri.Geocoding.arcgisOnlineProvider({
-          apikey: apiKey, // replace with your api key - https://developers.arcgis.com
-          nearby: {
-            lat: -33.8688,
-            lng: 151.2093
-          }
-        })]
-      }).addTo(map); 
-    
-      var results = L.layerGroup().addTo(map);
-    
-      searchControl.on('results', function (data) {
-        results.clearLayers();
-        for (var i = data.results.length - 1; i >= 0; i--) {
-          results.addLayer(L.marker(data.results[i].latlng));
-        }
-      });{% endcomment %}
+ function onMapClick(e) {
+     popup
+         .setLatLng(e.latlng)
+         .setContent("You clicked the map at " + e.latlng.toString())
+         .openOn(map);
+ }
+
+ map.on('click', onMapClick);
+
+  
     </script>
   </div>
 

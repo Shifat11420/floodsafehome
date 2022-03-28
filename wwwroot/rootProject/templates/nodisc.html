@@ -697,7 +697,7 @@ function formProcess(){
 <main>
 <!--Leaflet map-->
 <div id = "pdf_wrap">
-  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index: -1"><section id="section-1"></section> 
+  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0;"><section id="section-1"></section> 
     <script>
       // initialize the map on the "map" div with a given center and zoom
       var map = L.map('map', {
@@ -723,7 +723,25 @@ function formProcess(){
       }).addTo(map);
     
     
-      var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map);
+    //Popup for cliked location  
+    var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").addTo(map);
+  
+    function onMapClick(e) {
+      alert("You clicked the map at " + e.latlng);
+    }
+    
+    map.on('click', onMapClick);
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the map at " + e.latlng.toString())
+            .openOn(map);
+    }
+
+    map.on('click', onMapClick);
     </script>
   </div>
 
