@@ -486,7 +486,8 @@ crossorigin=""></script> {% endcomment %}
                 <br>  
                 
                 <!--Address or Parcel ID-->
-                    <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
+                  {% comment %}                     
+                        <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
                         <option value="Parcel" disabled>Parcel</option>
@@ -498,7 +499,8 @@ crossorigin=""></script> {% endcomment %}
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
                             <option value="Terrebonne"> Terrebonne </option>
-                        </select><br> 
+                        </select><br>  
+                    {% endcomment %}
                               
                         <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                         {% comment %} <!--Square footage-->

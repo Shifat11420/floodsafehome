@@ -240,7 +240,7 @@ function formProcess(){
 
 
         <!-- Header Start -->
-        <div class="header-area header-transparent mapHeader">
+        <div class="header-area header-transparent mapHeader" >
             <div class="main-header ">
                 <div class="header-bottom  header-sticky">
                     <div class="container-fluid">
@@ -251,7 +251,7 @@ function formProcess(){
                                     <a href="/"><img src="static/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-10 col-lg-10">
+                            <div class="col-xl-10 col-lg-10" >
                                 <div class="menu-wrapper  d-flex align-items-center justify-content-end">
                                     <!-- Main-menu -->
                                     <div class="main-menu d-none d-lg-block">
@@ -364,6 +364,7 @@ function formProcess(){
                 <br>  
                 
                 <!--Address or Parcel ID-->
+                  {% comment %}                     
                     <select name="select1" id="select1" style="margin: 5px 20px 5px 0px; padding: 5px 33px 5px 0px;">
                         <option value="Address">Address</option>
                         <option value="Subdivison" disabled>Subdivison</option>
@@ -376,7 +377,8 @@ function formProcess(){
                             <option value="Jefferson"> Jefferson</option>
                             <option value="St. Tammany"> St. Tammany</option>
                             <option value="Terrebonne"> Terrebonne </option>
-                        </select><br> 
+                        </select><br>  
+                    {% endcomment %}
                               
                         <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
                         {% comment %} <!--Square footage-->
@@ -697,16 +699,16 @@ function formProcess(){
 <main>
 <!--Leaflet map-->
 <div id = "pdf_wrap">
-  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0;"><section id="section-1"></section> 
+  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0;"><section id="section-1"></section> 
     <script>
       // initialize the map on the "map" div with a given center and zoom
       var map = L.map('map', {
-        center: [29.99,-90.15],
+        center: [{{lattitude_list}},{{longitude_list}}],
         measureControl:true,
         zoomSnap: 0.25,
         zoomControl:true, maxZoom:45, minZoom:1,
         zoomDelta: 0.25,
-        zoom: 10
+        zoom: 14
       });
     
       //Add scale
