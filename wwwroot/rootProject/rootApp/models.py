@@ -154,8 +154,8 @@ class JeffersonAddress(models.Model):
     # JeffersonAddress shapefile.
   
     ADDRESS = models.CharField(max_length=10, null =True,default=" ")
-    STREET = models.CharField(max_length=25, null =True)
-    SUITE = models.CharField(max_length=10, null =True)
+    STREET = models.CharField(max_length=50, null =True)
+    SUITE = models.CharField(max_length=20, null =True)
     ZIP = models.CharField(max_length=10, null =True)
     AREA_NAME = models.CharField(max_length=30, null =True)
     STREET_NAM = models.CharField(max_length=43, null =True)
@@ -178,7 +178,7 @@ class JeffersonAddress(models.Model):
 
     # Returns the string representation of the model.
     def __str__(self):
-        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.ZIP)                
+        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.SUITE)+", "+str(self.ZIP)                
 
 
 
@@ -188,8 +188,8 @@ class TerrebonneAddress(models.Model):
     # JeffersonAddress shapefile.
   
     ADDRESS = models.CharField(max_length=10, null =True,default=" ")
-    STREET = models.CharField(max_length=25, null =True)
-    SUITE = models.CharField(max_length=10, null =True)
+    STREET = models.CharField(max_length=50, null =True)
+    SUITE = models.CharField(max_length=20, null =True)
     ZIP = models.CharField(max_length=10, null =True)
     AREA_NAME = models.CharField(max_length=30, null =True)
     STREET_NAM = models.CharField(max_length=43, null =True)
@@ -212,4 +212,4 @@ class TerrebonneAddress(models.Model):
 
     # Returns the string representation of the model.
     def __str__(self):
-        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.ZIP) 
+        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.SUITE)+", "+str(self.ZIP) 
