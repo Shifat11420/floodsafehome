@@ -96,14 +96,14 @@ def gotomap(request):
     for datafile in datafile_list:
         print("datafile in errmess : ", datafile)
         if (len(locationList)==1):
-            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:5]
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))  ).all()[:5]
         elif (len(locationList)==2):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1]))  ).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1]))  ).all()[:5]
         elif (len(locationList)==3):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
         else:
             print("lalalala")
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
         if queryset:
             break
             
@@ -146,13 +146,13 @@ def autosuggest(request):
     for datafile in datafile_list:
         print("datafile ", datafile)
         if (len(query_originalList)==1):
-            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))  ).all()[:5]
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))  ).all()[:5]
         elif (len(query_originalList)==2):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1]))  ).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1]))  ).all()[:5]
         elif (len(query_originalList)==3):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1])), (Q(STREET__istartswith = query_originalList[1]))).all()[:5]
         else:
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1])), (Q(STREET__istartswith = query_originalList[1]))).all()[:5]
 
         
 
@@ -161,10 +161,10 @@ def autosuggest(request):
             #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
             #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
             
-            # mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+x.SUITE+","+" "+"LA" for x in queryset]
+            mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
            
             
-            mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]   
+            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.SUITE+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]   
     
 
         else:
@@ -276,15 +276,28 @@ def search(request):
     #AAL_absCurrency_list_c = []
     AAL_Total_list_c = []
     time_to_recover_FC_TB_list_c = []
-    time_to_recover_FC_PS_list_c = []   
+    time_to_recover_FC_PS_list_c = [] 
+
+    total_monthly_saving_wi_list_c = []
+    total_optimal_saving_wi_list_c = [] 
+    total_optimal_freeboard_wi_list_c = [] 
+
+
+    annual_avoided_loss_list_c = []
+    monthly_avoided_loss_list_c = []
     avoided_monthly_loss_homeowner_list_c =[]
     avoided_monthly_loss_landlord_list_c = []
     avoided_monthly_loss_tenant_list_c = []   
 
+    annual_avoided_loss_wi_list_c = []
+    monthly_avoided_loss_wi_list_c = []
+    avoided_monthly_loss_homeowner_wi_list_c =[]
+    avoided_monthly_loss_landlord_wi_list_c = []
+    avoided_monthly_loss_tenant_wi_list_c = []  
+
 
     total_monthly_premium_saving_list_c = []
-    annual_avoided_loss_list_c = []
-    monthly_avoided_loss_list_c = []
+
     Amortized_FC_list_c = []
     total_savings_permonth_insurance_list_c = []
 
@@ -391,13 +404,13 @@ def search(request):
             mylist = [] 
             for datafile in datafile_list:
                 if (len(locationList)==1):
-                    queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:5]
+                    queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))  ).all()[:5]
                 elif (len(locationList)==2):
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(STREET__icontains = locationList[1]))  ).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(STREET__istartswith = locationList[1]))  ).all()[:5]
                 elif (len(locationList)==3):
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
                 else:
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__icontains = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
                 if queryset:
                     break
                        
@@ -416,16 +429,16 @@ def search(request):
             for datafile in datafile_list:
                 if (len(streetlist)==1):
                     addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1]))).all()
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1]))).all()
                 elif (len(streetlist)==2):
                     addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2])).all()        
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2])).all()        
                 elif (len(streetlist)==3):
                     addressvalue = datafile.objects.filter(
-                        Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3])).all()    
+                        Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2]), Q(STREET__istartswith=locationList[3])).all()    
                 else:  
                     addressvalue = datafile.objects.filter(
-                        Q(ADDRESS__icontains=locationList[0]) ,  (Q(ADDRESS__icontains=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
+                        Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2]), Q(STREET__istartswith=locationList[3]), Q(STREET__istartswith=locationList[4])).all()
                 print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
                 if addressvalue:
                     break 
@@ -1120,15 +1133,7 @@ def search(request):
             print("                  ")
 
         ##----------------------AAL (Adil's method) ends ---------------------------------------
-            ########## owner portion calculation ##################
-            owner_portions = []
-            for i in range(len(totalBFE)):
-                owner_portions.append(monte_carlo(u, a, FFE[i], Square_footage, Building_cost, coverage_lvl_bldg, deductible_bldg ,lower_bound=0,upper_bound=1000000,num_samples=50000))
-            print("owner_portions : ", owner_portions)
-
-
-
-            ######################################
+  
             ##
             annual_avoided_loss = []
             monthly_avoided_loss = []
@@ -1152,20 +1157,101 @@ def search(request):
                 monthly_avoided_loss = avoided_monthly_loss_homeowner #"NONE"  #fix it later
                 print("annual_avoided_loss = ", annual_avoided_loss)
                 print("monthly_avoided_loss = ", monthly_avoided_loss)
-
-            #annual_avoided_lossnoBFE0 = annual_avoided_loss.remove(annual_avoided_loss[0])
-            #monthly_avoided_lossnoBFE0 = monthly_avoided_loss.remove(monthly_avoided_loss[0])
-            
+           
             annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)   
             monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss[1:])     #**   
 
-            print("                  ") 
             print("annual_avoided_loss = ", annual_avoided_loss)
             print("monthly_avoided_loss = ", monthly_avoided_loss)
             annual_avoided_loss_list_c.append(annual_avoided_loss)  
             monthly_avoided_loss_list_c.append(monthly_avoided_loss)
-         
+            print("                  ") 
 
+        ##-------------------with insurance -----------------------       
+            ########## owner portion calculation ##################
+            owner_portions = []
+            AAL_Total_homeowner_list_wi = [] 
+            AAL_Total_landlord_list_wi = []   
+            AAL_Total_tenant_list_wi = []
+            for i in range(len(totalBFE)):
+                owner_portions.append(monte_carlo(u, a, FFE[i], Square_footage, Building_cost, coverage_lvl_bldg, deductible_bldg ,lower_bound=0,upper_bound=1000000,num_samples=50000))
+            print("owner_portions : ", owner_portions)
+
+            for i in range(len(totalBFE)):
+                AAL_Total_homeowner_list_wi.append(AAL_Total_homeowner_list[i]*owner_portions[i])
+                AAL_Total_landlord_list_wi.append(AAL_Total_landlord_list[i]*owner_portions[i])
+                AAL_Total_tenant_list_wi.append(AAL_Total_tenant_list[i]*owner_portions[i])
+                        
+            print("AAL_Total_homeowner_list_wi  : ", AAL_Total_homeowner_list_wi)
+            print("AAL_Total_landlord_list_wi  : ", AAL_Total_landlord_list_wi)
+            print("AAL_Total_tenant_list_wi  : ", AAL_Total_tenant_list_wi)
+
+            avoided_annual_loss_homeowner_wi= []
+            avoided_annual_loss_landlord_wi= []
+            avoided_annual_loss_tenant_wi= []
+            avoided_monthly_loss_homeowner_wi= []
+            avoided_monthly_loss_landlord_wi= []
+            avoided_monthly_loss_tenant_wi= []
+            for k in range(len(totalBFE)):
+                avoided_annual_loss_homeowner_wi.append(AAL_Total_homeowner_list_wi[0]- AAL_Total_homeowner_list_wi[k])
+                avoided_annual_loss_landlord_wi.append(AAL_Total_landlord_list_wi[0]- AAL_Total_landlord_list_wi[k])
+                avoided_annual_loss_tenant_wi.append(AAL_Total_tenant_list_wi[0]- AAL_Total_tenant_list_wi[k])
+                avoided_monthly_loss_homeowner_wi.append(int(((AAL_Total_homeowner_list_wi[0]- AAL_Total_homeowner_list_wi[k])/12)))
+                avoided_monthly_loss_landlord_wi.append(int(((AAL_Total_landlord_list_wi[0]- AAL_Total_landlord_list_wi[k])/12)))
+                avoided_monthly_loss_tenant_wi.append(int(((AAL_Total_tenant_list_wi[0]- AAL_Total_tenant_list_wi[k])/12)))
+
+            print("       ")
+            print("avoided_annual_loss_homeowner_wi : ", avoided_annual_loss_homeowner_wi) 
+            print("avoided_annual_loss_landlord_wi : ", avoided_annual_loss_landlord_wi)   
+            print("avoided_annual_loss_tenant_wi : ", avoided_annual_loss_tenant_wi)
+            
+            print("avoided_monthly_loss_homeowner_wi : ", avoided_monthly_loss_homeowner_wi) 
+            print("avoided_monthly_loss_landlord_wi : ", avoided_monthly_loss_landlord_wi)   
+            print("avoided_monthly_loss_tenant_wi : ", avoided_monthly_loss_tenant_wi)
+            print("       ")
+            avoided_monthly_loss_homeowner_wi_list_c.append(avoided_monthly_loss_homeowner_wi)
+            avoided_monthly_loss_landlord_wi_list_c.append(avoided_monthly_loss_landlord_wi)
+            avoided_monthly_loss_tenant_wi_list_c.append(avoided_monthly_loss_tenant_wi) 
+
+
+            ######################################
+
+            annual_avoided_loss_wi = []
+            monthly_avoided_loss_wi = []
+            if user_type == "Homeowner":
+                annual_avoided_loss_wi = avoided_annual_loss_homeowner_wi
+                monthly_avoided_loss_wi = avoided_monthly_loss_homeowner_wi
+            elif user_type == "Tenant":
+                annual_avoided_loss_wi = avoided_annual_loss_tenant_wi
+                monthly_avoided_loss_wi = avoided_monthly_loss_tenant_wi
+                
+            elif user_type == "Landlord":
+                annual_avoided_loss_wi = avoided_annual_loss_landlord_wi
+                monthly_avoided_loss_wi = avoided_monthly_loss_landlord_wi
+
+            # elif user_type == "Community official":
+            #     annual_avoided_loss_wi = avoided_annual_loss_CommunityOfficial_wi
+            #     monthly_avoided_loss_wi = avoided_monthly_loss_CommunityOfficial_wi
+            else:
+                print("None of the user type!")
+                annual_avoided_loss_wi =  avoided_annual_loss_homeowner_wi #"NONE"   #fix it later
+                monthly_avoided_loss_wi = avoided_monthly_loss_homeowner_wi #"NONE"  #fix it later
+                print("annual_avoided_loss_wi = ", annual_avoided_loss_wi)
+                print("monthly_avoided_loss_wi = ", monthly_avoided_loss_wi)
+
+            
+            annual_avoided_loss_wi_json = simplejson.dumps(annual_avoided_loss_wi)   
+            monthly_avoided_loss_wi_json = simplejson.dumps(monthly_avoided_loss_wi[1:])     #**   
+
+            print("                  ") 
+            print("annual_avoided_loss_wi = ", annual_avoided_loss_wi)
+            print("monthly_avoided_loss_wi = ", monthly_avoided_loss_wi)
+            print("                  ")
+            annual_avoided_loss_wi_list_c.append(annual_avoided_loss_wi)  
+            monthly_avoided_loss_wi_list_c.append(monthly_avoided_loss_wi)
+
+            ##-------------------with insurance ends -----------------------   
+            
 
         ###----------------Insurance-----------------------------------------
 
@@ -1441,11 +1527,9 @@ def search(request):
                 total_monthly_premium.append( int((((deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium)) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium))) + HFIAA_surcharge + Federal_policy_fee)/12))
        
 
-                print("Total annual premium : ", total_annual_premium)
-                print("Total monthly premium : ", total_monthly_premium)
+                # print("Total annual premium : ", total_annual_premium)
+                # print("Total monthly premium : ", total_monthly_premium)
                 
-                #total_annual_premiumnoBFE0 = total_annual_premium.remove(total_annual_premium[0])
-                #total_monthly_premiumnoBFE0 = total_monthly_premium.remove(total_monthly_premium[0])
                 total_annual_premium_json = simplejson.dumps(total_annual_premium)  
                 total_monthly_premium_json = simplejson.dumps(total_monthly_premium) 
 
@@ -1460,15 +1544,12 @@ def search(request):
                     if optimal_total_monthly_premium == total_monthly_premium[k]:
                         optimal_total_monthly_premium_freeboard = totalBFE[k]  
 
-            #optimal_total_annual_premiumnoBFE0 = optimal_total_annual_premium.remove(optimal_total_annual_premium[0])
             optimal_total_annual_premium_json = simplejson.dumps(optimal_total_annual_premium)  
             print("Deducted premium : ", deducted_premium)
             print("Total annual premium : ", total_annual_premium)
             total_annual_premium_list_c.append(total_annual_premium)
 
-            #optimal_total_monthly_premiumnoBFE0 = optimal_total_monthly_premium.remove(optimal_total_monthly_premium[0])
             optimal_total_monthly_premium_json = simplejson.dumps(optimal_total_monthly_premium)  
-            print("Deducted premium : ", deducted_premium)
             print("Total monthly premium : ", total_monthly_premium)
             total_monthly_premium_list_c.append(total_monthly_premium)
         
@@ -1534,7 +1615,7 @@ def search(request):
             monthly_premium_saving_json = simplejson.dumps(monthly_premium_saving[1:])         #**
 
 
-            ##-----------Total monthly saving---------------------------------------------
+            ##-----------Total monthly saving (without insurance)---------------------------------------------
             total_monthly_saving = []
             
             for i in range(len(totalBFE)): 
@@ -1553,12 +1634,37 @@ def search(request):
             total_monthly_saving_json = simplejson.dumps(total_monthly_saving[1:])   #**  
             optimal_saving_json = simplejson.dumps(optimal_saving)  
 
-            ##-----------Total yearly saving---------------------------------------------
+             ##-----------Total monthly saving (with insurance)---------------------------------------------
+            total_monthly_saving_wi = []
+            
+            for i in range(len(totalBFE)): 
+                total_monthly_saving_wi.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss_wi[i]/12)-Amortized_FC[i]))
+            print("Total monthly saving with insurance :  ", total_monthly_saving_wi)
+            total_monthly_saving_wi_list_c.append(total_monthly_saving_wi)
+            
+            optimal_saving_wi = max(total_monthly_saving_wi)
+            total_optimal_saving_wi_list_c.append(max(total_monthly_saving_wi))
+            
+            for k in range(len(total_monthly_saving_wi)):
+                if optimal_saving_wi == total_monthly_saving_wi[k]:
+                    optimal_freeboard_wi = totalBFE[k]
+            total_optimal_freeboard_wi_list_c.append(optimal_freeboard_wi)
+
+            total_monthly_saving_wi_json = simplejson.dumps(total_monthly_saving_wi[1:])   #**  
+            optimal_saving_wi_json = simplejson.dumps(optimal_saving_wi) 
+
+
+            ##-----------Total yearly saving (without insurance)---------------------------------------------
             total_yearly_saving = []
             for i in range(len(totalBFE)): 
                 total_yearly_saving.append(int(total_monthly_saving[i] * 12))
             print("Total yearly saving :  ", total_yearly_saving)
             
+            ##-----------Total yearly saving (with insurance)---------------------------------------------
+            total_yearly_saving_wi = []
+            for i in range(len(totalBFE)): 
+                total_yearly_saving_wi.append(int(total_monthly_saving_wi[i] * 12))
+            print("Total yearly saving with insurance :  ", total_yearly_saving_wi)
 
             ##-----------Total loanbased freeboard cost---------------------------------------------
             total_loanbased_FC = []
@@ -1625,7 +1731,7 @@ def search(request):
             
 
 
-            output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish': parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
+            # output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish': parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
 
         ##########-----for summery analysis section ---------------##########
         ##----------------TOTAL----savings per month (flood insurance only)---------------------
@@ -1635,6 +1741,9 @@ def search(request):
                 total_savings_permonth_insurance.append(monthly_premium_saving[i]-Amortized_FC[i])
             print("total_savings_permonth_insurance :",total_savings_permonth_insurance)
             total_savings_permonth_insurance_list_c.append(total_savings_permonth_insurance)
+
+            output_data.writerow({'Address': beforecomma,  'Lattitude': lat, 'Longitude': lon, 'Parish': parishvalue , 'Flood zone':zonevalue , 'Individual building optimal saving': optimal_saving , 'Individual building recommended freeboard': optimal_freeboard})
+
 
     ## lattitude and longitude ###
     print("\n")
@@ -1811,6 +1920,35 @@ def search(request):
 
     optimal_saving = max(summation_total_monthly_saving)
     optimal_saving_json = simplejson.dumps(optimal_saving) 
+
+    print("\n")
+
+    ## Total monthly saving with insurance ##
+    print("total_monthly_saving_wi_list_c : ", total_monthly_saving_wi_list_c)
+
+  
+    summation_total_monthly_saving_wi = []
+    avg_total_monthly_saving_wi = []
+    for z in range(len(total_monthly_saving_wi)):
+        summation_total_monthly_saving_wi.append(0)
+    #print("summationlist_total_monthly_saving_wi = " ,summation_total_monthly_saving_wi)
+
+    for i in range(len(buildinglist)):   
+        for z in range(len(total_monthly_saving_wi)):
+            summation_total_monthly_saving_wi[z] = summation_total_monthly_saving_wi[z] + total_monthly_saving_wi_list_c[i][z]
+    print("summationlist_total_monthly_saving = " ,summation_total_monthly_saving_wi)
+    summation_total_monthly_saving_wi_json = simplejson.dumps(summation_total_monthly_saving_wi[1:]) #**        
+    
+    for z in range(len(total_monthly_saving_wi)):
+        avg_total_monthly_saving_wi.append(int(summation_total_monthly_saving_wi[z]/len(buildinglist)))
+    print("avglist_total_monthly_saving = " ,avg_total_monthly_saving_wi) 
+
+
+    print("total_optimal_saving_wi_list_c  : " , total_optimal_saving_wi_list_c)
+    print("total_optimal_freeboard_wi_list_c : ", total_optimal_freeboard_wi_list_c)
+
+    optimal_saving_wi = max(summation_total_monthly_saving_wi)
+    optimal_saving_wi_json = simplejson.dumps(optimal_saving_wi) 
 
     print("\n")
     
@@ -2267,8 +2405,14 @@ def search(request):
         "summation_total_savings_permonth_insurance1":summation_total_savings_permonth_insurance[1], "summation_total_savings_permonth_insurance2":summation_total_savings_permonth_insurance[2], "summation_total_savings_permonth_insurance3":summation_total_savings_permonth_insurance[3],"summation_total_savings_permonth_insurance4":summation_total_savings_permonth_insurance[4],\
         "summation_total_monthly_saving0":summation_total_monthly_saving[0],\
         "summation_total_monthly_saving1":summation_total_monthly_saving[1], "summation_total_monthly_saving2":summation_total_monthly_saving[2],"summation_total_monthly_saving3":summation_total_monthly_saving[3], "summation_total_monthly_saving4":summation_total_monthly_saving[4],\
+        "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving[1:]),\
+
+        "summation_total_monthly_saving0_wi":summation_total_monthly_saving_wi[0],\
+        "summation_total_monthly_saving1_wi":summation_total_monthly_saving_wi[1], "summation_total_monthly_saving2_wi":summation_total_monthly_saving_wi[2],"summation_total_monthly_saving3_wi":summation_total_monthly_saving_wi[3], "summation_total_monthly_saving4_wi":summation_total_monthly_saving_wi[4],\
+        "total_monthly_saving_wi_json":total_monthly_saving_wi_json, "summation_total_monthly_saving_wi_low": min(summation_total_monthly_saving_wi[1:]),\
+
         "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json,"monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json,\
-        "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium, "total_monthly_saving_json":total_monthly_saving_json, "summation_total_monthly_saving_low": min(summation_total_monthly_saving[1:]),\
+        "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium,\
         "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, \
         "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard,\
         "FreeboardCost0": freeboardCost[0],\
