@@ -96,14 +96,14 @@ def gotomap(request):
     for datafile in datafile_list:
         print("datafile in errmess : ", datafile)
         if (len(locationList)==1):
-            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))  ).all()[:5]
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:5]
         elif (len(locationList)==2):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1]))  ).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__icontains = locationList[1]))  ).all()[:5]
         elif (len(locationList)==3):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
         else:
             print("lalalala")
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
         if queryset:
             break
             
@@ -146,13 +146,13 @@ def autosuggest(request):
     for datafile in datafile_list:
         print("datafile ", datafile)
         if (len(query_originalList)==1):
-            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))  ).all()[:5]
+            queryset = datafile.objects.filter(Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))  ).all()[:5]
         elif (len(query_originalList)==2):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1]))  ).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1]))  ).all()[:5]
         elif (len(query_originalList)==3):
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1])), (Q(STREET__istartswith = query_originalList[1]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:5]
         else:
-            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__istartswith = query_originalList[0]))), (Q(STREET__istartswith = query_originalList[1])), (Q(STREET__istartswith = query_originalList[1]))).all()[:5]
+            queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:5]
 
         
 
@@ -161,10 +161,8 @@ def autosuggest(request):
             #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
             #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
             
-            mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
-           
-            
-            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.SUITE+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]   
+            mylist += [x.ADDRESS+" "+x.STREET+","+" SUITE-"+x.SUITE+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" if x.SUITE else x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
+            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
     
 
         else:
@@ -328,15 +326,10 @@ def search(request):
     addr_list = request.GET.get('addr_list')
     print("Addr list = ", addr_list)
     if addr_list:
-        #buildinglist = addr_list.split('$$')
-        #buildinglist = addr_list.split(' Parish') ##
-
-        #nozoneaddress = re.split(', Jefferson Parish|, Jefferson', addr_list)
         nozoneaddress = re.split(', LA', addr_list)
         print(nozoneaddress)
 
         for addr in nozoneaddress:
-            #withzoneaddress = addr+', Jefferson Parish'
             withzoneaddress = addr+', LA'
             print(withzoneaddress)
             buildinglist.append(withzoneaddress)
@@ -371,6 +364,7 @@ def search(request):
         for i in range(len(buildinglist)):
             line_count += 1      ##
             location = buildinglist[i]
+            print("location now : ", location)
 
             ##------location-----------------------
             #location = request.GET.get('location', 'default')
@@ -379,18 +373,15 @@ def search(request):
             locationList= beforecomma.split(' ')
             locationList = list(map(str.strip, locationList))
             streetlist = locationList[1:]
+            # suitelist = commasplit[1].split("-")
+            print("streetlist now : ", streetlist)
+            # print("suitelist now : ", suitelist)
+            # suite = suitelist[1]
 
             ##-------number of stories------------------------
             No_Floors = request.GET.get('stories', 'default') #request.GET['stories']
 
             print("accepted floors:", No_Floors)
-            #     ## error message
-            # if No_Floors == 'default':
-            #     messages.error(request, 'Please choose number of stories!')
-            #     return render(request, 'nodisc.html')
-    
-            # else:
-            #     mylist = ["valid stories"]  
 
             ##--------------square footage-----------------------
             Square_footage = float(request.GET.get('sqft1', 'default'))
@@ -404,13 +395,13 @@ def search(request):
             mylist = [] 
             for datafile in datafile_list:
                 if (len(locationList)==1):
-                    queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))  ).all()[:5]
+                    queryset = datafile.objects.filter(Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))  ).all()[:5]
                 elif (len(locationList)==2):
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(STREET__istartswith = locationList[1]))  ).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(STREET__icontains = locationList[1]))  ).all()[:5]
                 elif (len(locationList)==3):
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
                 else:
-                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__istartswith = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__istartswith = locationList[1])), (Q(STREET__istartswith = locationList[2]))).all()[:5]
+                    queryset = datafile.objects.filter((Q(ADDRESS__istartswith = locationList[0]) | (Q(STREET__icontains = locationList[0]))), (Q(ADDRESS__istartswith = locationList[1]) | Q(STREET__icontains = locationList[1])), (Q(STREET__icontains = locationList[2]))).all()[:5]
                 if queryset:
                     break
                        
@@ -429,16 +420,16 @@ def search(request):
             for datafile in datafile_list:
                 if (len(streetlist)==1):
                     addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1]))).all()
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__icontains=locationList[1]))).all()
                 elif (len(streetlist)==2):
                     addressvalue = datafile.objects.filter(
-                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2])).all()        
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2])).all()        
                 elif (len(streetlist)==3):
                     addressvalue = datafile.objects.filter(
-                        Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2]), Q(STREET__istartswith=locationList[3])).all()    
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3])).all()    
                 else:  
                     addressvalue = datafile.objects.filter(
-                        Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__istartswith=locationList[1])), Q(STREET__istartswith=locationList[2]), Q(STREET__istartswith=locationList[3]), Q(STREET__istartswith=locationList[4])).all()
+                    Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
                 print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
                 if addressvalue:
                     break 
