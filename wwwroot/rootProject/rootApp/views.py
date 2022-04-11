@@ -228,7 +228,8 @@ def get_probability(min_value, max_value):
     return (random.uniform(min_value,max_value))/(max_value-min_value)
 def inv_flood_elevation(x,u,a):
     return u - a * np.log(-(np.log(1-x))) 
-def monte_carlo(u,a,ffe,livable_area,replacement_cost,coverage_str,deductible_str,lower_bound=0,upper_bound=1000000,num_samples=50000):    
+def monte_carlo(u,a,ffe,livable_area,replacement_cost,coverage_str,deductible_str,lower_bound=0,upper_bound=1000000,num_samples=50000):   
+    random.seed(11)  
     sum_of_str = 0
     sum_of_owner_deduct_str = 0
     sum_of_nfip_deduct_str = 0
@@ -1071,9 +1072,9 @@ def search(request):
 
                 print("**********          ###########          ***********")
 
-            # print("AAL_Total_homeowner_list : ", AAL_Total_homeowner_list) 
-            # print("AAL_Total_landlord_list : ", AAL_Total_landlord_list)   
-            # print("AAL_Total_tenant_list : ", AAL_Total_tenant_list)
+            print("AAL_Total_homeowner_list : ", AAL_Total_homeowner_list) 
+            print("AAL_Total_landlord_list : ", AAL_Total_landlord_list)   
+            print("AAL_Total_tenant_list : ", AAL_Total_tenant_list)
             AAL_Total_list_c.append(AAL_Total_list)
             # print("AAL_Total_list_c : ", AAL_Total_list_c)
             # print("                    ")
@@ -1109,9 +1110,9 @@ def search(request):
             # print("avoided_annual_loss_landlord : ", avoided_annual_loss_landlord)   
             # print("avoided_annual_loss_tenant : ", avoided_annual_loss_tenant)
             # print("       ")
-            # print("avoided_monthly_loss_homeowner : ", avoided_monthly_loss_homeowner) 
-            # print("avoided_monthly_loss_landlord : ", avoided_monthly_loss_landlord)   
-            # print("avoided_monthly_loss_tenant : ", avoided_monthly_loss_tenant)
+            print("avoided_monthly_loss_homeowner : ", avoided_monthly_loss_homeowner) 
+            print("avoided_monthly_loss_landlord : ", avoided_monthly_loss_landlord)   
+            print("avoided_monthly_loss_tenant : ", avoided_monthly_loss_tenant)
             avoided_monthly_loss_homeowner_list_c.append(avoided_monthly_loss_homeowner)
             avoided_monthly_loss_landlord_list_c.append(avoided_monthly_loss_landlord)
             avoided_monthly_loss_tenant_list_c.append(avoided_monthly_loss_tenant)
@@ -1169,9 +1170,9 @@ def search(request):
             print("owner_portions : ", owner_portions)
 
             for i in range(len(totalBFE)):
-                AAL_Total_homeowner_list_wi.append(AAL_Total_homeowner_list[i]*owner_portions[i])
-                AAL_Total_landlord_list_wi.append(AAL_Total_landlord_list[i]*owner_portions[i])
-                AAL_Total_tenant_list_wi.append(AAL_Total_tenant_list[i]*owner_portions[i])
+                AAL_Total_homeowner_list_wi.append(int(AAL_Total_homeowner_list[i]*owner_portions[i]))
+                AAL_Total_landlord_list_wi.append(int(AAL_Total_landlord_list[i]*owner_portions[i]))
+                AAL_Total_tenant_list_wi.append(int(AAL_Total_tenant_list[i]*owner_portions[i]))
                         
             print("AAL_Total_homeowner_list_wi  : ", AAL_Total_homeowner_list_wi)
             print("AAL_Total_landlord_list_wi  : ", AAL_Total_landlord_list_wi)
@@ -1184,9 +1185,9 @@ def search(request):
             avoided_monthly_loss_landlord_wi= []
             avoided_monthly_loss_tenant_wi= []
             for k in range(len(totalBFE)):
-                avoided_annual_loss_homeowner_wi.append(AAL_Total_homeowner_list_wi[0]- AAL_Total_homeowner_list_wi[k])
-                avoided_annual_loss_landlord_wi.append(AAL_Total_landlord_list_wi[0]- AAL_Total_landlord_list_wi[k])
-                avoided_annual_loss_tenant_wi.append(AAL_Total_tenant_list_wi[0]- AAL_Total_tenant_list_wi[k])
+                avoided_annual_loss_homeowner_wi.append(int(AAL_Total_homeowner_list_wi[0]- AAL_Total_homeowner_list_wi[k]))
+                avoided_annual_loss_landlord_wi.append(int(AAL_Total_landlord_list_wi[0]- AAL_Total_landlord_list_wi[k]))
+                avoided_annual_loss_tenant_wi.append(int(AAL_Total_tenant_list_wi[0]- AAL_Total_tenant_list_wi[k]))
                 avoided_monthly_loss_homeowner_wi.append(int(((AAL_Total_homeowner_list_wi[0]- AAL_Total_homeowner_list_wi[k])/12)))
                 avoided_monthly_loss_landlord_wi.append(int(((AAL_Total_landlord_list_wi[0]- AAL_Total_landlord_list_wi[k])/12)))
                 avoided_monthly_loss_tenant_wi.append(int(((AAL_Total_tenant_list_wi[0]- AAL_Total_tenant_list_wi[k])/12)))
@@ -1608,9 +1609,19 @@ def search(request):
 
             ##-----------Total monthly saving (without insurance)---------------------------------------------
             total_monthly_saving = []
+            total_monthly_saving_homeowner = []
+            total_monthly_saving_landlord = []
+            total_monthly_saving_tenant = []
             
             for i in range(len(totalBFE)): 
-                total_monthly_saving.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i]))
+                #total_monthly_saving.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i]))
+                total_monthly_saving.append(int((annual_avoided_loss[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_homeowner.append(int((avoided_annual_loss_homeowner[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_landlord.append(int((avoided_annual_loss_landlord[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_tenant.append(int((avoided_annual_loss_tenant[i]/12)-Amortized_FC[i]))
+            print("total_monthly_saving_homeowner : ",total_monthly_saving_homeowner)
+            print("total_monthly_saving_landlord : ",total_monthly_saving_landlord)
+            print("total_monthly_saving_tenant : ",total_monthly_saving_tenant)
             print("Total monthly saving :  ", total_monthly_saving)
             total_monthly_saving_list_c.append(total_monthly_saving)
             
@@ -1627,9 +1638,18 @@ def search(request):
 
              ##-----------Total monthly saving (with insurance)---------------------------------------------
             total_monthly_saving_wi = []
+            total_monthly_saving_homeowner_wi = []
+            total_monthly_saving_landlord_wi = []
+            total_monthly_saving_tenant_wi = []
             
             for i in range(len(totalBFE)): 
                 total_monthly_saving_wi.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss_wi[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_homeowner_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_homeowner_wi[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_landlord_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_landlord_wi[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_tenant_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_tenant_wi[i]/12)-Amortized_FC[i]))
+            print("total_monthly_saving_homeowner_wi : ",total_monthly_saving_homeowner_wi)
+            print("total_monthly_saving_landlord_wi : ",total_monthly_saving_landlord_wi)
+            print("total_monthly_saving_tenant_wi : ",total_monthly_saving_tenant_wi)
             print("Total monthly saving with insurance :  ", total_monthly_saving_wi)
             total_monthly_saving_wi_list_c.append(total_monthly_saving_wi)
             
