@@ -83,6 +83,15 @@ jQuery(document).ready(function($){
   img.src = img_array[value];
     
   }
+
+  var img2 = document.getElementById('img2');
+  var img2_array = ['static/img/construction/zero.png','static/img/construction/onefoot.png','static/img/construction/twofeet.png', 'static/img/construction/threefeet.png', 'static/img/construction/fourfeet.png'];
+  function setImage(obj)
+  {
+  var value = obj.value;
+  img2.src = img2_array[value];
+    
+  }
   
   /* slider number*/
   var slider = document.getElementById("myRange");

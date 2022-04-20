@@ -53,12 +53,12 @@
   <script>
     // initialize the map on the "map" div with a given center and zoom
     var map = L.map('map', {
-      center: [29.99,-90.15],
+      center: [{{lattitude_list}},{{longitude_list}}],
       measureControl:true,
       zoomSnap: 0.25,
       zoomControl:true, maxZoom:45, minZoom:1,
       zoomDelta: 0.25,
-      zoom: 12
+      zoom: 14
     });
   
     //Add scale
@@ -75,8 +75,11 @@
     }).addTo(map);
   
   
-    var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map);
-    </script>
+  //Popup for cliked location  
+  var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).addTo(map)
+                .bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").openPopup();
+</script>
+  
 <hr class="style-five">
 
 
@@ -424,307 +427,318 @@
   <!--Result details End-->
 
 <!--zingchart script-->
-<script>
-  /*zingchart*/
- // DEFINE CHART LOCATIONS (IDS)
- // -----------------------------
- // Main chart render location
- // var chartId = 'myChart';
- var chart1Id = 'chart1'; //Freeboard Cost
- var chart2Id = 'chart2'; //Monthly Insurance Premiums Savings
- var chart3Id = 'chart3'; //Expected Monthly Flood Loss
- var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
- var chart5Id = 'chart5'; //Monthly Savings
- var chart6Id = 'chart6'; //Overall graph
+  <script>
+   /*zingchart*/
+  // DEFINE CHART LOCATIONS (IDS)
+  // -----------------------------
+  // Main chart render location
+  var chartId = 'myChart';
+  var chart1Id = 'chart1'; //Freeboard Cost
+  var chart2Id = 'chart2'; //Monthly Insurance Premiums Savings
+  var chart3Id = 'chart3'; //Expected Monthly Flood Loss
+  var chart4Id = 'chart4'; //Time to Recover the Freeboard Cost
+  var chart5Id = 'chart5'; //Monthly Savings
+  var chart6Id = 'chart6'; //Overall graph
 
- //XZONE
- var chart1Id_XZONE = 'chart1_XZONE'; //Freeboard Cost & X ZONE
- var chart2Id_XZONE = 'chart2_XZONE'; //Monthly Insurance Premiums Savings & X ZONE
- var chart3Id_XZONE = 'chart3_XZONE'; //Expected Monthly Flood Loss & X ZONE
-
-
-
- // CHART CONFIG
- // -----------------------------
- // Chart 1
- var chart1Data = {
-   type: 'bar',
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   title: {
-     fontWeight: 'normal',
-     fontColor: 'var(--black)',
-     align: 'left',
-     marginLeft: '2rem'
-   },
-   cursor: 'hand',
-   globals: {
-     fontColor: 'var(--fontColor)',
-     fontfamily: 'Raleway'
-   },
-   legend: {
-     borderWidth: 0,
-     layout: '1',
-     marker: {
-       type: 'pie'
-     }
-   },
-   scaleX: { 
-     markers: [],
-     labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     // labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     tick: {
-       visible: false
-     },
-   crosshairX: {},
-   },
-   scaleY: {
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true
-   },
-   plot: {
-   tooltip:{ 
-     fontColor: 'var(--white)',
-     text: '$%v',
-     thousandsSeparator: ", ",
-     backgroundColor:'var(--red)'
-     },
-   animation : {
-     effect : 1,
-     sequence : 2,
-     speed : 100
-   },
- },
-   series: [
-     {
-       text: 'Monthly freeboard cost',
-       backgroundColor: 'var(--red)',
-       alpha: 0.95,
-       borderRadiusTopLeft: '7px',
-       //values: {{freeboardCost_json}}   
-       values: {{Amortized_FC_json}}  
-     }
-   ]
- };
-
- // Chart 2
-  var chart2Data = {
-   type: 'bar',
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   title: {
-     fontWeight: 'normal',
-     fontColor: 'var(--black)',
-     align: 'left',
-     marginLeft: '2rem'
-   },
-   cursor: 'hand',
-   globals: {
-     fontColor: 'var(--fontColor)',
-     fontfamily: 'Raleway'
-   },
-   legend: {
-     borderWidth: 0,
-     layout: '1',
-     marker: {
-       type: 'pie'
-     }
-   },
-   scaleX: { 
-     markers: [],
-     labels: ['BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-  //   labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-  // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     tick: {
-       visible: false
-     },
-   crosshairX: {},
-   },
-   scaleY: {
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true
-   },
-   plot: {
-   tooltip:{ 
-     fontColor: 'var(--white)',
-     text: '$%v',
-     thousandsSeparator: ", ",
-     backgroundColor:'var(--blue)'
-     },
-   animation : {
-     effect : 1,
-     sequence : 2,
-     speed : 100
-   },
- },
-   series: [
-     {
-       text: 'Monthly insurance premium savings',
-       backgroundColor: 'var(--blue)',
-       alpha: 0.95,
-       borderRadiusTopLeft: '7px',
-       values: {{monthly_premium_saving_json}}   
-     }
-   ]
- }; 
+  //XZONE
+  var chart1Id_XZONE = 'chart1_XZONE'; //Freeboard Cost & X ZONE
+  var chart2Id_XZONE = 'chart2_XZONE'; //Monthly Insurance Premiums Savings & X ZONE
+  var chart3Id_XZONE = 'chart3_XZONE'; //Expected Monthly Flood Loss & X ZONE
 
 
-// Chart 3: Monthly Savings from Flood Loss Reduction
- let chart3Data = {
- type: 'bar',
- borderWidth: '1px',
- borderColor: '#dae5ec',
- legend: {
-   alpha: 0.05,
-   borderWidth: '0px',
-   layout: 'x2',
-   marker: {
-     type: 'circle',
-     borderColor: 'none',
-     size: '10px'
-   },
- },
- plot: {
-   animation: {
-     effect: 'ANIMATION_SLIDE_BOTTOM'
-   }
- },
- scaleX: {
-   guide: {
-     visible: false
-   },
-   item: {
-     fontColor: '#7e7e7e'
-   },
-   labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-  // labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   lineColor: '#7E7E7E'
- },
- scaleY: {
-     
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true,
-     guide: {
-       lineStyle: 'solid'
-     },
-     minorTick: {
-       placement: 'cross',
-       size: '6px'
-     },
-     minorTicks: 1
-   },
- tooltip: {
-   text: '$%v',
-   thousandsSeparator: ", ",
- },
- series: [
-   {
-     text: 'Monthly savings from flood loss reduction — without insurance',
-     values: [ 0, 0, 0, 0],
-     //values: [ 0, 0, 0, 0, 0],
-     //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
-     alpha: 0.95,
-     borderRadiusTopLeft: '7px',
-     backgroundColor: '#eb9d17',
-   },
-   {
-     text: 'Monthly savings from flood loss reduction — with insurance',
-     values: {{monthly_avoided_loss_json}},
-     borderRadiusTopLeft: '7px',
-     alpha: 0.95,
-     backgroundColor: '#f7e0b7',
-   }
- ]
+
+  // CHART CONFIG
+  // -----------------------------
+  // Chart 1
+  var chart1Data = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    scaleX: { 
+      markers: [],
+      labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--red)'
+      },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Monthly freeboard cost',
+        backgroundColor: 'var(--red)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        values: {{Amortized_FC_json}},
+        "value-box": {
+          text: "$%v"
+        },  
+      }
+    ]
+  };
+
+  // Chart 2
+   var chart2Data = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--blue)'
+      },
+    "value-box": {
+      text: "$%v"
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Monthly insurance premium savings',
+        backgroundColor: 'var(--blue)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        values: {{monthly_premium_saving_json}}   
+      }
+    ]
+  }; 
+ 
+
+ // Chart 3: Monthly Savings from Flood Loss Reduction
+  let chart3Data = {
+  type: 'bar',
+  borderWidth: '1px',
+  borderColor: '#dae5ec',
+  legend: {
+    alpha: 0.05,
+    borderWidth: '0px',
+    marker: {
+      borderColor: 'none',
+      size: '7px'
+    },
+  },
+  plot: {
+    animation: {
+      effect: 'ANIMATION_SLIDE_BOTTOM'
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  },
+  scaleX: {
+    guide: {
+      visible: false
+    },
+    item: {
+      fontColor: '#7e7e7e'
+    },
+    labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    lineColor: '#7E7E7E'
+  },
+  scaleY: {
+      
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+  tooltip: {
+    text: '$%v',
+    thousandsSeparator: ", ",
+  },
+  series: [
+  {
+    text: 'Monthly savings from flood loss reduction and insurance premium — with insurance',
+    values: {{total_monthly_saving_wi_json}},
+    borderRadiusTopLeft: '7px',
+    alpha: 0.95,
+    backgroundColor: '#f7e0b7',
+    tooltip: {
+      text: '$%v <br> Monthly savings from flood loss reduction <br> and insurance premium — with insurance',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    }
+  },
+    {
+      text: 'Monthly savings from flood loss reduction — without insurance',
+      values: {{monthly_avoided_loss_json}},
+      alpha: 0.95,
+      borderRadiusTopLeft: '7px',
+      backgroundColor: '#eb9d17',
+      tooltip: {
+        text: '$%v <br> Monthly savings from flood loss reduction <br> — without insurance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+  ]
 };
 
-  // Chart 4
+   // Chart 4
 var chart4Data = {
- type: 'line',
- borderWidth: '1px',
- borderColor: '#dae5ec',
- title: {
-   fontWeight: 'normal',
-   fontColor: 'var(--black)',
-   align: 'left',
-   marginLeft: '2rem'
- },
- plot: {
-   tooltip: {
-     visible: false
-   },
-   cursor: 'hand'
- },
+  type: 'line',
+  borderWidth: '1px',
+  borderColor: '#dae5ec',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  plot: {
+    tooltip: {
+      visible: false
+    },
+    cursor: 'hand'
+  },
 
- legend: {
-   borderWidth: 0,
-   layout: '1',
-    width: '90%',
-    x: '3%',
-   marker: {
-     type: 'pie'
-   }
- },
- scaleX: {
-   markers: [],
-   labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   // labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
- },
- crosshairX: {},
- scaleY: {
-   label: {
-     text: "Month(s)",
-     fontWeight: 'normal'
-   },
- },
- series: [
-   {
-     text: 'The reduction in insurance premiums ',
-     values: {{time_to_recover_FC_PS_json}},
-     lineColor: 'var(--orange)',
-     marker : {
-     type : 'circle',
-     borderWidth : 1,
-     borderColor : 'var(--orange)',
-     size : 5,
-     backgroundColor : 'var(--orange)'
-     },
-     hoverMarker : {
-       type : 'circle',
-       size : 6,
-       backgroundColor : '#FFF',
-       borderWidth : 1,
-       borderColor : 'var(--orange)'
-     },
-   },
-   {
-     text: 'The reduction in insurance premiums and the reduction of flood losses',
-     values: {{time_to_recover_FC_TB_json}},
-     lineColor: '#c4c722',
-     marker : {
-     type : 'circle',
-     borderWidth : 1,
-     borderColor : '#c4c722',
-     size : 5,
-     backgroundColor : '#c4c722'
-     },
-     hoverMarker : {
-       type : 'circle',
-       size : 6,
-       backgroundColor : '#FFF',
-       borderWidth : 1,
-       borderColor : '#c4c722'
-     },
-   }    
- ]
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+     width: '90%',
+     x: '3%',
+    marker: {
+      type: 'pie'
+    }
+  },
+  scaleX: {
+    markers: [],
+    labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+  },
+  crosshairX: {},
+  scaleY: {
+    label: {
+      text: "Month(s)",
+      fontWeight: 'normal'
+    },
+  },
+  series: [
+    {
+      text: 'The reduction in insurance premiums ',
+      values: {{time_to_recover_FC_PS_json}},
+      lineColor: 'var(--orange)',
+      marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : 'var(--orange)',
+      size : 5,
+      backgroundColor : 'var(--orange)'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : 'var(--orange)'
+      },
+    },
+    {
+      text: 'The reduction in insurance premiums and the reduction of flood losses',
+      values: {{time_to_recover_FC_TB_json}},
+      lineColor: '#c4c722',
+      marker : {
+      type : 'circle',
+      borderWidth : 1,
+      borderColor : '#c4c722',
+      size : 5,
+      backgroundColor : '#c4c722'
+      },
+      hoverMarker : {
+        type : 'circle',
+        size : 6,
+        backgroundColor : '#FFF',
+        borderWidth : 1,
+        borderColor : '#c4c722'
+      },
+    }    
+  ]
 };
 
 /*
@@ -732,13 +746,13 @@ var chart4Data = {
 * markers on the fly easier.
 */
 function Marker(_index) {
- return {
-   type: 'line',
-   flat: false,
-   lineColor: '#424242',
-   lineWidth: '1px',
-   range: [_index]
- }
+  return {
+    type: 'line',
+    flat: false,
+    lineColor: '#424242',
+    lineWidth: '1px',
+    range: [_index]
+  }
 }
 
 /*
@@ -746,51 +760,51 @@ function Marker(_index) {
 * labels on the fly easier.
 */
 function Label(_text, _id, _offsetX, _offsetY) {
- return {
-   id: _id,
-   text: _text,
-   angle: 0,
-   padding: '5px 10px 5px 10px',
-   backgroundColor: '#eeeeee',
-   cursor: 'pointer',
-   flat: false,
-   fontSize: '13px',
-   fontStyle: 'bold',
-   offsetX: _offsetX,
-   offsetY: _offsetY ? _offsetY : 0,
-   textAlign: 'right',
-   wrapText: true
- }
+  return {
+    id: _id,
+    text: _text,
+    angle: 0,
+    padding: '5px 10px 5px 10px',
+    backgroundColor: '#eeeeee',
+    cursor: 'pointer',
+    flat: false,
+    fontSize: '13px',
+    fontStyle: 'bold',
+    offsetX: _offsetX,
+    offsetY: _offsetY ? _offsetY : 0,
+    textAlign: 'right',
+    wrapText: true
+  }
 }
 
 // format the label text
 let formatLabelText = (_nodeindex, _scaleText) => {
- let plotInfo = null;
- let nodeInfo;
- let seriesText = '';
- let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
- let color = '';
- let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
-   graphid: 0
- });
+  let plotInfo = null;
+  let nodeInfo;
+  let seriesText = '';
+  let labelString = isNaN(_scaleText) ? _scaleText + '<br>' : '';
+  let color = '';
+  let plotLength = zingchart.exec('chart4Data', 'getplotlength', {
+    graphid: 0
+  });
 
- for (let i = 0; i < plotLength; i++) {
-   plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-     object: 'plot',
-     plotindex: i
-   });
-   nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-     object: 'node',
-     plotindex: i,
-     nodeindex: _nodeindex
-   });
-   color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
-   seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
-   labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
-     ' ' + nodeInfo.value + '<br>';
- }
+  for (let i = 0; i < plotLength; i++) {
+    plotInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+      object: 'plot',
+      plotindex: i
+    });
+    nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+      object: 'node',
+      plotindex: i,
+      nodeindex: _nodeindex
+    });
+    color = plotInfo.lineColor ? plotInfo.lineColor : plotInfo.backgroundColor1;
+    seriesText = plotInfo.text ? plotInfo.text : ('Series ' + (i + 1));
+    labelString += '<span style="color:' + color + '">' + seriesText + ':</span>' +
+      ' ' + nodeInfo.value + '<br>';
+  }
 
- return labelString;
+  return labelString;
 };
 
 // global array for markers since you can only update the whole array
@@ -804,80 +818,80 @@ let markerHashTable = {};
 * Register a graph click event and then render a chart with the markers
 */
 zingchart.bind('chart4Data', 'click', (e) => {
- let xyInformation;
- let nodeIndex;
- let scaleText;
+  let xyInformation;
+  let nodeIndex;
+  let scaleText;
 
- // make sure not a node click and click happend in plotarea
- if (e.target != 'node' && e.plotarea) {
-   xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
-     x: e.ev.clientX,
-     y: e.ev.clientY
-   });
+  // make sure not a node click and click happend in plotarea
+  if (e.target != 'node' && e.plotarea) {
+    xyInformation = zingchart.exec('chart4Data', 'getxyinfo', {
+      x: e.ev.clientX,
+      y: e.ev.clientY
+    });
 
-   // if anything is found, 0 corresponds to scale-x
-   if (xyInformation && xyInformation[0] && xyInformation[2]) {
-     nodeIndex = xyInformation[0].scalepos;
-     scaleText = xyInformation[0].scaletext;
+    // if anything is found, 0 corresponds to scale-x
+    if (xyInformation && xyInformation[0] && xyInformation[2]) {
+      nodeIndex = xyInformation[0].scalepos;
+      scaleText = xyInformation[0].scaletext;
 
-     // check hash table. Add marker
-     if (!markerHashTable['nodeindex' + nodeIndex]) {
-       let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
-         object: 'node',
-         nodeindex: nodeIndex,
-         plotindex: 0
-       });
+      // check hash table. Add marker
+      if (!markerHashTable['nodeindex' + nodeIndex]) {
+        let nodeInfo = zingchart.exec('chart4Data', 'getobjectinfo', {
+          object: 'node',
+          nodeindex: nodeIndex,
+          plotindex: 0
+        });
 
-       let labelText = formatLabelText(nodeIndex, scaleText);
-       let labelId = 'label_' + nodeIndex;
-       // create a marker
-       let newMarker = new Marker(nodeIndex);
-       let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
+        let labelText = formatLabelText(nodeIndex, scaleText);
+        let labelId = 'label_' + nodeIndex;
+        // create a marker
+        let newMarker = new Marker(nodeIndex);
+        let newLabel = new Label(labelText, labelId, nodeInfo.x, nodeInfo.y);
 
-       markerHashTable['nodeindex' + nodeIndex] = true;
-       markersArray.push(newMarker);
+        markerHashTable['nodeindex' + nodeIndex] = true;
+        markersArray.push(newMarker);
 
-       labelsArray.push(newLabel);
+        labelsArray.push(newLabel);
 
-       // render the marker
-       chart4Data.scaleX.markers = markersArray;
-       chart4Data.labels = labelsArray;
-       zingchart.exec('chart4Data', 'setdata', {
-         data: chart4Data
-       });
-     } else {
-       console.log('---marker already exists----');
-     }
-   }
- }
+        // render the marker
+        chart4Data.scaleX.markers = markersArray;
+        chart4Data.labels = labelsArray;
+        zingchart.exec('chart4Data', 'setdata', {
+          data: chart4Data
+        });
+      } else {
+        console.log('---marker already exists----');
+      }
+    }
+  }
 });
 
 /*
 * Register a node_click event and then render a chart with the markers
 */
 zingchart.bind('chart4Data', 'node_click', (e) => {
- // check hash table. Add marker
- if (!markerHashTable['nodeindex' + e.nodeindex]) {
-   let labelText = formatLabelText(e.nodeindex, e.scaletext);
-   let labelId = 'label_' + e.nodeindex;
-   // create a marker
-   let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
-   let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
+  // check hash table. Add marker
+  if (!markerHashTable['nodeindex' + e.nodeindex]) {
+    let labelText = formatLabelText(e.nodeindex, e.scaletext);
+    let labelId = 'label_' + e.nodeindex;
+    // create a marker
+    let newMarker = new Marker(e.nodeindex, labelText, e.plotindex);
+    let newLabel = new Label(labelText, labelId, e.ev.layerX, e.ev.layerY);
 
-   markerHashTable['nodeindex' + e.nodeindex] = true;
-   markersArray.push(newMarker);
+    markerHashTable['nodeindex' + e.nodeindex] = true;
+    markersArray.push(newMarker);
 
-   labelsArray.push(newLabel);
+    labelsArray.push(newLabel);
 
-   // render the marker
-   chart4Data.scaleX.markers = markersArray;
-   chart4Data.labels = labelsArray;
-   zingchart.exec('chart4Data', 'setdata', {
-     data: chart4Data
-   });
- } else {
-   console.log('---marker already exists----');
- }
+    // render the marker
+    chart4Data.scaleX.markers = markersArray;
+    chart4Data.labels = labelsArray;
+    zingchart.exec('chart4Data', 'setdata', {
+      data: chart4Data
+    });
+  } else {
+    console.log('---marker already exists----');
+  }
 });
 
 let labelMouseDown = false;
@@ -887,381 +901,414 @@ let labelId = null;
 * bind mousedown event for dragging label
 */
 zingchart.bind('chart4Data', 'label_mousedown', (e) => {
- labelMouseDown = true;
- labelId = e.labelid;
- zingchart.exec('chart4Data', 'hideguide');
+  labelMouseDown = true;
+  labelId = e.labelid;
+  zingchart.exec('chart4Data', 'hideguide');
 });
 
 zingchart.bind('chart4Data', 'mousemove', (e) => {
- if (labelMouseDown && labelId) {
-   zingchart.exec('chart4Data', 'updateobject', {
-     type: 'label',
-     data: {
-       id: labelId,
-       offsetY: e.ev.layerY
-     }
-   });
- }
+  if (labelMouseDown && labelId) {
+    zingchart.exec('chart4Data', 'updateobject', {
+      type: 'label',
+      data: {
+        id: labelId,
+        offsetY: e.ev.layerY
+      }
+    });
+  }
 });
 
 zingchart.bind('chart4Data', 'mouseup', () => {
- labelMouseDown = false;
- labelId = null;
- zingchart.exec('chart4Data', 'showguide');
+  labelMouseDown = false;
+  labelId = null;
+  zingchart.exec('chart4Data', 'showguide');
 });
 
 zingchart.bind('chart4Data', 'doubleclick', (e) => {
- console.log(e);
+  console.log(e);
 });
 
- // Chart 5: Monthly savings
-   let chart5Data = {
-   type: 'bar',    
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   legend: {
-     alpha: 0.05,
-     borderWidth: '0px',
-     layout: 'x2',
-     marker: {
-       type: 'circle',
-       borderColor: 'none',
-       size: '10px'
-     },
-   },
-   plot: {
-     animation: {
-       effect: 'ANIMATION_SLIDE_BOTTOM'
-     }
-   },
-   scaleX: {
-     guide: {
-       visible: false
-     },
-     item: {
-       fontColor: '#7e7e7e'
-     },
-     labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     lineColor: '#7E7E7E'
-   },
-   scaleY: {
-       
-     format: "$%v",
-     negation: "currency",      
-     thousandsSeparator: ", ",
-     multiplier: true,
-       guide: {
-         lineStyle: 'solid'
-       },
-       minorTick: {
-         placement: 'cross',
-         size: '6px'
-       },
-       minorTicks: 1
-     },
-   tooltip: {
-     text: '$%v',
-     thousandsSeparator: ", ",
-   },
-   series: [
-     {
-       text: 'Monthly savings with insurance',
-       values: {{total_monthly_saving_json}},
-       alpha: 0.95,
-       borderRadiusTopLeft: '7px',
-       backgroundColor: '#189447',
-     },
-     {
-       text: 'Monthly savings without insurance',
-       values: [ 17088, 17074, 17041, 17006],
-      // values: [ 16733, 17088, 17074, 17041, 17006],
-       //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
-       borderRadiusTopLeft: '7px',
-       alpha: 0.95,
-       backgroundColor: '#add9be'
-     }
-   ]
- };
+  // Chart 5: Monthly savings
+    let chart5Data = {
+    type: 'bar',    
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend: {
+      alpha: 0.05,
+      borderWidth: '0px',
+      layout: '1x5',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    plot: {
+      animation: {
+        effect: 'ANIMATION_SLIDE_BOTTOM'
+      }
+    },
+    scaleX: {
+      guide: {
+        visible: false
+      },
+      item: {
+        fontColor: '#7e7e7e'
+      },
+      labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      lineColor: '#7E7E7E'
+    },
+    scaleY: {
+        
+      format: "$%v",
+      negation: "currency",      
+      thousandsSeparator: ", ",
+      multiplier: true,
+        guide: {
+          lineStyle: 'solid'
+        },
+        minorTick: {
+          placement: 'cross',
+          size: '6px'
+        },
+        minorTicks: 1
+      },
+    tooltip: {
+      text: '$%v',
+      thousandsSeparator: ", ",
+    },
+    series: [
+      {
+        text: 'Monthly savings from flood loss reduction — without insurance',
+        values: {{monthly_avoided_loss_json}},
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        backgroundColor: '#eb9d17',
+      },
+      {
+        text: 'Monthly savings from flood loss reduction and insurance premium — with insurance',
+        values: {{total_monthly_saving_wi_json}},
+        borderRadiusTopLeft: '7px',
+        alpha: 0.95,
+        backgroundColor: '#f7e0b7',
+      }
+    ]
+  };
 
- zingchart.render({
-   id: 'chart5Id',
-   data: chart5Data,
-   height: '100%', 
-   width: '100%',
- });
+  zingchart.render({
+    id: 'chart5Id',
+    data: chart5Data,
+    height: '100%', 
+    width: '100%',
+  });
 
 
- // Chart 6
- // DEFINE DATA
- // -----------------------------
-let chartData = [
-   {
-     type: 'line',       
-     borderWidth: '1px',
-     borderColor: '#dae5ec',
-     text: 'Monthly savings with insurance',
-     values: {{ total_monthly_saving_json}},
-     scales: 'scale-x,scale-y',
-     lineColor: '#189447',
-     legendMarker: {
-       type: 'circle'
-     },
-     tooltip: {
-       text: '$%v',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     },
-     marker: {
-       backgroundColor: '#189447'
-     }
-   },    {
-     type: 'line', 
-     text: 'Monthly savings without insurance',
-     values: [17088, 17074, 17041, 17006],
-     //values: [16733, 17088, 17074, 17041, 17006],
-     //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
-     scales: 'scale-x,scale-y',
-     lineColor: '#add9be',
-     legendMarker: {
-       type: 'circle'
-     },
-     tooltip: {
-       text: '$%v',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     },
-     marker: {
-       backgroundColor: '#add9be'
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Amortized cost',
-     values: {{Amortized_FC_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#ff614f',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Insurance savings per month',
-     values: {{monthly_premium_saving_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#07d9a4',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar', 
-     text: 'Reduction in expected flood loss per month',
-     values: {{monthly_avoided_loss_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#2480bf',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   }
+  // Chart 6
+  // DEFINE DATA
+  // -----------------------------
+ let chartData = [
+    {
+      type: 'line',       
+      borderWidth: '1px',
+      borderColor: '#dae5ec',
+      text: 'Monthly savings with insurance',
+      values: {{ total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      lineColor: '#189447',
+      legendMarker: {
+        type: 'circle'
+      },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      marker: {
+        backgroundColor: '#189447'
+      }
+    },    {
+      type: 'line', 
+      text: 'Monthly savings without insurance',
+      values: [17088, 17074, 17041, 17006],
+      //values: [16733, 17088, 17074, 17041, 17006],
+      //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+      scales: 'scale-x,scale-y',
+      lineColor: '#add9be',
+      legendMarker: {
+        type: 'circle'
+      },
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      marker: {
+        backgroundColor: '#add9be'
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Amortized cost',
+      values: {{Amortized_FC_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#ff614f',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Insurance savings per month',
+      values: {{monthly_premium_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#07d9a4',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar', 
+      text: 'Reduction in expected flood loss per month',
+      values: {{monthly_avoided_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#2480bf',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
 
- ];
+  ];
 
 let chartConfig = {
-   type: 'mixed',   
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   legend:{
-    layout: '1x5' ,
-    width: '95%',
-    margin: '20px 10px 10px 10px',
-    borderColor: 'whtie'
-   },
-   scaleX: {
-     values: ['BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     guide: {
-       lineColor: '#BDBDBD',
-       lineStyle: 'solid'
-     },
-     label: {
-       text: 'BFE + Freeboard (ft)'
-     },
-   },
-   scaleY: {  
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true,
-     guide: {
-       lineStyle: 'solid'
-     },
-     minorTick: {
-       placement: 'cross',
-       size: '6px'
-     },
-     minorTicks: 1
-   },
-   {% comment %} 
-   scaleY2: {
-   format: '%v',    
-   negation: "currency",
-   guide: {
-     visible: false
-   },
-   label: {
-     text: 'Y-2 label'
-   },
-   zooming: true
- }, 
- {% endcomment %}
-   crosshairX: {
-     plotLabel: {
-       visible: false
-     }
-   },
-   series: chartData
- };
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+     layout: '1x5' ,
+     width: '95%',
+     margin: '20px 10px 10px 10px',
+     borderColor: 'whtie'
+    },
+    scaleX: {
+      values: ['BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      //values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      guide: {
+        lineColor: '#BDBDBD',
+        lineStyle: 'solid'
+      },
+      label: {
+        text: 'BFE + Freeboard (ft)'
+      },
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartData
+  };
 
 
 
-// Chart 7: new
- // DEFINE DATA
- // -----------------------------
  // Chart 7: new
- // DEFINE DATA
- // -----------------------------
- let chartNew = [
-   {
-     type: 'bar',    
-     text: 'Freeboard cost',
-     values: {{Amortized_FC_neg_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#CD5B77',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Freeboard cost',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   }, 
-   {
-     type: 'bar', 
-     text: 'Insurance savings',
-     values: {{monthly_premium_saving_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#953F8A',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Insurance savings',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Flood loss reduction',
-     values: {{monthly_avoided_loss_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#4959D9',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Flood loss reduction',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Total monthly savings',
-     values: {{total_monthly_saving_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#65A8EA',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Total monthly savings',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   }
+  // DEFINE DATA
+  // -----------------------------
+  // Chart 7: new
+  // DEFINE DATA
+  // -----------------------------
+  let chartNew = [
+  {
+    type: 'bar',    
+    text: 'Freeboard cost',
+    values: {{Amortized_FC_neg_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: '#d7191c',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Freeobard cost',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  }, 
+  {
+    type: 'bar', 
+    text: 'Insurance savings',
+    values: {{monthly_premium_saving_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: '#fdae61',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Insurance savings',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  },
+  {
+    type: 'bar',
+    text: 'Monthly savings from flood <br> loss reduction and insurance <br>premium — with insurance',
+    values: {{total_monthly_saving_wi_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: '#cfcf82',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Monthly savings from flood loss reduction <br> and insurance premium — with insurance',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  },
+  {
+    type: 'bar',
+    text: 'Monthly savings from <br> flood loss reduction <br>— without insurance',
+    values: {{monthly_avoided_loss_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: '#abd9e9',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Monthly savings from flood loss reduction <br> — without insurance',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  },
+  {
+    type: 'bar',
+    text: 'Total monthly savings',
+    values: {{total_monthly_saving_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: '#2c7bb6',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Total monthly savings with insruance',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    },
+    "value-box": {
+      text: "$%v", 
+      'font-color': "black"
+    },
+  }
 
- ];
+];
 
 let chartConfig2 = {
-   type: 'mixed',   
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   legend:{
-    layout: '1x4' ,
-    borderColor: 'whtie'
-   },
-   scaleX: {
-     values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft']
-    // values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-     //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   },
-   scaleY: {  
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true,
-     guide: {
-       lineStyle: 'solid'
-     },
-     minorTick: {
-       placement: 'cross',
-       size: '6px'
-     },
-     minorTicks: 1
-   },
-   {% comment %} 
-   scaleY2: {
-   format: '%v',    
-   negation: "currency",
-   guide: {
-     visible: false
-   },
-   label: {
-     text: 'Y-2 label'
-   },
-   zooming: true
- }, 
- {% endcomment %}
-   crosshairX: {
-     plotLabel: {
-       visible: false
-     }
-   },
-   series: chartNew
- };
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+      borderColor: 'whtie',
+      padding: "2%",
+      x: "75%",
+      y: "25%",
+      },
+      plotarea: {
+        'margin-right': "25%",
+      },
+    scaleX: {
+      values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft']
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartNew
+  };
 
 
 
@@ -1269,422 +1316,493 @@ let chartConfig2 = {
 //////////CHARTS FOR X ZONE  
 // Chart 8: X ZONE
 // MONTHLY SAVINGS
- let chartNew_XZONE = [
-   {
-     type: 'bar',    
-     text: 'Freeboard cost',
-     values: {{Amortized_FC_neg_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#CD5B77',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Freeobard cost',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   }, 
-   {
-     type: 'bar', 
-     text: 'Insurance savings',
-     values: {{monthly_premium_saving_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#953F8A',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Insurance savings',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Flood loss reduction',
-     values: {{monthly_avoided_loss_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#4959D9',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Flood loss reduction',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   },
-   {
-     type: 'bar',
-     text: 'Total monthly savings',
-     values: {{total_monthly_saving_json}},
-     scales: 'scale-x,scale-y',
-     backgroundColor: '#65A8EA',
-     borderRadiusTopLeft: '7px',
-     alpha: 0.90,
-     tooltip: {
-       text: '$%v <br> Total monthly savings',
-       negation: "currency",
-       thousandsSeparator: ", ",
-       wrapText: true
-     }
-   }
+  let chartNew_XZONE = [
+    {
+      type: 'bar',    
+      text: 'Freeboard cost',
+      values: {{Amortized_FC_neg_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#d7191c',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Freeobard cost',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+    }, 
+    {
+      type: 'bar', 
+      text: 'Insurance savings',
+      values: {{monthly_premium_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#fdae61',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Insurance savings',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+    },
+    {
+      type: 'bar',
+      text: 'Monthly savings from flood <br> loss reduction and insurance <br>premium — with insurance',
+      values: {{total_monthly_saving_wi_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#cfcf82',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Monthly savings from flood loss reduction <br> and insurance premium — with insurance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+    },
+    {
+      type: 'bar',
+      text: 'Monthly savings from <br> flood loss reduction <br>— without insurance',
+      values: {{monthly_avoided_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#abd9e9',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Monthly savings from flood loss reduction <br> — without insurance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+    },
+    {
+      type: 'bar',
+      text: 'Total monthly savings',
+      values: {{total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#2c7bb6',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Total monthly savings with insruance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+    }
 
- ];
+  ];
 
 let chartConfigXZONE = {
-   type: 'mixed',   
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   legend:{
-    layout: '1x4' ,
-    borderColor: 'whtie'
-   },
-   scaleX: {
-     values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft']
-   },
-   scaleY: {  
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true,
-     guide: {
-       lineStyle: 'solid'
-     },
-     minorTick: {
-       placement: 'cross',
-       size: '6px'
-     },
-     minorTicks: 1
-   },
-   crosshairX: {
-     plotLabel: {
-       visible: false
-     }
-   },
-   series: chartNew_XZONE
- };
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+    borderColor: 'whtie',
+    padding: "2%",
+    x: "75%",
+    y: "25%",
+    },
+    plotarea: {
+      'margin-right': "25%",
+    },
+    scaleX: {
+      values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft']
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartNew_XZONE
+  };
 
 
- //Chart 9: Freeboard cost for X zone
- var chart1Data_XZONE = {
-   type: 'bar',
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   title: {
-     fontWeight: 'normal',
-     fontColor: 'var(--black)',
-     align: 'left',
-     marginLeft: '2rem'
-   },
-   cursor: 'hand',
-   globals: {
-     fontColor: 'var(--fontColor)',
-     fontfamily: 'Raleway'
-   },
-   legend: {
-     borderWidth: 0,
-     layout: '1',
-     marker: {
-       type: 'pie'
-     }
-   },
-   scaleX: { 
-     markers: [],
-     values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
-     tick: {
-       visible: false
-     },
-   crosshairX: {},
-   },
-   scaleY: {
-   format: "$%v",
-   negation: "currency",
-   thousandsSeparator: ", ",
-   multiplier: true
-   },
-   plot: {
-   tooltip:{ 
-     fontColor: 'var(--white)',
-     text: '$%v',
-     thousandsSeparator: ", ",
-     backgroundColor:'var(--red)'
-     },
-   animation : {
-     effect : 1,
-     sequence : 2,
-     speed : 100
-   },
- },
-   series: [
-     {
-       text: 'Monthly freeboard cost',
-       backgroundColor: 'var(--red)',
-       alpha: 0.95,
-       borderRadiusTopLeft: '7px', 
-       values: {{Amortized_FC_json}}  
-     }
-   ]
- };
+  //Chart 9: Freeboard cost for X zone
+  var chart1Data_XZONE = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    scaleX: { 
+      markers: [],
+      values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--red)'
+      },
+    "value-box": {
+      text: "$%v", 
+      
+      'font-color': "black"
+    },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Monthly freeboard cost',
+        backgroundColor: 'var(--red)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px', 
+        values: {{Amortized_FC_json}}  
+      }
+    ]
+  };
 
- // Chart 10: Monthly Insurance Premium Savings for X Zone
-   var chart2Data_XZONE = {
-     type: 'bar',
-     borderWidth: '1px',
-     borderColor: '#dae5ec',
-     title: {
-       fontWeight: 'normal',
-       fontColor: 'var(--black)',
-       align: 'left',
-       marginLeft: '2rem'
-     },
-     cursor: 'hand',
-     globals: {
-       fontColor: 'var(--fontColor)',
-       fontfamily: 'Raleway'
-     },
-     legend: {
-       borderWidth: 0,
-       layout: '1',
-       marker: {
-         type: 'pie'
-       }
-     },
-     scaleX: { 
-       markers: [],
-       values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
-       tick: {
-         visible: false
-       },
-     crosshairX: {},
-     },
-     scaleY: {
-     format: "$%v",
-     negation: "currency",
-     thousandsSeparator: ", ",
-     multiplier: true
-     },
-     plot: {
-     tooltip:{ 
-       fontColor: 'var(--white)',
-       text: '$%v',
-       thousandsSeparator: ", ",
-       backgroundColor:'var(--blue)'
-       },
-     animation : {
-       effect : 1,
-       sequence : 2,
-       speed : 100
-     },
-   },
-     series: [
-       {
-         text: 'Monthly insurance premium savings',
-         backgroundColor: 'var(--blue)',
-         alpha: 0.95,
-         borderRadiusTopLeft: '7px',
-         values: {{monthly_premium_saving_json}}   
-       }
-     ]
-   }; 
- 
- // Chart 11 Monthly Savings from Flood Loss Reduction & X zone
- let chart3Data_XZONE = {
-   type: 'bar',
-   borderWidth: '1px',
-   borderColor: '#dae5ec',
-   legend: {
-     alpha: 0.05,
-     borderWidth: '0px',
-     layout: 'x2',
-     marker: {
-       type: 'circle',
-       borderColor: 'none',
-       size: '10px'
-     },
-   },
-   plot: {
-     animation: {
-       effect: 'ANIMATION_SLIDE_BOTTOM'
-     }
-   },
-   scaleX: {
-     guide: {
-       visible: false
-     },
-     item: {
-       fontColor: '#7e7e7e'
-     },
-     labels: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
-     lineColor: '#7E7E7E'
-   },
-   scaleY: {
-       
-     format: "$%v",
-     negation: "currency",
-     thousandsSeparator: ", ",
-     multiplier: true,
-       guide: {
-         lineStyle: 'solid'
-       },
-       minorTick: {
-         placement: 'cross',
-         size: '6px'
-       },
-       minorTicks: 1
-     },
-   tooltip: {
-     text: '$%v',
-     thousandsSeparator: ", ",
-   },
-   series: [
-     {
-       text: 'Monthly savings from flood loss reduction — without insurance',
-       values: [ 0, 0, 0, 0],
-       alpha: 0.95,
-       borderRadiusTopLeft: '7px',
-       backgroundColor: '#eb9d17',
-     },
-     {
-       text: 'Monthly savings from flood loss reduction — with insurance',
-       values: {{monthly_avoided_loss_json}},
-       borderRadiusTopLeft: '7px',
-       alpha: 0.95,
-       backgroundColor: '#f7e0b7',
-     }
-   ]
- };
- 
+  // Chart 10: Monthly Insurance Premium Savings for X Zone
+    var chart2Data_XZONE = {
+      type: 'bar',
+      borderWidth: '1px',
+      borderColor: '#dae5ec',
+      title: {
+        fontWeight: 'normal',
+        fontColor: 'var(--black)',
+        align: 'left',
+        marginLeft: '2rem'
+      },
+      cursor: 'hand',
+      globals: {
+        fontColor: 'var(--fontColor)',
+        fontfamily: 'Raleway'
+      },
+      legend: {
+        borderWidth: 0,
+        layout: '1',
+        marker: {
+          borderColor: 'none',
+          size: '7px'
+        },
+      },
+      scaleX: { 
+        markers: [],
+        values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+        tick: {
+          visible: false
+        },
+      crosshairX: {},
+      },
+      scaleY: {
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true
+      },
+      plot: {
+      tooltip:{ 
+        fontColor: 'var(--white)',
+        text: '$%v',
+        thousandsSeparator: ", ",
+        backgroundColor:'var(--blue)'
+        },
+      "value-box": {
+        text: "$%v", 
+        
+        'font-color': "black"
+      },
+      animation : {
+        effect : 1,
+        sequence : 2,
+        speed : 100
+      },
+    },
+      series: [
+        {
+          text: 'Monthly insurance premium savings',
+          backgroundColor: 'var(--blue)',
+          alpha: 0.95,
+          borderRadiusTopLeft: '7px',
+          values: {{monthly_premium_saving_json}}   
+        }
+      ]
+    }; 
+  
+  // Chart 11 Monthly Savings from Flood Loss Reduction & X zone
+  let chart3Data_XZONE = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend: {
+      alpha: 0.05,
+      borderWidth: '0px',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    plot: {
+      animation: {
+        effect: 'ANIMATION_SLIDE_BOTTOM'
+      },
+    "value-box": {
+      text: "$%v", 
+      
+      'font-color': "black"
+    },
+    },
+    scaleX: {
+      guide: {
+        visible: false
+      },
+      item: {
+        fontColor: '#7e7e7e'
+      },
+      labels: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+      lineColor: '#7E7E7E'
+    },
+    scaleY: {
+        
+      format: "$%v",
+      negation: "currency",
+      thousandsSeparator: ", ",
+      multiplier: true,
+        guide: {
+          lineStyle: 'solid'
+        },
+        minorTick: {
+          placement: 'cross',
+          size: '6px'
+        },
+        minorTicks: 1
+      },
+    tooltip: {
+      text: '$%v',
+      thousandsSeparator: ", ",
+    },
+    series: [
+    {
+      text: 'Monthly savings from flood loss reduction and insurance premium — with insurance',
+      values: {{total_monthly_saving_wi_json}},
+      borderRadiusTopLeft: '7px',
+      alpha: 0.95,
+      backgroundColor: '#f7e0b7',
+      tooltip: {
+        text: '$%v <br> Monthly savings from flood loss reduction <br> and insurance premium — with insurance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+      {
+        text: 'Monthly savings from flood loss reduction — without insurance',
+        values: {{monthly_avoided_loss_json}},
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        backgroundColor: '#eb9d17',
+        tooltip: {
+          text: '$%v <br> Monthly savings from flood loss reduction <br> — without insurance',
+          negation: "currency",
+          thousandsSeparator: ", ",
+          wrapText: true
+        }
+      }
+    ]
+  };
+  
 
- // -----------------------------
- // RENDER CHARTS
- // -----------------------------
+  // -----------------------------
+  // RENDER CHARTS
+  // -----------------------------
 
- // Chart 1
- zingchart.render({ 
-   id: chart1Id, 
-   data : chart1Data, 
-   width: '100%'
- });
+  // Chart 1
+  zingchart.render({ 
+    id: chart1Id, 
+    data : chart1Data, 
+    width: '100%'
+  });
 
- // Chart 2
- zingchart.render({ 
-   id: chart2Id, 
-   data : chart2Data, 
-   width: '100%'
- });
+  // Chart 2
+  zingchart.render({ 
+    id: chart2Id, 
+    data : chart2Data, 
+    width: '100%'
+  });
 
- // Chart 3
- zingchart.render({ 
-   id: chart3Id, 
-   data : chart3Data, 
-   width: '100%'
- });
+  // Chart 3
+  zingchart.render({ 
+    id: chart3Id, 
+    data : chart3Data, 
+    width: '100%'
+  });
 
- // Chart 4
- zingchart.render({ 
-   id: chart4Id, 
-   data : chart4Data, 
-   width: '100%'
- });
+  // Chart 4
+  zingchart.render({ 
+    id: chart4Id, 
+    data : chart4Data, 
+    width: '100%'
+  });
 
- // Chart 5
- zingchart.render({ 
-   id: chart5Id, 
-   data : chart5Data, 
-   width: '100%'
- });
+  // Chart 5
+  zingchart.render({ 
+    id: chart5Id, 
+    data : chart5Data, 
+    width: '100%'
+  });
 
- // Chart 6
- zingchart.render({
-   id: 'myChart',
-   data: chartConfig,
-   width: '100%'
- });
+  // Chart 6
+  zingchart.render({
+    id: 'myChart',
+    data: chartConfig,
+    width: '100%'
+  });
 
- // Chart 7 (New)
- zingchart.render({
-   id: 'NewChart',
-   data: chartConfig2,
-   width: '100%'
- });
-
-
- //XZONE CHARTS 
- // Chart 8
- zingchart.render({
-   id: 'chartNew_XZONE',
-   data: chartConfigXZONE,
-   width: '100%'
- });
-
- // Chart 9
- zingchart.render({ 
-   id: chart1Id_XZONE, 
-   data : chart1Data_XZONE, 
-   width: '100%'
- });
-
- // Chart 10
- zingchart.render({ 
-   id: chart2Id_XZONE, 
-   data : chart2Data_XZONE, 
-   width: '100%'
- });
-
- // Chart 11
- zingchart.render({ 
-   id: chart3Id_XZONE, 
-   data : chart3Data_XZONE, 
-   width: '100%'
- });
- 
- var ctx = document.getElementById('chart');
-
- var chart = (ctx, {
-           type: 'line',
-           data: {
-               labels: ['+0ft freeboard','+`0`ft freeboard'],
-               datasets: [{
-                   label: 'My First dataset',
-                   backgroundColor: '#33b5e5',
-                   borderColor: '#33b5e5',
-                   data: [15,10]   
-               }]
-           },
-           options: {
-             responsive:true,
-             legend:{
-               display:false,
-             },
-             title: {
-               display:false,
-               text:'Text',
-             },
-             
-             scales: {
-               xAxes: [{
-                 display: true
-               }],
-               yAxes: [{
-                 display: true,
-                 scaleLabel: {
-                   display: true,
-                   labelString: 'dollar',
-                 },
-                 ticks: {
-                   min: 0,
-                   stepSize: 10
-                 }
-               }]
-             }
-           }
-   }); 
+  // Chart 7 (New)
+  zingchart.render({
+    id: 'NewChart',
+    data: chartConfig2,
+    width: '100%'
+  });
 
 
-   </script>
+  //XZONE CHARTS 
+  // Chart 8
+  zingchart.render({
+    id: 'chartNew_XZONE',
+    data: chartConfigXZONE,
+    width: '100%'
+  });
 
+  // Chart 9
+  zingchart.render({ 
+    id: chart1Id_XZONE, 
+    data : chart1Data_XZONE, 
+    width: '100%'
+  });
+
+  // Chart 10
+  zingchart.render({ 
+    id: chart2Id_XZONE, 
+    data : chart2Data_XZONE, 
+    width: '100%'
+  });
+
+  // Chart 11
+  zingchart.render({ 
+    id: chart3Id_XZONE, 
+    data : chart3Data_XZONE, 
+    width: '100%'
+  });
+  
+  var ctx = document.getElementById('chart');
+
+  var chart = (ctx, {
+            type: 'line',
+            data: {
+                labels: ['+0ft freeboard','+`0`ft freeboard'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: '#33b5e5',
+                    borderColor: '#33b5e5',
+                    data: [15,10]   
+                }]
+            },
+            options: {
+              responsive:true,
+              legend:{
+                display:false,
+              },
+              title: {
+                display:false,
+                text:'Text',
+              },
+              
+              scales: {
+                xAxes: [{
+                  display: true
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'dollar',
+                  },
+                  ticks: {
+                    min: 0,
+                    stepSize: 10
+                  }
+                }]
+              }
+            }
+    }); 
+
+
+    </script>
 
    <script>
     

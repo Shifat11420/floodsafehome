@@ -62,7 +62,27 @@ crossorigin=""></script> {% endcomment %}
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://js.arcgis.com/4.18/"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    
+  <!-- Load Leaflet from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
+    integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
+    crossorigin=""></script>
+
+  <!-- Load Esri Leaflet Geocoder from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.css"
+    integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
+    crossorigin="">
+  <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.js"
+    integrity="sha512-HrFUyCEtIpxZloTgEKKMq4RFYhxjJkCiF5sDxuAokklOeZ68U2NPfh4MFtyIVWlsKtVbK5GD2/JzFyAfvT5ejA=="
+    crossorigin=""></script>
+  
     <!--Add field-->
     <script type="text/javascript">
     $(document).ready(function(){
@@ -89,7 +109,7 @@ crossorigin=""></script> {% endcomment %}
         });
     });
     </script>
-
+    {% load humanize %}
   {% comment %} <script>
     require([
 
@@ -328,11 +348,11 @@ crossorigin=""></script> {% endcomment %}
    <!--autosuggestion End-->
 
 <!--Important notice start-->
-<div class="bts-popup" role="alert"  style="z-index:1;">
+<div class="bts-popup" role="alert"  style="z-index:2;">
   <div class="bts-popup-container">
         <form action="/action_page.php" class="form-container">
           <h1 style="text-align:center; padding: 10px"><strong>Important notice</strong></h1>
-            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in March 2022 for final version. <br><br></h2>
+            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in April 2022 for final version. <br><br></h2>
             <center><div class="btn ">  
               <a href="#0" class="button bts-popup-close">Close</a><br><br>
             </div></center>
@@ -422,7 +442,7 @@ crossorigin=""></script> {% endcomment %}
     </div>
     <!--Banner ends-->
   <!--Tour guide-->
-	<ul class="cd-tour-wrapper">
+	<ul class="cd-tour-wrapper" style="z-index:1;">
 		<li class="cd-single-step">
 			<span>Step 1</span>
 
@@ -465,7 +485,7 @@ crossorigin=""></script> {% endcomment %}
 
  <!-- Select your building information-->
  <div class="container left" > 
-  <form method="get" action="/search" name="userInput" >
+  <form method="get" action="/search" name="userInput" id="my-form">
             {% csrf_token %} 
       <p> 
         <h2 class ="map-style-sidebar-title"><b class="map-style-sidebar-b"> Building Information</b> <!-- <button class="btn btn-result2" type="submit" > Get results</button>--></h2> 
@@ -502,7 +522,8 @@ crossorigin=""></script> {% endcomment %}
                         </select><br>  
                     {% endcomment %}
                               
-                        <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
+                        <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}}> <br>
+                        
                         {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage </b> </label><br>
                   <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
@@ -633,9 +654,9 @@ crossorigin=""></script> {% endcomment %}
                   <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label>  <br>
                 <!-- <h3 style="color:blue;"><strong>Selected number of stories:</strong> {{No_Floors|safe}} </h3>-->
                         
-              <!--Advanced parameter-->
+      {% comment %} <!--Advanced parameter-->
                     
-     <input type="button" onclick='displayAdv()' class="btn-adv"  style="display: flex; justify-content:flex-end" value="Advanced parameters">
+     <input type="button" onclick='displayAdv()' class="btn-adv"  style="display: flex; justify-content:flex-end" value="Advanced parameters"> {% endcomment %}
      {% comment %} <a class="buttonClass btn-adv tip" title="Under development"> Advanced parameters </a> {% endcomment %}
 
 
@@ -821,7 +842,7 @@ crossorigin=""></script> {% endcomment %}
 
 <!-- Error message ends--> 
 
-<!--ESRI Map-->
+<!--Leaflet map-->
 <div id = "pdf_wrap">
   <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0;"><section id="section-1"></section>
     <script>
@@ -848,9 +869,17 @@ crossorigin=""></script> {% endcomment %}
         accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
       }).addTo(map);
     
-    
+   
+      var gcs = L.esri.Geocoding.geocodeService();
+
+      map.on('click', (e)=>{
+        gcs.reverse().latlng(e.latlng).run((err, res)=>{
+          if(err) return;
+          L.marker(res.latlng).addTo(map).bindPopup(res.address.Match_addr).openPopup();
+        });
+      });
   
- function onMapClick(e) {
+{% comment %}  function onMapClick(e) {
    alert("You clicked the map at " + e.latlng);
  }
  
@@ -865,7 +894,7 @@ crossorigin=""></script> {% endcomment %}
          .openOn(map);
  }
 
- map.on('click', onMapClick);
+ map.on('click', onMapClick); {% endcomment %}
 
   
     </script>

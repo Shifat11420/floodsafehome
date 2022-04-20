@@ -10,8 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <title>Flood Safe Home</title>
-      <!-- CSS here -->
-      
+      <!-- CSS here -->      
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="static/css/slicknav.css">
@@ -31,11 +30,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
-    <!--<script src="https://kit.fontawesome.com/a076d05399.js"></script>-->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!--<script src="https://js.arcgis.com/4.18/"></script>-->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+   
+    
+    
+    
     <!--Add field-->
     <script type="text/javascript">
     $(document).ready(function(){
@@ -237,10 +239,8 @@ function formProcess(){
 <body>
    
      <header class="header header-map">
-
-
         <!-- Header Start -->
-        <div class="header-area header-transparent mapHeader" >
+        <div class="header-area header-transparent mapHeader">
             <div class="main-header ">
                 <div class="header-bottom  header-sticky">
                     <div class="container-fluid">
@@ -251,7 +251,7 @@ function formProcess(){
                                     <a href="/"><img src="static/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-10 col-lg-10" >
+                            <div class="col-xl-10 col-lg-10">
                                 <div class="menu-wrapper  d-flex align-items-center justify-content-end">
                                     <!-- Main-menu -->
                                     <div class="main-menu d-none d-lg-block">
@@ -273,10 +273,6 @@ function formProcess(){
                                                     </ul>
                                                 </li>
                                                 <li><a href="/map"><b>Decision Making Map</b></a>
-                                                    {% comment %} <ul class="submenu">
-                                                        <li><a href="/map">Go To Map</a></li>
-                                                       <li><a href="/">User Guide</a></li>
-                                                    </ul> {% endcomment %}
                                                 </li>
                                                 <li><a href="/survey">Survey</a></li>
                                                 <li><a href="/helpcenter">Help Center</a></li>
@@ -320,8 +316,6 @@ function formProcess(){
       source: "{% url 'autosuggest' %}"
         });
      } );
-     </script>
-
      </script>
    <!--autosuggestion End-->
  <!-- Banner-->
@@ -380,8 +374,10 @@ function formProcess(){
                         </select><br>  
                     {% endcomment %}
                               
-                        <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}} > <br>
-                        {% comment %} <!--Square footage-->
+                        <input type="text"  name="location"  id="tags" style="margin: 5px 0px 5px 0px; padding: 5px 102px 5px 0px;" placeholder="Type your address or parceID"  class="text"  value={{location|safe}}/> <br>
+                
+                 <!--Asking insurance option for Xzone-->       
+                  {% comment %} <!--Square footage-->
                 <label><b class="map-style">Square footage </b> </label><br>
                   <input type="text"  name="sqft1"  id="sqft1" placeholder="Type your building's square footage"  class="text" > <br>
                
@@ -511,10 +507,10 @@ function formProcess(){
                   <label><input type="radio" name ="stories" id="stories" value = "Two or more stories" class="bar5"  required> Two or more stories</label>  <br>
                 <!-- <h3 style="color:blue;"><strong>Selected number of stories:</strong> {{No_Floors|safe}} </h3>-->
                         
-              <!--Advanced parameter-->
+     {% comment %}<!--Advanced parameter-->
                     
      <input type="button" onclick='displayAdv()' class="btn-adv"  style="display: flex; justify-content:flex-end" value="Advanced parameters">
-     {% comment %} <a class="buttonClass btn-adv tip" title="Under development"> Advanced parameters </a> {% endcomment %}
+      <a class="buttonClass btn-adv tip" title="Under development"> Advanced parameters </a> {% endcomment %}
 
 
     {% comment %} <tr>
@@ -639,6 +635,8 @@ function formProcess(){
        {% comment %} <button class="btn " type="submit" id="submitButton"> Show map</button>    {% endcomment %}
       </form>
       </p>
+ 
+ 
  <hr class="style-four">
  <!-- Select your building information end-->
  <!-- Side bar naviation menu-->
@@ -679,7 +677,7 @@ function formProcess(){
     </nav>
     </div>
   </p>
-  
+
 </div>
 <!-- Side bar naviation menu end-->
 
@@ -697,60 +695,88 @@ function formProcess(){
 
 <!-- Error message ends--> 
 <main>
-<!--Leaflet map-->
+
 <div id = "pdf_wrap">
-  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0;"><section id="section-1"></section> 
-    <script>
-      // initialize the map on the "map" div with a given center and zoom
-      var map = L.map('map', {
-        center: [{{lattitude_list}},{{longitude_list}}],
-        measureControl:true,
-        zoomSnap: 0.25,
-        zoomControl:true, maxZoom:45, minZoom:1,
-        zoomDelta: 0.25,
-        zoom: 14
-      });
-    
-      //Add scale
-      L.control.scale().addTo(map);
-    
-      //Tile layer
-      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
-      }).addTo(map);
-    
-    
-    //Popup for cliked location  
-    var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").addTo(map);
-  
-    function onMapClick(e) {
-      alert("You clicked the map at " + e.latlng);
-    }
-    
-    map.on('click', onMapClick);
-
-    var popup = L.popup();
-
-    function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
-    }
-
-    map.on('click', onMapClick);
-    </script>
-  </div>
-
- 
-<!--Result details-->
 <!--Summary-->
+<!--
+  //////////////////////  
+  X ZONE: Ground + 1.
+  //////////////////////  
+  -->
+  <div id="no">
+  <div class="left2 section-tittle mb-40"> 
+
+        
+  <!--Insurnace check-->
+  <div style="color: #1D2547; font-size:32px; font-Weight:bolder;  position: fixed; background-color: yellow; position: fixed;
+  top: 0; z-index:1; padding: 10px; padding-top: 100px; ">
+    Your property is in the <b>{{floodzone}}</b> Zone. You may not have a mandatory flood insurance requirement. Would you like to include effects of flood insurance?
+    <div class="checkbox-switch">
+      <label class="switch">
+      <input type="checkbox" checked  class="input-checkbox">   
+      <div class="checkbox-animate">
+        <span class="checkbox-off">NO</span>
+        <span class="checkbox-on">YES</span>
+      </div>
+      </label>  
+  </div>
+</div>
+</div>
+
+
+<!--Result details-->
+ <!--Leaflet map--> 
+ <div id="map" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0; "><section id="section-1"></section> 
+  <script>
+    // initialize the map on the "map" div with a given center and zoom
+    var map = L.map('map', {
+      center: [{{lattitude_list}},{{longitude_list}}],
+      measureControl:true,
+      zoomSnap: 0.25,
+      zoomControl:true, maxZoom:45, minZoom:1,
+      zoomDelta: 0.25,
+      zoom: 14
+    });
+  
+    //Add scale
+    L.control.scale().addTo(map);
+  
+    //Tile layer
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
+    }).addTo(map);
+  
+  
+  //Popup for cliked location  
+  var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").addTo(map);
+
+  function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+  }
+  
+  map.on('click', onMapClick);
+
+  var popup = L.popup();
+
+  function onMapClick(e) {
+      popup
+          .setLatLng(e.latlng)
+          .setContent("You clicked the map at " + e.latlng.toString())
+          .openOn(map);
+  }
+
+  map.on('click', onMapClick);
+  </script>
+</div>
+
+
 <div class="left2 section-tittle mb-40"> 
+<!--Report start for X zone-->
  <hr class="style-five">
  <section id="section-2"> 
   <h2>Freeboard Cost Analysis Report</h2>
@@ -960,29 +986,28 @@ function formProcess(){
       >
      -->
 
-      <!--  for calculations without below BFE   -->
+      <!--  for calculations with insurance   -->
       <div
         class="pricing-item-price"
         data-price-output='{
-          "0": ["$", {{summation_total_savings_permonth_insurance0}},""],
-          "1": ["$", {{summation_total_savings_permonth_insurance1}},""],
-          "2": ["$", {{summation_total_savings_permonth_insurance2}},""],
-          "3": ["$", {{summation_total_savings_permonth_insurance3}},""],
-          "4": ["$", {{summation_total_savings_permonth_insurance4}},""]
+          "0": ["$", {{summation_total_monthly_saving0_wi}},""],
+          "1": ["$", {{summation_total_monthly_saving1_wi}},""],
+          "2": ["$", {{summation_total_monthly_saving2_wi}},""],
+          "3": ["$", {{summation_total_monthly_saving3_wi}},""],
+          "4": ["$", {{summation_total_monthly_saving4_wi}},""]
         }'
       >
 
       <p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
       <div class="vl"> <p class="grid-style3 map-style" >
-  {% comment %}     <b class="b-summary-value map-style">      
+   <b class="b-summary-value map-style">      
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance only) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/></p>
-       {% endcomment %}
-
+     --><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction and flood inusrance) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/></p>
+       
        <!--Flood loss-->
 
-       <!--  for calculations with below BFE   -->
+       <!--  for calculations without insurance   -->
       <!--
          <div
         class="pricing-item-price"
@@ -1016,7 +1041,7 @@ function formProcess(){
       <b class="b-summary-value map-style"> 
         <span class="pricing-item-price-currency">$</span><!-- 
      --><span class="pricing-item-price-amount">0</span><!-- 
-     --><span class="pricing-item-price-after"></span> </b> savings per month (flood insurance and flood loss reduction) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+     --><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
       </div>
 
       <!--Time to recover
@@ -1062,17 +1087,11 @@ function formProcess(){
 <br>
 <br>
 
+<!--###################################################################################################################################################-->
 <!--Interactive slide--> 
-<section id="section-2"> 
-<div style="overflow-x:auto;">
+<!--Xzone with insurance-->
+<div style="overflow-x:auto;" id="XzoneInsuranceChart">
 
-<!--
-//////////////////////  
-X ZONE: Ground + 0.
-//////////////////////  
--->
-
-<div id="no">
     <!--Monthly saving-->
     <hr class="style-five">
     <h2 class="map-style-title" >Monthly Savings</h2>
@@ -1111,18 +1130,423 @@ X ZONE: Ground + 0.
         Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
       </div>
     <section id="section-6"><div id="chart3_XZONE" class="zc-body"></div> </section> 
-    </section>
+  </div>
+
+
+
+
+<!--###################################################################################################################################################-->
+<!--Xzone without insurance-->
+
+<div style="overflow-x:auto;" id="XzoneNoInsuranceChart">
+
+  <!--Monthly saving-->
+  <hr class="style-five">
+  <h2 class="map-style-title" >Monthly Savings</h2>
+    <div class="graph-description" >
+      While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+      <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+      </div>
+      <section id="section-3"><div id="chartNew_XZONE_NoIns" class="zc-body"></div><div class="bfe"><br></section> 
+
+    <!--Freeboard cost-->
+    <hr class="style-five">
+    <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
+    <div class="graph-description">
+      The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+      <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+    </div>  
+    <section id="section-4"><div id="chart1_XZONE_NoIns" class="zc-body"></div></section>
+  
+  
+  <!--Insurance-->
+  <hr class="style-five">
+  <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
+    <div class="graph-description" >
+    Since your building is located in the <b class="map-style">X zone</b>, there are no monthly insurance premium savings. 
+    </div>
+    <section id="section-5">  
+    <center>
+      <div id="chart2_XZONE_NoIns" class="zc-body"></div>
+    </center> </section>
+
+  <!--Reduction in expected flood losses-->
+  <hr class="style-five">
+  <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
+    <div class="graph-description" >
+      Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+      Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+    </div>
+  <section id="section-6"><div id="chart3_XZONE_NoIns" class="zc-body"></div> </section> 
+ 
+</div>
+</div>
+</div>
+
+<!--########################################################################################################################################-->
+<!--########################################################################################################################################-->
+<!--########################################################################################################################################-->
 
 <!--
 //////////////////////  
 Form for other zone: BFE + 1
 //////////////////////  
 -->
+
 <div id="yes"> 
+<div class="left2 section-tittle mb-40"> 
+
+<!--Insurnace check-->
+<div style="color: #1D2547; font-size:32px; font-Weight:bolder;  position: fixed; background-color: yellow; position: fixed;
+top: 0; z-index:1; padding: 10px; padding-top: 100px; ">
+  Your property is in the <b>{{floodzone}}</b> Zone. You may have a mandatory flood insurance requirement. <br> Would you like to include effects of flood insurance?
+    <div class="checkbox-switch">
+      <label class="switch-OtherZone">
+        <input type="checkbox" checked  class="input-checkbox">   
+        <div class="checkbox-animate">
+          <span class="checkbox-off">NO</span>
+          <span class="checkbox-on">YES</span>
+        </div>
+        </label>  
+    </div>
+</div>
+</div>
+
+<!--Result details-->
+ <!--Leaflet map--> 
+ <div id="map2" style=" height: 45%; width: 70%; float: right; margin: 0 15px 0 0; z-index:0; "><section id="section-1"></section> 
+  <script>
+    // initialize the map on the "map" div with a given center and zoom
+    var map2 = L.map('map2', {
+      center: [{{lattitude_list}},{{longitude_list}}],
+      measureControl:true,
+      zoomSnap: 0.25,
+      zoomControl:true, maxZoom:45, minZoom:1,
+      zoomDelta: 0.25,
+      zoom: 14
+    });
+  
+    //Add scale
+    L.control.scale().addTo(map2);
+  
+    //Tile layer
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
+    }).addTo(map2);
+  
+  
+  //Popup for cliked location  
+  var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").addTo(map2);
+
+  function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+  }
+  
+  map2.on('click', onMapClick);
+
+  var popup = L.popup();
+
+  function onMapClick(e) {
+      popup
+          .setLatLng(e.latlng)
+          .setContent("You clicked the map at " + e.latlng.toString())
+          .openOn(map2);
+  }
+
+  map.on('click', onMapClick);
+  </script>
+</div>
+
+
+<div class="left2 section-tittle mb-40">
+<!--Report start for other zone-->
+  <hr class="style-five">
+  <section id="section-2"> 
+   <h2>Freeboard Cost Analysis Report</h2>
+         <div class="optimal map-style">For your home,  <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended<br>
+           resulting in monthly savings of <b class="summary-b">${{OptimalSaving}} </b> </u></div> <br>
+       <div class="pricing row2" > 
+       <div class="pricing-slider column2"> 
+         <center><label class="form-slider" >
+           <img id='img2' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
+           <center><div class="pricing-slider-value" ></div></center> <br>
+           <datalist id="scale">
+             <option>0</option>
+             <option>1</option>
+             <option>2</option>
+             <option>3</option>
+             <option>4</option>
+           </datalist>
+           <input onchange='setImage(this)'
+             type="range"
+             value="{{OptimalFreeboard}}"
+             class="slider2" id="myRange2" list="scale"
+             data-price-input='{
+                 "0": "0ft freeboard",
+                 "1": "1ft freeboard",
+                 "2": "2ft freeboard",
+                 "3": "3ft freeboard",
+                 "4": "4ft freeboard"                
+               }'
+           />
+         </label></center>
+       </div>
+           
+   <div  style=" display:inline-block; vertical-align: top; "  >
+      
+       <!--Monthly premium savings-->
+       <!--  for calculations with below BFE   -->
+       <!--  <div
+         class="pricing-item-price" 
+         data-price-output='{
+           "-4": ["$", {{summation_total_monthly_premium_saving0}},""],
+           "-3": ["$", {{summation_total_monthly_premium_saving1}},""],
+           "-2": ["$", {{summation_total_monthly_premium_saving2}},""],
+           "-1": ["$", {{summation_total_monthly_premium_saving3}},""],
+           "0": ["$", {{summation_total_monthly_premium_saving4}},""], 
+           "1": ["$", {{summation_total_monthly_premium_saving5}},""],
+           "2": ["$", {{summation_total_monthly_premium_saving6}},""],
+           "3": ["$", {{summation_total_monthly_premium_saving7}},""],
+           "4": ["$", {{summation_total_monthly_premium_saving8}},""]
+         }'
+       > -->
+ 
+        <!--  for calculations without below BFE   -->
+       <div
+         class="pricing-item-price" 
+         data-price-output='{
+           "0": ["$", {{summation_total_monthly_premium_saving0}},""], 
+           "1": ["$", {{summation_total_monthly_premium_saving1}},""],
+           "2": ["$", {{summation_total_monthly_premium_saving2}},""],
+           "3": ["$", {{summation_total_monthly_premium_saving3}},""],
+           "4": ["$", {{summation_total_monthly_premium_saving4}},""] 
+            }'
+       > 
+ 
+     <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo2"> </span> ft</b> of  freeboard, </p>
+       <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
+        <div class="vl"><p class="grid-style3 map-style" >
+         <b class="b-summary-value map-style">        
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> insurance savings per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood loss reduction."/></p>
+     <!--Flood loss-->
+     <!--  for calculations with below BFE   -->
+     <!--  <div
+         class="pricing-item-price"
+         data-price-output='{
+           "-4": ["$", {{summation_monthly_avoided_loss0}},""],
+           "-3": ["$", {{summation_monthly_avoided_loss1}},""],
+           "-2": ["$", {{summation_monthly_avoided_loss2}},""],
+           "-1": ["$", {{summation_monthly_avoided_loss3}},""],
+           "0": ["$", {{summation_monthly_avoided_loss4}},""],
+           "1": ["$", {{summation_monthly_avoided_loss5}},""],
+           "2": ["$", {{summation_monthly_avoided_loss6}},""],
+           "3": ["$", {{summation_monthly_avoided_loss7}},""],
+           "4": ["$", {{summation_monthly_avoided_loss8}},""]
+           }'
+       > -->
+         <!--  for calculations without below BFE   -->
+       <div
+         class="pricing-item-price"
+         data-price-output='{
+           "0": ["$", {{summation_monthly_avoided_loss0}},""],
+           "1": ["$", {{summation_monthly_avoided_loss1}},""],
+           "2": ["$", {{summation_monthly_avoided_loss2}},""],
+           "3": ["$", {{summation_monthly_avoided_loss3}},""],
+           "4": ["$", {{summation_monthly_avoided_loss4}},""]
+           }'
+       >
+ 
+ 
+       <p class="grid-style3 map-style">
+       <b class="b-summary-value map-style"> 
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+       </div>
+     </div>    
+   </div>
+ <br>
+ 
+       <!--amortized cost-->
+       <!--  for calculations with below BFE   -->
+        <!-- <div
+         class="pricing-item-price"
+         data-price-output='{
+          "-4": ["$", {{summation_Amortized_FC0}},""],
+           "-3": ["$", {{summation_Amortized_FC1}},""],
+           "-2": ["$", {{summation_Amortized_FC2}},""],
+           "-1": ["$", {{summation_Amortized_FC3}},""],
+           "0": ["$", {{summation_Amortized_FC4}},""],
+           "1": ["$", {{summation_Amortized_FC5}},""],
+           "2": ["$", {{summation_Amortized_FC6}},""],
+           "3": ["$", {{summation_Amortized_FC7}},""],
+           "4": ["$", {{summation_Amortized_FC8}},""]
+         }'
+       > -->
+        <!--  for calculations without below BFE   -->
+       <div
+         class="pricing-item-price"
+         data-price-output='{
+          "0": ["$", {{summation_Amortized_FC0}},""],
+           "1": ["$", {{summation_Amortized_FC1}},""],
+           "2": ["$", {{summation_Amortized_FC2}},""],
+           "3": ["$", {{summation_Amortized_FC3}},""],
+           "4": ["$", {{summation_Amortized_FC4}},""]
+         }'
+       > 
+ 
+ 
+       <p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
+       <div class="vl"> <p class="grid-style3 map-style" >
+       <b class="b-summary-value map-style">      
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> amortized cost per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title=""/></p>
+        
+ 
+       <!--Freeboard cost-->
+       {% load humanize %}
+ 
+       <!--  for calculations with below BFE   -->
+ 
+       <!--
+          <div
+         class="pricing-item-price"
+         data-price-output='{
+          "-4": ["$", {{summation_freeboardCost0}},""],
+           "-3": ["$", {{summation_freeboardCost1}},""],
+           "-2": ["$", {{summation_freeboardCost2}},""],
+           "-1": ["$", {{summation_freeboardCost3}},""],
+           "0": ["$", {{summation_freeboardCost4}},""],
+           "1": ["$", {{summation_freeboardCost5}},""],
+           "2": ["$", {{summation_freeboardCost6}},""],
+           "3": ["$", {{summation_freeboardCost7}},""],
+           "4": ["$", {{summation_freeboardCost8}},""]
+         }'
+       >
+       -->
+ 
+       <!--  for calculations without below BFE   -->
+ 
+       <div
+         class="pricing-item-price"
+         data-price-output='{
+           "0": ["$", {{summation_freeboardCost0}},""],
+           "1": ["$", {{summation_freeboardCost1}},""],
+           "2": ["$", {{summation_freeboardCost2}},""],
+           "3": ["$", {{summation_freeboardCost3}},""],
+           "4": ["$", {{summation_freeboardCost4}},""]       
+         }'
+       >
+             <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
+       <p class="grid-style3 map-style b-summary-const">
+          (based on <b class="map-style b-summary-value2">
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> additional construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
+       </div>   
+     </div>
+     <br>
+ 
+         
+      <!--  for calculations with below BFE   -->
+      <!-- 
+        <div
+         class="pricing-item-price"
+         data-price-output='{
+           "-4": ["$", {{summation_total_savings_permonth_insurance0}},""],
+           "-3": ["$", {{summation_total_savings_permonth_insurance1}},""],
+           "-2": ["$", {{summation_total_savings_permonth_insurance2}},""],
+           "-1": ["$", {{summation_total_savings_permonth_insurance3}},""],
+           "0": ["$", {{summation_total_savings_permonth_insurance4}},""],
+           "1": ["$", {{summation_total_savings_permonth_insurance5}},""],
+           "2": ["$", {{summation_total_savings_permonth_insurance6}},""],
+           "3": ["$", {{summation_total_savings_permonth_insurance7}},""],
+           "4": ["$", {{summation_total_savings_permonth_insurance8}},""]
+         }'
+       >
+      -->
+ 
+       <!--  for calculations with insurance   -->
+       <div
+         class="pricing-item-price"
+         data-price-output='{
+           "0": ["$", {{summation_total_monthly_saving0_wi}},""],
+           "1": ["$", {{summation_total_monthly_saving1_wi}},""],
+           "2": ["$", {{summation_total_monthly_saving2_wi}},""],
+           "3": ["$", {{summation_total_monthly_saving3_wi}},""],
+           "4": ["$", {{summation_total_monthly_saving4_wi}},""]
+         }'
+       >
+ 
+       <p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
+       <div class="vl"> <p class="grid-style3 map-style" >
+    <b class="b-summary-value map-style">      
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction and flood inusrance) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/></p>
+        
+        <!--Flood loss-->
+ 
+        <!--  for calculations without insurance   -->
+       <!--
+          <div
+         class="pricing-item-price"
+         data-price-output='{
+           "-4": ["$", {{summation_total_monthly_saving0}},""],
+           "-3": ["$", {{summation_total_monthly_saving1}},""],
+           "-2": ["$", {{summation_total_monthly_saving2}},""],
+           "-1": ["$", {{summation_total_monthly_saving3}},""],
+           "0": ["$", {{summation_total_monthly_saving4}},""],
+           "1": ["$", {{summation_total_monthly_saving5}},""],
+           "2": ["$", {{summation_total_monthly_saving6}},""],
+           "3": ["$", {{summation_total_monthly_saving7}},""],
+           "4": ["$", {{summation_total_monthly_saving8}},""]
+         }'
+       >
+       -->
+ 
+        <!--  for calculations without below BFE   -->
+       <div
+         class="pricing-item-price"
+         data-price-output='{
+           "0": ["$", {{summation_total_monthly_saving0}},""],
+           "1": ["$", {{summation_total_monthly_saving1}},""],
+           "2": ["$", {{summation_total_monthly_saving2}},""],
+           "3": ["$", {{summation_total_monthly_saving3}},""],
+           "4": ["$", {{summation_total_monthly_saving4}},""]
+         }'
+       >
+ 
+       <p class="grid-style3 map-style">
+       <b class="b-summary-value map-style"> 
+         <span class="pricing-item-price-currency">$</span><!-- 
+      --><span class="pricing-item-price-amount">0</span><!-- 
+      --><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+       </div>
+     </div>
+   </div>
+ </div>
+ </section>
+ <br>
+ <br>
+ <br>
+
+<!--########################################################################################################################################-->
+ <!--Graph with insurance-->
+ <div id="OtherzoneInsuranceChart">
+  
   <!--Monthly saving-->
       <hr class="style-five">
       <h2 class="map-style-title" >Monthly Savings</h2>
-       <div class="graph-description" >
+       <div class="graph-description">
          While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
          <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
          <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
@@ -1130,35 +1554,7 @@ Form for other zone: BFE + 1
          {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
          <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
         
- {% comment %}         
- <br>X zone graph (test)
- <div id="Xzone" class="zc-body"></div> 
- {% endcomment %}
-     
- 
-  {% comment %}    <div class="left3 section-tittle-detail mb-40"> 
-    <hr class="style-five">
-      <h2 class="map-style-title" >Monthly Savings</h2>
-       <div class="graph-description" >
-         While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
-         <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>. {% endcomment %}
-         <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
-        <!--</div>--> 
-         {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
-         
-     <!--</div>-->  
-     <!--
-         <b class="map-style" style="padding: 0px 63px 0px 0px;">Home square footage:</b>{{SquareFootage}}<br><br>
-         <b class="map-style" style="padding: 0px 28px 0px 0px;">Flood insurance coverage:</b> 924,000 - Content  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_2" value="924000" min="0" max="100000"> <input type="number" id="js_amount_input_2" value="924000" min="0" max="100000" style="height:25px"></p>
-         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS rate is 5, with a 25% discount &nbsp; &nbsp;&nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="25" min="1" max="45"> <input type="number" id="js_amount_input_2" value="25" min="1" max="45" style="height:25px"><br>
-         <p style="padding: 0px 0px 0px 230px;"  class="map-style">CRS community rating</p> 
-         <b class="map-style" style="padding: 0px 89px 0px 0px;">Number of stories:</b> {{No_Floors}}<br><br>
-         <b class="map-style" style="padding: 0px 143px 0px 0px;">Flood zone:</b> {{floodzone}}<br><br>
-         <b class="map-style">Expected occupancy timeline:</b>&nbsp;&nbsp;30 years   &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;<input type="range" id="js_amount_range_1" value="30" min="0" max="100" > <input type="number" id="js_amount_input_1" value="15" min="0" max="100" style="height:25px"><br><br>
-         <p style="padding: 0px 0px 0px 230px;" class="map-style">231,000 - Building &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <input type="range" id="js_amount_range_2" value="231000" min="0" max="250000"> <input type="number" id="js_amount_input_2" value="231000" min="0" max="250000" style="height:25px"></p>
-         -->
-         
- 
+
    <!--Freeboard cost-->
      <hr class="style-five">
       <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
@@ -1194,33 +1590,67 @@ Form for other zone: BFE + 1
            <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
          </div>
        <section id="section-6"><div id="chart3" class="zc-body"></div> </section> 
-       </section>
-   </div> 
- </div>
-</div>
+   </div>
+
+  </div>
 
 
-  <!--Recover-->
-{% comment %} <div class="left3 section-tittle-detail mb-40"> 
+<!--########################################################################################################################################-->
+ <!--Graph without insurance-->
+ <div class="left2 section-tittle mb-40"> 
+ <div id="OtherzoneNoInsuranceChart">
+  <!--Monthly saving-->
   <hr class="style-five">
-     <h2 class="map-style-title">Time to Recover the Freeboard Cost</h2>
-      <div class="graph-description" >
-        The time required to recover the cost of freeboard is surprisingly low for new construction when considering reductions in flood insurance premiums and the expected reductions in flood loss. 
-        Considering <b class="map-style">ONLY</b> flood insurance premium savings, the time to recover the additional cost of construction ranges between <b class="map-style">{{summation_time_to_recover_FC_PSlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_PShigh}} month(s)</b>. 
-        Considering both savings in flood insurance premiums and expected reductions in flood loss, this is decreased to between <b class="map-style">{{summation_time_to_recover_FC_TBlow}}</b> month(s) and <b class="map-style">{{summation_time_to_recover_FC_TBhigh}} month(s)</b>.       
-      </div>
-      <div id="chart4" class="zc-body"></div>
-  </div> {% endcomment %}
+  <h2 class="map-style-title" >Monthly Savings</h2>
+   <div class="graph-description" >
+     While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
+     <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
+     <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
+     </div>
+     {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
+     <section id="section-3"> <div id="NewChart_NoIns" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
+    
 
-<!--Overall-->
- {% comment %}  <div class="left3 section-tittle-detail"> 
-   <hr class="style-five"> 
-     <h2 class="map-style-title">Overall Graph</h2>
-       <div class="graph-description" >
-        This overall graph includes all analysis information integrated in one chart that provides intuitive decision making information with all estimates converted to monthly basis.       
-      </div>
-       <Section id="section-7" >   <div id="myChart" class="zc-body-overall"></div>  </section>
-  </div> {% endcomment %}
+<!--Freeboard cost-->
+ <hr class="style-five">
+  <h2 class="map-style-title">Monthly Freeboard Cost</h2> 
+   <div class="graph-description">
+     The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
+     <!--<b class="map-style">${{summation_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_freeboardCosthigh | intcomma}}</b>. -->
+     <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
+     <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
+   </div>  
+   <section id="section-4"><div id="chart1_NoIns" class="zc-body"></div></section>
+
+
+<!--Insurance-->
+<hr class="style-five">
+ <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
+  <div class="graph-description" >
+   Building your home higher results in monthly insurance premium savings of <b class="map-style">${{summation_total_monthly_premium_savingLow | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_premium_savingHigh | intcomma}}</b>. 
+    <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
+    <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
+   </div>
+  <section id="section-5">  
+   <center>
+    <div id="chart2_NoIns" class="zc-body"></div>
+   </center> </section>
+
+
+<!--Reduction in expected flood losses-->
+<hr class="style-five">
+  <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
+     <div class="graph-description" >
+       Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+       Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
+       <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
+     </div>
+   <section id="section-6"><div id="chart3_NoIns" class="zc-body"></div> </section> 
+   </section>
+</div> 
+</div>
+</div>
+</div>
 </main>
 
 <!--Result details End-->
@@ -1233,7 +1663,7 @@ Form for other zone: BFE + 1
   // DEFINE CHART LOCATIONS (IDS)
   // -----------------------------
   // Main chart render location
-  // var chartId = 'myChart';
+  var chartId = 'myChart';
   var chart1Id = 'chart1'; //Freeboard Cost
   var chart2Id = 'chart2'; //Monthly Insurance Premiums Savings
   var chart3Id = 'chart3'; //Expected Monthly Flood Loss
@@ -1241,10 +1671,20 @@ Form for other zone: BFE + 1
   var chart5Id = 'chart5'; //Monthly Savings
   var chart6Id = 'chart6'; //Overall graph
 
-  //XZONE
+  // Main chart render location
+  var chart1Id_NoIns = 'chart1_NoIns';
+  var chart2Id_NoIns = 'chart2_NoIns'; 
+  var chart3Id_NoIns = 'chart3_NoIns'; 
+
+  //XZONE with insruance
   var chart1Id_XZONE = 'chart1_XZONE'; //Freeboard Cost & X ZONE
   var chart2Id_XZONE = 'chart2_XZONE'; //Monthly Insurance Premiums Savings & X ZONE
   var chart3Id_XZONE = 'chart3_XZONE'; //Expected Monthly Flood Loss & X ZONE
+
+  //XZONE without insruance
+  var chart1Id_XZONE_NoIns = 'chart1_XZONE_NoIns'; //Freeboard Cost & X ZONE
+  var chart2Id_XZONE_NoIns = 'chart2_XZONE_NoIns'; //Monthly Insurance Premiums Savings & X ZONE
+  var chart3Id_XZONE_NoIns = 'chart3_XZONE_NoIns'; //Expected Monthly Flood Loss & X ZONE
 
 
 
@@ -1270,8 +1710,9 @@ Form for other zone: BFE + 1
       borderWidth: 0,
       layout: '1',
       marker: {
-        type: 'pie'
-      }
+        borderColor: 'none',
+        size: '7px'
+      },
     },
     scaleX: { 
       markers: [],
@@ -1334,8 +1775,9 @@ Form for other zone: BFE + 1
       borderWidth: 0,
       layout: '1',
       marker: {
-        type: 'pie'
-      }
+        borderColor: 'none',
+        size: '7px'
+      },
     },
     scaleX: { 
       markers: [],
@@ -1386,11 +1828,9 @@ Form for other zone: BFE + 1
   legend: {
     alpha: 0.05,
     borderWidth: '0px',
-    layout: 'x2',
     marker: {
-      type: 'circle',
       borderColor: 'none',
-      size: '10px'
+      size: '7px'
     },
   },
   plot: {
@@ -1406,8 +1846,6 @@ Form for other zone: BFE + 1
       fontColor: '#7e7e7e'
     },
     labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-   // labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
     lineColor: '#7E7E7E'
   },
   scaleY: {
@@ -1430,22 +1868,19 @@ Form for other zone: BFE + 1
     thousandsSeparator: ", ",
   },
   series: [
-    {
-      text: 'Monthly savings from flood loss reduction — without insurance',
-      values: [ 0, 0, 0, 0],
-      //values: [ 0, 0, 0, 0, 0],
-      //values: [185537, 144022, 97204, 31222, 0, 0, 0, 0, 0],
-      alpha: 0.95,
-      borderRadiusTopLeft: '7px',
-      backgroundColor: '#eb9d17',
-    },
-    {
-      text: 'Monthly savings from flood loss reduction — with insurance',
-      values: {{monthly_avoided_loss_json}},
-      borderRadiusTopLeft: '7px',
-      alpha: 0.95,
-      backgroundColor: '#f7e0b7',
+  {
+    text: 'Monthly savings from flood loss reduction and insurance premium <b>with</b> insurance',
+    values: {{total_monthly_saving_wi_json}},
+    borderRadiusTopLeft: '7px',
+    alpha: 0.95,
+    backgroundColor: '#f7e0b7',
+    tooltip: {
+      text: '$%v',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
     }
+  }
   ]
 };
 
@@ -1479,8 +1914,6 @@ var chart4Data = {
   scaleX: {
     markers: [],
     labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    // labels: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-    // labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
   },
   crosshairX: {},
   scaleY: {
@@ -1726,11 +2159,10 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
     legend: {
       alpha: 0.05,
       borderWidth: '0px',
-      layout: 'x2',
+      layout: '1x5',
       marker: {
-        type: 'circle',
         borderColor: 'none',
-        size: '10px'
+        size: '7px'
       },
     },
     plot: {
@@ -1746,8 +2178,6 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
         fontColor: '#7e7e7e'
       },
       labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //labels: ['BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //labels: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
       lineColor: '#7E7E7E'
     },
     scaleY: {
@@ -1771,20 +2201,18 @@ zingchart.bind('chart4Data', 'doubleclick', (e) => {
     },
     series: [
       {
-        text: 'Monthly savings with insurance',
-        values: {{total_monthly_saving_json}},
+        text: 'Monthly savings from flood loss reduction — without insurance',
+        values: {{monthly_avoided_loss_json}},
         alpha: 0.95,
         borderRadiusTopLeft: '7px',
-        backgroundColor: '#189447',
+        backgroundColor: '#eb9d17',
       },
       {
-        text: 'Monthly savings without insurance',
-        values: [ 17088, 17074, 17041, 17006],
-       // values: [ 16733, 17088, 17074, 17041, 17006],
-        //values: [988, 4412, 8280, 13743, 16733, 17088, 17074, 17041, 17006],
+        text: 'Monthly savings from flood loss reduction and insurance premium — with insurance',
+        values: {{total_monthly_saving_wi_json}},
         borderRadiusTopLeft: '7px',
         alpha: 0.95,
-        backgroundColor: '#add9be'
+        backgroundColor: '#f7e0b7',
       }
     ]
   };
@@ -1961,7 +2389,7 @@ let chartConfig = {
       text: 'Freeboard cost',
       values: {{Amortized_FC_neg_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#CD5B77',
+      backgroundColor: '#d7191c',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -1976,7 +2404,7 @@ let chartConfig = {
       text: 'Insurance savings',
       values: {{monthly_premium_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#953F8A',
+      backgroundColor: '#fdae61',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -1988,14 +2416,14 @@ let chartConfig = {
     },
     {
       type: 'bar',
-      text: 'Flood loss reduction',
-      values: {{monthly_avoided_loss_json}},
+      text: 'Monthly savings from flood loss reduction and insurance premium <b> with</b> insurance',
+      values: {{total_monthly_saving_wi_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#4959D9',
+      backgroundColor: '#cfcf82',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
-        text: '$%v <br> Flood loss reduction',
+        text: '$%v <br> Flood loss reduction <br> and insurance premium <b>with</b> insurance',
         negation: "currency",
         thousandsSeparator: ", ",
         wrapText: true
@@ -2006,7 +2434,7 @@ let chartConfig = {
       text: 'Total monthly savings',
       values: {{total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#65A8EA',
+      backgroundColor: '#2c7bb6',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2024,13 +2452,13 @@ let chartConfig2 = {
     borderWidth: '1px',
     borderColor: '#dae5ec',
     legend:{
-     layout: '1x4' ,
-     borderColor: 'whtie'
+      layout:'2x2',
+      x: '50%',
+      "margin-top": '1%',
+      borderColor: 'whtie'
     },
     scaleX: {
       values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft']
-     // values: [ 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
-      //values: ['BFE -4 ft', 'BFE -3 ft', 'BFE -2 ft', 'BFE -1 ft', 'BFE +0 ft', 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
     },
     scaleY: {  
     format: "$%v",
@@ -2070,16 +2498,17 @@ let chartConfig2 = {
 
 
 
-//////////CHARTS FOR X ZONE  
-// Chart 8: X ZONE
+//////////CHARTS FOR X ZONE with insruance
+// Chart 8: X ZONE 
 // MONTHLY SAVINGS
   let chartNew_XZONE = [
+  
     {
       type: 'bar',    
       text: 'Freeboard cost',
       values: {{Amortized_FC_neg_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#CD5B77',
+      backgroundColor: '#d7191c',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2094,7 +2523,7 @@ let chartConfig2 = {
       text: 'Insurance savings',
       values: {{monthly_premium_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#953F8A',
+      backgroundColor: '#fdae61',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2106,14 +2535,14 @@ let chartConfig2 = {
     },
     {
       type: 'bar',
-      text: 'Flood loss reduction',
-      values: {{monthly_avoided_loss_json}},
+      text: 'Monthly savings from flood loss reduction and insurance premium <b>with</b> insurance',
+      values: {{total_monthly_saving_wi_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#4959D9',
+      backgroundColor: '#cfcf82',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
-        text: '$%v <br> Flood loss reduction',
+        text: '$%v <br> Monthly savings from flood loss reduction <br> and insurance premium <b>with</b> insurance',
         negation: "currency",
         thousandsSeparator: ", ",
         wrapText: true
@@ -2124,7 +2553,7 @@ let chartConfig2 = {
       text: 'Total monthly savings',
       values: {{total_monthly_saving_json}},
       scales: 'scale-x,scale-y',
-      backgroundColor: '#65A8EA',
+      backgroundColor: '#2c7bb6',
       borderRadiusTopLeft: '7px',
       alpha: 0.90,
       tooltip: {
@@ -2142,11 +2571,13 @@ let chartConfigXZONE = {
     borderWidth: '1px',
     borderColor: '#dae5ec',
     legend:{
-     layout: '1x4' ,
-     borderColor: 'whtie'
+     borderColor: 'whtie',
+      layout:'2x2',
+      x: '40%',
+      "margin-top": '1%'
     },
     scaleX: {
-      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft']
+      values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft']
     },
     scaleY: {  
     format: "$%v",
@@ -2191,12 +2622,13 @@ let chartConfigXZONE = {
       borderWidth: 0,
       layout: '1',
       marker: {
-        type: 'pie'
-      }
+        borderColor: 'none',
+        size: '7px'
+      },
     },
     scaleX: { 
       markers: [],
-      values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
+      values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
       tick: {
         visible: false
       },
@@ -2252,12 +2684,13 @@ let chartConfigXZONE = {
         borderWidth: 0,
         layout: '1',
         marker: {
-          type: 'pie'
-        }
+          borderColor: 'none',
+          size: '7px'
+        },
       },
       scaleX: { 
         markers: [],
-        values: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
+        values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
         tick: {
           visible: false
         },
@@ -2301,11 +2734,9 @@ let chartConfigXZONE = {
     legend: {
       alpha: 0.05,
       borderWidth: '0px',
-      layout: 'x2',
       marker: {
-        type: 'circle',
         borderColor: 'none',
-        size: '10px'
+        size: '7px'
       },
     },
     plot: {
@@ -2320,7 +2751,7 @@ let chartConfigXZONE = {
       item: {
         fontColor: '#7e7e7e'
       },
-      labels: [ 'Ground +0.5 ft', 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft'],
+      labels: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
       lineColor: '#7E7E7E'
     },
     scaleY: {
@@ -2343,23 +2774,620 @@ let chartConfigXZONE = {
       thousandsSeparator: ", ",
     },
     series: [
-      {
-        text: 'Monthly savings from flood loss reduction — without insurance',
-        values: [ 0, 0, 0, 0],
-        alpha: 0.95,
-        borderRadiusTopLeft: '7px',
-        backgroundColor: '#eb9d17',
+    {
+      text: 'Monthly savings from flood loss reduction <br>and insurance premium <b>with</b> insurance',
+      values: {{total_monthly_saving_wi_json}},
+      borderRadiusTopLeft: '7px',
+      alpha: 0.95,
+      backgroundColor: '#f7e0b7',
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+    ]
+  };
+
+
+
+  //////////CHARTS FOR X ZONE without insruance
+// Chart 12: X ZONE MONTHLY SAVINGS (without insruance option)
+let chartNew_XZONE_NoIns = [
+  
+{
+  type: 'bar',    
+  text: 'Freeboard cost',
+  values: {{Amortized_FC_neg_json}},
+  scales: 'scale-x,scale-y',
+  backgroundColor: '#d7191c',
+  borderRadiusTopLeft: '7px',
+  alpha: 0.90,
+  tooltip: {
+    text: '$%v <br> Freeobard cost',
+    negation: "currency",
+    thousandsSeparator: ", ",
+    wrapText: true
+  }
+}, 
+{
+  type: 'bar', 
+  text: 'Insurance savings',
+  values: {{monthly_premium_saving_json}},
+  scales: 'scale-x,scale-y',
+  backgroundColor: '#fdae61',
+  borderRadiusTopLeft: '7px',
+  alpha: 0.90,
+  tooltip: {
+    text: '$%v <br> Insurance savings',
+    negation: "currency",
+    thousandsSeparator: ", ",
+    wrapText: true
+  }
+},
+{
+  type: 'bar',
+  text: 'Monthly savings from flood loss reduction <b>without</b> insurance',
+  values: {{monthly_avoided_loss_json}},
+  scales: 'scale-x,scale-y',
+  backgroundColor: '#abd9e9',
+  borderRadiusTopLeft: '7px',
+  alpha: 0.90,
+  tooltip: {
+    text: '$%v <br> Monthly savings from flood loss reduction <br><b>without</b> insurance',
+    negation: "currency",
+    thousandsSeparator: ", ",
+    wrapText: true
+  }
+},
+{
+  type: 'bar',
+  text: 'Total monthly savings',
+  values: {{total_monthly_saving_json}},
+  scales: 'scale-x,scale-y',
+  backgroundColor: '#2c7bb6',
+  borderRadiusTopLeft: '7px',
+  alpha: 0.90,
+  tooltip: {
+    text: '$%v <br> Total monthly savings',
+    negation: "currency",
+    thousandsSeparator: ", ",
+    wrapText: true
+  }
+}
+
+];
+
+let chartConfigXZONE_NoIns = {
+type: 'mixed',   
+borderWidth: '1px',
+borderColor: '#dae5ec',
+legend:{
+ borderColor: 'whtie',
+ layout:'2x2',
+ x: '50%',
+ "margin-top": '1%'
+},
+scaleX: {
+  values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft']
+},
+scaleY: {  
+format: "$%v",
+negation: "currency",
+thousandsSeparator: ", ",
+multiplier: true,
+  guide: {
+    lineStyle: 'solid'
+  },
+  minorTick: {
+    placement: 'cross',
+    size: '6px'
+  },
+  minorTicks: 1
+},
+crosshairX: {
+  plotLabel: {
+    visible: false
+  }
+},
+series: chartNew_XZONE_NoIns
+};
+
+
+//Chart 13: Freeboard cost for X zone (without insurance option)
+var chart1Data_XZONE_NoIns = {
+type: 'bar',
+borderWidth: '1px',
+borderColor: '#dae5ec',
+title: {
+  fontWeight: 'normal',
+  fontColor: 'var(--black)',
+  align: 'left',
+  marginLeft: '2rem'
+},
+cursor: 'hand',
+globals: {
+  fontColor: 'var(--fontColor)',
+  fontfamily: 'Raleway'
+},
+legend: {
+  borderWidth: 0,
+  layout: '1',
+  marker: {
+    borderColor: 'none',
+    size: '7px'
+  },
+},
+scaleX: { 
+  markers: [],
+  values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+  tick: {
+    visible: false
+  },
+crosshairX: {},
+},
+scaleY: {
+format: "$%v",
+negation: "currency",
+thousandsSeparator: ", ",
+multiplier: true
+},
+plot: {
+tooltip:{ 
+  fontColor: 'var(--white)',
+  text: '$%v',
+  thousandsSeparator: ", ",
+  backgroundColor:'var(--red)'
+  },
+animation : {
+  effect : 1,
+  sequence : 2,
+  speed : 100
+},
+},
+series: [
+  {
+    text: 'Monthly freeboard cost',
+    backgroundColor: 'var(--red)',
+    alpha: 0.95,
+    borderRadiusTopLeft: '7px', 
+    values: {{Amortized_FC_json}}  
+  }
+]
+};
+
+// Chart 14: Monthly Insurance Premium Savings for X Zone (No insurance option)
+var chart2Data_XZONE_NoIns = {
+  type: 'bar',
+  borderWidth: '1px',
+  borderColor: '#dae5ec',
+  title: {
+    fontWeight: 'normal',
+    fontColor: 'var(--black)',
+    align: 'left',
+    marginLeft: '2rem'
+  },
+  cursor: 'hand',
+  globals: {
+    fontColor: 'var(--fontColor)',
+    fontfamily: 'Raleway'
+  },
+  legend: {
+    borderWidth: 0,
+    layout: '1',
+    marker: {
+      borderColor: 'none',
+      size: '7px'
+    },
+  },
+  scaleX: { 
+    markers: [],
+    values: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+    tick: {
+      visible: false
+    },
+  crosshairX: {},
+  },
+  scaleY: {
+  format: "$%v",
+  negation: "currency",
+  thousandsSeparator: ", ",
+  multiplier: true
+  },
+  plot: {
+  tooltip:{ 
+    fontColor: 'var(--white)',
+    text: '$%v',
+    thousandsSeparator: ", ",
+    backgroundColor:'var(--blue)'
+    },
+  animation : {
+    effect : 1,
+    sequence : 2,
+    speed : 100
+  },
+},
+  series: [
+    {
+      text: 'Monthly insurance premium savings',
+      backgroundColor: 'var(--blue)',
+      alpha: 0.95,
+      borderRadiusTopLeft: '7px',
+      values: {{monthly_premium_saving_json}}   
+    }
+  ]
+}; 
+
+// Chart 15 Monthly Savings from Flood Loss Reduction & X zone (No insurance option)
+let chart3Data_XZONE_NoIns = {
+type: 'bar',
+borderWidth: '1px',
+borderColor: '#dae5ec',
+legend: {
+  alpha: 0.05,
+  borderWidth: '0px',
+  marker: {
+    borderColor: 'none',
+    size: '7px'
+  },
+},
+plot: {
+  animation: {
+    effect: 'ANIMATION_SLIDE_BOTTOM'
+  }
+},
+scaleX: {
+  guide: {
+    visible: false
+  },
+  item: {
+    fontColor: '#7e7e7e'
+  },
+  labels: [ 'Ground +1.5 ft', 'Ground +2.5 ft', 'Ground +3.5 ft', 'Ground +4.5 ft'],
+  lineColor: '#7E7E7E'
+},
+scaleY: {
+    
+  format: "$%v",
+  negation: "currency",
+  thousandsSeparator: ", ",
+  multiplier: true,
+    guide: {
+      lineStyle: 'solid'
+    },
+    minorTick: {
+      placement: 'cross',
+      size: '6px'
+    },
+    minorTicks: 1
+  },
+tooltip: {
+  text: '$%v',
+  thousandsSeparator: ", ",
+},
+series: [
+  {
+    text: 'Monthly savings from flood loss reduction <b>without</b> insurance',
+    values: {{monthly_avoided_loss_json}},
+    alpha: 0.95,
+    borderRadiusTopLeft: '7px',
+    backgroundColor: '#eb9d17',
+    tooltip: {
+      text: '$%v',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    }
+  }
+]
+};
+
+
+// Chart16
+  var chart1Data_NoIns = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
       },
+    },
+    scaleX: { 
+      markers: [],
+      labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--red)'
+      },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
       {
-        text: 'Monthly savings from flood loss reduction — with insurance',
-        values: {{monthly_avoided_loss_json}},
-        borderRadiusTopLeft: '7px',
+        text: 'Monthly freeboard cost',
+        backgroundColor: 'var(--red)',
         alpha: 0.95,
-        backgroundColor: '#f7e0b7',
+        borderRadiusTopLeft: '7px',  
+        values: {{Amortized_FC_json}}  
       }
     ]
   };
-  
+
+  // Chart 17
+   var chart2Data_NoIns = {
+    type: 'bar',
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    title: {
+      fontWeight: 'normal',
+      fontColor: 'var(--black)',
+      align: 'left',
+      marginLeft: '2rem'
+    },
+    cursor: 'hand',
+    globals: {
+      fontColor: 'var(--fontColor)',
+      fontfamily: 'Raleway'
+    },
+    legend: {
+      borderWidth: 0,
+      layout: '1',
+      marker: {
+        borderColor: 'none',
+        size: '7px'
+      },
+    },
+    scaleX: { 
+      markers: [],
+      labels: ['BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+      tick: {
+        visible: false
+      },
+    crosshairX: {},
+    },
+    scaleY: {
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true
+    },
+    plot: {
+    tooltip:{ 
+      fontColor: 'var(--white)',
+      text: '$%v',
+      thousandsSeparator: ", ",
+      backgroundColor:'var(--blue)'
+      },
+    animation : {
+      effect : 1,
+      sequence : 2,
+      speed : 100
+    },
+  },
+    series: [
+      {
+        text: 'Monthly insurance premium savings',
+        backgroundColor: 'var(--blue)',
+        alpha: 0.95,
+        borderRadiusTopLeft: '7px',
+        values: {{monthly_premium_saving_json}}   
+      }
+    ]
+  }; 
+ 
+
+ // Chart 18: Monthly Savings from Flood Loss Reduction
+  let chart3Data_NoIns = {
+  type: 'bar',
+  borderWidth: '1px',
+  borderColor: '#dae5ec',
+  legend: {
+    alpha: 0.05,
+    borderWidth: '0px',
+    marker: {
+      borderColor: 'none',
+      size: '7px'
+    },
+  },
+  plot: {
+    animation: {
+      effect: 'ANIMATION_SLIDE_BOTTOM'
+    }
+  },
+  scaleX: {
+    guide: {
+      visible: false
+    },
+    item: {
+      fontColor: '#7e7e7e'
+    },
+    labels: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft'],
+    lineColor: '#7E7E7E'
+  },
+  scaleY: {
+      
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+  tooltip: {
+    text: '$%v',
+    thousandsSeparator: ", ",
+  },
+  series: [
+     {
+      text: 'Monthly savings from flood loss reduction <b>without</b> insurance',
+      values: {{monthly_avoided_loss_json}},
+      alpha: 0.95,
+      borderRadiusTopLeft: '7px',
+      backgroundColor: '#eb9d17',
+      tooltip: {
+        text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+  ]
+};
+
+ // Chart 19
+  let chartNew_NoIns = [
+    {
+      type: 'bar',    
+      text: 'Freeboard cost',
+      values: {{Amortized_FC_neg_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#d7191c',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Freeboard cost',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }, 
+    {
+      type: 'bar', 
+      text: 'Insurance savings',
+      values: {{monthly_premium_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#fdae61',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Insurance savings',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Monthly savings from flood loss reduction <b>without</b> insurance',
+      values: {{monthly_avoided_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#abd9e9',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Monthly savings from <br>flood loss reduction <b>without</b> insurance',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
+      type: 'bar',
+      text: 'Total monthly savings',
+      values: {{total_monthly_saving_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: '#2c7bb6',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Total monthly savings',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }
+
+  ];
+
+let chartConfig2_NoIns = {
+    type: 'mixed',   
+    borderWidth: '1px',
+    borderColor: '#dae5ec',
+    legend:{
+      layout:'2x2',
+      x: '50%',
+      "margin-top": '1%',
+      borderColor: 'whtie'
+    },
+    scaleX: {
+      values: [ 'BFE +1 ft', 'BFE +2 ft', 'BFE +3 ft', 'BFE +4 ft']
+    },
+    scaleY: {  
+    format: "$%v",
+    negation: "currency",
+    thousandsSeparator: ", ",
+    multiplier: true,
+      guide: {
+        lineStyle: 'solid'
+      },
+      minorTick: {
+        placement: 'cross',
+        size: '6px'
+      },
+      minorTicks: 1
+    },
+    {% comment %} 
+    scaleY2: {
+    format: '%v',    
+    negation: "currency",
+    guide: {
+      visible: false
+    },
+    label: {
+      text: 'Y-2 label'
+    },
+    zooming: true
+  }, 
+  {% endcomment %}
+    crosshairX: {
+      plotLabel: {
+        visible: false
+      }
+    },
+    series: chartNew_NoIns
+  };
+
+
+
 
   // -----------------------------
   // RENDER CHARTS
@@ -2415,7 +3443,7 @@ let chartConfigXZONE = {
   });
 
 
-  //XZONE CHARTS 
+  //XZONE CHARTS with insurance
   // Chart 8
   zingchart.render({
     id: 'chartNew_XZONE',
@@ -2487,6 +3515,104 @@ let chartConfigXZONE = {
     }); 
 
 
+ //XZONE CHARTS without insruance
+  // Chart 12
+  zingchart.render({
+    id: 'chartNew_XZONE_NoIns',
+    data: chartConfigXZONE_NoIns,
+    width: '100%'
+  });
+
+  // Chart 13
+  zingchart.render({ 
+    id: chart1Id_XZONE_NoIns, 
+    data : chart1Data_XZONE_NoIns, 
+    width: '100%'
+  });
+
+  // Chart 14
+  zingchart.render({ 
+    id: chart2Id_XZONE_NoIns, 
+    data : chart2Data_XZONE_NoIns, 
+    width: '100%'
+  });
+
+  // Chart 15
+  zingchart.render({ 
+    id: chart3Id_XZONE_NoIns, 
+    data : chart3Data_XZONE_NoIns, 
+    width: '100%'
+  });
+  
+  var ctx = document.getElementById('chart');
+
+  var chart = (ctx, {
+            type: 'line',
+            data: {
+                labels: ['+0ft freeboard','+`0`ft freeboard'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: '#33b5e5',
+                    borderColor: '#33b5e5',
+                    data: [15,10]   
+                }]
+            },
+            options: {
+              responsive:true,
+              legend:{
+                display:false,
+              },
+              title: {
+                display:false,
+                text:'Text',
+              },
+              
+              scales: {
+                xAxes: [{
+                  display: true
+                }],
+                yAxes: [{
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'dollar',
+                  },
+                  ticks: {
+                    min: 0,
+                    stepSize: 10
+                  }
+                }]
+              }
+            }
+    }); 
+
+      // Chart 16
+  zingchart.render({ 
+    id: chart1Id_NoIns, 
+    data : chart1Data_NoIns, 
+    width: '100%'
+  });
+
+  // Chart 17
+  zingchart.render({ 
+    id: chart2Id_NoIns, 
+    data : chart2Data_NoIns, 
+    width: '100%'
+  });
+
+  // Chart 18
+  zingchart.render({ 
+    id: chart3Id_NoIns, 
+    data : chart3Data_NoIns, 
+    width: '100%'
+  });
+
+  // Chart 19
+  zingchart.render({
+    id: 'NewChart_NoIns',
+    data: chartConfig2_NoIns,
+    width: '100%'
+  });
     </script>
     
 
@@ -2630,6 +3756,75 @@ let chartConfigXZONE = {
 
 </script>
 
+<!--Insurance selection-->
+<script>
+  var otherzonelist = {{otherzonelist|safe}};
+  var otherzoneAddress = otherzonelist[0];
+
+  var xzonelist = {{xzonelist|safe}};
+  var xzoneAddress = xzonelist[0];
+  if ($('#tags').val() == otherzoneAddress) {   
+    $("#yes").show();
+    $("#no").hide();
+ }
+   //x zone 
+ else {   
+    $("#no").show(); 
+    $("#yes").hide(); 
+ } 
+   
+
+  console.log("Other zone:", otherzoneAddress, ", X zone:", xzoneAddress);
+
+</script>
+
+
+<!--Script Xzone insurance yes/no-->
+<script>
+$(document).ready(function() {
+
+  $('#XzoneNoInsuranceChart').css("display", "none");
+
+  $(".switch input").on("change", function(e) {
+    const isOn = e.currentTarget.checked;
+
+    if (isOn) {
+      $("#XzoneNoInsuranceChart").hide();
+      $("#XzoneInsuranceChart").show();
+    } else {
+      $("#XzoneNoInsuranceChart").show();
+      $("#XzoneInsuranceChart").hide();
+    }
+    
+console.log(isOn);
+  });
+});
+
+</script>
+
+
+<!--Script other zone insurance yes/no-->
+<script>
+  $(document).ready(function() {
+  
+    $('#OtherzoneNoInsuranceChart').css("display", "none");
+  
+    $(".switch-OtherZone input").on("change", function(e) {
+      const isOn = e.currentTarget.checked;
+  
+      if (isOn) {
+        $("#OtherzoneNoInsuranceChart").hide();
+        $("#OtherzoneInsuranceChart").show();
+      } else {
+        $("#OtherzoneNoInsuranceChart").show();
+        $("#OtherzoneInsuranceChart").hide();
+      }
+      
+  console.log(isOn);
+    });
+  });
+  
+  </script>
 
 <script>
 // Creating a function to add item from list
