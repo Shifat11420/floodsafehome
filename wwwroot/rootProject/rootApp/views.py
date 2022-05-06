@@ -1615,10 +1615,10 @@ def search(request):
             
             for i in range(len(totalBFE)): 
                 #total_monthly_saving.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i]))
-                total_monthly_saving.append(int((annual_avoided_loss[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_homeowner.append(int((avoided_annual_loss_homeowner[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_landlord.append(int((avoided_annual_loss_landlord[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_tenant.append(int((avoided_annual_loss_tenant[i]/12)-Amortized_FC[i]))
+                total_monthly_saving.append(int(round(monthly_avoided_loss[i]-Amortized_FC[i],0)))
+                total_monthly_saving_homeowner.append(int(round(avoided_monthly_loss_homeowner[i]-Amortized_FC[i],0)))
+                total_monthly_saving_landlord.append(int(round(avoided_monthly_loss_landlord[i]-Amortized_FC[i],0)))
+                total_monthly_saving_tenant.append(int(round(avoided_monthly_loss_tenant[i]-Amortized_FC[i],0)))
             print("total_monthly_saving_homeowner : ",total_monthly_saving_homeowner)
             print("total_monthly_saving_landlord : ",total_monthly_saving_landlord)
             print("total_monthly_saving_tenant : ",total_monthly_saving_tenant)
@@ -1643,10 +1643,10 @@ def search(request):
             total_monthly_saving_tenant_wi = []
             
             for i in range(len(totalBFE)): 
-                total_monthly_saving_wi.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss_wi[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_homeowner_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_homeowner_wi[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_landlord_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_landlord_wi[i]/12)-Amortized_FC[i]))
-                total_monthly_saving_tenant_wi.append(int((annual_premium_saving[i]/12)+(avoided_annual_loss_tenant_wi[i]/12)-Amortized_FC[i]))
+                total_monthly_saving_wi.append(int(round((monthly_premium_saving[i])+monthly_avoided_loss_wi[i]-Amortized_FC[i],0)))
+                total_monthly_saving_homeowner_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_homeowner_wi[i])-Amortized_FC[i],0)))
+                total_monthly_saving_landlord_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_landlord_wi[i])-Amortized_FC[i],0)))
+                total_monthly_saving_tenant_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_tenant_wi[i])-Amortized_FC[i],0)))
             print("total_monthly_saving_homeowner_wi : ",total_monthly_saving_homeowner_wi)
             print("total_monthly_saving_landlord_wi : ",total_monthly_saving_landlord_wi)
             print("total_monthly_saving_tenant_wi : ",total_monthly_saving_tenant_wi)
@@ -2420,7 +2420,7 @@ def search(request):
 
         "summation_total_monthly_saving0_wi":summation_total_monthly_saving_wi[0],\
         "summation_total_monthly_saving1_wi":summation_total_monthly_saving_wi[1], "summation_total_monthly_saving2_wi":summation_total_monthly_saving_wi[2],"summation_total_monthly_saving3_wi":summation_total_monthly_saving_wi[3], "summation_total_monthly_saving4_wi":summation_total_monthly_saving_wi[4],\
-        "total_monthly_saving_wi_json":total_monthly_saving_wi_json, "summation_total_monthly_saving_wi_low": min(summation_total_monthly_saving_wi[1:]),\
+        "total_monthly_saving_wi_json":total_monthly_saving_wi_json, "summation_total_monthly_saving_wi_low": min(summation_total_monthly_saving_wi[1:]), "summation_total_monthly_saving_wi_high": max(summation_total_monthly_saving_wi[1:]),\
 
         "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json,"monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json,\
         "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium,\
@@ -2434,6 +2434,7 @@ def search(request):
          "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2],"total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4],\
         "monthly_avoided_loss0": monthly_avoided_loss[0],\
         "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4], "summation_monthly_avoided_lossHigh": max(summation_monthly_avoided_loss[1:]), "summation_monthly_avoided_lossLow": min(summation_monthly_avoided_loss[1:]),\
+        "monthly_avoided_loss_wi0": monthly_avoided_loss_wi[0],"monthly_avoided_loss_wi1": monthly_avoided_loss_wi[1],"monthly_avoided_loss_wi2": monthly_avoided_loss_wi[2],"monthly_avoided_loss_wi3": monthly_avoided_loss_wi[3],"monthly_avoided_loss_wi4":monthly_avoided_loss_wi[4],"monthly_avoided_loss_wi_High": max(monthly_avoided_loss_wi[1:]), "monthly_avoided_loss_wi_Low": min(monthly_avoided_loss_wi[1:]),\
         "time_to_recover_FC_MS0" : time_to_recover_FC_MS[0],\
          "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4],\
         "annual_avoided_loss0": annual_avoided_loss[0], \
@@ -2442,7 +2443,8 @@ def search(request):
         "AAL_Total_list0":AAL_Total_list[0],\
         "AAL_Total_list1":AAL_Total_list[1],"AAL_Total_list2":AAL_Total_list[2],"AAL_Total_list3":AAL_Total_list[3],"AAL_Total_list4":AAL_Total_list[4],\
         "AAL_Total_json":AAL_Total_json, "summation_AAL_Totallow" :min(summation_AAL_Total), "summation_AAL_Totalhigh":max(summation_AAL_Total),\
-        "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4] }            
+        "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], \
+        "total_monthly_saving_wi":total_monthly_saving_wi, "optimal_saving_wi_json": optimal_saving_wi_json, "optimal_freeboard_wi": optimal_freeboard_wi, "monthly_avoided_loss_wi": monthly_avoided_loss_wi, "monthly_avoided_loss_wi_json": monthly_avoided_loss_wi_json }            
     # "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],\
     # "AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency),"AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4],\
     #  "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 
