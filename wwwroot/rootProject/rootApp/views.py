@@ -283,7 +283,9 @@ def search(request):
 
 
     annual_avoided_loss_list_c = []
-    monthly_avoided_loss_list_c = []
+    monthly_avoided_loss_list_c = []   
+    indirect_avoided_monthly_loss_list_c = []
+
     avoided_monthly_loss_homeowner_list_c =[]
     avoided_monthly_loss_landlord_list_c = []
     avoided_monthly_loss_tenant_list_c = []   
@@ -366,6 +368,9 @@ def search(request):
             line_count += 1      ##
             location = buildinglist[i]
             print("location now : ", location)
+            newsearch = location.split(", LA")
+            newsearch = newsearch[0]
+            print("new search = ", newsearch)
 
             ##------location-----------------------
             #location = request.GET.get('location', 'default')
@@ -894,8 +899,13 @@ def search(request):
  
             AAL_Total_homeowner_list = [] 
             AAL_Total_landlord_list = []   
-            AAL_Total_tenant_list = []
+            AAL_Total_tenant_list = []           
+
             AAL_Total_list = []
+
+            indirect_loss_homeowner_list = []
+            indirect_loss_landlord_list = []
+            indirect_loss_tenant_list = []
 
             for j in range(len(totalBFE)):  
                 print("FFH : ", FFH[j])  
@@ -1042,15 +1052,22 @@ def search(request):
                 print("                  ")
 
                 AAL_Total_homeowner = homeowner_AALstruct + homeowner_AALcont + homeowner_AALuse
+                indirect_loss_homeowner = AAL_Total_homeowner * 0.5
                 #print("AAL_Total_homeowner = ", AAL_Total_homeowner)
                 AAL_Total_landlord = landlord_AALstruct + landlord_AALcont + landlord_AALuse
+                indirect_loss_landlord = AAL_Total_landlord * 0.5
                 #print("AAL_Total_landlord = ", AAL_Total_landlord)
                 AAL_Total_tenant = tenant_AALstruct + tenant_AALcont + tenant_AALuse
+                indirect_loss_tenant = AAL_Total_tenant * 0.5
                 #print("AAL_Total_tenant = ", AAL_Total_tenant)
 
                 AAL_Total_homeowner_list.append(AAL_Total_homeowner)
                 AAL_Total_landlord_list.append(AAL_Total_landlord)
                 AAL_Total_tenant_list.append(AAL_Total_tenant)
+
+                indirect_loss_homeowner_list.append(indirect_loss_homeowner)
+                indirect_loss_landlord_list.append(indirect_loss_landlord)
+                indirect_loss_tenant_list.append(indirect_loss_tenant)
 
                 ########################################################
                 if user_type == "Homeowner":
@@ -1076,6 +1093,11 @@ def search(request):
             print("AAL_Total_landlord_list : ", AAL_Total_landlord_list)   
             print("AAL_Total_tenant_list : ", AAL_Total_tenant_list)
             AAL_Total_list_c.append(AAL_Total_list)
+
+            print("indirect_loss_homeowner_list : ", indirect_loss_homeowner_list)
+            print("indirect_loss_landlord_list : ", indirect_loss_landlord_list)
+            print("indirect_loss_tenant_list : ", indirect_loss_tenant_list)
+
             # print("AAL_Total_list_c : ", AAL_Total_list_c)
             # print("                    ")
 
@@ -1097,13 +1119,21 @@ def search(request):
             avoided_monthly_loss_homeowner= []
             avoided_monthly_loss_landlord= []
             avoided_monthly_loss_tenant= []
+            indirect_avoided_monthly_loss_homeowner= []
+            indirect_avoided_monthly_loss_landlord= []
+            indirect_avoided_monthly_loss_tenant= []
             for k in range(len(totalBFE)):
                 avoided_annual_loss_homeowner.append(AAL_Total_homeowner_list[0]- AAL_Total_homeowner_list[k])
                 avoided_annual_loss_landlord.append(AAL_Total_landlord_list[0]- AAL_Total_landlord_list[k])
                 avoided_annual_loss_tenant.append(AAL_Total_tenant_list[0]- AAL_Total_tenant_list[k])
+
                 avoided_monthly_loss_homeowner.append(int(((AAL_Total_homeowner_list[0]- AAL_Total_homeowner_list[k])/12)))
                 avoided_monthly_loss_landlord.append(int(((AAL_Total_landlord_list[0]- AAL_Total_landlord_list[k])/12)))
                 avoided_monthly_loss_tenant.append(int(((AAL_Total_tenant_list[0]- AAL_Total_tenant_list[k])/12)))
+
+                indirect_avoided_monthly_loss_homeowner.append(int(((indirect_loss_homeowner_list[0]- indirect_loss_homeowner_list[k])/12)))
+                indirect_avoided_monthly_loss_landlord.append(int(((indirect_loss_landlord_list[0]- indirect_loss_landlord_list[k])/12)))
+                indirect_avoided_monthly_loss_tenant.append(int(((indirect_loss_tenant_list[0]- indirect_loss_tenant_list[k])/12)))
 
 
             # print("avoided_annual_loss_homeowner : ", avoided_annual_loss_homeowner) 
@@ -1113,6 +1143,12 @@ def search(request):
             print("avoided_monthly_loss_homeowner : ", avoided_monthly_loss_homeowner) 
             print("avoided_monthly_loss_landlord : ", avoided_monthly_loss_landlord)   
             print("avoided_monthly_loss_tenant : ", avoided_monthly_loss_tenant)
+            print("indirect_avoided_monthly_loss_homeowner : ", indirect_avoided_monthly_loss_homeowner) 
+            print("indirect_avoided_monthly_loss_landlord : ", indirect_avoided_monthly_loss_landlord)   
+            print("indirect_avoided_monthly_loss_tenant : ", indirect_avoided_monthly_loss_tenant)
+
+
+
             avoided_monthly_loss_homeowner_list_c.append(avoided_monthly_loss_homeowner)
             avoided_monthly_loss_landlord_list_c.append(avoided_monthly_loss_landlord)
             avoided_monthly_loss_tenant_list_c.append(avoided_monthly_loss_tenant)
@@ -1132,13 +1168,17 @@ def search(request):
             if user_type == "Homeowner":
                 annual_avoided_loss = avoided_annual_loss_homeowner
                 monthly_avoided_loss = avoided_monthly_loss_homeowner
+                indirect_avoided_monthly_loss =indirect_avoided_monthly_loss_homeowner
             elif user_type == "Tenant":
                 annual_avoided_loss = avoided_annual_loss_tenant
                 monthly_avoided_loss = avoided_monthly_loss_tenant
+                indirect_avoided_monthly_loss =indirect_avoided_monthly_loss_tenant
                 
             elif user_type == "Landlord":
                 annual_avoided_loss = avoided_annual_loss_landlord
                 monthly_avoided_loss = avoided_monthly_loss_landlord
+                indirect_avoided_monthly_loss =indirect_avoided_monthly_loss_landlord
+
 
             # elif user_type == "Community official":
             #     annual_avoided_loss = avoided_annual_loss_CommunityOfficial
@@ -1147,16 +1187,21 @@ def search(request):
                 print("None of the user type!")
                 annual_avoided_loss =  avoided_annual_loss_homeowner #"NONE"   #fix it later
                 monthly_avoided_loss = avoided_monthly_loss_homeowner #"NONE"  #fix it later
+                indirect_avoided_monthly_loss =indirect_avoided_monthly_loss_homeowner #"NONE"  #fix it later
                 print("annual_avoided_loss = ", annual_avoided_loss)
                 print("monthly_avoided_loss = ", monthly_avoided_loss)
+                print("indirect_avoided_monthly_loss = ", indirect_avoided_monthly_loss)
            
             annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)   
             monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss[1:])     #**   
+            indirect_avoided_monthly_loss_json = simplejson.dumps(indirect_avoided_monthly_loss[1:])  #**
 
             print("annual_avoided_loss = ", annual_avoided_loss)
             print("monthly_avoided_loss = ", monthly_avoided_loss)
+            print("indirect_avoided_monthly_loss = ", indirect_avoided_monthly_loss)
             annual_avoided_loss_list_c.append(annual_avoided_loss)  
             monthly_avoided_loss_list_c.append(monthly_avoided_loss)
+            indirect_avoided_monthly_loss_list_c.append(indirect_avoided_monthly_loss)
             print("                  ") 
 
         ##-------------------with insurance -----------------------       
@@ -1608,6 +1653,7 @@ def search(request):
 
 
             ##-----------Total monthly saving (without insurance)---------------------------------------------
+            print("\n")
             total_monthly_saving = []
             total_monthly_saving_homeowner = []
             total_monthly_saving_landlord = []
@@ -1615,10 +1661,10 @@ def search(request):
             
             for i in range(len(totalBFE)): 
                 #total_monthly_saving.append(int((annual_premium_saving[i]/12)+(annual_avoided_loss[i]/12)-Amortized_FC[i]))
-                total_monthly_saving.append(int(round(monthly_avoided_loss[i]-Amortized_FC[i],0)))
-                total_monthly_saving_homeowner.append(int(round(avoided_monthly_loss_homeowner[i]-Amortized_FC[i],0)))
-                total_monthly_saving_landlord.append(int(round(avoided_monthly_loss_landlord[i]-Amortized_FC[i],0)))
-                total_monthly_saving_tenant.append(int(round(avoided_monthly_loss_tenant[i]-Amortized_FC[i],0)))
+                total_monthly_saving.append(int(round(monthly_avoided_loss[i]-Amortized_FC[i]+indirect_avoided_monthly_loss[i],0)))
+                total_monthly_saving_homeowner.append(int(round(avoided_monthly_loss_homeowner[i]-Amortized_FC[i]+indirect_avoided_monthly_loss_homeowner[i],0)))
+                total_monthly_saving_landlord.append(int(round(avoided_monthly_loss_landlord[i]-Amortized_FC[i]+indirect_avoided_monthly_loss_landlord[i],0)))
+                total_monthly_saving_tenant.append(int(round(avoided_monthly_loss_tenant[i]-Amortized_FC[i]+indirect_avoided_monthly_loss_tenant[i],0)))
             print("total_monthly_saving_homeowner : ",total_monthly_saving_homeowner)
             print("total_monthly_saving_landlord : ",total_monthly_saving_landlord)
             print("total_monthly_saving_tenant : ",total_monthly_saving_tenant)
@@ -1637,16 +1683,17 @@ def search(request):
             optimal_saving_json = simplejson.dumps(optimal_saving)  
 
              ##-----------Total monthly saving (with insurance)---------------------------------------------
+            print("\n")
             total_monthly_saving_wi = []
             total_monthly_saving_homeowner_wi = []
             total_monthly_saving_landlord_wi = []
             total_monthly_saving_tenant_wi = []
             
             for i in range(len(totalBFE)): 
-                total_monthly_saving_wi.append(int(round((monthly_premium_saving[i])+monthly_avoided_loss_wi[i]-Amortized_FC[i],0)))
-                total_monthly_saving_homeowner_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_homeowner_wi[i])-Amortized_FC[i],0)))
-                total_monthly_saving_landlord_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_landlord_wi[i])-Amortized_FC[i],0)))
-                total_monthly_saving_tenant_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_tenant_wi[i])-Amortized_FC[i],0)))
+                total_monthly_saving_wi.append(int(round((monthly_premium_saving[i])+monthly_avoided_loss_wi[i]-Amortized_FC[i]+indirect_avoided_monthly_loss[i],0)))
+                total_monthly_saving_homeowner_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_homeowner_wi[i])-Amortized_FC[i]+indirect_avoided_monthly_loss_homeowner[i],0)))
+                total_monthly_saving_landlord_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_landlord_wi[i])-Amortized_FC[i]+indirect_avoided_monthly_loss_landlord[i],0)))
+                total_monthly_saving_tenant_wi.append(int(round((monthly_premium_saving[i])+(avoided_monthly_loss_tenant_wi[i])-Amortized_FC[i]+indirect_avoided_monthly_loss_tenant[i],0)))
             print("total_monthly_saving_homeowner_wi : ",total_monthly_saving_homeowner_wi)
             print("total_monthly_saving_landlord_wi : ",total_monthly_saving_landlord_wi)
             print("total_monthly_saving_tenant_wi : ",total_monthly_saving_tenant_wi)
@@ -1666,6 +1713,7 @@ def search(request):
 
 
             ##-----------Total yearly saving (without insurance)---------------------------------------------
+            print("\n")
             total_yearly_saving = []
             for i in range(len(totalBFE)): 
                 total_yearly_saving.append(int(total_monthly_saving[i] * 12))
@@ -1816,6 +1864,30 @@ def search(request):
     for z in range(len(monthly_avoided_loss)):
         avg_monthly_avoided_loss.append(int(summation_monthly_avoided_loss[z]/len(buildinglist)))
     print("avglist_monthly_avoided_loss = " ,avg_monthly_avoided_loss) 
+
+    print("\n")
+
+
+    ## Total monthly avoided loss with insurance ##
+    print("\n")
+    print("monthly_avoided_loss_wi_list_c : ", monthly_avoided_loss_wi_list_c)
+
+  
+    summation_monthly_avoided_loss_wi = []
+    avg_monthly_avoided_loss_wi = []
+    for z in range(len(monthly_avoided_loss_wi)):
+        summation_monthly_avoided_loss_wi.append(0)
+    #print("summationlist_monthly_avoided_loss_wi = " ,summation_monthly_avoided_loss_wi)
+
+    for i in range(len(buildinglist)):   
+        for z in range(len(monthly_avoided_loss_wi)):
+            summation_monthly_avoided_loss_wi[z] = summation_monthly_avoided_loss_wi[z] + monthly_avoided_loss_wi_list_c[i][z]
+    print("summationlist_monthly_avoided_loss_wi = " ,summation_monthly_avoided_loss_wi)
+    summation_monthly_avoided_loss_wi_json = simplejson.dumps(summation_monthly_avoided_loss_wi[1:0])   #**        
+    
+    for z in range(len(monthly_avoided_loss_wi)):
+        avg_monthly_avoided_loss_wi.append(int(summation_monthly_avoided_loss_wi[z]/len(buildinglist)))
+    print("avglist_monthly_avoided_loss_wi = " ,avg_monthly_avoided_loss_wi) 
 
     print("\n")
 
@@ -2404,8 +2476,12 @@ def search(request):
         "monthly_premium_saving_json":monthly_premium_saving_json,"monthly_premium_saving0": monthly_premium_saving[0],"monthly_premium_saving1": monthly_premium_saving[1],"monthly_premium_saving2": monthly_premium_saving[2],"monthly_premium_saving3": monthly_premium_saving[3],"monthly_premium_saving4": monthly_premium_saving[4], \
         "summation_total_monthly_premium_saving0":summation_total_monthly_premium_saving[0],\
         "summation_total_monthly_premium_saving1":summation_total_monthly_premium_saving[1],"summation_total_monthly_premium_saving2":summation_total_monthly_premium_saving[2], "summation_total_monthly_premium_saving3":summation_total_monthly_premium_saving[3],"summation_total_monthly_premium_saving4":summation_total_monthly_premium_saving[4], "summation_total_monthly_premium_savingHigh": max(summation_total_monthly_premium_saving[1:]), "summation_total_monthly_premium_savingLow": min(summation_total_monthly_premium_saving[1:]),\
+        
         "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], \
         "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],\
+        "summation_monthly_avoided_loss_wi0": summation_monthly_avoided_loss_wi[0],"summation_monthly_avoided_loss_wi1": summation_monthly_avoided_loss_wi[1],"summation_monthly_avoided_loss_wi2": summation_monthly_avoided_loss_wi[2],"summation_monthly_avoided_loss_wi3": summation_monthly_avoided_loss_wi[3],"summation_monthly_avoided_loss_wi4":summation_monthly_avoided_loss_wi[4],"summation_monthly_avoided_loss_wi_High": max(summation_monthly_avoided_loss_wi[1:]), "summation_monthly_avoided_loss_wi_Low": min(summation_monthly_avoided_loss_wi[1:]),\
+
+        
         "summation_freeboardCost0" :summation_freeboardCost[0],\
         "summation_freeboardCost1" :summation_freeboardCost[1],"summation_freeboardCost2" :summation_freeboardCost[2],"summation_freeboardCost3" :summation_freeboardCost[3],"summation_freeboardCost4" :summation_freeboardCost[4],\
         "Actual_construction_cost": Actual_construction_cost,\
@@ -2423,6 +2499,9 @@ def search(request):
         "total_monthly_saving_wi_json":total_monthly_saving_wi_json, "summation_total_monthly_saving_wi_low": min(summation_total_monthly_saving_wi[1:]), "summation_total_monthly_saving_wi_high": max(summation_total_monthly_saving_wi[1:]),\
 
         "floodzone": zonevalue, "optimal_saving_json":optimal_saving_json, "freeboardCost_json": freeboardCost_json,"monthly_avoided_loss_json": monthly_avoided_loss_json, "annual_avoided_loss_json": annual_avoided_loss_json,\
+        "summation_monthly_avoided_loss_json": summation_monthly_avoided_loss_json,
+        
+        
         "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium,\
         "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, \
         "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard,\
@@ -2431,10 +2510,16 @@ def search(request):
         "total_monthly_saving0" : total_monthly_saving[0],\
         "total_monthly_saving1" : total_monthly_saving[1],"total_monthly_saving2" : total_monthly_saving[2],"total_monthly_saving3" : total_monthly_saving[3],"total_monthly_savinglast" : total_monthly_saving[4], \
         "total_monthly_premium_BFE": total_monthly_premium[0],\
-         "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2],"total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4],\
+        "total_monthly_premium_BFE1": total_monthly_premium[1], "total_monthly_premium_BFE2": total_monthly_premium[2],"total_monthly_premium_BFE3": total_monthly_premium[3], "total_monthly_premium_BFE4": total_monthly_premium[4],\
+        
         "monthly_avoided_loss0": monthly_avoided_loss[0],\
         "monthly_avoided_loss1": monthly_avoided_loss[1],"monthly_avoided_loss2": monthly_avoided_loss[2],"monthly_avoided_loss3": monthly_avoided_loss[3],"monthly_avoided_loss4": monthly_avoided_loss[4], "summation_monthly_avoided_lossHigh": max(summation_monthly_avoided_loss[1:]), "summation_monthly_avoided_lossLow": min(summation_monthly_avoided_loss[1:]),\
         "monthly_avoided_loss_wi0": monthly_avoided_loss_wi[0],"monthly_avoided_loss_wi1": monthly_avoided_loss_wi[1],"monthly_avoided_loss_wi2": monthly_avoided_loss_wi[2],"monthly_avoided_loss_wi3": monthly_avoided_loss_wi[3],"monthly_avoided_loss_wi4":monthly_avoided_loss_wi[4],"monthly_avoided_loss_wi_High": max(monthly_avoided_loss_wi[1:]), "monthly_avoided_loss_wi_Low": min(monthly_avoided_loss_wi[1:]),\
+        
+        
+                
+ 
+
         "time_to_recover_FC_MS0" : time_to_recover_FC_MS[0],\
          "time_to_recover_FC_MS1" : time_to_recover_FC_MS[1],"time_to_recover_FC_MS2" : time_to_recover_FC_MS[2],"time_to_recover_FC_MS3" : time_to_recover_FC_MS[3],"time_to_recover_FC_MS4" : time_to_recover_FC_MS[4],\
         "annual_avoided_loss0": annual_avoided_loss[0], \
@@ -2444,7 +2529,13 @@ def search(request):
         "AAL_Total_list1":AAL_Total_list[1],"AAL_Total_list2":AAL_Total_list[2],"AAL_Total_list3":AAL_Total_list[3],"AAL_Total_list4":AAL_Total_list[4],\
         "AAL_Total_json":AAL_Total_json, "summation_AAL_Totallow" :min(summation_AAL_Total), "summation_AAL_Totalhigh":max(summation_AAL_Total),\
         "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], \
-        "total_monthly_saving_wi":total_monthly_saving_wi, "optimal_saving_wi_json": optimal_saving_wi_json, "optimal_freeboard_wi": optimal_freeboard_wi, "monthly_avoided_loss_wi": monthly_avoided_loss_wi, "monthly_avoided_loss_wi_json": monthly_avoided_loss_wi_json }            
+        "total_monthly_saving_wi":total_monthly_saving_wi, "optimal_saving_wi_json": optimal_saving_wi_json, "optimal_freeboard_wi": optimal_freeboard_wi, "monthly_avoided_loss_wi": monthly_avoided_loss_wi, "monthly_avoided_loss_wi_json": monthly_avoided_loss_wi_json,            
+        "indirect_avoided_monthly_loss_homeowner0":indirect_avoided_monthly_loss_homeowner[0],"indirect_avoided_monthly_loss_homeowner1":indirect_avoided_monthly_loss_homeowner[1],"indirect_avoided_monthly_loss_homeowner2":indirect_avoided_monthly_loss_homeowner[2],"indirect_avoided_monthly_loss_homeowner3":indirect_avoided_monthly_loss_homeowner[3],"indirect_avoided_monthly_loss_homeowner4":indirect_avoided_monthly_loss_homeowner[4],\
+        "indirect_avoided_monthly_loss_landlord0":indirect_avoided_monthly_loss_landlord[0],"indirect_avoided_monthly_loss_landlord1":indirect_avoided_monthly_loss_landlord[1],"indirect_avoided_monthly_loss_landlord2":indirect_avoided_monthly_loss_landlord[2],"indirect_avoided_monthly_loss_landlord3":indirect_avoided_monthly_loss_landlord[3],"indirect_avoided_monthly_loss_landlord4":indirect_avoided_monthly_loss_landlord[4],\
+        "indirect_avoided_monthly_loss_tenant0":indirect_avoided_monthly_loss_tenant[0],"indirect_avoided_monthly_loss_tenant1":indirect_avoided_monthly_loss_tenant[1],"indirect_avoided_monthly_loss_tenant2":indirect_avoided_monthly_loss_tenant[2],"indirect_avoided_monthly_loss_tenant3":indirect_avoided_monthly_loss_tenant[3],"indirect_avoided_monthly_loss_tenant4":indirect_avoided_monthly_loss_tenant[4],\
+     }
+    
+    
     # "optimal_AAL_absCurrency_freeboard":optimal_AAL_absCurrency_freeboard, "optimal_AAL_absCurrency": optimal_AAL_absCurrency, "AAL_absCurrency0":AAL_absCurrency[0],"AAL_absCurrency1":AAL_absCurrency[1],"AAL_absCurrency2":AAL_absCurrency[2],"AAL_absCurrency3":AAL_absCurrency[3],"AAL_absCurrency4":AAL_absCurrency[4],\
     # "AAL_absCurrency_json":AAL_absCurrency_json, "summation_AAL_absCurrencylow" :min(summation_AAL_absCurrency), "summation_AAL_absCurrencyhigh":max(summation_AAL_absCurrency),"AAL_absCurrency0": AAL_absCurrency[0],"AAL_absCurrency1": AAL_absCurrency[1],"AAL_absCurrency2": AAL_absCurrency[2],"AAL_absCurrency3": AAL_absCurrency[3],"AAL_absCurrency4": AAL_absCurrency[4],\
     #  "netbenefit0" : netbenefit[0],"netbenefit1" : netbenefit[1],"netbenefit2" : netbenefit[2],"netbenefit3" : netbenefit[3], "netbenefit4" : netbenefit[4], 
