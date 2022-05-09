@@ -704,7 +704,7 @@ function formProcess(){
   X ZONE: Ground + 1.
   //////////////////////  
   -->
-<div id="no">
+
  <!--Leaflet map--> 
  <div id="map" style=" height: 45%; width: 70%; float: right; margin: 10px 15px 0 0; z-index:0;  "></div>
   <script>
@@ -753,24 +753,30 @@ function formProcess(){
   map.on('click', onMapClick);
   </script>
  
-
+ <div id="no">
  <!--Report start for X zone-->
 <div class="left2 section-tittle mb-40">  
  <hr class="style-five">
   <h2>Freeboard Cost Analysis Report</h2>
-    <div style="color: #1D2547; font-size:30px; font-Weight:bolder; background-color: #D0D0D0; width:100%">
-      Your property is in the <b>{{floodzone}}</b> Zone. You may not have a mandatory flood insurance requirement. <br> Would you like to include effects of flood insurance?
-      <div class="checkbox-switch">
-        <label class="switch">
-        <input type="checkbox" checked  class="input-checkbox">   
-        <div class="checkbox-animate">
-          <span class="checkbox-off">NO</span>
-          <span class="checkbox-on">YES</span>
-        </div>
-        </label>  
-    </div>
-  </div><br>
 
+  
+  <!--Insurnace check-->
+    <div class="optimal map-style">
+      <ul style=“list-style-type:square”>
+        <li>· Flood Zone: Your property is in the <b>{{floodzone}} Zone</b>. You may not have a mandatory flood insurance requirement.</li>
+        <li>· Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
+          <div class="checkbox-switch">
+          <label class="switch">
+          <input type="checkbox" class="input-checkbox">   
+          <div class="checkbox-animate">
+            <span class="checkbox-off">NO</span>
+            <span class="checkbox-on">YES</span> 
+          </div>
+          </label>      
+        </div>
+      </div><br>
+     </li>
+    </ul>
  
 
 <!--###################################################################################################################################################-->
@@ -895,6 +901,24 @@ function formProcess(){
       <span class="pricing-item-price-currency">$</span><!-- 
    --><span class="pricing-item-price-amount">0</span><!-- 
    --><span class="pricing-item-price-after"></span> </b> Total flood loss reduction) 
+    </div>
+    <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_indirect_avoided_monthly_loss0}},""],
+      "1": ["$", {{summation_indirect_avoided_monthly_loss1}},""],
+      "2": ["$", {{summation_indirect_avoided_monthly_loss2}},""],
+      "3": ["$", {{summation_indirect_avoided_monthly_loss3}},""],
+      "4": ["$", {{summation_indirect_avoided_monthly_loss4}},""]
+      }'
+    >
+    
+    
+    <p class="grid-style3 map-style b-summary-const">
+    <b class="map-style b-summary-value2">
+    <span class="pricing-item-price-currency">$</span><!-- 
+    --><span class="pricing-item-price-amount">0</span><!-- 
+    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
     </div>
   </div>    
 </div>
@@ -1105,7 +1129,7 @@ function formProcess(){
        While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
        <b class="map-style">${{summation_total_monthly_saving_wi_low}}</b> to <b class="map-style">${{summation_total_monthly_saving_wi_high}}</b>.
        </div>
-       <section id="section-3"><div id="chartNew_XZONE" class="zc-body"></div><div class="bfe"><br></section> 
+       <div id="chartNew_XZONE" class="zc-body"></div><div class="bfe"><br> </div>
 
      <!--Freeboard cost-->
      <hr class="style-five">
@@ -1114,7 +1138,7 @@ function formProcess(){
         The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
         <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
       </div>  
-      <section id="section-4"><div id="chart1_XZONE" class="zc-body"></div></section>
+      <div id="chart1_XZONE" class="zc-body"></div>
     
     
     <!--Insurance-->
@@ -1123,10 +1147,10 @@ function formProcess(){
      <div class="graph-description" >
       Since your building is located in the <b class="map-style">X zone</b>, there are no monthly insurance premium savings. 
       </div>
-     <section id="section-5">  
+       
       <center>
        <div id="chart2_XZONE" class="zc-body"></div>
-      </center> </section>
+      </center> 
 
     <!--Reduction in expected flood losses-->
    <hr class="style-five">
@@ -1135,9 +1159,9 @@ function formProcess(){
         Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
         Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_total_monthly_saving_wi_low | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_saving_wi_high | intcomma}}</b>. 
       </div>
-    <section id="section-6"><div id="chart3_XZONE" class="zc-body"></div> </section> 
+    <div id="chart3_XZONE" class="zc-body"></div>  
   </div>
-</div>  </div>  </div>
+</div> 
 
 <!--###################################################################################################################################################-->
 <!--Xzone without insurance-->
@@ -1159,7 +1183,7 @@ function formProcess(){
         <input onchange='setImage(this)'
           type="range"
           value="{{OptimalFreeboard}}"
-          class="slider" id="myRange" list="scale"
+          class="slider" id="myRange_Xzone_without" list="scale"
           data-price-input='{
               "0": "0ft freeboard",
               "1": "1ft freeboard",
@@ -1202,7 +1226,7 @@ function formProcess(){
          }'
     > 
 
-  <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
+  <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo_Xzone_without"> </span> ft</b> of  freeboard, </p>
     <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
      <div class="vl"><p class="grid-style3 map-style" >
       {% comment %} <b class="b-summary-value map-style">        
@@ -1243,6 +1267,25 @@ function formProcess(){
       <span class="pricing-item-price-currency">$</span><!-- 
    --><span class="pricing-item-price-amount">0</span><!-- 
    --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+    </div>
+
+    <div
+    class="pricing-item-price"
+    data-price-output='{
+      "0": ["$", {{summation_indirect_avoided_monthly_loss0}},""],
+      "1": ["$", {{summation_indirect_avoided_monthly_loss1}},""],
+      "2": ["$", {{summation_indirect_avoided_monthly_loss2}},""],
+      "3": ["$", {{summation_indirect_avoided_monthly_loss3}},""],
+      "4": ["$", {{summation_indirect_avoided_monthly_loss4}},""]
+      }'
+    >
+
+
+    <p class="grid-style3 map-style b-summary-const">
+    <b class="map-style b-summary-value2">
+    <span class="pricing-item-price-currency">$</span><!-- 
+    --><span class="pricing-item-price-amount">0</span><!-- 
+    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
     </div>
   </div>    
 </div>
@@ -1445,7 +1488,6 @@ function formProcess(){
 </div>
 </div>
 </div> 
-</section>
 <br>
 <br>
 <br>
@@ -1456,7 +1498,7 @@ function formProcess(){
       While the increase in your monthly mortgage payment for adding freeboard will be minor, the monthly savings are substantial, ranging from 
       <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
       </div>
-      <section id="section-3"><div id="chartNew_XZONE_NoIns" class="zc-body"></div><div class="bfe"><br></section> 
+      <div id="chartNew_XZONE_NoIns" class="zc-body"></div><div class="bfe"><br></div>
 
     <!--Freeboard cost-->
     <hr class="style-five">
@@ -1465,7 +1507,7 @@ function formProcess(){
       The expense of incorporating freeboard into new structures is surprisingly low. The additional monthly payment amount needed to raise the home at the time it's built ranges from  
       <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
     </div>  
-    <section id="section-4"><div id="chart1_XZONE_NoIns" class="zc-body"></div></section>
+    <div id="chart1_XZONE_NoIns" class="zc-body"></div>
   
   
   <!--Insurance-->
@@ -1473,12 +1515,10 @@ function formProcess(){
   <h2 class="map-style-title">Monthly Insurance Premium Savings</h2>
     <div class="graph-description" >
     Since your building is located in the <b class="map-style">X zone</b>, there are no monthly insurance premium savings. 
-    </div>
-    <section id="section-5">  
+    </div> 
     <center>
       <div id="chart2_XZONE_NoIns" class="zc-body"></div>
-    </center> </section>
-
+    </center> 
   <!--Reduction in expected flood losses-->
   <hr class="style-five">
   <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
@@ -1486,10 +1526,8 @@ function formProcess(){
       Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
       Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
     </div>
-  <section id="section-6"><div id="chart3_XZONE_NoIns" class="zc-body"></div> </section> 
+  <div id="chart3_XZONE_NoIns" class="zc-body"></div> 
  
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -1503,354 +1541,329 @@ Form for other zone: BFE + 1
 //////////////////////  
 -->
 
-<div id="yes"> 
-<div class="left2 section-tittle mb-40"> 
-
-
-<!--Leaflet map--> 
-
-<div id="map2" style=" height: 45%; width:100%; float: right; margin-top:80px; z-index:0; "><section id="section-1"></section> </div>
-<script>
-  // initialize the map on the "map" div with a given center and zoom
-  var map2 = L.map('map2', {
-    center: [{{lattitude_list}},{{longitude_list}}],
-    measureControl:true,
-    zoomSnap: 0.25,
-    zoomControl:true, maxZoom:45, minZoom:1,
-    zoomDelta: 0.25,
-    zoom: 14
-  });
-
-  //Add scale
-  L.control.scale().addTo(map2);
-
-  //Tile layer
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1Ijoiaml5b3VuZyIsImEiOiJja3o1eXFqNHIwdjhzMm9tejh3eWZjd2R4In0.Rz8iZagw0-OVOS1fjKMwzQ'
-  }).addTo(map2);
-
-
-//Popup for cliked location  
-var marker = L.marker([{{lattitude_list}},{{longitude_list}}]).bindPopup("{{location}}<br><center><b>Flood zone:</b> {{floodzone}}</center>").addTo(map2);
-
-function onMapClick(e) {
-  alert("You clicked the map at " + e.latlng);
-}
-
-map2.on('click', onMapClick);
-
-var popup = L.popup();
-
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map2);
-}
-
-map2.on('click', onMapClick);
-</script>
-<!--Insurnace check-->
-<div style="color: #1D2547; font-size:30px; font-Weight:bolder;  position: fixed; background-color: #D0D0D0; position: fixed;
-top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
-  Your property is in the <b>{{floodzone}}</b> Zone. You may have a mandatory flood insurance requirement. <br> Would you like to include effects of flood insurance?
-    <div class="checkbox-switch">
-      <label class="switch-OtherZone">
-        <input type="checkbox" checked  class="input-checkbox">   
-        <div class="checkbox-animate">
-          <span class="checkbox-off">NO</span>
-          <span class="checkbox-on">YES</span>
-        </div>
-        </label>  
-    </div>
-</div>
-</div>
-
 <!--Result details-->
+<!--Other zone with insurance-->
+<!--########################################################################################################################################-->
 
 
- <!--########################################################################################################################################-->
- <!--Graph with insurance-->
- <div id="OtherzoneInsuranceChart">
-  <div class="left2 section-tittle mb-40">
+<div id="yes"> 
+<div class="left2 section-tittle mb-40">  
+ 
     <!--Report start for other zone-->
-      <hr class="style-five">
-      <section id="section-2"> 
+      <hr class="style-five"> 
        <h2>Freeboard Cost Analysis Report</h2>
-             <div class="optimal map-style">For your home, <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
-           <div class="pricing row2" > 
-           <div class="pricing-slider column2"> 
-             <center><label class="form-slider" >
-               <img id='img2' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
-               <center><div class="pricing-slider-value" ></div></center> <br>
-               <datalist id="scale">
-                 <option>0</option>
-                 <option>1</option>
-                 <option>2</option>
-                 <option>3</option>
-                 <option>4</option>
-               </datalist>
-               <input onchange='setImage(this)'
-                 type="range"
-                 value="{{optimal_freeboard_wi}}"
-                 class="slider2" id="myRange2" list="scale"
-                 data-price-input='{
-                     "0": "0ft freeboard",
-                     "1": "1ft freeboard",
-                     "2": "2ft freeboard",
-                     "3": "3ft freeboard",
-                     "4": "4ft freeboard"                
-                   }'
-               />
-             </label></center>
-           </div>
-               
-       <div  style=" display:inline-block; vertical-align: top; "  >
-          
-           <!--Monthly premium savings-->
-           <!--  for calculations with below BFE   -->
-           <!--  <div
-             class="pricing-item-price" 
-             data-price-output='{
-               "-4": ["$", {{summation_total_monthly_premium_saving0}},""],
-               "-3": ["$", {{summation_total_monthly_premium_saving1}},""],
-               "-2": ["$", {{summation_total_monthly_premium_saving2}},""],
-               "-1": ["$", {{summation_total_monthly_premium_saving3}},""],
-               "0": ["$", {{summation_total_monthly_premium_saving4}},""], 
-               "1": ["$", {{summation_total_monthly_premium_saving5}},""],
-               "2": ["$", {{summation_total_monthly_premium_saving6}},""],
-               "3": ["$", {{summation_total_monthly_premium_saving7}},""],
-               "4": ["$", {{summation_total_monthly_premium_saving8}},""]
-             }'
-           > -->
-     
-            <!--  for calculations without below BFE   -->
-           <div
-             class="pricing-item-price" 
-             data-price-output='{
-               "0": ["$", {{summation_total_monthly_premium_saving0}},""], 
-               "1": ["$", {{summation_total_monthly_premium_saving1}},""],
-               "2": ["$", {{summation_total_monthly_premium_saving2}},""],
-               "3": ["$", {{summation_total_monthly_premium_saving3}},""],
-               "4": ["$", {{summation_total_monthly_premium_saving4}},""] 
-                }'
-           > 
-     
-         <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo2"> </span> ft</b> of  freeboard, </p>
-           <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
-            <div class="vl"><p class="grid-style3 map-style" >
-             <b class="b-summary-value map-style">        
-             <span class="pricing-item-price-currency">$</span><!-- 
-          --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> insurance savings per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood loss reduction."/></p>
-         <!--Flood loss-->
-         <!--  for calculations with below BFE   -->
-         <!--  <div
-             class="pricing-item-price"
-             data-price-output='{
-               "-4": ["$", {{summation_monthly_avoided_loss0}},""],
-               "-3": ["$", {{summation_monthly_avoided_loss1}},""],
-               "-2": ["$", {{summation_monthly_avoided_loss2}},""],
-               "-1": ["$", {{summation_monthly_avoided_loss3}},""],
-               "0": ["$", {{summation_monthly_avoided_loss4}},""],
-               "1": ["$", {{summation_monthly_avoided_loss5}},""],
-               "2": ["$", {{summation_monthly_avoided_loss6}},""],
-               "3": ["$", {{summation_monthly_avoided_loss7}},""],
-               "4": ["$", {{summation_monthly_avoided_loss8}},""]
-               }'
-           > -->
-             <!--  for calculations without below BFE   -->
-           <div
-             class="pricing-item-price"
-             data-price-output='{
-               "0": ["$", {{summation_monthly_avoided_loss_wi0}},""],
-               "1": ["$", {{summation_monthly_avoided_loss_wi1}},""],
-               "2": ["$", {{summation_monthly_avoided_loss_wi2}},""],
-               "3": ["$", {{summation_monthly_avoided_loss_wi3}},""],
-               "4": ["$", {{summation_monthly_avoided_loss_wi4}},""]
-               }'
-           >
-     
-     
-           <p class="grid-style3 map-style">
-           <b class="b-summary-value map-style"> 
-             <span class="pricing-item-price-currency">$</span><!-- 
-          --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
-           </div>
-           <div
-           class="pricing-item-price"
-           data-price-output='{
-             "0": ["$", {{summation_monthly_avoided_loss0}},""],
-             "1": ["$", {{summation_monthly_avoided_loss1}},""],
-             "2": ["$", {{summation_monthly_avoided_loss2}},""],
-             "3": ["$", {{summation_monthly_avoided_loss3}},""],
-             "4": ["$", {{summation_monthly_avoided_loss4}},""]
-             }'
-         >
-     
-     
-         <p class="grid-style3 map-style b-summary-const">
-          (Out of <b class="map-style b-summary-value2">
-          <span class="pricing-item-price-currency">$</span><!-- 
-        --><span class="pricing-item-price-amount">0</span><!-- 
-        --><span class="pricing-item-price-after"></span> </b> total flood loss reduction) 
-         </div>
-         </div>    
-       </div>
-     <br>
-     
-           <!--amortized cost-->
-           <!--  for calculations with below BFE   -->
-            <!-- <div
-             class="pricing-item-price"
-             data-price-output='{
-              "-4": ["$", {{summation_Amortized_FC0}},""],
-               "-3": ["$", {{summation_Amortized_FC1}},""],
-               "-2": ["$", {{summation_Amortized_FC2}},""],
-               "-1": ["$", {{summation_Amortized_FC3}},""],
-               "0": ["$", {{summation_Amortized_FC4}},""],
-               "1": ["$", {{summation_Amortized_FC5}},""],
-               "2": ["$", {{summation_Amortized_FC6}},""],
-               "3": ["$", {{summation_Amortized_FC7}},""],
-               "4": ["$", {{summation_Amortized_FC8}},""]
-             }'
-           > -->
-            <!--  for calculations without below BFE   -->
-           <div
-             class="pricing-item-price"
-             data-price-output='{
-              "0": ["$", {{summation_Amortized_FC0}},""],
-               "1": ["$", {{summation_Amortized_FC1}},""],
-               "2": ["$", {{summation_Amortized_FC2}},""],
-               "3": ["$", {{summation_Amortized_FC3}},""],
-               "4": ["$", {{summation_Amortized_FC4}},""]
-             }'
-           > 
-     
-     
-           <p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
-           <div class="vl"> <p class="grid-style3 map-style" >
-           <b class="b-summary-value map-style">      
-             <span class="pricing-item-price-currency">$</span><!-- 
-          --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> amortized cost per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title=""/></p>
-            
-     
-           <!--Freeboard cost-->
-           {% load humanize %}
-     
-           <!--  for calculations with below BFE   -->
-     
-           <!--
-              <div
-             class="pricing-item-price"
-             data-price-output='{
-              "-4": ["$", {{summation_freeboardCost0}},""],
-               "-3": ["$", {{summation_freeboardCost1}},""],
-               "-2": ["$", {{summation_freeboardCost2}},""],
-               "-1": ["$", {{summation_freeboardCost3}},""],
-               "0": ["$", {{summation_freeboardCost4}},""],
-               "1": ["$", {{summation_freeboardCost5}},""],
-               "2": ["$", {{summation_freeboardCost6}},""],
-               "3": ["$", {{summation_freeboardCost7}},""],
-               "4": ["$", {{summation_freeboardCost8}},""]
-             }'
-           >
-           -->
-     
-           <!--  for calculations without below BFE   -->
-     
-           <div
-             class="pricing-item-price"
-             data-price-output='{
-               "0": ["$", {{summation_freeboardCost0}},""],
-               "1": ["$", {{summation_freeboardCost1}},""],
-               "2": ["$", {{summation_freeboardCost2}},""],
-               "3": ["$", {{summation_freeboardCost3}},""],
-               "4": ["$", {{summation_freeboardCost4}},""]       
-             }'
-           >
-                 <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
-           <p class="grid-style3 map-style b-summary-const">
-              (based on <b class="map-style b-summary-value2">
-             <span class="pricing-item-price-currency">$</span><!-- 
-          --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> additional construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
-           </div>   
-         </div>
-         <br>
-     
-             
-          <!--  for calculations with below BFE   -->
-          <!-- 
-            <div
-             class="pricing-item-price"
-             data-price-output='{
-               "-4": ["$", {{summation_total_savings_permonth_insurance0}},""],
-               "-3": ["$", {{summation_total_savings_permonth_insurance1}},""],
-               "-2": ["$", {{summation_total_savings_permonth_insurance2}},""],
-               "-1": ["$", {{summation_total_savings_permonth_insurance3}},""],
-               "0": ["$", {{summation_total_savings_permonth_insurance4}},""],
-               "1": ["$", {{summation_total_savings_permonth_insurance5}},""],
-               "2": ["$", {{summation_total_savings_permonth_insurance6}},""],
-               "3": ["$", {{summation_total_savings_permonth_insurance7}},""],
-               "4": ["$", {{summation_total_savings_permonth_insurance8}},""]
-             }'
-           >
-          -->
-     
-           <!--  for calculations with insurance   -->
-           <div
-             class="pricing-item-price"
-             data-price-output='{
-               "0": ["$", {{summation_total_monthly_saving0_wi}},""],
-               "1": ["$", {{summation_total_monthly_saving1_wi}},""],
-               "2": ["$", {{summation_total_monthly_saving2_wi}},""],
-               "3": ["$", {{summation_total_monthly_saving3_wi}},""],
-               "4": ["$", {{summation_total_monthly_saving4_wi}},""]
-             }'
-           >
-     
-           <p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
-           <div class="vl"> <p class="grid-style3 map-style" >
-        <b class="b-summary-value map-style">      
-             <span class="pricing-item-price-currency">$</span><!-- 
-          --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction and flood insurance) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/></p>
-            
-            <!--Flood loss-->
-     
-            <!--  for calculations without insurance   -->
-           <!--
-              <div
-             class="pricing-item-price"
-             data-price-output='{
-               "-4": ["$", {{summation_total_monthly_saving0}},""],
-               "-3": ["$", {{summation_total_monthly_saving1}},""],
-               "-2": ["$", {{summation_total_monthly_saving2}},""],
-               "-1": ["$", {{summation_total_monthly_saving3}},""],
-               "0": ["$", {{summation_total_monthly_saving4}},""],
-               "1": ["$", {{summation_total_monthly_saving5}},""],
-               "2": ["$", {{summation_total_monthly_saving6}},""],
-               "3": ["$", {{summation_total_monthly_saving7}},""],
-               "4": ["$", {{summation_total_monthly_saving8}},""]
-             }'
-           >
-           -->
-     
-         </div>
-       </div>
-     </div>
-     </section>
-     <br>
-     <br>
-     <br> 
+
+          <!--Insurnace check-->
+          <div class="optimal map-style">
+            <ul style=“list-style-type:square”>
+              <li>· Flood Zone: Your property is in the <b>{{floodzone}} Zone</b>. You may have a mandatory flood insurance requirement.</li>
+              <li>· Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
+                <div class="checkbox-switch">
+                <label class="switch-OtherZone">
+                <input type="checkbox" checked  class="input-checkbox">   
+                <div class="checkbox-animate">
+                  <span class="checkbox-off">NO</span>
+                  <span class="checkbox-on">YES</span> 
+                </div>
+                </label>      
+              </div>
+            </div><br>
+          </li>
+          </ul>
+
+<!--###################################################################################################################################################-->
+<!--Interactive slide--> 
+
+<div id="OtherzoneInsuranceChart">
+<div class="optimal map-style">For your home, <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+<div class="pricing row2" > 
+<div class="pricing-slider column2"> 
+  <center><label class="form-slider" >
+    <img id='img2' src='static/img/construction/twofeet.png' class="pricing-slider-img"/><br><br>
+    <center><div class="pricing-slider-value" ></div></center> <br>
+    <datalist id="scale">
+      <option>0</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </datalist>
+    <input onchange='setImage(this)'
+      type="range"
+      value="{{optimal_freeboard_wi}}"
+      class="slider2" id="myRange2" list="scale"
+      data-price-input='{
+          "0": "0ft freeboard",
+          "1": "1ft freeboard",
+          "2": "2ft freeboard",
+          "3": "3ft freeboard",
+          "4": "4ft freeboard"                
+        }'
+    />
+  </label></center>
+</div>
+    
+<div  style=" display:inline-block; vertical-align: top; "  >
+
+<!--Monthly premium savings-->
+<!--  for calculations with below BFE   -->
+<!--  <div
+  class="pricing-item-price" 
+  data-price-output='{
+    "-4": ["$", {{summation_total_monthly_premium_saving0}},""],
+    "-3": ["$", {{summation_total_monthly_premium_saving1}},""],
+    "-2": ["$", {{summation_total_monthly_premium_saving2}},""],
+    "-1": ["$", {{summation_total_monthly_premium_saving3}},""],
+    "0": ["$", {{summation_total_monthly_premium_saving4}},""], 
+    "1": ["$", {{summation_total_monthly_premium_saving5}},""],
+    "2": ["$", {{summation_total_monthly_premium_saving6}},""],
+    "3": ["$", {{summation_total_monthly_premium_saving7}},""],
+    "4": ["$", {{summation_total_monthly_premium_saving8}},""]
+  }'
+> -->
+
+<!--  for calculations without below BFE   -->
+<div
+  class="pricing-item-price" 
+  data-price-output='{
+    "0": ["$", {{summation_total_monthly_premium_saving0}},""], 
+    "1": ["$", {{summation_total_monthly_premium_saving1}},""],
+    "2": ["$", {{summation_total_monthly_premium_saving2}},""],
+    "3": ["$", {{summation_total_monthly_premium_saving3}},""],
+    "4": ["$", {{summation_total_monthly_premium_saving4}},""] 
+    }'
+> 
+
+<p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo2"> </span> ft</b> of  freeboard, </p>
+<p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
+<div class="vl"><p class="grid-style3 map-style" >
+  <b class="b-summary-value map-style">        
+  <span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> insurance savings per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip"  title="Monthly Savinngs is the freeboard's monthly loan payment subtracted from the monthly premium savings of the freeboard added to its monthly flood loss reduction."/></p>
+<!--Flood loss-->
+<!--  for calculations with below BFE   -->
+<!--  <div
+  class="pricing-item-price"
+  data-price-output='{
+    "-4": ["$", {{summation_monthly_avoided_loss0}},""],
+    "-3": ["$", {{summation_monthly_avoided_loss1}},""],
+    "-2": ["$", {{summation_monthly_avoided_loss2}},""],
+    "-1": ["$", {{summation_monthly_avoided_loss3}},""],
+    "0": ["$", {{summation_monthly_avoided_loss4}},""],
+    "1": ["$", {{summation_monthly_avoided_loss5}},""],
+    "2": ["$", {{summation_monthly_avoided_loss6}},""],
+    "3": ["$", {{summation_monthly_avoided_loss7}},""],
+    "4": ["$", {{summation_monthly_avoided_loss8}},""]
+    }'
+> -->
+  <!--  for calculations without below BFE   -->
+<div
+  class="pricing-item-price"
+  data-price-output='{
+    "0": ["$", {{summation_monthly_avoided_loss_wi0}},""],
+    "1": ["$", {{summation_monthly_avoided_loss_wi1}},""],
+    "2": ["$", {{summation_monthly_avoided_loss_wi2}},""],
+    "3": ["$", {{summation_monthly_avoided_loss_wi3}},""],
+    "4": ["$", {{summation_monthly_avoided_loss_wi4}},""]
+    }'
+>
+
+
+<p class="grid-style3 map-style">
+<b class="b-summary-value map-style"> 
+  <span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual loss with no freeboard added divided by 12."/>
+</div>
+<div
+class="pricing-item-price"
+data-price-output='{
+  "0": ["$", {{summation_monthly_avoided_loss0}},""],
+  "1": ["$", {{summation_monthly_avoided_loss1}},""],
+  "2": ["$", {{summation_monthly_avoided_loss2}},""],
+  "3": ["$", {{summation_monthly_avoided_loss3}},""],
+  "4": ["$", {{summation_monthly_avoided_loss4}},""]
+  }'
+>
+
+
+<p class="grid-style3 map-style b-summary-const">
+(Out of <b class="map-style b-summary-value2">
+<span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> total flood loss reduction) 
+</div>
+
+<div
+class="pricing-item-price"
+data-price-output='{
+  "0": ["$", {{summation_indirect_avoided_monthly_loss0}},""],
+  "1": ["$", {{summation_indirect_avoided_monthly_loss1}},""],
+  "2": ["$", {{summation_indirect_avoided_monthly_loss2}},""],
+  "3": ["$", {{summation_indirect_avoided_monthly_loss3}},""],
+  "4": ["$", {{summation_indirect_avoided_monthly_loss4}},""]
+  }'
+>
+
+
+<p class="grid-style3 map-style b-summary-const">
+<b class="map-style b-summary-value2">
+<span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+</div>
+</div>    
+</div>
+<br>
+
+<!--amortized cost-->
+<!--  for calculations with below BFE   -->
+<!-- <div
+  class="pricing-item-price"
+  data-price-output='{
+  "-4": ["$", {{summation_Amortized_FC0}},""],
+    "-3": ["$", {{summation_Amortized_FC1}},""],
+    "-2": ["$", {{summation_Amortized_FC2}},""],
+    "-1": ["$", {{summation_Amortized_FC3}},""],
+    "0": ["$", {{summation_Amortized_FC4}},""],
+    "1": ["$", {{summation_Amortized_FC5}},""],
+    "2": ["$", {{summation_Amortized_FC6}},""],
+    "3": ["$", {{summation_Amortized_FC7}},""],
+    "4": ["$", {{summation_Amortized_FC8}},""]
+  }'
+> -->
+<!--  for calculations without below BFE   -->
+<div
+  class="pricing-item-price"
+  data-price-output='{
+  "0": ["$", {{summation_Amortized_FC0}},""],
+    "1": ["$", {{summation_Amortized_FC1}},""],
+    "2": ["$", {{summation_Amortized_FC2}},""],
+    "3": ["$", {{summation_Amortized_FC3}},""],
+    "4": ["$", {{summation_Amortized_FC4}},""]
+  }'
+> 
+
+
+<p class="grid-style3 map-style" ><b class="summary-b">Cost of Mitigation</b> <br>
+<div class="vl"> <p class="grid-style3 map-style" >
+<b class="b-summary-value map-style">      
+  <span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> amortized cost per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title=""/></p>
+
+
+<!--Freeboard cost-->
+{% load humanize %}
+
+<!--  for calculations with below BFE   -->
+
+<!--
+  <div
+  class="pricing-item-price"
+  data-price-output='{
+  "-4": ["$", {{summation_freeboardCost0}},""],
+    "-3": ["$", {{summation_freeboardCost1}},""],
+    "-2": ["$", {{summation_freeboardCost2}},""],
+    "-1": ["$", {{summation_freeboardCost3}},""],
+    "0": ["$", {{summation_freeboardCost4}},""],
+    "1": ["$", {{summation_freeboardCost5}},""],
+    "2": ["$", {{summation_freeboardCost6}},""],
+    "3": ["$", {{summation_freeboardCost7}},""],
+    "4": ["$", {{summation_freeboardCost8}},""]
+  }'
+>
+-->
+
+<!--  for calculations without below BFE   -->
+
+<div
+  class="pricing-item-price"
+  data-price-output='{
+    "0": ["$", {{summation_freeboardCost0}},""],
+    "1": ["$", {{summation_freeboardCost1}},""],
+    "2": ["$", {{summation_freeboardCost2}},""],
+    "3": ["$", {{summation_freeboardCost3}},""],
+    "4": ["$", {{summation_freeboardCost4}},""]       
+  }'
+>
+      <!--Part of title...Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490" --> 
+<p class="grid-style3 map-style b-summary-const">
+  (based on <b class="map-style b-summary-value2">
+  <span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> additional construction cost)  <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Freeboard Cost is the product of freeboard height and cost factor of (0.023) multiplied by the construction cost of the home. Freeboard cost is calculated as a total loan amount with 30-year term and 3% interest rate. The cost of the freeboard with no loan is $7490"/></p>
+</div>   
+</div>
+<br>
+
+  
+<!--  for calculations with below BFE   -->
+<!-- 
+<div
+  class="pricing-item-price"
+  data-price-output='{
+    "-4": ["$", {{summation_total_savings_permonth_insurance0}},""],
+    "-3": ["$", {{summation_total_savings_permonth_insurance1}},""],
+    "-2": ["$", {{summation_total_savings_permonth_insurance2}},""],
+    "-1": ["$", {{summation_total_savings_permonth_insurance3}},""],
+    "0": ["$", {{summation_total_savings_permonth_insurance4}},""],
+    "1": ["$", {{summation_total_savings_permonth_insurance5}},""],
+    "2": ["$", {{summation_total_savings_permonth_insurance6}},""],
+    "3": ["$", {{summation_total_savings_permonth_insurance7}},""],
+    "4": ["$", {{summation_total_savings_permonth_insurance8}},""]
+  }'
+>
+-->
+
+<!--  for calculations with insurance   -->
+<div
+  class="pricing-item-price"
+  data-price-output='{
+    "0": ["$", {{summation_total_monthly_saving0_wi}},""],
+    "1": ["$", {{summation_total_monthly_saving1_wi}},""],
+    "2": ["$", {{summation_total_monthly_saving2_wi}},""],
+    "3": ["$", {{summation_total_monthly_saving3_wi}},""],
+    "4": ["$", {{summation_total_monthly_saving4_wi}},""]
+  }'
+>
+
+<p class="grid-style3 map-style" ><b class="summary-b">Total Monthly Savings</b> <br>
+<div class="vl"> <p class="grid-style3 map-style" >
+<b class="b-summary-value map-style">      
+  <span class="pricing-item-price-currency">$</span><!-- 
+--><span class="pricing-item-price-amount">0</span><!-- 
+--><span class="pricing-item-price-after"></span> </b> savings per month (flood loss reduction and flood insurance) <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Insurance savings per month is the difference between the annual premium calculated for adding the freeboard and the annual premium with no freeboard added divided by 12."/></p>
+
+<!--Flood loss-->
+
+<!--  for calculations without insurance   -->
+<!--
+  <div
+  class="pricing-item-price"
+  data-price-output='{
+    "-4": ["$", {{summation_total_monthly_saving0}},""],
+    "-3": ["$", {{summation_total_monthly_saving1}},""],
+    "-2": ["$", {{summation_total_monthly_saving2}},""],
+    "-1": ["$", {{summation_total_monthly_saving3}},""],
+    "0": ["$", {{summation_total_monthly_saving4}},""],
+    "1": ["$", {{summation_total_monthly_saving5}},""],
+    "2": ["$", {{summation_total_monthly_saving6}},""],
+    "3": ["$", {{summation_total_monthly_saving7}},""],
+    "4": ["$", {{summation_total_monthly_saving8}},""]
+  }'
+>
+-->
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<br> 
   <!--Monthly saving-->
       <hr class="style-five">
       <h2 class="map-style-title" >Monthly Savings</h2>
@@ -1859,8 +1872,8 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
          <b class="map-style">${{summation_total_monthly_saving_wi_low}}</b> to <b class="map-style">${{summation_total_monthly_saving_wi_high}}</b>.
          <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
          </div>
-         {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
-         <section id="section-3"> <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
+         {% comment %} <div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b> {% endcomment %}
+          <div id="NewChart" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b>
         
 
    <!--Freeboard cost-->
@@ -1872,7 +1885,7 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
          <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
          <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
        </div>  
-       <section id="section-4"><div id="chart1" class="zc-body"></div></section>
+       <div id="chart1" class="zc-body"></div>
  
  
  <!--Insurance-->
@@ -1883,10 +1896,10 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
         <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
         <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
        </div>
-      <section id="section-5">  
+        
        <center>
         <div id="chart2" class="zc-body"></div>
-       </center> </section>
+       </center> 
  
  
  <!--Reduction in expected flood losses-->
@@ -1897,22 +1910,14 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
            Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{monthly_avoided_loss_wi_Low | intcomma}}</b> to <b class="map-style">${{monthly_avoided_loss_wi_High | intcomma}}</b>. 
            <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
          </div>
-       <section id="section-6"><div id="chart3" class="zc-body"></div> </section> 
-   </div>
-
+       <div id="chart3" class="zc-body"></div>  
+    </div>
   </div>
-
 
 <!--########################################################################################################################################-->
  <!--Graph without insurance-->
- <div class="left2 section-tittle mb-40"> 
- <div id="OtherzoneNoInsuranceChart">
-
-    <!--Report start for other zone-->
-      <hr class="style-five">
-      <section id="section-2"> 
-       <h2>Freeboard Cost Analysis Report</h2>
-             <div class="optimal map-style">For your home,  <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+ <div class="left2 section-tittle mb-40" id="OtherzoneNoInsuranceChart"> 
+         <div class="optimal map-style">For your home,  <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
            <div class="pricing row2" > 
            <div class="pricing-slider column2"> 
              <center><label class="form-slider" >
@@ -2010,6 +2015,26 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
           --><span class="pricing-item-price-amount">0</span><!-- 
           --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
            </div>
+
+           <div
+           class="pricing-item-price"
+           data-price-output='{
+             "0": ["$", {{summation_indirect_avoided_monthly_loss0}},""],
+             "1": ["$", {{summation_indirect_avoided_monthly_loss1}},""],
+             "2": ["$", {{summation_indirect_avoided_monthly_loss2}},""],
+             "3": ["$", {{summation_indirect_avoided_monthly_loss3}},""],
+             "4": ["$", {{summation_indirect_avoided_monthly_loss4}},""]
+             }'
+           >
+           
+           
+           <p class="grid-style3 map-style b-summary-const">
+           <b class="map-style b-summary-value2">
+           <span class="pricing-item-price-currency">$</span><!-- 
+           --><span class="pricing-item-price-amount">0</span><!-- 
+           --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img id='img' src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+           </div>
+
          </div>    
        </div>
      <br>
@@ -2169,8 +2194,7 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
            </div>
          </div>
        </div>
-     </div>
-     </section>
+     </div></div></div>
      <br>
      <br>
      <br>
@@ -2182,8 +2206,8 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
      <b class="map-style">${{summation_total_monthly_saving_low}}</b> to <b class="map-style">${{Optimalsavingsumm}}</b>.
      <!--The optimal (maximum) monthly savings is ${{OptimalSaving | intcomma}} at freeboard height {{OptimalFreeboard}} ft.--> 
      </div>
-     {% comment %} <section id="section-3"><div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b></section> {% endcomment %}
-     <section id="section-3"> <div id="NewChart_NoIns" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b></section>
+     {% comment %} <div id="chart5" class="zc-body"></div><div class="bfe"><br>BFE stands for <b>Base Flood Elevation</b> {% endcomment %}
+      <div id="NewChart_NoIns" class="zc-body"></div> <br>BFE stands for <b>Base Flood Elevation</b>
     
 
 <!--Freeboard cost-->
@@ -2195,7 +2219,7 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
      <b class="map-style">${{summation_am_freeboardCostlow | intcomma}}</b> to <b class="map-style">${{summation_am_freeboardCosthigh | intcomma}}</b>.
      <!-- The optimal (maximum) freeboard cost is ${{optimal_freeboardCost |intcomma}} at freeboard height {{optimal_freeboard_freeboardCost}} ft. -->
    </div>  
-   <section id="section-4"><div id="chart1_NoIns" class="zc-body"></div></section>
+   <div id="chart1_NoIns" class="zc-body"></div>
 
 
 <!--Insurance-->
@@ -2206,10 +2230,10 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
     <!--, also increases or stabilizes flood premiums savings per month ${{monthly_premium_saving0 | intcomma}} to ${{monthly_premium_saving4 | intcomma}}.--> 
     <!--The optimal (minimum) annual insurance premium is ${{optimal_total_annual_premium | intcomma}} at freeboard height {{optimal_total_annual_premium_freeboard}} ft.-->
    </div>
-  <section id="section-5">  
+    
    <center>
     <div id="chart2_NoIns" class="zc-body"></div>
-   </center> </section>
+   </center> 
 
 
 <!--Reduction in expected flood losses-->
@@ -2220,8 +2244,8 @@ top: 0; z-index:1; padding: 10px; padding-top: 100px; width:100%">
        Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
        <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
      </div>
-   <section id="section-6"><div id="chart3_NoIns" class="zc-body"></div> </section> 
-   </section>
+   <div id="chart3_NoIns" class="zc-body"></div>  
+   
 </div> 
 </div>
 </div>
@@ -4358,7 +4382,7 @@ let chartConfig2_NoIns = {
 <script>
 $(document).ready(function() {
 
-  $('#XzoneNoInsuranceChart').css("display", "none");
+  $('#XzoneInsuranceChart').css("display", "none");
 
   $(".switch input").on("change", function(e) {
     const isOn = e.currentTarget.checked;

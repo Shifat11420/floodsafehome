@@ -93,7 +93,7 @@ jQuery(document).ready(function($){
     
   }
   
-  /* slider number*/
+  /* slider number:X zone with insurance*/
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
   output.innerHTML = slider.value;
@@ -199,7 +199,8 @@ jQuery(document).ready(function($){
       input.el.clientWidth * multiplier - thumbOffset + priceInputOffset + "px";
   }
   })();
-  
+
+
   
   /*Toggling visibility*/
   function ShowHideDiv() {
