@@ -1844,26 +1844,33 @@ def search(request):
     print("\n")
     
     
-    ## Total monthly avoided loss ##
+    ## Total monthly avoided loss ## indirect_avoided_monthly_loss
     print("\n")
     print("monthly_avoided_loss_list_c : ", monthly_avoided_loss_list_c)
-
+    print("indirect_avoided_monthly_loss_list_c : ", indirect_avoided_monthly_loss_list_c)
   
     summation_monthly_avoided_loss = []
     avg_monthly_avoided_loss = []
+    summation_indirect_avoided_monthly_loss = []
+    avg_indirect_monthly_avoided_loss = []
     for z in range(len(monthly_avoided_loss)):
         summation_monthly_avoided_loss.append(0)
+        summation_indirect_avoided_monthly_loss.append(0)
     #print("summationlist_monthly_avoided_loss = " ,summation_monthly_avoided_loss)
+    #print("summation_indirect_avoided_monthly_loss = " ,summation_indirect_avoided_monthly_loss)
 
     for i in range(len(buildinglist)):   
         for z in range(len(monthly_avoided_loss)):
             summation_monthly_avoided_loss[z] = summation_monthly_avoided_loss[z] + monthly_avoided_loss_list_c[i][z]
+            summation_indirect_avoided_monthly_loss[z] = summation_indirect_avoided_monthly_loss[z] + indirect_avoided_monthly_loss_list_c[i][z]
     print("summationlist_monthly_avoided_loss = " ,summation_monthly_avoided_loss)
-    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss[1:0])   #**        
+    print("summation_indirect_avoided_monthly_loss = " ,summation_indirect_avoided_monthly_loss)
+    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss[1:0])   #** 
+    summation_indirect_avoided_monthly_loss_json = simplejson.dumps(summation_indirect_avoided_monthly_loss[1:0])   #**        
     
     for z in range(len(monthly_avoided_loss)):
-        avg_monthly_avoided_loss.append(int(summation_monthly_avoided_loss[z]/len(buildinglist)))
-    print("avglist_monthly_avoided_loss = " ,avg_monthly_avoided_loss) 
+        avg_indirect_monthly_avoided_loss.append(int(summation_indirect_avoided_monthly_loss[z]/len(buildinglist)))
+    print("avg_indirect_monthly_avoided_loss = " ,avg_indirect_monthly_avoided_loss) 
 
     print("\n")
 
@@ -2479,6 +2486,8 @@ def search(request):
         
         "summation_monthly_avoided_loss0":summation_monthly_avoided_loss[0], \
         "summation_monthly_avoided_loss1":summation_monthly_avoided_loss[1],"summation_monthly_avoided_loss2":summation_monthly_avoided_loss[2],"summation_monthly_avoided_loss3":summation_monthly_avoided_loss[3],"summation_monthly_avoided_loss4":summation_monthly_avoided_loss[4],\
+        "summation_indirect_avoided_monthly_loss0": summation_indirect_avoided_monthly_loss[0],"summation_indirect_avoided_monthly_loss1": summation_indirect_avoided_monthly_loss[1],"summation_indirect_avoided_monthly_loss2": summation_indirect_avoided_monthly_loss[2],"summation_indirect_avoided_monthly_loss3": summation_indirect_avoided_monthly_loss[3],"summation_indirect_avoided_monthly_loss4": summation_indirect_avoided_monthly_loss[4],\
+        "summation_indirect_avoided_monthly_loss_json": summation_indirect_avoided_monthly_loss_json,\
         "summation_monthly_avoided_loss_wi0": summation_monthly_avoided_loss_wi[0],"summation_monthly_avoided_loss_wi1": summation_monthly_avoided_loss_wi[1],"summation_monthly_avoided_loss_wi2": summation_monthly_avoided_loss_wi[2],"summation_monthly_avoided_loss_wi3": summation_monthly_avoided_loss_wi[3],"summation_monthly_avoided_loss_wi4":summation_monthly_avoided_loss_wi[4],"summation_monthly_avoided_loss_wi_High": max(summation_monthly_avoided_loss_wi[1:]), "summation_monthly_avoided_loss_wi_Low": min(summation_monthly_avoided_loss_wi[1:]),\
 
         
