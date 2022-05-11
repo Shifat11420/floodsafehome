@@ -298,11 +298,12 @@ crossorigin=""></script> {% endcomment %}
                                                     </ul>
                                                 </li>
                                                 <li><a href="/freeboardproject">Freeboard Project</a>
-                                                    <ul class="submenu">
-                                                       <li><a href="/freeboardproject#introduction">Introduction</a></li>
-                                                        <li><a href="/freeboardproject#objects">Objects</a></li>
-                                                        <li><a href="/freeboardproject">Methodologies</a></a></li>
-                                                    </ul>
+                                                  <ul class="submenu">
+                                                    <li><a href="/freeboardproject#introduction">Introduction</a></li>
+                                                     <li><a href="/freeboardproject#objects">Objects</a></li>
+                                                     <li><a href="/freeboardproject#methods">Methodologies</a></a></li>
+                                                     <li><a href="/freeboardproject#links">Related links</a></a></li>
+                                                 </ul>
                                                 </li>
                                                 <li><a href="/map"><b>Decision Making Map</b></a></li>
                                                 <li><a href="/survey">Survey</a></li>
@@ -352,7 +353,7 @@ crossorigin=""></script> {% endcomment %}
   <div class="bts-popup-container">
         <form action="/action_page.php" class="form-container">
           <h1 style="text-align:center; padding: 10px"><strong>Important notice</strong></h1>
-            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. Please check back in April 2022 for final version. <br><br></h2>
+            <h2 style="padding:25px"> This web tool is under development and algorithms/results are not complete. It is available at this time for information purposes only. <br><br></h2>
             <center><div class="btn ">  
               <a href="#0" class="button bts-popup-close">Close</a><br><br>
             </div></center>
@@ -494,15 +495,15 @@ crossorigin=""></script> {% endcomment %}
               <!--User type-->
               <label> <b class="map-style"> User Type  </b></label><br>
                 <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "Homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
-                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"> Landlord</label>
                 <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
                 
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type </b></label><br>
                   <label><input type="radio" name ="selectBox" value = "New building" class="bar"  checked> New building</label>
-                  <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>    
+                <!--  <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>   --> 
                 <br>  
                 
                 <!--Address or Parcel ID-->

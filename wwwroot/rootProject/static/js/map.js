@@ -23,7 +23,9 @@ jQuery(document).ready(function($){
               $('.bts-popup').removeClass('is-visible');
           }
       });
-  
+
+      
+      
   var didScroll; 
   var lastScrollTop = 0; 
   var delta = 5; 
@@ -158,7 +160,8 @@ jQuery(document).ready(function($){
         );
         pricingOutput.push(pricingOutputObj);
       }
-        
+      
+      
       pricingInput.el.setAttribute("min", 0);
       pricingInput.el.setAttribute(
         "max",

@@ -267,10 +267,11 @@ function formProcess(){
                                                 </li>
                                                 <li><a href="/freeboardproject">Freeboard Project</a>
                                                     <ul class="submenu">
-                                                       <li><a href="/freeboardproject#introduction">Introduction</a></li>
-                                                        <li><a href="/freeboardproject#objects">Objects</a></li>
-                                                        <li><a href="/freeboardproject">Methodologies</a></a></li>
-                                                    </ul>
+                                                        <li><a href="/freeboardproject#introduction">Introduction</a></li>
+                                                         <li><a href="/freeboardproject#objects">Objects</a></li>
+                                                         <li><a href="/freeboardproject#methods">Methodologies</a></a></li>
+                                                         <li><a href="/freeboardproject#links">Related links</a></a></li>
+                                                     </ul>
                                                 </li>
                                                 <li><a href="/map"><b>Decision Making Map</b></a>
                                                 </li>
@@ -346,16 +347,16 @@ function formProcess(){
               <!--User type-->
               <label> <b class="map-style"> User Type  </b></label><br>
                 <label for="chkYes"><input type="radio" name ="chk" id="chkYes" value = "Homeowner" class="bar" onclick="ShowHideDiv()"/> Homeowner</label>
-                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"/ disabled> Tenant</label> <br>         
-                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"/ disabled> Landlord</label>
+                <label for="chkTenant"><input type="radio" name ="chk" id="chkTenant" value = "Tenant" class="bar2" onclick="ShowHideDiv3()"> Tenant</label> <br>         
+                <label for="chkLandlord"><input type="radio" name ="chk" id="chkLandlord" value = "Landlord" class="bar" onclick="ShowHideDiv4()"> Landlord</label>
                 <label for="chkNo"><input type="radio" name ="chk" id="chkNo" value = "Community official" class="bar3" onclick="ShowHideDiv()"/> Community official</label>
                 
               <!--Building type-->
               <div id="dvPassport" style="display: none">
                 <label><b class="map-style">Building Type </b></label><br>
                   <label><input type="radio" name ="selectBox" value = "New building" class="bar"  checked> New building</label>
-                  <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>    
-                <br>  
+                  <!--  <label><input type="radio" name ="selectBox" value = "Existing building" class="bar4"  disabled> Existing building</label>   --> 
+                 <br>  
                 
                 <!--Address or Parcel ID-->
                   {% comment %}                     
@@ -763,8 +764,8 @@ function formProcess(){
   <!--Insurnace check-->
     <div class="optimal map-style">
       <ul style=“list-style-type:square”>
-        <li>· Flood Zone: Your property is in the <b>{{floodzone}} Zone</b>. You may not have a mandatory flood insurance requirement.</li>
-        <li>· Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
+        <li style="margin:0 0 0 25px;"><b class="map-style">·</b> Flood Zone: Your property is in the <b>{{floodzone}} Zone</b><a href="https://www.fema.gov/glossary/flood-zones" target="_blank"> <img src='static/img/logo/blue_question.png' title="Flood zone {{floodzone}} indicates ....edit!.The more detailed information can be found in the FEMA link." class="img-q tip"/></a>. You may not have a mandatory flood insurance requirement.</li>
+        <li style="margin:0 0 0 25px;"><b class="map-style">·</b> Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
           <div class="checkbox-switch">
           <label class="switch">
           <input type="checkbox" class="input-checkbox">   
@@ -777,13 +778,14 @@ function formProcess(){
       </div><br>
      </li>
     </ul>
- 
+
+
 
 <!--###################################################################################################################################################-->
 <!--Interactive slide--> 
 <!--Xzone with insurance-->
 <div style="overflow-x:auto;" id="XzoneInsuranceChart" >
-  <div class="optimal map-style">For your home,  <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+  <div class="optimal map-style">Elevating your home at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> above the ground is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
   <div class="pricing row2" > 
     <div class="pricing-slider column2"> 
       <center><label class="form-slider" >
@@ -881,7 +883,7 @@ function formProcess(){
     <b class="b-summary-value map-style"> 
       <span class="pricing-item-price-currency">$</span><!-- 
    --><span class="pricing-item-price-amount">0</span><!-- 
-   --><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+   --><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss to building, contents, and use that is not covered by flood insurance."/>
     </div>
 
     <div
@@ -918,7 +920,7 @@ function formProcess(){
     <b class="map-style b-summary-value2">
     <span class="pricing-item-price-currency">$</span><!-- 
     --><span class="pricing-item-price-amount">0</span><!-- 
-    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss in addition to building, contents, and use."/>
     </div>
   </div>    
 </div>
@@ -984,7 +986,7 @@ function formProcess(){
     -->
 
     <!--  for calculations without below BFE   -->
-
+ 
     <div
       class="pricing-item-price"
       data-price-output='{
@@ -1156,7 +1158,7 @@ function formProcess(){
    <hr class="style-five">
    <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
       <div class="graph-description" >
-        Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+        Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate monthly flood loss.
         Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_total_monthly_saving_wi_low | intcomma}}</b> to <b class="map-style">${{summation_total_monthly_saving_wi_high | intcomma}}</b>. 
       </div>
     <div id="chart3_XZONE" class="zc-body"></div>  
@@ -1167,7 +1169,7 @@ function formProcess(){
 <!--Xzone without insurance-->
 <div class="left2 section-tittle mb-40"> 
 <div style="overflow-x:auto;" id="XzoneNoInsuranceChart">
-  <div class="optimal map-style">For your home,  <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+  <div class="optimal map-style">Elevating your home at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> above the ground is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
   <div class="pricing row2" > 
     <div class="pricing-slider column2"> 
       <center><label class="form-slider" >
@@ -1266,7 +1268,7 @@ function formProcess(){
     <b class="b-summary-value map-style"> 
       <span class="pricing-item-price-currency">$</span><!-- 
    --><span class="pricing-item-price-amount">0</span><!-- 
-   --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+   --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Building, content, and use loss."/>
     </div>
 
     <div
@@ -1285,7 +1287,7 @@ function formProcess(){
     <b class="map-style b-summary-value2">
     <span class="pricing-item-price-currency">$</span><!-- 
     --><span class="pricing-item-price-amount">0</span><!-- 
-    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+    --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss in addition to building, contents, and use."/>
     </div>
   </div>    
 </div>
@@ -1523,7 +1525,7 @@ function formProcess(){
   <hr class="style-five">
   <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
     <div class="graph-description" >
-      Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+      Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate monthly flood loss.
       Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
     </div>
   <div id="chart3_XZONE_NoIns" class="zc-body"></div> 
@@ -1556,8 +1558,8 @@ Form for other zone: BFE + 1
           <!--Insurnace check-->
           <div class="optimal map-style">
             <ul style=“list-style-type:square”>
-              <li>· Flood Zone: Your property is in the <b>{{floodzone}} Zone</b>. You may have a mandatory flood insurance requirement.</li>
-              <li>· Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
+              <li style="margin:0 0 0 25px;"><b class="map-style">·</b> Flood Zone: Your property is in the <b>{{floodzone}} Zone</b> <a href="https://www.fema.gov/glossary/flood-zones" target="_blank"> <img src='static/img/logo/blue_question.png' title="What does this flood zone mean? Click this question mark." class="img-q tip"/></a>. You may have a mandatory flood insurance requirement.</li>
+              <li style="margin:0 0 0 25px;"><b class="map-style">·</b> Flood Insurance Option: Would you like to include effects of flood insurance on freeboard cost analysis?
                 <div class="checkbox-switch">
                 <label class="switch-OtherZone">
                 <input type="checkbox" checked  class="input-checkbox">   
@@ -1575,7 +1577,7 @@ Form for other zone: BFE + 1
 <!--Interactive slide--> 
 
 <div id="OtherzoneInsuranceChart">
-<div class="optimal map-style">For your home, <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+<div class="optimal map-style"> For your home, at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
 <div class="pricing row2" > 
 <div class="pricing-slider column2"> 
   <center><label class="form-slider" >
@@ -1674,7 +1676,7 @@ Form for other zone: BFE + 1
 <b class="b-summary-value map-style"> 
   <span class="pricing-item-price-currency">$</span><!-- 
 --><span class="pricing-item-price-amount">0</span><!-- 
---><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual loss with no freeboard added divided by 12."/>
+--><span class="pricing-item-price-after"></span> </b> reduced non-covered flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss to building, contents, and use that is not covered by flood insurance."/>
 </div>
 <div
 class="pricing-item-price"
@@ -1711,7 +1713,7 @@ data-price-output='{
 <b class="map-style b-summary-value2">
 <span class="pricing-item-price-currency">$</span><!-- 
 --><span class="pricing-item-price-amount">0</span><!-- 
---><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+--><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss in addition to building, contents, and use."/>
 </div>
 </div>    
 </div>
@@ -1906,7 +1908,7 @@ data-price-output='{
    <hr class="style-five">
       <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
          <div class="graph-description" >
-           Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+           Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate monthly flood loss.
            Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{monthly_avoided_loss_wi_Low | intcomma}}</b> to <b class="map-style">${{monthly_avoided_loss_wi_High | intcomma}}</b>. 
            <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
          </div>
@@ -1917,7 +1919,7 @@ data-price-output='{
 <!--########################################################################################################################################-->
  <!--Graph without insurance-->
  <div class="left2 section-tittle mb-40" id="OtherzoneNoInsuranceChart"> 
-         <div class="optimal map-style">For your home,  <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+         <div class="optimal map-style">For your home, at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
            <div class="pricing row2" > 
            <div class="pricing-slider column2"> 
              <center><label class="form-slider" >
@@ -2013,7 +2015,7 @@ data-price-output='{
            <b class="b-summary-value map-style"> 
              <span class="pricing-item-price-currency">$</span><!-- 
           --><span class="pricing-item-price-amount">0</span><!-- 
-          --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Flood Losses Per Month is the difference between the expected annual flood loss calculated for adding the freeboard and the expected annual  loss with no freeboard added divided by 12."/>
+          --><span class="pricing-item-price-after"></span> </b> reduced flood losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Building, content, and use loss."/>
            </div>
 
            <div
@@ -2032,7 +2034,7 @@ data-price-output='{
            <b class="map-style b-summary-value2">
            <span class="pricing-item-price-currency">$</span><!-- 
            --><span class="pricing-item-price-amount">0</span><!-- 
-           --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Reduction In Indirect Flood Losses Per Month is the difference between the expected annual indirect flood loss calculated for adding the freeboard and the expected annual indirect loss with no freeboard added divided by 12."/>
+           --><span class="pricing-item-price-after"></span> </b> reduced indirect losses per month <img src='static/img/logo/blue_question.png' class="img-q tip" title="Loss in addition to building, contents, and use."/>
            </div>
 
          </div>    
@@ -2240,7 +2242,7 @@ data-price-output='{
 <hr class="style-five">
   <h2 class="map-style-title">Monthly Savings from Flood Loss Reduction</h2>      
      <div class="graph-description" >
-       Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate the average annual or monthly flood loss.
+       Damaging floods do not occur every month. However, considering the chance of floods happening we can calculate monthly flood loss.
        Adding freeboard results in monthly savings from flood loss reduction of  <b class="map-style">${{summation_monthly_avoided_lossLow | intcomma}}</b> to <b class="map-style">${{summation_monthly_avoided_lossHigh | intcomma}}</b>. 
        <!--The optimal (minimum) expected flood loss is ${{optimal_AAL_absCurrency | intcomma}} at freeboard height {{optimal_AAL_absCurrency_freeboard}} ft.-->
      </div>
