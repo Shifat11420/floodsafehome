@@ -2429,6 +2429,8 @@ data-price-output='{
   legend: {
     alpha: 0.05,
     borderWidth: '0px',
+    layout: '1x2',
+    x: '70%',
     marker: {
       borderColor: 'none',
       size: '7px'
@@ -2477,6 +2479,21 @@ data-price-output='{
     backgroundColor: '#f7e0b7',
     tooltip: {
       text: '$%v',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    }
+  },
+  {
+    type: 'bar', 
+    text: 'Indirect flood loss',
+    values: {{summation_indirect_avoided_monthly_loss_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: 'black',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Indirect flood loss',
       negation: "currency",
       thousandsSeparator: ", ",
       wrapText: true
@@ -3016,6 +3033,21 @@ let chartConfig = {
       }
     },
     {
+      type: 'bar', 
+      text: 'Indirect flood loss',
+      values: {{summation_indirect_avoided_monthly_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: 'black',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Indirect flood loss',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
       type: 'bar',
       text: 'Monthly savings from flood loss reduction and insurance premium <b> with</b> insurance',
       values: {{monthly_avoided_loss_wi_json}},
@@ -3053,8 +3085,8 @@ let chartConfig2 = {
     borderWidth: '1px',
     borderColor: '#dae5ec',
     legend:{
-      layout:'2x2',
-      x: '50%',
+      layout:'2x3',
+      x: '20%',
       "margin-top": '1%',
       borderColor: 'whtie'
     },
@@ -3135,6 +3167,21 @@ let chartConfig2 = {
       }
     },
     {
+      type: 'bar', 
+      text: 'Indirect flood loss',
+      values: {{summation_indirect_avoided_monthly_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: 'black',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Indirect flood loss',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
       type: 'bar',
       text: 'Monthly savings from flood loss reduction and insurance premium <b>with</b> insurance',
       values: {{monthly_avoided_loss_wi_json}},
@@ -3173,8 +3220,8 @@ let chartConfigXZONE = {
     borderColor: '#dae5ec',
     legend:{
      borderColor: 'whtie',
-      layout:'2x2',
-      x: '40%',
+     layout:'2x3',
+      x: '20%',
       "margin-top": '1%'
     },
     scaleX: {
@@ -3335,6 +3382,8 @@ let chartConfigXZONE = {
     legend: {
       alpha: 0.05,
       borderWidth: '0px',
+      layout: '1x2',
+      x: '55%',
       marker: {
         borderColor: 'none',
         size: '7px'
@@ -3376,13 +3425,28 @@ let chartConfigXZONE = {
     },
     series: [
     {
-      text: 'Monthly savings from flood loss reduction <br>and insurance premium <b>with</b> insurance',
+      text: 'Monthly savings from flood loss reduction and insurance premium <b>with</b> insurance',
       values: {{total_monthly_saving_wi_json}},
       borderRadiusTopLeft: '7px',
       alpha: 0.95,
       backgroundColor: '#f7e0b7',
       tooltip: {
         text: '$%v',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    }, 
+    {
+      type: 'bar', 
+      text: 'Indirect flood loss',
+      values: {{summation_indirect_avoided_monthly_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: 'black',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Indirect flood loss',
         negation: "currency",
         thousandsSeparator: ", ",
         wrapText: true
@@ -3437,6 +3501,21 @@ let chartNew_XZONE_NoIns = [
   alpha: 0.90,
   tooltip: {
     text: '$%v <br> Monthly savings from flood loss reduction <br><b>without</b> insurance',
+    negation: "currency",
+    thousandsSeparator: ", ",
+    wrapText: true
+  }
+},
+{
+  type: 'bar', 
+  text: 'Indirect flood loss',
+  values: {{summation_indirect_avoided_monthly_loss_json}},
+  scales: 'scale-x,scale-y',
+  backgroundColor: 'black',
+  borderRadiusTopLeft: '7px',
+  alpha: 0.90,
+  tooltip: {
+    text: '$%v <br> Indirect flood loss',
     negation: "currency",
     thousandsSeparator: ", ",
     wrapText: true
@@ -3628,6 +3707,8 @@ borderColor: '#dae5ec',
 legend: {
   alpha: 0.05,
   borderWidth: '0px',
+  layout: '1x2',
+  x: '63%',
   marker: {
     borderColor: 'none',
     size: '7px'
@@ -3680,7 +3761,23 @@ series: [
       thousandsSeparator: ", ",
       wrapText: true
     }
+  }, 
+  {
+    type: 'bar', 
+    text: 'Indirect flood loss',
+    values: {{summation_indirect_avoided_monthly_loss_json}},
+    scales: 'scale-x,scale-y',
+    backgroundColor: 'black',
+    borderRadiusTopLeft: '7px',
+    alpha: 0.90,
+    tooltip: {
+      text: '$%v <br> Indirect flood loss',
+      negation: "currency",
+      thousandsSeparator: ", ",
+      wrapText: true
+    }
   }
+
 ]
 };
 
@@ -3818,6 +3915,8 @@ series: [
   legend: {
     alpha: 0.05,
     borderWidth: '0px',
+    layout: '1x2',
+    x: '63%',
     marker: {
       borderColor: 'none',
       size: '7px'
@@ -3870,7 +3969,23 @@ series: [
         thousandsSeparator: ", ",
         wrapText: true
       }
+    },
+    {
+      type: 'bar', 
+      text: 'Indirect flood loss',
+      values: {{summation_indirect_avoided_monthly_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: 'black',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Indirect flood loss',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
     }
+
   ]
 };
 
@@ -3922,6 +4037,21 @@ series: [
       }
     },
     {
+      type: 'bar', 
+      text: 'Indirect flood loss',
+      values: {{summation_indirect_avoided_monthly_loss_json}},
+      scales: 'scale-x,scale-y',
+      backgroundColor: 'black',
+      borderRadiusTopLeft: '7px',
+      alpha: 0.90,
+      tooltip: {
+        text: '$%v <br> Indirect flood loss',
+        negation: "currency",
+        thousandsSeparator: ", ",
+        wrapText: true
+      }
+    },
+    {
       type: 'bar',
       text: 'Total monthly savings',
       values: {{total_monthly_saving_json}},
@@ -3945,7 +4075,6 @@ let chartConfig2_NoIns = {
     borderColor: '#dae5ec',
     legend:{
       layout:'2x2',
-      x: '50%',
       "margin-top": '1%',
       borderColor: 'whtie'
     },
