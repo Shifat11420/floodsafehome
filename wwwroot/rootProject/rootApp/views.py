@@ -1865,8 +1865,9 @@ def search(request):
             summation_indirect_avoided_monthly_loss[z] = summation_indirect_avoided_monthly_loss[z] + indirect_avoided_monthly_loss_list_c[i][z]
     print("summationlist_monthly_avoided_loss = " ,summation_monthly_avoided_loss)
     print("summation_indirect_avoided_monthly_loss = " ,summation_indirect_avoided_monthly_loss)
-    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss[1:0])   #** 
-    summation_indirect_avoided_monthly_loss_json = simplejson.dumps(summation_indirect_avoided_monthly_loss[1:0])   #**        
+    summation_monthly_avoided_loss_json = simplejson.dumps(summation_monthly_avoided_loss[1:])   #** 
+    summation_indirect_avoided_monthly_loss_json = simplejson.dumps(summation_indirect_avoided_monthly_loss[1:])   #**     
+
     
     for z in range(len(monthly_avoided_loss)):
         avg_indirect_monthly_avoided_loss.append(int(summation_indirect_avoided_monthly_loss[z]/len(buildinglist)))
