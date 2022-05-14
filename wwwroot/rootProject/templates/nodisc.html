@@ -800,14 +800,14 @@ function formProcess(){
         </datalist>
         <input onchange='setImage(this)'
           type="range"
-          value="{{OptimalFreeboard}}"
+          value="{{optimal_freeboard_wi}}"
           class="slider" id="myRange" list="scale"
           data-price-input='{
-              "0": "0ft freeboard",
-              "1": "1ft freeboard",
-              "2": "2ft freeboard",
-              "3": "3ft freeboard",
-              "4": "4ft freeboard"                
+              "0": "Ground",
+              "1": "Ground + 1.5ft",
+              "2": "Ground + 2.5ft",
+              "3": "Ground + 3.5ft",
+              "4": "Ground + 4.5ft"                
             }'
         />
       </label></center>
@@ -843,7 +843,7 @@ function formProcess(){
          }'
     > 
 
-  <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> of  freeboard, </p>
+  <p class="grid-style3 map-style"> When you elevate <b class="map-style b-summary-value2"> <span id="demo"> </span> ft</b> above the ground, </p>
     <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
      <div class="vl"><p class="grid-style3 map-style" >
       <b class="b-summary-value map-style">        
@@ -1169,7 +1169,7 @@ function formProcess(){
 <!--Xzone without insurance-->
 <div class="left2 section-tittle mb-40"> 
 <div style="overflow-x:auto;" id="XzoneNoInsuranceChart">
-  <div class="optimal map-style">Elevating your home at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> above the ground is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+  <div class="optimal map-style">Elevating your home at least <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> above the ground is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
   <div class="pricing row2" > 
     <div class="pricing-slider column2"> 
       <center><label class="form-slider" >
@@ -1187,11 +1187,11 @@ function formProcess(){
           value="{{OptimalFreeboard}}"
           class="slider" id="myRangeXzoneWithout" list="scale"
           data-price-input='{
-              "0": "0ft freeboard",
-              "1": "1ft freeboard",
-              "2": "2ft freeboard",
-              "3": "3ft freeboard",
-              "4": "4ft freeboard"                
+              "0": "Ground",
+              "1": "Ground + 1.5ft",
+              "2": "Ground + 2.5ft",
+              "3": "Ground + 3.5ft",
+              "4": "Ground + 4.5ft"                  
             }'
         />
       </label></center>
@@ -1228,7 +1228,7 @@ function formProcess(){
          }'
     > 
 
-  <p class="grid-style3 map-style"> When you add <b class="map-style b-summary-value2"> <span id="demo_Xzone_without"> </span> ft</b> of  freeboard, </p>
+  <p class="grid-style3 map-style"> When you elevate <b class="map-style b-summary-value2"> <span id="demo_Xzone_without"> </span> ft</b> above the ground, </p>
     <p class="grid-style3 map-style" ><b class="summary-b">Savings from Mitigation</b> <br>
      <div class="vl"><p class="grid-style3 map-style" >
       {% comment %} <b class="b-summary-value map-style">        
@@ -1919,7 +1919,7 @@ data-price-output='{
 <!--########################################################################################################################################-->
  <!--Graph without insurance-->
  <div class="left2 section-tittle mb-40" id="OtherzoneNoInsuranceChart"> 
-         <div class="optimal map-style">For your home, at least <b class="summary-b">{{optimal_freeboard_wi}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
+         <div class="optimal map-style">For your home, at least <b class="summary-b">{{OptimalFreeboard}} ft </b> </span> of freeboard is recommended resulting in monthly savings of <b class="summary-b">${{optimal_saving_wi_json}} </b> </u></div> <br>
            <div class="pricing row2" > 
            <div class="pricing-slider column2"> 
              <center><label class="form-slider" >
@@ -1934,7 +1934,7 @@ data-price-output='{
                </datalist>
                <input onchange='setImage(this)'
                  type="range"
-                 value="{{optimal_freeboard_wi}}"
+                 value="{{OptimalFreeboard}}"
                  class="slider2" id="myRange_OtherZone_without" list="scale"
                  data-price-input='{
                      "0": "0ft freeboard",

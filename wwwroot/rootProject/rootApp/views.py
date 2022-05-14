@@ -1676,7 +1676,12 @@ def search(request):
             
             for k in range(len(total_monthly_saving)):
                 if optimal_saving == total_monthly_saving[k]:
+                    # if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD":
+                    #     optimal_freeboard = BFE+totalBFE[k]
+                    # else:
+                    #     optimal_freeboard = totalBFE[k]  
                     optimal_freeboard = totalBFE[k]
+                    optimal_freeboard_forsummary = BFE+totalBFE[k]    
             total_optimal_freeboard_list_c.append(optimal_freeboard)
 
             total_monthly_saving_json = simplejson.dumps(total_monthly_saving[1:])   #**  
@@ -1705,7 +1710,13 @@ def search(request):
             
             for k in range(len(total_monthly_saving_wi)):
                 if optimal_saving_wi == total_monthly_saving_wi[k]:
+                    #optimal_freeboard_wi = totalBFE[k]
+                    # if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD":
+                    #     optimal_freeboard_wi = BFE+totalBFE[k]
+                    # else:
+                    #     optimal_freeboard_wi = totalBFE[k] 
                     optimal_freeboard_wi = totalBFE[k]
+                    optimal_freeboard_wi_forsummary = BFE+totalBFE[k]    
             total_optimal_freeboard_wi_list_c.append(optimal_freeboard_wi)
 
             total_monthly_saving_wi_json = simplejson.dumps(total_monthly_saving_wi[1:])   #**  
@@ -1891,7 +1902,7 @@ def search(request):
         for z in range(len(monthly_avoided_loss_wi)):
             summation_monthly_avoided_loss_wi[z] = summation_monthly_avoided_loss_wi[z] + monthly_avoided_loss_wi_list_c[i][z]
     print("summationlist_monthly_avoided_loss_wi = " ,summation_monthly_avoided_loss_wi)
-    summation_monthly_avoided_loss_wi_json = simplejson.dumps(summation_monthly_avoided_loss_wi[1:0])   #**        
+    summation_monthly_avoided_loss_wi_json = simplejson.dumps(summation_monthly_avoided_loss_wi[1:])   #**        
     
     for z in range(len(monthly_avoided_loss_wi)):
         avg_monthly_avoided_loss_wi.append(int(summation_monthly_avoided_loss_wi[z]/len(buildinglist)))
@@ -2514,7 +2525,7 @@ def search(request):
         
         "total_monthly_premium": total_monthly_premium,"total_annual_premium": total_annual_premium,\
         "Optimalsavingsumm": optimal_saving, "time_to_recover_FC_MS": time_to_recover_FC_MS, "time_to_recover_FC_PS_json": time_to_recover_FC_PS_json, \
-        "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard,\
+        "SquareFootage":int(Square_footage), "No_Floors": No_Floors, "OptimalSaving" : optimal_saving, "OptimalFreeboard" : optimal_freeboard_forsummary,\
         "FreeboardCost0": freeboardCost[0],\
          "FreeboardCost1": freeboardCost[1], "FreeboardCost2": freeboardCost[2], "FreeboardCost3": freeboardCost[3], "FreeboardCost4": freeboardCost[4],\
         "total_monthly_saving0" : total_monthly_saving[0],\
@@ -2539,7 +2550,7 @@ def search(request):
         "AAL_Total_list1":AAL_Total_list[1],"AAL_Total_list2":AAL_Total_list[2],"AAL_Total_list3":AAL_Total_list[3],"AAL_Total_list4":AAL_Total_list[4],\
         "AAL_Total_json":AAL_Total_json, "summation_AAL_Totallow" :min(summation_AAL_Total), "summation_AAL_Totalhigh":max(summation_AAL_Total),\
         "time_to_recover_FC_PS_json":time_to_recover_FC_PS_json, "time_to_recover_FC_TB_json":time_to_recover_FC_TB_json, "time_to_recover_FC_PS1": time_to_recover_FC_PS[1], "time_to_recover_FC_PS2": time_to_recover_FC_PS[2],"time_to_recover_FC_PS3": time_to_recover_FC_PS[3],"time_to_recover_FC_PS4": time_to_recover_FC_PS[4], \
-        "total_monthly_saving_wi":total_monthly_saving_wi, "optimal_saving_wi_json": optimal_saving_wi_json, "optimal_freeboard_wi": optimal_freeboard_wi, "monthly_avoided_loss_wi": monthly_avoided_loss_wi, "monthly_avoided_loss_wi_json": monthly_avoided_loss_wi_json,            
+        "total_monthly_saving_wi":total_monthly_saving_wi, "optimal_saving_wi_json": optimal_saving_wi_json, "optimal_freeboard_wi": optimal_freeboard_wi_forsummary, "monthly_avoided_loss_wi": monthly_avoided_loss_wi, "monthly_avoided_loss_wi_json": monthly_avoided_loss_wi_json,            
         "indirect_avoided_monthly_loss_homeowner0":indirect_avoided_monthly_loss_homeowner[0],"indirect_avoided_monthly_loss_homeowner1":indirect_avoided_monthly_loss_homeowner[1],"indirect_avoided_monthly_loss_homeowner2":indirect_avoided_monthly_loss_homeowner[2],"indirect_avoided_monthly_loss_homeowner3":indirect_avoided_monthly_loss_homeowner[3],"indirect_avoided_monthly_loss_homeowner4":indirect_avoided_monthly_loss_homeowner[4],\
         "indirect_avoided_monthly_loss_landlord0":indirect_avoided_monthly_loss_landlord[0],"indirect_avoided_monthly_loss_landlord1":indirect_avoided_monthly_loss_landlord[1],"indirect_avoided_monthly_loss_landlord2":indirect_avoided_monthly_loss_landlord[2],"indirect_avoided_monthly_loss_landlord3":indirect_avoided_monthly_loss_landlord[3],"indirect_avoided_monthly_loss_landlord4":indirect_avoided_monthly_loss_landlord[4],\
         "indirect_avoided_monthly_loss_tenant0":indirect_avoided_monthly_loss_tenant[0],"indirect_avoided_monthly_loss_tenant1":indirect_avoided_monthly_loss_tenant[1],"indirect_avoided_monthly_loss_tenant2":indirect_avoided_monthly_loss_tenant[2],"indirect_avoided_monthly_loss_tenant3":indirect_avoided_monthly_loss_tenant[3],"indirect_avoided_monthly_loss_tenant4":indirect_avoided_monthly_loss_tenant[4],\
