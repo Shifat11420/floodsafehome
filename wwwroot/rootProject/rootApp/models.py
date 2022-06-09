@@ -178,7 +178,8 @@ class JeffersonAddress(models.Model):
 
     # Returns the string representation of the model.
     def __str__(self):
-        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.SUITE)+", "+str(self.AREA_NAME)+", "+str(self.ZIP)                
+        #return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.SUITE)+", "+str(self.AREA_NAME)+", "+str(self.ZIP)                
+        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.ZIP)                
 
 
 
@@ -212,4 +213,5 @@ class TerrebonneAddress(models.Model):
 
     # Returns the string representation of the model.
     def __str__(self):
-        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.SUITE)+", "+str(self.AREA_NAME)+", "+str(self.ZIP) 
+        #return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.SUITE)+", "+str(self.AREA_NAME)+", "+str(self.ZIP) 
+        return str(self.ADDRESS)+", "+str(self.STREET)+", "+str(self.AREA_NAME)+", "+str(self.ZIP) 

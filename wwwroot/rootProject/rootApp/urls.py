@@ -24,7 +24,7 @@ urlpatterns = [
     path("nodisc", views.nodisc, name="nodisc"),
     path("disclaimer", views.disclaimer, name="disclaimer"),
     path("exportfile", views.exportfile, name="exportfile"),
-    path("exportpdf", views.exportpdf, name="exportpdf"),   
+    #path("exportpdf", views.exportpdf, name="exportpdf"),   
     path("exportshp", views.exportshp, name="exportshp"),
     path("report", views.report, name="report"),   
     ]

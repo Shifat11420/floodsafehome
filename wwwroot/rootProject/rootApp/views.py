@@ -1,3 +1,4 @@
+from ntpath import join
 from django.shortcuts import redirect, render, HttpResponse
 from rootApp.models import Contact, FreeboardConstructionCost, Sampledata, Sample, dataAll, JeffersonbuildingdataFSH
 from rootApp.models import JeffersonAddress, TerrebonneAddress
@@ -26,19 +27,12 @@ import pandas as pd
 import geopandas as gpd
 from zipfile import ZipFile
 import os
-# import pdfkit
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template.loader import get_template
 import random
-from rootProject.utils import render_to_pdf #created in step 4
-# import imgkit
 import re
 
-
-# from django.template.loader import render_to_string
-# from weasyprint import HTML
-# import tempfile
 
 
 datafile_list = [JeffersonAddress, TerrebonneAddress]
@@ -86,8 +80,6 @@ def gotomap(request):
     beforecomma = commasplit[0]
     locationList= beforecomma.split(' ')
     locationList = list(map(str.strip, locationList))
-
-    #locationList=location.split(' ')
     print("locationlist space split : ", locationList)
     locationList = list(map(str.strip, locationList))
     streetlist = locationList[1:]
@@ -108,14 +100,10 @@ def gotomap(request):
             break
             
     if len(queryset)<=0:
-        #mylist = ["Enter a valid address!"]
         messages.error(request, 'Enter a valid address!')
-
         return render(request, 'index.html')
     else:
         mylist = ["valid address"]  
-
-
     
 ##Error message ends-------------------------------
     
@@ -154,17 +142,9 @@ def autosuggest(request):
         else:
             queryset = datafile.objects.filter((Q(ADDRESS__istartswith = query_originalList[0]) | (Q(STREET__icontains = query_originalList[0]))), (Q(STREET__icontains = query_originalList[1])), (Q(STREET__icontains = query_originalList[1]))).all()[:5]
 
-        
-
-               
-        if len(queryset)>0:
-            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.Parish+ " Parish" for x in queryset]
-            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"Jefferson Parish" for x in queryset]
-            
+              
+        if len(queryset)>0:    
             mylist += [x.ADDRESS+" "+x.STREET+","+" SUITE-"+x.SUITE+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" if x.SUITE else x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
-            #mylist += [x.ADDRESS+" "+x.STREET+","+" "+x.AREA_NAME+","+" "+x.ZIP+","+" "+"LA" for x in queryset]
-    
-
         else:
             mylist = ["No results found"]  
 
@@ -176,7 +156,6 @@ def helpcenter(request):
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
-
         selecttype = request.POST.get('select-type','')
         if not selecttype:
             messages.error(request, 'Please select the following options')
@@ -200,7 +179,6 @@ def helpcenter(request):
             'detail_other_problem' : detailmethodse2
         }
 
-
         message = '''
         New message from : {}
         
@@ -221,9 +199,10 @@ def helpcenter(request):
         contact = Contact(name=name, email=email, selecttype=selecttype, locationproblem=locationproblem, detail=detail, subject1=subject1, detailmethodse1=detailmethodse1, subject2=subject2, detailmethodse2=detailmethodse2, date=datetime.today()) 
         contact.save()
         messages.success(request, 'Your message has been sent!')
-
     return render(request, 'contact.html', {})    
 
+
+## calculation of AAL
 def get_probability(min_value, max_value):
     return (random.uniform(min_value,max_value))/(max_value-min_value)
 def inv_flood_elevation(x,u,a):
@@ -263,9 +242,7 @@ def monte_carlo(u,a,ffe,livable_area,replacement_cost,coverage_str,deductible_st
 
 def search(request):
     
-
-##---------user input---------------------------------
-#   community level #
+#   --------community level ---initializers ----------------------
     total_monthly_saving_list_c = []
     total_optimal_saving_list_c = [] 
     total_optimal_freeboard_list_c = [] 
@@ -281,7 +258,6 @@ def search(request):
     total_optimal_saving_wi_list_c = [] 
     total_optimal_freeboard_wi_list_c = [] 
 
-
     annual_avoided_loss_list_c = []
     monthly_avoided_loss_list_c = []   
     indirect_avoided_monthly_loss_list_c = []
@@ -296,7 +272,6 @@ def search(request):
     avoided_monthly_loss_landlord_wi_list_c = []
     avoided_monthly_loss_tenant_wi_list_c = []  
 
-
     total_monthly_premium_saving_list_c = []
 
     Amortized_FC_list_c = []
@@ -306,8 +281,7 @@ def search(request):
     lattitude_c = []
     longitude_c = []
     
-
-    buildinglist = []
+    ##---------user input---------------------------------
     user_type = request.GET.get('chk')
     building_type = request.GET.get('selectBox')
     assessment_type = request.GET.get('chkYes2')
@@ -319,13 +293,14 @@ def search(request):
     print("User type =", user_type)
     print("Building type =", building_type)
     print("Assessment type =", assessment_type)
-
+    print("Parish selected =", selectParish)
     #print("Parish selected (homeowner) =", selectParish_homeOwener)
     #print("Parish selected (Com Single) =", selectParish_ComSingle)
     #print("Parish selected (Com Spatial) =", selectParish_ComSpatial)
-    print("Parish selected =", selectParish)
 
 
+    ##---------processing input address---------------------------------
+    buildinglist = []
     addr_list = request.GET.get('addr_list')
     print("Addr list = ", addr_list)
     if addr_list:
@@ -343,9 +318,7 @@ def search(request):
         print(" length of  B list : ", lenghofBlist)
         buildinglist.remove(buildinglist[lenghofBlist-1])
     else:
-        buildinglist = [ request.GET.get('location', 'default')]
-
-
+        buildinglist = [request.GET.get('location', 'default')]
 
     print("\n\n*************************************************\n\n")
     print(buildinglist)
@@ -353,13 +326,14 @@ def search(request):
     print("\n\n*************************************************\n\n")
 
     
+    ##--------------creating and writting on CSV file -----------------------
+
     #with open(r'C:\inetpub\wwwroot\rootProject\output\results.csv', 'w', newline='') as output:           ##**********server copy  
     with open('output/results.csv', 'w', newline='') as output:                                            ##**********local copy  
         line_count=0
         fieldnames = ['Address', 'Lattitude', 'Longitude', 'Parish', 'Flood zone', 'Individual building optimal saving', 'Individual building recommended freeboard']
         output_data = csv.DictWriter(output, fieldnames=fieldnames)
         output_data.writeheader()
-
 
         zonelist = []
         xzonelist = []
@@ -368,30 +342,27 @@ def search(request):
             line_count += 1      ##
             location = buildinglist[i]
             print("location now : ", location)
+            
+            ##----for matching in queryset-------------
             newsearch = location.split(", LA")
             newsearch = newsearch[0]
             print("new search = ", newsearch)
 
             ##------location-----------------------
-            #location = request.GET.get('location', 'default')
             commasplit =location.split(',')
             beforecomma = commasplit[0]
             locationList= beforecomma.split(' ')
             locationList = list(map(str.strip, locationList))
             streetlist = locationList[1:]
-            # suitelist = commasplit[1].split("-")
             print("streetlist now : ", streetlist)
-            # print("suitelist now : ", suitelist)
-            # suite = suitelist[1]
 
             ##-------number of stories------------------------
-            No_Floors = request.GET.get('stories', 'default') #request.GET['stories']
-
-            print("accepted floors:", No_Floors)
+            No_Floors = request.GET.get('stories', 'default') 
+            print("input-- No of floors:", No_Floors)
 
             ##--------------square footage-----------------------
             Square_footage = float(request.GET.get('sqft1', 'default'))
-            print ("square footage = ", Square_footage)
+            print ("input-- square footage = ", Square_footage)
                 
         ##----------user input ends---------------------------------------
 
@@ -436,7 +407,8 @@ def search(request):
                 else:  
                     addressvalue = datafile.objects.filter(
                     Q(ADDRESS__istartswith=locationList[0]) ,  (Q(ADDRESS__istartswith=locationList[1]) | Q(STREET__icontains=locationList[1])), Q(STREET__icontains=locationList[2]), Q(STREET__icontains=locationList[3]), Q(STREET__icontains=locationList[4])).all()
-                print("addressvalue: ", addressvalue, "type: ", type(addressvalue))
+                print("addressvalue: ", addressvalue)
+                print("addressvalue type: ", type(addressvalue))
                 if addressvalue:
                     break 
         ##------------------autocomplete ends--------------------------------------------------
@@ -450,73 +422,54 @@ def search(request):
             xzonelist = []
             otherzonelist = []
             for data in addressvalue:
-                zonevalue = data.FLD_ZONE
-                zonelist.append(zonevalue)
-                if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD": 
-                    xzonelist.append(buildinglist[0])
+                data1 = str(data).split(",",1)
+                data2 = str(data1[0]).strip()+" "+str(data1[1]).strip()
+                ##---condition for choosing the right address from selected queryset-----------
+                if str(data2) == newsearch:
+                    zonevalue = data.FLD_ZONE
+                    zonelist.append(zonevalue)
+                    if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD": 
+                        xzonelist.append(buildinglist[0])
+                    else:
+                        otherzonelist.append(buildinglist[0])   
+
+                    u = data.u_Intercep
+                    a = data.a_Slope
+                    if u == "Unknown" or u == -9999.0 or u == -9999:
+                        u = 1.5218
+                    else:
+                        u=float(u)    
+                    if a == "Unknown" or a == "Problematic" or a == -9999.0 or a == -9999:
+                        a = 0.335   
+                    else:
+                        a=float(a)       
+
+                    print("ZONE: ", zonevalue )
+                    print("u value: ", u )
+                    print("a value: ", a )
+        
+                    parishvalue = selectParish
+                    print("Parish is : ", parishvalue)
+                    lat = data.Latitude
+                    lon =  data.Longitude
+
+                    latlon_pair = []
+                    lattitude_c.append(lat)
+                    longitude_c.append(lon)
+
+                    latlon_pair.append(buildinglist[0])
+                    latlon_pair.append(lat)
+                    latlon_pair.append(lon)
+                    latlon_c.append(latlon_pair)
+
+                    BFE = 0 #data.BFE
+                    print( "BFE : ", BFE) 
+                    if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD":# or BFE == -9999.0:
+                        BFE = 0.5
+                    print( "BFE changed to : ", BFE)     
+                    break
                 else:
-                    otherzonelist.append(buildinglist[0])   
-
-                u = data.u_Intercep
-                a = data.a_Slope
-                if u == "Unknown" or u == -9999.0 or u == -9999:
-                    u = 1.5218
-                else:
-                    u=float(u)    
-                if a == "Unknown" or a == "Problematic" or a == -9999.0 or a == -9999:
-                    a = 0.335   
-                else:
-                    a=float(a)       
-
-                print("ZONE: ", zonevalue )
-                print("u value: ", u )
-                print("a value: ", a )
-     
-                parishvalue = selectParish
-                # if user_type == "Homeowner":
-                #     parishvalue = selectParish
-                
-                #     # parishvalue = selectParish_homeOwener
-                # # elif user_type == "Tenant":
-                # #     parishvalue = selectParish_tenant
-                # # elif user_type == "Landlord":
-                # #     parishvalue = selectParish_landlord
-
-                # elif user_type == "Community official":
-                #     parishvalue = selectParish
-                    # if assessment_type == "Single_building":
-                    #     parishvalue = selectParish_ComSingle
-                    # elif assessment_type == "Spatial_scale":
-                    #     parishvalue = selectParish_ComSpatial
-                    # else:
-                    #     parishvalue = selectParish_homeOwener
-                    #     print("default assesment type case")
-               # else:
-                #    print("None of the user type!")
-                 #   parishvalue = selectParish_homeOwener #"NONE"   #fix it later
-                  #  print("parishvalue = ", parishvalue)
-
-
-                print("Parish is : ", parishvalue)
-                lat = data.Latitude
-                lon =  data.Longitude
-
-                latlon_pair = []
-                lattitude_c.append(lat)
-                longitude_c.append(lon)
-
-                latlon_pair.append(buildinglist[0])
-                latlon_pair.append(lat)
-                latlon_pair.append(lon)
-
-                latlon_c.append(latlon_pair)
-
-                BFE = 0 #data.BFE
-                print( "BFE : ", BFE) 
-                if zonevalue == "X" or zonevalue == "X PROTECTED BY LEVEE" or zonevalue == "0.2 PCT ANNUAL CHANCE FLOOD HAZARD":# or BFE == -9999.0:
-                    BFE = 0.5
-                print( "BFE changed to : ", BFE)     
-              
+                    print("input address did not match with the query set")   
         ##--------queries end----------------------------
 
 
@@ -527,8 +480,7 @@ def search(request):
             t = 30      # loan term or number of years in the loan
             deductible_bldg = 1250   # demo-must be changed
             deductible_cont = 1250   # demo-must be changed
-
-            
+    
             coverage_lvl_bldg = 225000 #Building_value
             coverage_lvl_cont = 90000 #Building_value * 0.4
             
@@ -570,18 +522,12 @@ def search(request):
                     freeboardCost.append(int(totalBFE[i] * 0.023 * Building_value))
             freeboardCost_list_c.append(freeboardCost)   
             print("Freeboard cost : ", freeboardCost) 
-
-            #freeboardCostnoBFE0 = freeboardCost.remove(freeboardCost[0])
-
             freeboardCost_json = simplejson.dumps(freeboardCost)  
 
-            optimal_freeboardCost = max(freeboardCost)
-            
+            optimal_freeboardCost = max(freeboardCost)           
             for k in range(len(freeboardCost)):
                 if optimal_freeboardCost == freeboardCost[k]:
                     optimal_freeboard_freeboardCost = totalBFE[k]
-
-
             optimal_freeboardCost_json = simplejson.dumps(optimal_freeboardCost)  
 
                 
@@ -714,7 +660,7 @@ def search(request):
         ##----------------------AAL (Adil's method) ---------------------------------------
             print("****************     ##     ******************")        
             ## USER INPUT
-            stories = No_Floors #stories = 1, 
+            stories = No_Floors   #stories = 1, 
             basement = "no"      # for Jefferson parish
             basement_Q2 = "N/A"   #for Jefferson parish
             #FFH = 3.1
@@ -724,8 +670,7 @@ def search(request):
 
             building_area = Square_footage  #2000   ##liveable square footage
             # Building_value = 200000
-            
-            
+                      
             #zonevalue = "A/AE"   # for TABLE 1,2,3,4,5,6
             #zonevalue = "V/VE"    # for TABLE 7
 
@@ -734,14 +679,12 @@ def search(request):
             # step 1
 
             ## TABLE 1: A/AE Zone, No Basement, Single Story, USACE
-
             dh1 = [-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15, 15.5, 16]
             structure_loss1 = [0,1.25,2.5,7.95,13.4,18.35,23.3,27.7,32.1,36.1,40.1,43.6,47.1,50.15,53.2,55.9,58.6,60.9,63.2,65.2,67.2,68.85,70.5,71.85,73.2,74.3,75.4,76.3,77.2,77.85,78.5,79,79.5,79.85,80.2,80.45,80.7]
             contents_loss1 = [0,1.2,2.4,5.25,8.1,10.7,13.3,15.6,17.9,19.95,22,23.85,25.7,27.25,28.8,30.15,31.5,32.65,33.8,34.75,35.7,36.45,37.2,37.8,38.4,38.8,39.2,39.45,39.7,39.85,40,40,40,40,40,40,40]
             Luse_homeowner1 = [0,0,0,0,9,9,9,9,9,9,9,9,12,12,12,12,12,12,12,12,15,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24]
             Luse_landlord1 = [0,0,0,0,10,10,10,10,10,10,10,10,13,13,13,13,13,13,13,13,16,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25]
             Luse_tenant1 = [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-
 
             ## TABLE 2: A/AE Zone, No Basement, Two Story, USACE
             dh2 = [-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15, 15.5, 16]
@@ -787,7 +730,6 @@ def search(request):
 
 
             ## Table 7. V/VE Zone, With Obstructions
-
             dh7 = [-8,-7,-6,-5,-4,-3,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,15.5,16]
             structure_loss7 = [0,0,0,0,0,0,20,20.75,21.5,22.75,24,26.5,29,33,37,45.5,54,57.25,60.5,62.5,64.5,66.25,68,69,70,71,72,73,74,75,76,77,78,79,80,80.75,81.5,82.25,83,83.5,84,84.5,85]
             contents_loss7 = [0,0,0,0,0,0,0,5.5,11,17.5,24,26.5,29,33,37,45.5,54,57.5,61,63,65,66.5,68,69.36,70.72,73.36,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76]    
@@ -911,8 +853,8 @@ def search(request):
                 print("FFH : ", FFH[j])  
 
                 # step 1
-                print("             ******  step 1  *****             ")
-                print("                  ")
+                # print("             ******  step 1  *****             ")
+                # print("                  ")
 
                 d = []
                 for i in range(len(dh)):
@@ -921,9 +863,9 @@ def search(request):
 
 
                 # step 2
-                print("                  ")
-                print("             ******  step 2  *****             ")
-                print("                  ")
+                # print("                  ")
+                # print("             ******  step 2  *****             ")
+                # print("                  ")
 
                 p = []
                 for i in range(len(d)):
@@ -931,9 +873,9 @@ def search(request):
                 #print("P = ", p)    
 
                 # step 3
-                print("                  ")
-                print("             ******  step 3  *****             ")
-                print("                  ")
+                # print("                  ")
+                # print("             ******  step 3  *****             ")
+                # print("                  ")
 
                 aStruct = []
                 for i in range(len(p)-1):
@@ -974,9 +916,9 @@ def search(request):
 
 
                 # # step 4
-                print("                  ")
-                print("             ******  step 4  *****             ")
-                print("                  ")
+                # print("                  ")
+                # print("             ******  step 4  *****             ")
+                # print("                  ")
 
                 AALStruct = 0.0
                 AALCont = 0.0
@@ -999,9 +941,9 @@ def search(request):
 
 
                 # # step 5 (careful with if conditions)
-                print("                  ")
-                print("             ******  step 5  *****             ")
-                print("                  ")
+                # print("                  ")
+                # print("             ******  step 5  *****             ")
+                # print("                  ")
 
                 homeowner_AALstruct = round((AALStruct/100.0)* repair_cost * building_area,0)
 
@@ -1018,38 +960,26 @@ def search(request):
 
                 ## if building value is present
                 homeowner_AALuse = round((AALUse_homeowner/84.0)* Building_value,0)       
-
                 
                 ###if no building value, use repair_cost * building_area 
                 ##owner_occupant_use = round((AALUse_homeowner/84.0)* repair_cost * building_area,0)  
-
                # print("homeowner_AALstruct = ",homeowner_AALstruct, ",   homeowner_AALcont = ",homeowner_AALcont, ",   homeowner_AALuse = ",homeowner_AALuse)
-
-
 
 
                 landlord_AALstruct = homeowner_AALstruct
                 landlord_AALcont = 0
                 landlord_AALuse = round((AALUse_landlord/84.0)* Building_value,0) 
-
-
                 #print("landlord-AALstruct = ",landlord_AALstruct, ",   landlord-AALcont = ",landlord_AALcont, ",   landlord-AALuse = ",landlord_AALuse)
-
 
                 tenant_AALstruct = 0
                 tenant_AALcont = homeowner_AALcont
-                tenant_AALuse = round(145 * 30 * AALUse_tenant, 0) 
-                
-                
+                tenant_AALuse = round(145 * 30 * AALUse_tenant, 0)              
                 #print("tenant_AALstruct = ",tenant_AALstruct, ",   tenant_AALcont = ",tenant_AALcont, ",   tenant_AALuse= ",tenant_AALuse)
 
-
-
-
                 # step 6
-                print("                  ")
-                print("             ******  step 6  *****             ")
-                print("                  ")
+                # print("                  ")
+                # print("             ******  step 6  *****             ")
+                # print("                  ")
 
                 AAL_Total_homeowner = homeowner_AALstruct + homeowner_AALcont + homeowner_AALuse
                 indirect_loss_homeowner = AAL_Total_homeowner * 0.5
@@ -1083,7 +1013,7 @@ def search(request):
                     AAL_Total = AAL_Total_homeowner #"NONE"   #fix it later
                     print("AAL total = ", AAL_Total)
 
-                print("                  ") 
+                #print("                  ") 
                 print("AAL total = ", AAL_Total)
                 AAL_Total_list.append(AAL_Total)  
 
@@ -1093,23 +1023,19 @@ def search(request):
             print("AAL_Total_landlord_list : ", AAL_Total_landlord_list)   
             print("AAL_Total_tenant_list : ", AAL_Total_tenant_list)
             AAL_Total_list_c.append(AAL_Total_list)
+            # print("AAL_Total_list_c : ", AAL_Total_list_c)
 
             print("indirect_loss_homeowner_list : ", indirect_loss_homeowner_list)
             print("indirect_loss_landlord_list : ", indirect_loss_landlord_list)
             print("indirect_loss_tenant_list : ", indirect_loss_tenant_list)
 
-            # print("AAL_Total_list_c : ", AAL_Total_list_c)
-            # print("                    ")
 
-            #AAL_Total_listnoBFE0 = AAL_Total_list
-            #AAL_Total_listnoBFE0 = AAL_Total_listnoBFE0.remove(AAL_Total_listnoBFE0[0])
             AAL_Total_list_json = simplejson.dumps(AAL_Total_list)  
             optimal_AAL_Total_list = min(AAL_Total_list)
 
             for k in range(len(AAL_Total_list)):
                 if optimal_AAL_Total_list == AAL_Total_list[k]:
                     optimal_AAL_Total_list_freeboard = totalBFE[k]
-
             optimal_AAL_Total_list_json = simplejson.dumps(optimal_AAL_Total_list)  
             #
 
@@ -1153,9 +1079,6 @@ def search(request):
             avoided_monthly_loss_landlord_list_c.append(avoided_monthly_loss_landlord)
             avoided_monthly_loss_tenant_list_c.append(avoided_monthly_loss_tenant)
 
-              
-
-
             print("                  ")
             print("             ******  New AAL method ends  *****             ")
             print("                  ")
@@ -1179,10 +1102,10 @@ def search(request):
                 monthly_avoided_loss = avoided_monthly_loss_landlord
                 indirect_avoided_monthly_loss =indirect_avoided_monthly_loss_landlord
 
-
             # elif user_type == "Community official":
             #     annual_avoided_loss = avoided_annual_loss_CommunityOfficial
             #     monthly_avoided_loss = avoided_monthly_loss_CommunityOfficial
+
             else:
                 print("None of the user type!")
                 annual_avoided_loss =  avoided_annual_loss_homeowner #"NONE"   #fix it later
@@ -1192,7 +1115,7 @@ def search(request):
                 print("monthly_avoided_loss = ", monthly_avoided_loss)
                 print("indirect_avoided_monthly_loss = ", indirect_avoided_monthly_loss)
            
-            annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss)   
+            annual_avoided_loss_json = simplejson.dumps(annual_avoided_loss[1:])   
             monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss[1:])     #**   
             indirect_avoided_monthly_loss_json = simplejson.dumps(indirect_avoided_monthly_loss[1:])  #**
 
@@ -1269,6 +1192,7 @@ def search(request):
             # elif user_type == "Community official":
             #     annual_avoided_loss_wi = avoided_annual_loss_CommunityOfficial_wi
             #     monthly_avoided_loss_wi = avoided_monthly_loss_CommunityOfficial_wi
+
             else:
                 print("None of the user type!")
                 annual_avoided_loss_wi =  avoided_annual_loss_homeowner_wi #"NONE"   #fix it later
@@ -1416,14 +1340,14 @@ def search(request):
             addi_cont_insurance_amnt = 0
 
             if coverage_lvl_bldg <= 60000:
-                basic_bldg_insurance_limit  = coverage_lvl_bldg                 # demo-must be changed
-                addi_bldg_insurance_amnt = 0                  # demo-must be changed
+                basic_bldg_insurance_limit  = coverage_lvl_bldg       # demo-must be changed
+                addi_bldg_insurance_amnt = 0                          # demo-must be changed
                 print("building basic : ", basic_bldg_insurance_limit)
                 print("building additional : ", addi_bldg_insurance_amnt)
 
             elif coverage_lvl_bldg > 60000 and coverage_lvl_bldg<= 250000:
-                basic_bldg_insurance_limit  = 60000                  # demo-must be changed
-                addi_bldg_insurance_amnt = coverage_lvl_bldg-60000                  # demo-must be changed
+                basic_bldg_insurance_limit  = 60000                   # demo-must be changed
+                addi_bldg_insurance_amnt = coverage_lvl_bldg-60000    # demo-must be changed
                 print("building basic : ", basic_bldg_insurance_limit)
                 print("building additional : ", addi_bldg_insurance_amnt)
             else:
@@ -1431,13 +1355,13 @@ def search(request):
                 pass
 
             if coverage_lvl_cont <= 25000:
-                basic_cont_insurance_limit = coverage_lvl_cont                  # demo-must be changed
-                addi_cont_insurance_amnt = 0                  # demo-must be changed
+                basic_cont_insurance_limit = coverage_lvl_cont        # demo-must be changed
+                addi_cont_insurance_amnt = 0                          # demo-must be changed
                 print("content basic : ", basic_cont_insurance_limit)
                 print("content additional : ", addi_cont_insurance_amnt)
             elif coverage_lvl_cont > 25000 and coverage_lvl_cont <= 100000:
-                basic_cont_insurance_limit = 25000                 # demo-must be changed
-                addi_cont_insurance_amnt = coverage_lvl_cont-25000                  # demo-must be changed
+                basic_cont_insurance_limit = 25000                    # demo-must be changed
+                addi_cont_insurance_amnt = coverage_lvl_cont-25000    # demo-must be changed
                 print("content basic : ", basic_cont_insurance_limit)
                 print("content additional : ", addi_cont_insurance_amnt)
             else:
@@ -1531,20 +1455,13 @@ def search(request):
             for i in range(len(totalBFE)):
 
                 if No_Floors == "One story" :    
-                    #print("one one one")
                     total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_1s_Bldg_BFE[i])
                     total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_1s_Bldg_BFE[i])
 
                     total_cont_BasicCoverage.append( (( basic_cont_insurance_limit )/100) * BasicRate_1s_Cont_BFE[i])
                     total_cont_AddiCoverage.append( (( addi_cont_insurance_amnt )/100) * AddiRate_1s_Cont_BFE[i])
-                    # print("basicrate_B : ", BasicRate_1s_Bldg_BFE[i])
-                    # print("additionalraterate_B : ", AddiRate_1s_Bldg_BFE[i])
-                    # print("basicrate_C : ", BasicRate_1s_Cont_BFE[i])
-                    # print("additionalraterate_C : ", AddiRate_1s_Cont_BFE[i])
-                    # print("total building basic cov : ",  total_bldg_BasicCoverage, "total building additional cov : ", total_bldg_AddiCoverage)
-                    # print("total content basic cov : ",  total_cont_BasicCoverage, "total content additional cov : ", total_cont_AddiCoverage)
+                  
                 elif No_Floors == "Two or more stories" : 
-                    #print("two two two")
                     total_bldg_BasicCoverage.append( (( basic_bldg_insurance_limit )/100) * BasicRate_2s_Bldg_BFE[i])
                     total_bldg_AddiCoverage.append( (( addi_bldg_insurance_amnt )/100) * AddiRate_2s_Bldg_BFE[i])
 
@@ -1555,18 +1472,11 @@ def search(request):
 
                 principle_premium.append(round(((total_bldg_BasicCoverage[i] + total_bldg_AddiCoverage[i]) + (total_cont_BasicCoverage[i] + total_cont_AddiCoverage[i])),0))
 
-                #deductible factor d is fullrisk
+                # deductible factor d is fullrisk
                 deducted_premium.append(round((principle_premium[i] * fullrisk),0))
-                #print("Deducted premium : ", deducted_premium)
-
-                #total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS)) + HFIAA_surcharge + Federal_policy_fee))
                 total_annual_premium.append( int(((deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium)) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium))) + HFIAA_surcharge + Federal_policy_fee))
                 total_monthly_premium.append( int((((deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium)) + Reserve_fund * (deducted_premium[i] + ICC_premium - CRS*(deducted_premium[i] + ICC_premium))) + HFIAA_surcharge + Federal_policy_fee)/12))
        
-
-                # print("Total annual premium : ", total_annual_premium)
-                # print("Total monthly premium : ", total_monthly_premium)
-                
                 total_annual_premium_json = simplejson.dumps(total_annual_premium)  
                 total_monthly_premium_json = simplejson.dumps(total_monthly_premium) 
 
@@ -1603,9 +1513,7 @@ def search(request):
                 Amortized_FC.append(int(principle_monthly_payment + loan_fees))
 
             Amortized_FC_list_c.append(Amortized_FC)
-            #Amortized_FC_jsonnoBFE0 = Amortized_FC_json.remove(Amortized_FC_json[0])
             Amortized_FC_json = simplejson.dumps(Amortized_FC[1:])   #**    
-
             print("Amortised cost :  ", Amortized_FC)
 
                ## for switching fc to amfc
@@ -1614,8 +1522,6 @@ def search(request):
             for k in range(len(Amortized_FC)):
                 if optimal_am_freeboardCost == Amortized_FC[k]:
                     optimal_freeboard_am_freeboardCost = totalBFE[k]
-
-
             optimal_am_freeboardCost_json = simplejson.dumps(optimal_am_freeboardCost)  
                 ##
 
@@ -1635,6 +1541,7 @@ def search(request):
             # monthly_avoided_loss_list_c.append(monthly_avoided_loss)
 
             # monthly_avoided_loss_json = simplejson.dumps(monthly_avoided_loss)
+
 
             ##-----------------Annual and monthly premium saving------------------------------         ###check************
             annual_premium_saving = []
@@ -2575,21 +2482,21 @@ def report(request):
     return render(request, 'report.html', data)
 
 
-def exportpdf(request):
+# def exportpdf(request):
 
-     ### pdf making ######
-    template = get_template('report.html')
-    data = report.data
-    html = template.render(data)
-    report.pdf = render_to_pdf('report.html', data)
-    print("what is going on?  ", type(report.pdf))
+#      ### pdf making ######
+#     template = get_template('report.html')
+#     data = report.data
+#     html = template.render(data)
+#     report.pdf = render_to_pdf('report.html', data)
+#     print("what is going on?  ", type(report.pdf))
 
-    # print("what is going on inside this file?  ", type(report.pdf))
-    if report.pdf:
-        response = HttpResponse(report.pdf, content_type='application/pdf')
-        response['Content-disposition']='attachment;filename=FloodsafehomeAnalysis'+'.pdf'
-        return response
-    #pass
+#     # print("what is going on inside this file?  ", type(report.pdf))
+#     if report.pdf:
+#         response = HttpResponse(report.pdf, content_type='application/pdf')
+#         response['Content-disposition']='attachment;filename=FloodsafehomeAnalysis'+'.pdf'
+#         return response
+#     #pass
 
    
 
